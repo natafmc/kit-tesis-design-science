@@ -2,6 +2,9 @@
 tesis_ds/
 entrega_*/
 
+# Recursos pesados (imágenes, insumos, etc.)
+assets/
+
 # Salidas y binarios
 *.pdf
 *.docx
