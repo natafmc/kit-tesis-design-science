@@ -14,7 +14,7 @@ Desarrollo, soporte y administración de sistemas de información para la distri
 | Elemento | Estado | Detalle |
 |:--|:--|:--|
 | Acceso al sistema | Confirmado | Acceso total a base de datos y a código |
-| Histórico de datos | Confirmado con vacíos por precisar | Periodo de gestión pasada y actual; 20 000 usuarios en el "sistema mayor" |
+| Histórico de datos | Confirmado con vacíos por precisar | Periodo de gestión pasada y actual. *Corregido el 1 oct: la regional estudiada tiene **29 750 cuentas** exactas; la cifra de 20 000 era un estimado de usuarios actuales sin base y se retira del documento* |
 | Marcadores de irregularidad | Parcial | Lecturas marcadas con código de la AETN; irregularidades por consumo se corrigen **antes** de facturar; reclamos de clientes en facturas donde no aceptan importe ni consumo |
 | Evaluadores disponibles | Confirmado | Usuarios del sistema: lecturadores, facturadores y soporte |
 | Tiempo semanal | Confirmado | 36 horas (20 de lunes a viernes, 8 el sábado y 8 el domingo) |

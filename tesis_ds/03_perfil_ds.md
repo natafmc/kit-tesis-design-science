@@ -1,6 +1,6 @@
 # E3 — Perfil de investigación en Design Science
 
-> Borrador entregado a la tesista el 26 de septiembre de 2026. El gate de E3 exige **una sola oración, con las palabras de la tesista, que enuncie la contribución original de conocimiento**. Falta esa oración.
+> Entregado a la tesista el 26 de septiembre de 2026 y **cerrado el mismo día**. El gate de E3 exigía **una sola oración, con las palabras de la tesista, que enuncie la contribución original de conocimiento**; la oración está escrita, adoptada y registrada en la sección final de este documento.
 
 ## 1. Título provisional
 
@@ -10,9 +10,9 @@ Declara artefacto (método), clase de problema (lecturas anómalas no declaradas
 
 ## 2. Planteamiento del problema
 
-**Problema de diseño.** En la distribución comercial de energía eléctrica de ENDE, cerca del 25 % de las lecturas de cada ciclo se resuelve con un código de irregularidad y la detección depende del criterio individual del lecturador en el momento de la lectura. No existe ningún proceso que recorra el histórico para identificar lecturas cuyo consumo sea incoherente y que no fueron marcadas. La ODECO recibe unos 50 reclamos por mes y unos 40 resultan procedentes: en esos casos la anomalía no la detectó el proceso de lecturación, la reclamó el usuario después de facturar. Verificar un caso cuesta entre 3 y 4 horas y, si exige visita en sitio, 2 días. Se requiere construir un método que barra el histórico, priorice las lecturas sospechosas y las derive a verificación dentro de la cadena vigente, reduciendo la dependencia de la detección reactiva.
+**Problema de diseño.** En la distribución comercial de energía eléctrica de ENDE, solo el 1,04 % de las lecturas facturables lleva un código de irregularidad —5 528 de 532 258 registros entre enero de 2025 y septiembre de 2026—, y esa marca la pone el lecturador terciarizado en el momento de la lectura; el 98,96 % restante no se barre en ningún momento. Sí existe una detección previa a la facturación —el encargado de facturación compara el consumo del mes con los últimos seis meses, en sentido superior o inferior, y solicita visita si le parece anómalo—, pero **no está escrita, carece de umbral numérico y depende de una sola persona**, de modo que deja 242,2 correcciones manuales por mes sin reporte accesible ni constancia del criterio aplicado. La ODECO tramitó 314 reclamos en 21 meses y 62 resultaron procedentes, de los cuales 46 (74,19 %) provinieron de lecturas sin código: esas anomalías no las detectó ningún proceso y las reclamó el usuario después de facturar. Verificar un caso cuesta entre 3 y 4 horas y, si exige visita con respaldo fotográfico, 2 días. Se requiere construir un método que barra el histórico, priorice las lecturas sospechosas y las derive a verificación dentro de la cadena vigente, reduciendo la dependencia de la detección reactiva.
 
-**Problema de investigación** *(en el formato institucional se registrará como **problema científico**)*. La literatura sobre detección de anomalías en consumo eléctrico se apoya en series de consumo y en etiquetas de fraude confirmado; *[por verificar en E5]*. No hay evidencia sobre cómo un método que barre el histórico completo —incluidas las lecturas que el lecturador no marcó— se integra a un ciclo de lecturación-facturación sujeto al catálogo de códigos de un ente regulador, ni bajo qué criterios los verificadores de una distribuidora lo consideran utilizable cuando revisar un caso cuesta entre 3 y 4 horas. Este estudio genera esa evidencia.
+**Problema de investigación** *(en el formato institucional se registrará como **problema científico**)*. La literatura sobre detección de anomalías en consumo eléctrico se apoya en series de consumo y, en los estudios de fraude, en etiquetas de fraude confirmado —`05_estado_del_arte.md` §5, con 22 referencias verificadas; **brecha provisional** hasta la ampliación DEC-1—. No hay evidencia sobre cómo un método que barre el histórico completo —incluidas las lecturas que el lecturador no marcó— se integra a un ciclo de lecturación-facturación sujeto al catálogo de códigos de un ente regulador, ni bajo qué criterios los verificadores de una distribuidora lo consideran utilizable cuando revisar un caso cuesta entre 3 y 4 horas. Este estudio genera esa evidencia.
 
 **Relación entre ambos.** El problema de diseño no se resuelve sin construir; el problema de investigación no se resuelve sin evaluar esa construcción. Si solo se articula el primero, el trabajo es un proyecto de ingeniería bien documentado.
 
@@ -37,7 +37,7 @@ Tiene componente de **utilidad** (¿permite identificar y verificar?) y de **con
 
 *Resignificación de Design Science, explícita:* el objeto de estudio no es el proceso de lecturación ni el fenómeno del fraude; éstos son el contexto. El objeto es el artefacto que se construye. En la traducción institucional esta relación se invertirá y así se anotará.
 
-**Justificación de la tipología:** el problema no es falta de software —el sistema existe y la tesista lo administra—, sino falta de un procedimiento que decida qué leer, con qué criterio y quién resuelve. Un método es el artefacto que llena ese vacío; la instanciación de apoyo (consultas y rutinas sobre `tfv_histo_lec` y `tfv_reclamo`) es el vehículo de aplicación, no la contribución.
+**Justificación de la tipología:** el problema no es falta de software —el sistema existe y la tesista lo administra—, sino falta de un procedimiento que decida qué leer, con qué criterio y quién resuelve. Un método es el artefacto que llena ese vacío; la instanciación de apoyo (consultas y rutinas sobre `tfv_historico_lecturador` y `tfv_reclamo`) es el vehículo de aplicación, no la contribución.
 
 ## 5. Objetivos
 
@@ -45,7 +45,7 @@ Tiene componente de **utilidad** (¿permite identificar y verificar?) y de **con
 
 **Objetivos específicos:**
 
-1. Diagnosticar la magnitud y el costo de la detección reactiva actual mediante indicadores trazables a `tfv_histo_lec` y `tfv_reclamo`.
+1. Diagnosticar la magnitud y el costo de la detección reactiva actual mediante indicadores trazables a `tfv_historico_lecturador` y `tfv_reclamo`.
 2. Determinar los requisitos del método y comparar alternativas de técnica de detección con trade-offs explícitos, eligiendo una y descartando las demás con justificación.
 3. Construir el método y verificar su consistencia interna, documentando las decisiones de diseño y los rediseños.
 4. Evaluarlo en un ciclo formativo con rediseño documentado y en un ciclo sumativo en el contexto real de la cadena de verificación.
@@ -59,14 +59,14 @@ Los objetivos 1 a 3 son de **construcción**; los objetivos 4 y 5 son de **contr
 
 ## 7. Fundamentación en la base de conocimiento
 
-*[Se construye en E4 y pasa la prueba de eliminación: si al retirarla el diseño del método no cambia, es decorativa.]* Ejes previstos:
+*[Construida en E4 y sometida a la prueba de eliminación: si al retirarla el diseño del método no cambia, se elimina. Resultado: 15 de 17 secciones se conservan; se eliminan auditoría y control interno, y el marco regulatorio como sección teórica.]* Ejes resultantes:
 
 - Detección de valores atípicos y sus métodos, con énfasis en explicabilidad para verificación humana.
 - Modelado de consumo eléctrico por perfil de usuario y estacionalidad.
-- Auditoría, control interno y atención de reclamos bajo normativa del ente regulador.
-- Design Science: proceso DSRM (Peffers et al., 2007), ciclos de Wieringa (2014), estrategias FEDS (Venable et al., 2016), principios de Hevner et al. (2004) y niveles de contribución de Gregor y Hevner (2013).
+- ~~Auditoría, control interno y atención de reclamos bajo normativa del ente regulador.~~ **Eliminado del marco teórico** —no se localizó fuente verificable—; sus exigencias entran por E2, E6 y E7b. Una búsqueda complementaria en bases de regulación el **3–4 de octubre** (DEC-3/DEC-7); si no hay fuente, se cierra por decisión explícita.
+- Design Science: proceso DSRM (Peffers et al., 2007), ciclos de Wieringa (2014), estrategias FEDS (Venable et al., 2016), principios de Hevner et al. (2004), ciclos de Hevner (2007) y niveles de contribución de Gregor y Hevner (2013).
 
-Todas las referencias del dominio quedan **[por verificar]** hasta E4 y E5; las de Design Science están tomadas de la biblioteca del repositorio.
+**Estado:** construida en E4 (`04_marco_teorico.md`) y E5 (`05_estado_del_arte.md`), ambas cerradas el 2 oct 2026. Las 22 referencias de la propuesta están verificadas —21 por DOI en Crossref y 1 en AISeL—; **cero sin verificar**. La brecha de E5 sigue **provisional** hasta la ampliación a IEEE Xplore y SciELO/LILACS (DEC-1).
 
 ## 8. Diseño metodológico
 
@@ -97,7 +97,7 @@ Marco **FEDS** (Venable et al., 2016), en secuencia **formativa → sumativa**, 
 
 ## 11. Selección y muestra
 
-Contexto de evaluación: la regional de ENDE con 20 000 cuentas, la de mayor volumen del sistema, sujeta al mismo catálogo nacional de códigos. Es representativa de la clase de contextos —distribuidoras con sistema propio, histórico tabular y catálogo del regulador— por cuanto comparte las tres condiciones que definen esa clase. Acceso garantizado: la tesista es administradora del sistema.
+Contexto de evaluación: la regional de ENDE con **29 750 cuentas** al cierre de septiembre de 2026 —28 355 registros de lectura en enero de 2025, de modo que el universo crece y los denominadores se calculan mes a mes—, sujeta al mismo catálogo nacional de códigos. Es representativa de la clase de contextos —distribuidoras con sistema propio, histórico tabular y catálogo del regulador— por cuanto comparte las tres condiciones que definen esa clase. Acceso garantizado: la tesista es administradora del sistema.
 
 Participantes: personal de validación en sitio, personal de respuesta al ODECO y encargado de facturación; al menos un evaluador fuera de ese grupo. *[Pendiente: confirmar número exacto de participantes y su disponibilidad.]*
 
@@ -108,7 +108,8 @@ Fechas **exigidas** por el programa, confirmadas por la tesista el 26 de septiem
 | Periodo | Actividades | Etapas |
 |:--|:--|:--|
 | 26–28 sep | Delimitación y perfil | E2, E3 |
-| 29 sep – 12 oct | Marco teórico y estado del arte | E4, E5 |
+| 29 sep – 4 oct | Marco teórico y estado del arte — **cerradas el 2 oct, entrega el 4 oct** | E4, E5 |
+| 5–12 oct | **Primer borrador de propuesta** (5 oct); **extracción ampliada a 2022** (A2.1–A2.4); resolución de B1, B2 y B3; primera pasada de E6 | Borrador, A2.1–A2.4, E6 |
 | 13–26 oct | Diagnóstico con indicadores y línea base; alternativas, requisitos y diseño | E6, E7a, E7b, E7c |
 | 27–31 oct | Plan de construcción, producto mínimo viable, criterio de suficiencia. **Entrega de propuesta completa** | E7d |
 | 1–8 nov | Construcción y verificación interna; ficha del artefacto | E7e, E7f |
@@ -131,10 +132,16 @@ Fechas **exigidas** por el programa, confirmadas por la tesista el 26 de septiem
 
 ## 14. Anexo de artefacto previsto
 
-Método de detección y verificación, descrito con: entradas (`tfv_histo_lec`, `tfv_reclamo`, catálogo de códigos); segmentación por perfil de consumo y familia de código; criterio de detección elegido en E7a con su justificación; reglas de prioridad y criterios de verificación escritos; roles y productos de trabajo sobre la cadena vigente (recepción, validación en sitio, respuesta al ODECO, conciliación); formato de registro de resolución; y las aplicaciones sobre la base que lo instancian.
+Método de detección y verificación, descrito con: entradas (`tfv_historico_lecturador`, `tfv_reclamo`, catálogo de códigos); segmentación por perfil de consumo y familia de código; criterio de detección elegido en E7a con su justificación; reglas de prioridad y criterios de verificación escritos; roles y productos de trabajo sobre la cadena vigente (recepción, validación en sitio, respuesta al ODECO, conciliación); formato de registro de resolución; y las aplicaciones sobre la base que lo instancian.
 
 ---
 
-## Gate de E3 — pendiente
+## Gate de E3 — cerrado el 26 de septiembre de 2026
 
-Falta **una oración, con sus palabras**, que enuncie la contribución original de conocimiento. No la escribo yo: si no puede decirla con su propia voz, todavía no le pertenece.
+**Oración de contribución, escrita por la tesista y adoptada en el gate:**
+
+> Este estudio construye un método de detección y verificación previa a la facturación de lecturas sin código de irregularidad que presentan consumos atípicos, y de su aplicación y evaluación en ENDE se desprenden principios de diseño que permiten a una distribuidora regulada por la AETN incorporar detección sistemática a su ciclo de lecturación sin exceder la capacidad de su equipo de verificación.
+
+**Se adoptó tras dos correcciones:** incorpora conocimiento transferible; elimina la promesa de reducir reclamos como logro; corrige la formulación confusa «lecturas normales con consumos atípicos»; y reorienta la tipología hacia **método**.
+
+**Qué comprueba la oración:** que el artefacto es un **método**, no una técnica de detección nueva —decisión del 2 oct 2026, sustentada en Gregor y Hevner (2013)—; que lo que se transmite son **principios de diseño**, no el programa; que **no promete reducir reclamos**; y que reconoce el **techo de capacidad** del equipo de verificación como restricción, no como efecto colateral. Está en la misma forma en `00_estado.md`, `matriz_coherencia.md` y `propuesta_borrador_v1.md` §7.
