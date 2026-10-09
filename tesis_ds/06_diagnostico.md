@@ -1,7 +1,10 @@
 # E6 — Diagnóstico con indicadores y línea base
 
-> **Evidencia consolidada.** Fuente: extracción real de FACTUR, `DATOS.xlsx`, gestionada por la tesista el 1 de octubre de 2026. Ámbito de la extracción: regional de **29 750 cuentas** (dato exacto), gestiones 2025 y 2026 (21 meses, hasta septiembre de 2026). **Histórico de lecturas disponible desde 2022** (declarado el 2 oct 2026), aún sin extraer.
-> Todos los valores fueron verificados aritméticamente contra el archivo antes de registrarse.
+> **Evidencia consolidada, dos fuentes, la segunda confirma a la primera.**
+> **(1)** `DATOS.xlsx`, gestionada por la tesista el 1 de octubre de 2026 — regional de **29 750 cuentas**, gestiones 2025 y 2026 (21 meses, hasta septiembre de 2026).
+> **(2)** `DATOS desde 2022.xlsx`, recibido el **5 de octubre de 2026** — serie saneada **enero 2022 – septiembre de 2026, 57 meses**, hojas `reclamos` (104 filas), `historico` (57) y `tipo_lectura` (228), encabezados en fila 2.
+> **Prueba de continuidad (5 oct 2026):** filtrando la fuente (2) a `gestion ≥ 2025` se reproducen **las nueve cifras de `DATOS.xlsx` exactamente** — 314, 62, 46, 19,75 %, 74,19 %, 526 730, 5 528, 532 258. **Son la misma fuente; la segunda amplía el alcance de la primera y no la contradice.** Registro completo y scripts en `consultas_base_datos.md`, sección *Serie histórica saneada 2022–2026*.
+> Todos los valores fueron verificados aritméticamente antes de registrarse.
 > **Disciplina de trazabilidad:** esta evidencia y los criterios se fijan antes de construir el artefacto.
 
 ## Población y alcance de la extracción
@@ -9,19 +12,21 @@
 | Concepto | Valor | Fuente |
 |:--|:--|:--|
 | Cuentas de la regional | **29 750** (dato exacto comunicado por la tesista el 1 oct 2026; la cifra de 29 000 era un redondeo). Los registros de lectura por mes crecen de 28 355 (ene 2025) a 29 750 (sep 2026): **el universo no es fijo y los denominadores deben calcularse mes a mes**, no contra una población única | `DATOS.xlsx`, Tablas 2 y 3 |
-| Lecturas facturables en 21 meses | 532 258 | Tabla 3 |
-| Lecturas Tipo 1 (sin código de irregularidad) | 526 730 → **98,96 %** | Tabla 3 |
-| Lecturas Tipo 2 y 3 (con código) | 5 528 → **1,04 %** | Tabla 3 |
+| Lecturas facturables en 21 meses (2025-01 – 2026-09) | 532 258 | Tabla 3 |
+| Lecturas Tipo 1 (sin código de irregularidad), **ventana de 21 meses** | 526 730 → **98,96 %** · *en 57 meses: 1 377 641 → **99,12 %*** | Tabla 3; `DATOS desde 2022.xlsx`, hoja `tipo_lectura` |
+| Lecturas Tipo 2 y 3 (con código), **ventana de 21 meses** | 5 528 → **1,04 %** · *en 57 meses: 12 300 → **0,88 %*** | Tabla 3; `DATOS desde 2022.xlsx`, hoja `tipo_lectura` |
 | Lectura Tipo 0 | No genera factura; excluida del universo facturable | Nota del archivo |
-| **Histórico disponible en `tfv_historico_lecturador`** | **desde 2022** (declarado por la tesista el 2 oct 2026). La extracción actual `DATOS.xlsx` solo cubre **ene 2025 – sep 2026 (21 meses)** | Declaración de la tesista; alcance del archivo |
+| **Histórico disponible en `tfv_historico_lecturador`** | **desde 2022 — YA EXTRAÍDO el 5 oct 2026** en `DATOS desde 2022.xlsx`: **57 meses**, ene 2022 – sep 2026 | Hoja `historico`; declaración de la tesista del 2 oct 2026 |
 
-**Tipos de lectura:** 0 = sin factura; 1 = sin código de irregularidad; 2 y 3 = con código de irregularidad. El archivo lo declara explícitamente.
+**Tipos de lectura — dominio confirmado por la tesista el 5 de octubre de 2026 (cierra B1):** **0 = LC, lectura de corte (no facturada) · 1 = LN, lectura normal (objeto de investigación) · 2 = LE, lectura estimada · 3 = NE, normal estimada.**
+
+*Nota de coherencia entre las dos descripciones.* `DATOS.xlsx` describía el mismo dominio **por su consecuencia contable**: «0 = sin factura; 1 = sin código; 2 y 3 = con código». **Las dos lecturas son compatibles**: LC no genera factura, LN no lleva código de irregularidad y LE/NE sí lo llevan porque la lectura estimada es en sí misma una irregularidad registrada. **Se conservan las dos formulaciones** —la del archivo y la del dominio—, porque dicen cosas distintas y complementarias de la misma variable.
 
 ### Consecuencia de que el histórico llegue hasta 2022
 
 La restricción de estacionalidad queda **resuelta en el origen**: de 2022 a septiembre de 2026 hay **57 meses y cuatro ciclos anuales completos** (2022, 2023, 2024 y 2025), de modo que una línea base de "mismo mes del año anterior" es viable y la regla actual de 6 meses puede contrastarse contra varios años.
 
-Pero **la extracción hay que ampliarla.** Mientras `DATOS.xlsx` cubra 21 meses, la evidencia del documento sigue teniendo un solo ciclo anual por mes del calendario. Ampliarla a enero de 2022 es condición para:
+Pero **la extracción había que ampliarla.** Mientras `DATOS.xlsx` cubría 21 meses, la evidencia del documento tenía un solo ciclo anual por mes del calendario. Ampliarla a enero de 2022 era condición para:
 
 - modelar estacionalidad con más de dos ciclos;
 - conocer el volumen real de reclamos disponible como verdad de referencia en E8;
@@ -29,6 +34,80 @@ Pero **la extracción hay que ampliarla.** Mientras `DATOS.xlsx` cubra 21 meses,
 - comparar el universo de cuentas de 2022 con el actual (29 750), porque los denominadores cambiarán.
 
 **Decisión de la tesista (2 oct 2026):** `tfv_reclamo` y la serie de correcciones **sí llegan hasta 2022**, con **mismo esquema**, y la extracción ampliada **es viable**. Ver especificación A2.1–A2.4 en `consultas_base_datos.md`.
+
+### Estado de la ampliación al 5 de octubre de 2026
+
+**A2.4 (agregados mensuales) — EJECUTADO.** La tesista entregó `DATOS desde 2022.xlsx` con las tres hojas agregadas extendidas a 57 meses, y **las nueve cifras de `DATOS.xlsx` se reproducen exactamente** (ver *Serie histórica saneada 2022–2026* en `consultas_base_datos.md`, Prueba 1). **Los cuatro objetivos listados arriba quedan respondidos** —estacionalidad con cuatro ciclos, volumen de reclamos desde 2022, correcciones antes de la capacitación, y universo de cuentas—, y con ellos se cumple la regla de *«si la extracción ampliada no reproduce esas tres cifras, ninguna sirve»*.
+
+**A2.1, A2.2 y A2.3 — NO ejecutados.** El archivo saneado sigue siendo **agregado**: no trae cuenta, id ni código de irregularidad. **Sigue sin haber panel de consumo por cuenta y mes, y sin eso no hay detección posible** (E7b). Ahí es donde `sql_a2_extraccion.sql` sigue siendo necesario.
+
+## Línea base multianual — 57 meses (enero 2022 – septiembre 2026)
+
+> **Nueva el 5 oct 2026.** Fuente: `DATOS desde 2022.xlsx`, hojas `reclamos`, `tipo_lectura` y `historico`, encabezados en fila 2. Consulta y scripts declarados en `consultas_base_datos.md`. *Todas las filas están verificadas aritméticamente antes de publicarse.*
+
+### Reclamos por gestión y procedencia
+
+| Gestión | Meses con dato | Reclamos | Procedentes (sw=1) | Procedentes Tipo 1 | % Tipo 1 de los procedentes |
+|:--|--:|--:|--:|--:|--:|
+| 2022 | 12 | 104 | 14 | 11 | 78,57 % |
+| 2023 | 12 | 326 | 49 | 40 | 81,63 % |
+| 2024 | 12 | 309 | 49 | 39 | 79,59 % |
+| 2025 | 12 | 213 | 46 | 35 | 76,09 % |
+| 2026 | 9 | 101 | 16 | 11 | 68,75 % |
+| **Total** | **57** | **1 053** | **174 (16,52 %)** | **136** | **78,16 %** |
+
+*Por estado resolutivo:* **procedentes 174 · improcedentes 878 · improcedente administrativo 1** = 1 053 ✔. *Verificación interna:* en **las 104 filas** de la hoja, `tipo_lectura_1 + tipo_lectura_diferente_1 = cantidad_odecos`, sin una sola excepción.
+
+> **La ventana corta no sesgaba la conclusión.** Con 21 meses: 74,19 % de procedentes Tipo 1. Con 57: **78,16 %**. La segmentación de la Opción 2 se sostiene y se fortalece.
+
+### Tipos de lectura
+
+| Gestión | 0 · LC (no facturada) | 1 · LN | 2 · LE | 3 · NE | Facturable (1+2+3) |
+|:--|--:|--:|--:|--:|--:|
+| 2022 | 22 542 | 277 917 | 1 475 | 812 | 280 204 |
+| 2023 | 34 723 | 282 597 | 859 | 999 | 284 455 |
+| 2024 | 41 294 | 290 397 | 1 318 | 1 309 | 293 024 |
+| 2025 | 44 443 | 298 472 | 2 015 | 995 | 301 482 |
+| 2026 (9 m) | 34 782 | 228 258 | 1 626 | 892 | 230 776 |
+| **Total** | **177 784** | **1 377 641** | **7 293** | **5 007** | **1 389 941** |
+
+*Total de lecturas registradas:* 1 567 725. **LN = 99,12 %** del facturable · **LE+NE = 0,88 %** · **LC = 11,34 %** del total.
+
+### Correcciones — la serie completa, con la ruptura de 2025
+
+`historico.lecturas_diferentes` — la fuente declarada de 800,3 y de 242,2.
+
+| Gestión | Total | Meses | Promedio mensual | % de lecturas |
+|:--|--:|--:|--:|--:|
+| 2022 | 8 509 | 12 | 709,1 | 3,05 % |
+| 2023 | 10 230 | 12 | 852,5 | 3,46 % |
+| 2024 | 17 459 | 12 | **1 454,9** | **5,62 %** |
+| 2025 | 9 604 | 12 | 800,3 | 2,81 % |
+| 2026 (9 m) | 2 180 | 9 | **242,2** | **0,82 %** |
+| **Total** | **47 982** | **57** | — | **3,22 %** |
+
+*Del total de 1 491 360 lecturas comparadas, 1 443 376 iguales y 47 982 diferentes.*
+
+> **Tres lecturas que este archivo obliga a hacer:**
+> 1. **2024 fue el peor año, no 2025** — 1 454,9/mes y 5,62 % de lecturas diferentes. La narrativa anterior, con solo 21 meses, no lo mostraba.
+> 2. **La caída de 2025 no es un efecto de nivel sino de régimen:** ene–may **1 507,4/mes** → jun–dic **295,3/mes** = **−80,4 %**, justo en el corte de la capacitación de mayo–junio. **La atribución sigue siendo declarativa, no causal** (regla vigente).
+> 3. **2026 es el mejor año de la serie** — 0,82 %, casi cuatro veces mejor que 2022. **El problema ya no es el nivel: es el residuo.**
+
+### Tasas por 100 000 lecturas — segmentación Opción 2, serie completa
+
+| Tasa (procedentes ÷ facturable del tipo, × 100 000) | Tipo 1 · LN | Tipo 2–3 · LE+NE | Razón |
+|:--|--:|--:|--:|
+| **2022–2026 (57 meses)** | 136/1 377 641 → **9,87** | 38/12 300 → **308,94** | **31,3 ×** |
+| 2025–2026 (21 meses, referencia) | 8,73 | 289,44 | 33,1 × |
+
+> **El resultado central de la propuesta resiste la triplicación del periodo: 31,3× en lugar de 33,1×.** Las lecturas con código siguen siendo ~31 veces más propensas a generar un reclamo procedente, siendo el 0,88 % del facturable. **La Opción 2 queda confirmada con tres veces más evidencia.**
+
+### Salvedades que viajan con estas cifras
+
+1. **Defecto de 2 unidades** en `historico`, fila **2025-04**: 28 556 ≠ 27 474 + 1 080. Única fila rota de 57; afecta el total en 0,00013 %. **Declarado, no corregido.**
+2. **Agosto de 2026 — cotejado el 6 oct 2026, sin desfase.** Los **dos archivos dan las mismas dos filas**: `odecos` 1 (procedente) + 4 (improcedente) = **5 reclamos totales**, de los cuales **4 son tipo 1**. *La cifra «8» que circulaba venía de **agosto de 2025** (1 + 7) y fue un error de registro, retirado por DEC-25.* **Pendiente solo la convención de publicación:** si «reclamos del mes» significa el total (5), el tipo 1 (4) o los improcedentes (4). → **Resuelta el 6 oct 2026 (DEC-26): el total (5)** — `cantidad_odecos` sumado en el periodo; las otras dos cifras se publican al lado y etiquetadas.
+3. **Denominadores por gestión, no población fija:** 2026 tiene **9 meses** y el universo de cuentas crece; **no se puede promediar 2026 contra años completos sin declararlo.**
+4. **El código de irregularidad sigue sin aparecer** en ninguna de las tres hojas: la segmentación por familia que pide la Opción 2 **sigue sin base de datos**.
 
 ## Indicador 1 — Reclamos ODECO por tipo de lectura y procedencia
 
@@ -44,17 +123,17 @@ Período 2025-01 a 2026-09. `sw_procedente`: 1 = procedente, 2 = improcedente, 4
 
 ### Las tres cifras que deben publicarse juntas
 
-El 74,19 % aislado es engañoso, porque el 98,96 % de las lecturas facturables son Tipo 1. La lectura correcta exige los tres números:
+El 74,19 % aislado es engañoso, porque el **98,96 %** de las lecturas facturables son Tipo 1 **en esta ventana de 21 meses** —**99,12 % en los 57 meses de la línea base multianual**—. La lectura correcta exige los tres números:
 
-1. **Cobertura:** el 74,19 % de los reclamos procedentes provino de lecturas **sin** código. Auditar solo las lecturas con código habría alcanzado como máximo **16 de 62** procedentes (25,81 %) y se habría quedado sin detectar **46** (74,19 %). *Este es el argumento que sostiene la Opción 2.*
-2. **Rendimiento por lectura:** las lecturas **con** código son el 1,04 % del universo, pero originan el 25,81 % de los procedentes.
+1. **Cobertura:** el 74,19 % de los reclamos procedentes provino de lecturas **sin** código. Auditar solo las lecturas con código habría alcanzado como máximo **16 de 62** procedentes (25,81 %) y se habría quedado sin detectar **46** (74,19 %). *Este es el argumento que sostiene la Opción 2.* —**En 57 meses: 136 de 174 = 78,16 %** (tabla de la línea base multianual).
+2. **Rendimiento por lectura:** las lecturas **con** código son el **1,04 %** del universo en esta ventana —**0,88 % en 57 meses**—, pero originan el 25,81 % de los procedentes.
 
 | Tasa (procedentes por 100 000 lecturas) | Tipo 1 | Tipo 2–3 | Razón |
 |:--|--:|--:|--:|
 | Procedentes | 8,73 | 289,44 | **33,1 ×** |
 | Improcedentes | 47,27 | 54,27 | 1,15 × |
 
-3. **Conclusión válida:** las lecturas con código son **33 veces más propensas** a generar un reclamo procedente que las que no lo tienen, pese a ser el 1 % del volumen. Tener código es una **señal de riesgo de alta potencia**, no un ámbito suficiente de trabajo.
+3. **Conclusión válida:** las lecturas con código son **33,1 veces más propensas** a generar un reclamo procedente que las que no lo tienen, pese a ser el 1 % del volumen —**31,3× en la ventana de 57 meses** (9,87 frente a 308,94 por 100 000)—. Tener código es una **señal de riesgo de alta potencia**, no un ámbito suficiente de trabajo. *La razón se mantiene en la misma magnitud con más que el doble de datos, y por eso la segmentación no cambia de forma.*
 
 **Consecuencia de diseño (para E7a):** las opciones 1 y 2 no son excluyentes. El método debe barrer el conjunto completo **y** usar la familia de código como variable de priorización. Descartar el código sería ignorar la señal más intensa del sistema; limitarse a él sería perder tres de cada cuatro reclamos procedentes válidos.
 
@@ -113,7 +192,7 @@ La regla que hoy aplica el encargado de facturación, declarada por la tesista:
 
 - **E7b:** fijar el umbral es decisión de diseño y debe fijarse **antes** de construir.
 - **E7c:** la regla actual descuenta la estacionalidad por juicio. Un detector estadístico ingenuo marcaría cada invierno y cada verano como anomalía: el tratamiento de estacionalidad es requisito, no detalle.
-- **Restricción de datos — resuelta en el origen, pendiente en la extracción:** el histórico llega **desde 2022** (declarado el 2 oct 2026), es decir 57 meses y cuatro ciclos anuales completos: la estacionalidad es modelable. Lo que falta es que `DATOS.xlsx` cubra esos años; hoy solo cubre 21 meses, y con ellos cada mes del calendario se repite una sola vez. **Ampliar la extracción es condición para poder diseñar E7c.**
+- **Restricción de datos — resuelta en el origen y desbloqueada a nivel agregado:** el histórico llega **desde 2022** (declarado el 2 oct 2026), es decir 57 meses y cuatro ciclos anuales completos: la estacionalidad es modelable. **A2.4 quedó ejecutado el 5 oct 2026** con `DATOS desde 2022.xlsx`, de modo que **cada mes del calendario ya se repite cuatro veces** y E7c tiene con qué trabajar. **Lo que sigue pendiente no es la ventana sino el nivel:** el archivo saneado es agregado, sin cuenta ni id, así que **no hay aún panel de consumo por cuenta y mes** — eso es A2.1–A2.3 y es lo que abre E7b.
 
 **Capacidad como techo de alertas:** 242 correcciones mensuales ÷ 22 días hábiles ≈ **11 visitas por día**. Esa es la capacidad actual del equipo técnico y el techo que el volumen de alertas de E7b no debe exceder — sin contar las visitas que no terminan en corrección, cifra aún desconocida.
 
@@ -132,9 +211,9 @@ De 1 507 correcciones mensuales (ene–may 2025) a 295 (jun–dic 2025): una ca�
 
 | Concepto | Valor |
 |:--|--:|
-| Reclamos tramitados en 21 meses | 314 (≈ 15/mes) |
-| Procedentes en 21 meses | 62 (≈ 3/mes) |
-| Improcedentes | 252 (**80,25 %** del total) |
+| Reclamos tramitados en 57 meses | **1 053** (≈ 18,5/mes) · *ventana de 21 meses: 314 (≈ 15/mes)* |
+| Procedentes en 57 meses | **174 (16,52 %)** (≈ 3/mes) · *ventana de 21 meses: 62 (≈ 3/mes)* |
+| Improcedentes en 57 meses | **879** (**83,48 %** del total) · *ventana de 21 meses: 252 (80,25 %)* |
 | Carga de inspección de los improcedentes | Los mismos 3 a 15 días hábiles reglamentarios |
 
 **Hallazgo:** cuatro de cada cinco reclamos se resuelven en contra del usuario, pero consumen la misma inspección técnica que los procedentes. Eso abre un segundo frente de utilidad para el método: además de encontrar lo que no se marcó, puede dar al verificador evidencia para resolver improcedentes sin desplazamiento.
@@ -143,15 +222,17 @@ De 1 507 correcciones mensuales (ene–may 2025) a 295 (jun–dic 2025): una ca�
 
 | # | Indicador | Línea base | Estado |
 |:--|:--|:--|:--|
-| 1 | Reclamos procedentes sin código | 46 de 62 (74,19 %); razón de tasas 33,1× | **Medido** |
-| 2 | Reclamos totales y procedencia | 314 totales, 62 procedentes (19,75 %) | **Medido** |
-| 3 | Proporción de lecturas con código | 1,04 % del facturable | **Medido** |
+| 1 | Reclamos procedentes sin código | **136 de 174 (78,16 %)**; razón de tasas **31,3×** — 57 meses | **Medido** (actualizado a 57 meses, DEC-33) |
+| 2 | Reclamos totales y procedencia | **1 053 totales, 174 procedentes (16,52 %)** — 57 meses | **Medido** (actualizado a 57 meses, DEC-33) |
+| 3 | Proporción de lecturas con código | **0,88 %** del facturable — 57 meses | **Medido** (actualizado a 57 meses, DEC-33) |
 | 4 | Correcciones manuales mensuales | 242,2 (2026); 295 (jun–dic 2025, post-capacitación); naturaleza: **lectura mal tomada** | **Medido y explicado** (capacitación may–jun 2025 a personal terciarizado) |
 | 5 | Tiempo de verificación por caso | Rama 1: revisión del consumo en pantalla. Rama 2: visita al domicilio + fotografía. Estimado hoy: 3 a 4 horas; 2 días con visita | **Promedio en consulta** (pendiente, 2 oct 2026) |
 | 6 | Tiempo de respuesta ODECO | Plazo reglamentario 3 a 15 días hábiles | Consulta 2.3 pendiente |
 | 7 | Evidencia fotográfica de la corrección | Se obtiene en visita; **almacenada en la computadora del encargado de facturación**, fuera del sistema y sin enlace al registro corregido | **Silo de evidencia** confirmado el 2 oct 2026 |
 | 8 | Regla de detección actual | Desviación frente a 6 meses, en las dos direcciones; **sin umbral numérico ni registro** | **Descrita** por la tesista el 2 oct 2026 |
 | 9 | Visitas que no terminan en corrección | No se conoce — es la tasa de falsos positivos de la detección manual actual | Pendiente: es la línea base del criterio 2 |
+
+> **Nota sobre las líneas base de los indicadores 1, 2 y 3 — actualizadas el 6 de octubre de 2026 (DEC-33).** Instrucción de la tesista: *«actualiza a 57»*. Se fijaron el 1 de octubre de 2026 sobre la ventana de 21 meses de `DATOS.xlsx` —**46 de 62 = 74,19 % con razón 33,1×** · **314 totales y 62 procedentes = 19,75 %** · **1,04 %**— y se reemplazan por las mismas magnitudes medidas en **57 meses**: **78,16 % (136 de 174) con razón 31,3×** · **1 053 totales y 174 procedentes = 16,52 %** · **0,88 %**. **Tres precisiones sobre qué cambió y qué no.** **(a)** Se actualiza la **línea base**, que es la medición del problema; **ningún umbral de éxito se ha fijado todavía** — eso es de E7b y sigue abierto—, así que no hay criterio que se haya movido. **(b)** El cambio se hace **antes de construir**: A2.1–A2.3 ni siquiera están ejecutados, de modo que la disciplina de «fijarlo antes de construir» se cumple más estrictamente con la ventana más larga que con la corta. **(c)** Las cifras de 21 meses **no se borran**: siguen en la cabecera de este documento, en la prueba de continuidad y en la tabla del Indicador 1, **siempre con su ventana declarada**, porque son la referencia que permitió comprobar que las dos extracciones dicen lo mismo. *La razón de tasas pasa de 33,1× a 31,3× y el porcentaje de procedentes sube de 74,19 % a 78,16 %: la conclusión se refuerza, no se altera.*
 
 ## Dato invalidado — retirado definitivamente
 

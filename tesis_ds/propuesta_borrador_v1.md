@@ -1,7 +1,8 @@
 # Propuesta de investigación — primer borrador
 
-> **Entrega: lunes 5 de octubre de 2026.** Documento de trabajo; se construye sobre E0–E5, **todas cerradas** (E4 y E5 el 2 de octubre de 2026, con entrega el 4).
-> Las secciones 8, 9 y 12 quedan completas con fuentes verificadas una a una en Crossref. Siguen pendientes, por diseño, las secciones de E6 y E7 (criterios con valores numéricos, alternativas y diseño).
+> **Entrega: lunes 5 de octubre de 2026.** Documento de trabajo; se construye sobre E0–E5, **todas cerradas** (E4 y E5 cerradas y **entregadas al grupo el 2 de octubre de 2026**, dos días antes de lo declarado).
+> **Actualización del 6 de octubre de 2026 (DEC-27): todas las cifras pasan de 21 meses a 57 meses**, con la llegada de `DATOS desde 2022.xlsx` (ene 2022 – sep 2026), que **reproduce exactamente las nueve cifras de la extracción corta** y por eso se acepta como continuación de la misma fuente. **La versión entregada el 5 de octubre no se toca: lo que se envió, se envió.** Registro de las cifras nuevas en `consultas_base_datos.md` y `06_diagnostico.md`.
+> Las secciones 8, 9 y 12 quedan completas con fuentes verificadas una a una en Crossref. Siguen pendientes, **por diseño**, las secciones de E6 y E7 (criterios con valores numéricos, alternativas y diseño). **Salvedad de alcance levantada el 7 de octubre de 2026 (E5-3 → DEC-35): la brecha de §9.5 deja de ir provisional.** La ampliación se ejecutó el 5 de octubre con cuenta de registros — **DEC-14, DEC-15 y DEC-16: 448 identificados = 389 eliminados + 59 incluidos → 54 trabajos distintos**, volcados en `05_estado_del_arte.md` §2.4— y **la tesista resolvió ampliarla, no confirmarla ni retirarla**. La formulación nueva está en §9.5.
 
 ---
 
@@ -13,7 +14,7 @@
 
 ### 2.1 Problema de diseño
 
-En la distribución comercial de energía eléctrica de ENDE, solo el 1,04 % de las lecturas facturables lleva un código de irregularidad —5 528 de 532 258 registros entre enero de 2025 y septiembre de 2026—. Esa marca la pone, en el momento de la lectura, el personal terciarizado que recorre los domicilios con equipos móviles de lecturación. El bloque sin marca representa el 98,96 % del volumen facturable y nadie lo barre: no existe ningún proceso que recorra el histórico para identificar lecturas cuyo consumo sea incoherente y que no fueron marcadas.
+En la distribución comercial de energía eléctrica de ENDE, solo el 0,88 % de las lecturas facturables lleva un código de irregularidad —12 300 de 1 389 941 registros entre enero de 2022 y septiembre de 2026—. Esa marca la pone, en el momento de la lectura, el personal terciarizado que recorre los domicilios con equipos móviles de lecturación. El bloque sin marca representa el 99,12 % del volumen facturable y nadie lo barre: no existe ningún proceso que recorra el histórico para identificar lecturas cuyo consumo sea incoherente y que no fueron marcadas.
 
 Existe una segunda capa, y conviene describirla con precisión porque es la que el método formaliza. Antes de facturar, el encargado de facturación revisa los consumos calculados y, cuando detecta una anomalía, solicita una visita al domicilio; el personal técnico toma la evidencia fotográfica del medidor y el encargado corrige la lectura. Ese paso **ya es una detección de anomalías**, pero no está escrito en ningún documento, no tiene umbral numérico y depende de la atención de una sola persona: se limita a juzgar si el consumo del mes difiere del histórico de los últimos seis meses, en sentido superior —estufas en invierno, aire acondicionado en verano— o inferior —viajes, vacaciones—. Si esa persona no revisa, no se detecta nada. El resultado son **242,2 correcciones manuales por mes en 2026**, sin registro de por qué se marcó ni de por qué se descartó una lectura.
 
@@ -23,7 +24,7 @@ La corrección deja rastro en el log del sistema, pero **no hay un reporte acces
 
 Cada alerta que el encargado de facturación acepta termina en una visita al domicilio: el costo de una falsa alarma no es una revisión de pantalla, es un **desplazamiento**. Sobre las 242,2 correcciones mensuales y 22 días hábiles equivalen unas 11 visitas diarias, cifra que ya constituye la capacidad efectiva del equipo técnico y que fija el techo que el volumen de alertas del método no debe exceder. La evidencia fotográfica que respalda cada corrección se conserva en la computadora del encargado de facturación, fuera del sistema y sin enlace con la lectura que corrigió: queda guardada, pero no se audita desde el sistema ni puede consultarse junto al registro.
 
-La evidencia del costo está en el ciclo de reclamos. La Oficina del Consumidor (ODECO) tramitó 314 reclamos en 21 meses, de los cuales 62 resultaron procedentes; 46 de esos 62 —el 74,19 %— provinieron de lecturas sin código de irregularidad, de modo que la anomalía no fue advertida por el proceso de lecturación sino reclamada por el usuario **después** de facturar, con plazos perentorios de 3 a 15 días hábiles y silencio administrativo positivo a favor del consumidor cuando la empresa no contesta. Verificar un caso cuesta entre 3 y 4 horas y, cuando exige visita del lecturador con respaldo fotográfico, 2 días. Adicionalmente, 252 de los 314 reclamos (80,25 %) resultaron improcedentes y consumieron la misma inspección técnica que los procedentes.
+La evidencia del costo está en el ciclo de reclamos. La Oficina del Consumidor (ODECO) tramitó 1 053 reclamos en 57 meses, de los cuales 174 resultaron procedentes; 136 de esos 174 —el 78,16 %— provinieron de lecturas sin código de irregularidad, de modo que la anomalía no fue advertida por el proceso de lecturación sino reclamada por el usuario **después** de facturar, con plazos perentorios de 3 a 15 días hábiles y silencio administrativo positivo a favor del consumidor cuando la empresa no contesta. Verificar un caso cuesta entre 3 y 4 horas y, cuando exige visita del lecturador con respaldo fotográfico, 2 días. Adicionalmente, 879 de los 1 053 reclamos (83,48 %) resultaron improcedentes y consumieron la misma inspección técnica que los procedentes.
 
 Se requiere construir un método que barra el histórico, priorice las lecturas sospechosas y las derive a verificación dentro de la cadena vigente, reduciendo la dependencia de la detección reactiva.
 
@@ -33,36 +34,39 @@ Se requiere construir un método que barra el histórico, priorice las lecturas 
 
 La literatura sobre detección de anomalías en consumo eléctrico se apoya en series de consumo y, en los estudios de fraude, en etiquetas de casos confirmados. No hay, hasta donde se pudo indagar, evidencia sobre cómo un método que barre el histórico completo —incluidas las lecturas que el lecturador no marcó— se integra a un ciclo de lecturación-facturación sujeto al catálogo de códigos de un ente regulador, ni bajo qué criterios los verificadores de una distribuidora lo consideran utilizable cuando revisar un caso cuesta entre 3 y 4 horas. Este estudio genera esa evidencia.
 
-*[Sustento: `05_estado_del_arte.md` §8. **Afirmación provisional** — búsqueda preliminar por Crossref el 2 oct 2026, sin IEEE Xplore ni SciELO/LILACS. **Se amplía el 3 y 4 de octubre** a esas dos bases —IEEE Xplore sobre metadatos y resúmenes, sin acceso institucional (DEC-1/DEC-6/DEC-7)— con cuenta de registros identificados, eliminados e incluidos, y entonces se confirma, amplía o retira (E5-3). Los artefactos comerciales y de código abierto quedan **fuera del alcance de esta versión** (DEC-2); Scopus y Web of Science **fuera de alcance** (DEC-8).]*
+*[Sustento: `05_estado_del_arte.md` §8. **Afirmación cerrada el 7 oct 2026 (E5-3 → DEC-35, opción *ampliar*)** — búsqueda preliminar por Crossref el 2 oct 2026, **ampliada el 5 oct 2026 con cuenta de registros: DEC-14, DEC-15 y DEC-16 → 448 identificados = 389 eliminados + 59 incluidos → 54 trabajos distintos, volcados en §2.4 de ese documento** —IEEE Xplore sobre metadatos y resúmenes, sin acceso institucional (DEC-6; la consulta se resolvió en DEC-20)—. Los artefactos comerciales y de código abierto quedan **fuera del alcance de esta versión** (DEC-2); Scopus y Web of Science **fuera de alcance** (DEC-8).]*
 
 ### 2.3 Evidencia disponible de que el problema existe
 
-Fuente: extracción real de FACTUR sobre la regional de **29 750 cuentas** (dato exacto al cierre de septiembre de 2026), gestiones 2025 y 2026, 21 meses. Todos los porcentajes verificados aritméticamente contra el archivo. **El histórico en `tfv_historico_lecturador` llega hasta 2022** —57 meses y cuatro ciclos anuales completos—; la extracción empleada aquí cubre 21 y se ampliará antes de la construcción, porque de esa amplitud depende el tratamiento de estacionalidad y el volumen de casos disponibles para la evaluación.
+Fuente: extracción real de FACTUR sobre la regional de **29 750 cuentas** (dato exacto al cierre de septiembre de 2026), **enero de 2022 a septiembre de 2026 — 57 meses y cuatro ciclos anuales completos**. Todos los porcentajes verificados aritméticamente contra el archivo, y la extracción reproduce **exactamente** las nueve cifras de la extracción corta de 21 meses (314 · 62 · 46 · 19,75 % · 74,19 % · 526 730 · 5 528 · 532 258 · 98,96 %), de modo que son la misma fuente y esta solo amplía el alcance de aquella. **Los agregados ya llegan a 2022**; lo que falta es el nivel de registro —cuenta, id y código de irregularidad—, sin el cual no hay panel de consumo por cuenta y mes ni detección posible (A2.1–A2.3).
 
 | Evidencia | Valor | Fuente |
 |:--|:--|:--|
-| Reclamos tramitados ante la ODECO | 314 en 21 meses (≈ 15/mes) | `DATOS.xlsx`, Tabla 1 |
-| Reclamos **procedentes** | 62 (19,75 % del total) | Tabla 1 |
-| Procedentes originados en lecturas **sin** código | 46 de 62 → **74,19 %** | Tabla 1 |
-| Procedentes originados en lecturas **con** código | 16 de 62, siendo ese tipo solo el **1,04 %** del facturable → tasa **33 veces mayor** por lectura | Tabla 1 + Tabla 3 |
-| Reclamos **improcedentes** | 252 (80,25 %), con la misma carga de inspección de 3 a 15 días hábiles | Tabla 1 |
-| Lecturas sin código sobre el volumen facturable | 526 730 de 532 258 → **98,96 %** | Tabla 3 |
-| Correcciones manuales previas a la facturación, sin reporte accesible | **242,2 por mes** en 2026; 295 en jun–dic 2025; 1 507 antes de jun–2025. Naturaleza: **lectura mal tomada**. El cambio queda en el log, pero **no hay reporte de fecha ni de justificación** | Tabla 2; naturaleza y trazabilidad declaradas por la tesista |
-| Efecto de las capacitaciones al personal (mayo–junio 2025) | Caída de **80 %** (1 507 → 295); residual 242,2 en 2026. Aplicadas al personal **terciarizado** que registra las lecturas | Caída confirmada en Tabla 2; causa y fechas declaradas |
+| Reclamos tramitados ante la ODECO | **1 053 en 57 meses** (≈ 18,5/mes) | `DATOS desde 2022.xlsx`, hoja `reclamos` |
+| Reclamos **procedentes** | **174 (16,52 % del total)** | Hoja `reclamos`, `sw_procendente` = 1 |
+| Procedentes originados en lecturas **sin** código | **136 de 174 → 78,16 %** | Hoja `reclamos` |
+| Procedentes originados en lecturas **con** código | **38 de 174**, siendo ese tipo solo el **0,88 %** del facturable → tasa **31 veces mayor** por lectura (308,94 frente a 9,87 por 100 000) | Hoja `reclamos` + hoja `tipo_lectura` |
+| Reclamos **improcedentes** | **879 (83,48 %)**, con la misma carga de inspección de 3 a 15 días hábiles | Hoja `reclamos`, `sw_procendente` = 2 y 4 |
+| Lecturas sin código sobre el volumen facturable | **1 377 641 de 1 389 941 → 99,12 %** | Hoja `tipo_lectura`, tipo 1 sobre (1+2+3) |
+| Lecturas no facturables (tipo 0, LC) | **177 784 = 11,34 %** del total de lecturas; fuera del universo facturable | Hoja `tipo_lectura` |
+| **Uso del código de irregularidad, por periodo** | 2022–2024 (36 meses): 6 772/857 683 = **0,79 %** · 2025–2026 (21 meses): 5 528/532 258 = **1,04 %** · 57 meses: 12 300/1 389 941 = **0,88 %** | Hoja `tipo_lectura`, tipos 2 y 3 sobre (1 + 2 + 3) |
+| Correcciones manuales previas a la facturación, sin reporte accesible | **242,2 por mes** en 2026; 295 en jun–dic 2025; 1 507 antes de jun–2025; **800,3 de media anual en 2025**. Naturaleza: **lectura mal tomada**. El cambio queda en el log, pero **no hay reporte de fecha ni de justificación** | Hoja `historico`, `lecturas_diferentes`; naturaleza y trazabilidad declaradas por la tesista |
+| **Serie completa de correcciones** | 2022: **709,1**/mes · 2023: **852,5** · 2024: **1 454,9** · 2025: **800,3** · 2026: **242,2**. Sobre lecturas: 3,05 % · 3,46 % · **5,62 %** · 2,81 % · **0,82 %** | Hoja `historico`, 57 meses |
+| Efecto de las capacitaciones al personal (mayo–junio 2025) | Caída de **80 %** (1 507 → 295); residual 242,2 en 2026. Aplicadas al personal **terciarizado** que registra las lecturas | Hoja `historico`; causa y fechas declaradas |
 | Evidencia fotográfica de la corrección | Se obtiene en visita al domicilio; se conserva en la **computadora del encargado**, fuera del sistema y sin enlace a la lectura corregida | Declaración de la tesista (2 oct 2026) |
 | **Regla de detección vigente** | Desviación frente a los **últimos 6 meses**, en **ambas direcciones**; **sin umbral numérico ni registro** de la decisión | Declaración de la tesista (2 oct 2026) |
-| Capacidad del equipo técnico | ≈ **11 visitas diarias** (242,2 correcciones ÷ 22 días hábiles); cada alerta aceptada termina en desplazamiento | Cálculo propio sobre Tabla 2 |
+| Capacidad del equipo técnico | ≈ **11 visitas diarias** (242,2 correcciones ÷ 22 días hábiles); cada alerta aceptada termina en desplazamiento | Cálculo propio sobre la hoja `historico` |
 | Tiempo de verificación de un caso | 3 a 4 horas; 2 días con visita. **Promedio en consulta con el personal** | Práctica operativa (estimado, pendiente de promedio) |
 | Facturas observadas y energía no facturada | Sin cifras disponibles | Vacío declarado |
-| **Antigüedad del histórico de lecturas** | **Desde 2022** (57 meses, 4 ciclos anuales completos); la extracción usada aquí cubre 21 | Declaración de la tesista, 2 oct 2026 |
+| **Antigüedad del histórico de lecturas** | **Desde 2022** — 57 meses y 4 ciclos anuales completos, **ya extraídos** | Hoja `historico` de `DATOS desde 2022.xlsx` |
 
-**Lectura del dato.** Auditar únicamente las lecturas con código habría alcanzado como máximo 16 de los 62 reclamos procedentes y se habría quedado sin detectar 46; pero esas mismas lecturas con código presentan 33 veces la tasa de procedencia por lectura. En consecuencia, el método debe barrer el conjunto completo **y** usar la familia de código como variable de priorización: el código no es el ámbito de trabajo, es la señal de riesgo.
+**Lectura del dato.** Auditar únicamente las lecturas con código habría alcanzado como máximo 38 de los 174 reclamos procedentes y se habría quedado sin detectar 136; pero esas mismas lecturas con código presentan 31 veces la tasa de procedencia por lectura. En consecuencia, el método debe barrer el conjunto completo **y** usar la familia de código como variable de priorización: el código no es el ámbito de trabajo, es la señal de riesgo.
 
-**Segundo frente del problema.** Cuatro de cada cinco reclamos se resuelven en contra del usuario pero consumen la misma inspección técnica que los procedentes. El método no solo debe encontrar lo que no se marcó: puede dar al verificador evidencia para resolver improcedentes sin desplazamiento.
+**Segundo frente del problema.** 83,48 % de los reclamos se resuelven en contra del usuario pero consumen la misma inspección técnica que los procedentes. El método no solo debe encontrar lo que no se marcó: puede dar al verificador evidencia para resolver improcedentes sin desplazamiento.
 
 **Proceso existente que el método formaliza.** Se corrigen a mano un promedio de 242,2 lecturas por mes antes de facturar, con el fin de evitar reclamos. El cambio **queda en el log del sistema**, pero no existe un reporte accesible que muestre fecha y lectura nueva, ni constancia del criterio ni de la evidencia que lo justificó: hoy solo se observa la lectura ya corregida y facturada, y reconstruir la corrección exige comparar contra el histórico de lecturas del lecturador. Ese proceso es la línea base de carga y el límite de capacidad que el criterio de éxito n.º 3 respetará. La capacitación al personal —la otra medida vigente— reduce la frecuencia de los errores pero no prioriza ni barre el histórico; el método debe presentarse como complemento suyo, no como sustituto.
 
-*[Pendiente: promedio de tiempo por corrección manual, desglosado por rama; visitas que no terminan en corrección (tasa de falsos positivos actual); conciliación de totales entre Tabla 2 y Tabla 3; antigüedad real de `tfv_historico_lecturador`. Ver `06_diagnostico.md`.]*
+*[Pendiente: promedio de tiempo por corrección manual, desglosado por rama; visitas que no terminan en corrección (tasa de falsos positivos actual); **conciliación de totales entre las hojas `historico` y `tipo_lectura`** (27 370 frente a 28 355 en enero de 2025); significado de `fecha_odeco`. ~~Antigüedad de `tfv_historico_lecturador`~~ **resuelta: 57 meses, ene 2022 – sep 2026.** Ver `06_diagnostico.md`.]*
 
 ## 3. Objetivos
 
@@ -118,7 +122,7 @@ Documento completo: `04_marco_teorico.md` (E4, cerrada el 2 de octubre de 2026).
 
 **Definición operativa adoptada:** *lectura cuyo consumo registrado difiere, en sentido superior o inferior, de lo esperable para esa cuenta y ese momento del ciclo, según un criterio escrito y reproducible, y que no lleva código de irregularidad en el momento de la lectura.* Tres condiciones la hacen verificable por alguien ajeno al estudio: criterio escrito —la regla vigente carece de umbral numérico y de registro—, ambas direcciones, y ausencia de marca previa.
 
-**Etiquetas escasas.** Chandola et al. (2009) distinguen métodos supervisados, que exigen etiquetas, de no supervisados, que modelan la normalidad. Aquí las etiquetas positivas son **62 reclamos procedentes en 21 meses** (`DATOS.xlsx`, Tabla 1), y además **no son detecciones sino quejas de usuarios posteriores a la facturación**. Este marco **no elige la técnica** —eso es de E7a—, pero constriñe el espacio de opciones: cualquier alternativa que exija un corpus amplio de casos etiquetados parte con una desventaja documentada.
+**Etiquetas escasas.** Chandola et al. (2009) distinguen métodos supervisados, que exigen etiquetas, de no supervisados, que modelan la normalidad. Aquí las etiquetas positivas son **174 reclamos procedentes en 57 meses** (`DATOS desde 2022.xlsx`, hoja `reclamos`), y además **no son detecciones sino quejas de usuarios posteriores a la facturación**. Este marco **no elige la técnica** —eso es de E7a—, pero constriñe el espacio de opciones: cualquier alternativa que exija un corpus amplio de casos etiquetados parte con una desventaja documentada.
 
 **Métrica.** Saito y Rehmsmeier (2015) demuestran que, ante datos desequilibrados, **la gráfica precisión-exhaustividad es más informativa que la curva ROC**. De ahí que los criterios de éxito n.º 1 y 2 sean cobertura y falsos positivos y **quede descartada la exactitud (accuracy)** como criterio: en este conjunto sería engañosa.
 
@@ -130,7 +134,7 @@ Documento completo: `04_marco_teorico.md` (E4, cerrada el 2 de octubre de 2026).
 
 ### 8.3 Perfil de consumo y estacionalidad
 
-Piscitelli et al. (2026) procesan el perfilado de carga como paso previo a la detección a nivel de medidor: **el perfil precede a la detección**. En estacionalidad, la consecuencia es lógica antes que bibliográfica: la regla vigente compara el mes contra los **seis meses anteriores**, ventana que **no incluye el mismo mes del año anterior**, de modo que un ciclo anual completo queda fuera de la comparación. La solución es empírica —**el histórico llega a 2022: 57 meses y cuatro ciclos anuales completos** (declaración de la tesista, 2 oct 2026)— y su consecuencia operativa es la ampliación de la extracción (A2.1–A2.4) antes de construir.
+Piscitelli et al. (2026) procesan el perfilado de carga como paso previo a la detección a nivel de medidor: **el perfil precede a la detección**. En estacionalidad, la consecuencia es lógica antes que bibliográfica: la regla vigente compara el mes contra los **seis meses anteriores**, ventana que **no incluye el mismo mes del año anterior**, de modo que un ciclo anual completo queda fuera de la comparación. La solución es empírica —**el histórico ya se extrajo hasta 2022: 57 meses y cuatro ciclos anuales completos** (`DATOS desde 2022.xlsx`, hoja `historico`, recibido el 5 oct 2026)— y su consecuencia operativa es que **los agregados ya cubren el periodo completo**, mientras sigue pendiente el nivel de registro (A2.1–A2.3), que es lo que falta para barrer cuenta por cuenta.
 
 ### 8.4 El entorno regulado como fuente de requisitos
 
@@ -151,19 +155,19 @@ Piscitelli et al. (2026) procesan el perfilado de carga como paso previo a la de
 |:--|:--|:--|
 | Técnica de detección | **E7a** | Debe comparar alternativas con trade-offs explícitos y ponderar la escasez de etiquetas |
 | Valor numérico del umbral | **E7b** | Escrito y reproducible; limitado por volumen de alertas |
-| Tratamiento de estacionalidad | **E7c** | Exige ≥4 ciclos anuales: la extracción ampliada |
+| Tratamiento de estacionalidad | **E7c** | Exige ≥4 ciclos anuales: **ya disponibles — 57 meses extraídos (A2.4)** |
 | Valores numéricos de los criterios de éxito | **E6 y E7b** | Se fijan **antes** de construir; métricas precisión-exhaustividad |
 | Comparación con la capacitación de mayo–junio de 2025 | **E7a** | Es la alternativa existente, no la inacción |
 
 ## 9. Estado del arte
 
-Documento completo: `05_estado_del_arte.md` (E5, cerrada el 2 de octubre de 2026). **Advertencia de alcance:** es una búsqueda preliminar, no una revisión sistemática; las afirmaciones de brecha son **provisionales**.
+Documento completo: `05_estado_del_arte.md` (E5, cerrada el 2 de octubre de 2026). **Advertencia de alcance:** no es una revisión sistemática —no hubo doble criba independiente, con una sola revisora, ni conteos de flujo—. **La afirmación de brecha de §9.5 dejó de ser provisional el 7 de octubre de 2026 (E5-3 → DEC-35).**
 
 ### 9.1 Protocolo — versión 1
 
 | Elemento | Descripción |
 |:--|:--|
-| Base | Crossref (API pública), 2 oct 2026. **Ampliación 3–4 oct:** IEEE Xplore (metadatos y resúmenes, sin acceso institucional) + SciELO + LILACS |
+| Base | Crossref (API pública), 2 oct 2026. **Ampliación ejecutada el 5 oct 2026 con DEC-14, en OpenAlex y DOAJ, con cuenta de registros.** SciELO, IEEE Xplore y BVS **no fueron consultables** (DEC-20); IEEE se intentó sobre metadatos y resúmenes públicos, sin acceso institucional |
 | Consultas | Búsqueda bibliográfica por cadena con orden por relevancia + resolución directa por DOI |
 | Filtros | Artículos de revista; desde 2015 salvo trabajos canónicos |
 | Cadenas | `non-technical losses detection electricity distribution review` · `electricity theft detection smart meter machine learning unsupervised` · `smart meter data anomaly detection review energy consumption` · `regulation incentives non-technical losses distribution utility tariff auditing` · `electricity distribution consumer complaints ombudsman regulation service quality` |
@@ -171,7 +175,7 @@ Documento completo: `05_estado_del_arte.md` (E5, cerrada el 2 de octubre de 2026
 | Exclusión | Editoriales sin revisión por pares; actas de divulgación; metadatos incompletos; resultados sin relación |
 | Corpus incorporado | **15 trabajos** (6 del eléctrico como fenómeno y 9 de detección e inspección), más los 7 de Design Science de §8 → **22 entradas** |
 
-**No se hizo todavía, y así se decide:** consulta a **IEEE Xplore y SciELO/LILACS**, **programada para el 3 y 4 de octubre de 2026**, con cuenta de registros identificados, eliminados e incluidos. **IEEE Xplore se consultará sobre metadatos y resúmenes públicos**, por no haber acceso institucional: es una **limitación del protocolo**, no un detalle operativo, y condiciona qué se pudo leer de cada registro. **Scopus y Web of Science quedan fuera del alcance de este ciclo.** Tampoco se aplicó doble criba independiente —limitación declarada, con una sola revisora— ni se calcularon conteos de flujo, que dependen de esa ampliación. **Los artefactos comerciales y de código abierto se difieren a después de la defensa de propuesta (DEC-2)** y quedan **fuera del alcance de esta versión**, no como pendiente dentro de él. **En consecuencia, la ausencia de trabajos bolivianos o del marco AETN es un vacío de búsqueda, no una constatación.**
+**Estado de la ampliación, actualizado el 7 de octubre de 2026.** La ampliación **se repitió el 5 de octubre con cuenta de registros (DEC-14)** — **58 identificados = 26 eliminados + 32 incluidos → 28 trabajos distintos**—, y se corrió en **OpenAlex y DOAJ** porque SciELO, IEEE Xplore y BVS **no fueron consultables** (DEC-20): **0 extraídos, no 0 existentes**, y esa es una **limitación de acceso declarada**, no un detalle operativo. **Scopus y Web of Science quedan fuera del alcance de esta versión.** Tampoco se aplicó doble criba independiente —limitación declarada, con una sola revisora— ni se calcularon conteos de flujo: **sigue siendo una limitación vigente y declarada.** **Los artefactos comerciales y de código abierto se difieren a después de la defensa de propuesta (DEC-2)** y quedan **fuera del alcance de esta versión**, no como pendiente dentro de él. **La ausencia de trabajos bolivianos o del marco AETN es un vacío de búsqueda confirmado con método reproducible, no una constatación de inexistencia** — DEC-14 no encontró ninguna distribuidora boliviana entre los 32 incluidos—. **La brecha de §9.5 quedó cerrada el 7 de octubre de 2026 (DEC-35).**
 
 ### 9.2 Corpus verificado — cuatro ejes
 
@@ -197,20 +201,22 @@ Documento completo: `05_estado_del_arte.md` (E5, cerrada el 2 de octubre de 2026
 | Dimensión | Soluciones existentes | Exigencia de este problema |
 |:--|:--|:--|
 | Origen del dato | Medidor inteligente de alta frecuencia (AMI) | Lectura **mensual** tabular |
-| Etiqueta | Casos confirmados de fraude, o ausencia de etiquetas | 62 reclamos procedentes en 21 meses, posteriores a la facturación |
+| Etiqueta | Casos confirmados de fraude, o ausencia de etiquetas | 174 reclamos procedentes en 57 meses, posteriores a la facturación |
 | Objetivo | Detectar robo, fraude o pérdida no técnica | Detectar **lectura anómala no declarada**, incluida la lectura mal tomada |
-| Universo | Cuenta contra red, sin marca previa | **98,96 %** sin código y **1,04 %** con código, en el mismo barrido |
+| Universo | Cuenta contra red, sin marca previa | **99,12 %** sin código y **0,88 %** con código, en el mismo barrido |
 | Salida | Puntuación o clasificación binaria | **Lista priorizada con techo de volumen**: ≈11 visitas diarias, cada alerta acatada es un desplazamiento |
 | Explicación | Campo en expansión, no universal | **Obligatoria**: sin la comparación que originó la alerta, el verificador no puede resolver |
 | Integración | El modelo es el final del artículo | El artefacto **es el proceso**: pasos, roles, criterios, registro |
 | Evaluación | Exactitud, F1, AUC | Aplicabilidad con verificadores ajenos + efectividad retrospectiva + carga dentro de capacidad |
 | Punto de comparación | Ausente | La **capacitación de mayo–junio de 2025**, que ya redujo el volumen un 80 % |
 
-### 9.5 Brecha identificada — formulación provisional
+### 9.5 Brecha identificada
 
-> **Provisional.** Fundada en la búsqueda preliminar de §9.1. Se sostiene hasta ejecutar la ampliación del **3–4 de octubre**; entonces se confirmará, ampliará o retirará (E5-3).
+> **Cerrada el 7 de octubre de 2026 — E5-3, opción *ampliar* (DEC-35).** Fundada en la búsqueda preliminar de Crossref del 2 de octubre de 2026 y **ampliada con las tres corridas del 5 de octubre, con cuenta de registros: DEC-14, DEC-15 y DEC-16 → 448 identificados = 389 eliminados + 59 incluidos → 54 trabajos distintos** (`05_estado_del_arte.md` §2.4). **Se amplía, no se confirma ni se retira.** El desarrollo completo está en `05_estado_del_arte.md` §8.
 
-La literatura ha resuelto **cómo puntuar una lectura** y ha reconocido **que inspeccionar exige priorizar**. No se localizó, en esta pasada, trabajo que documente **cómo convertir esa puntuación en una decisión operativa dentro de un ciclo de lecturación-facturación sujeto a un catálogo regulatorio de irregularidades**, cuando concurren cuatro condiciones medidas aquí: (1) etiquetas escasas y retardadas; (2) coste de la alerta no recuperable, porque cada alerta acatada consume una visita; (3) una alternativa vigente ya eficaz —la capacitación de 2025—, de modo que el problema real es el **residual** y no la inacción; (4) un universo segmentado por el regulador en el que el 98,96 % circula sin código y ningún proceso lo barre.
+La literatura ha resuelto **cómo puntuar una lectura** y ha reconocido **que inspeccionar exige priorizar**. No se localizó trabajo que documente **cómo convertir esa puntuación en una decisión operativa dentro de un ciclo de lecturación-facturación sujeto a un catálogo regulatorio de irregularidades**, cuando concurren cuatro condiciones medidas aquí: (1) etiquetas escasas y retardadas; (2) coste de la alerta no recuperable, porque cada alerta acatada consume una visita; (3) una alternativa vigente ya eficaz —la capacitación de 2025—, de modo que el problema real es el **residual** y no la inacción; (4) un universo segmentado por el regulador en el que el 99,12 % circula sin código y ningún proceso lo barre.
+
+**En qué se amplía respecto del 2 de octubre.** La afirmación deja de ser un no-hallazgo y pasa a **diferencia de enfoque demostrada**: **(a)** los **20 trabajos en inglés** sobre error de lectura del medidor lo tratan como **problema metrológico** —interferencia electromagnética, armónicas, mecanismo de conteo, es decir *cómo el medidor mide mal*— y **ninguno como problema de proceso**, es decir *qué hace la organización cuando la lectura sale mal*; **(b)** **«lectura mal tomada» no es una categoría de la literatura consultada** —DEC-16: 21 trabajos distintos incluidos y **0 en español sobre 164 registros cribados**—; **(c)** **tampoco es objeto de auditoría ni de control interno** —DEC-15: 5 incluidos, **ninguno sobre pérdidas no técnicas**, con la cadena `control interno auditoría…` en **0 de 20** y seis fuentes institucionales no consultables (DEC-23), **0 extraídos y no 0 existentes**. **Lo que falta no es literatura sobre detección —de eso hay—, ni sobre errores de lectura del medidor —también hay—, sino sobre la conversión de una señal en una decisión dentro de un ciclo regulado**, que es exactamente el hueco que este método ocupa.
 
 **Aporte de esta propuesta, en una frase.** No un detector nuevo, sino la **formalización como método** —pasos, roles, criterio escrito, techo de capacidad y registro de resolución— de una detección que hoy existe informalmente en una sola persona, y los **principios de diseño** que de su aplicación se desprenden para una distribuidora regulada por la AETN.
 
@@ -220,11 +226,11 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 
 | Búsqueda sin resultado | Interpretación | Acción |
 |:--|:--|:--|
-| Auditoría y control interno en distribuidoras reguladas | Cadena sin retorno útil | Retirado del marco teórico (§8.5); queda como condición de contorno empírica. **Una búsqueda complementaria (DEC-3)** en bases de regulación y política energética **el 3–4 de octubre**: si no hay fuente, se cierra por decisión explícita |
-| Atención de reclamos ante entes reguladores | Mismos resultados no pertinentes | **Misma búsqueda complementaria** que la fila anterior: bases de regulación y política energética |
-| Distribuidoras bolivianas o marco AETN | **Vacío de búsqueda**: no se consultaron SciELO ni LILACS | **Ampliación 3–4 oct:** IEEE Xplore (metadatos y resúmenes) + SciELO/LILACS, con conteo de registros identificados, eliminados e incluidos |
+| Auditoría y control interno en distribuidoras reguladas | **Repetida el 5 oct 2026 (DEC-15).** Control académico en Crossref: **60 identificados = 55 eliminados + 5 incluidos, ninguno sobre auditoría de pérdidas no técnicas**; la cadena `control interno auditoría…` → **0 de 20**. **Las seis fuentes institucionales no se pudieron buscar** (DEC-23): 0 extraídos, **no 0 existentes** | **CERRADA el 7 oct 2026 — DEC-34 (E4-5, opción A):** el tema queda **fuera del marco teórico** y pasa a condición de contorno documentada en E2 y E6. **No se afirma que no exista: se afirma que lo académico no rindió fuente y que lo institucional no se pudo consultar** |
+| Atención de reclamos ante entes reguladores | **No corrió en DEC-15** —las seis fuentes institucionales fueron las que no devolvieron lectura— | Queda pendiente; **no bloquea E5** |
+| Distribuidoras bolivianas o marco AETN | **Repetida el 5 oct 2026 (DEC-14), con cuenta de registros:** 58 identificados → 32 incluidos → **28 trabajos distintos**. **Ninguno es de distribuidora boliviana** | **Vacío de búsqueda confirmado** con método reproducible |
 | Artefactos comerciales y de código abierto | **No se buscó**; requiere método distinto al bibliográfico | **Diferido a después de la defensa de propuesta** (decisión del asesor, 2 oct 2026): **fuera del alcance de esta versión** |
-| "Lectura mal tomada" como categoría de anomalía | No localizado | Es la categoría central del estudio; verificar con búsqueda ampliada |
+| "Lectura mal tomada" como categoría de anomalía | **Buscada el 5 oct 2026 (DEC-16), español e inglés, dos índices: 330 identificados → 21 trabajos distintos incluidos, de los cuales 0 corresponden a los 164 registros cribados en español** | **El vacío dejó de ser vacío de búsqueda y pasó a constatación** → **§9.5 REFORMULADO el 7 oct 2026 (E5-3 → DEC-35)** |
 
 ### 9.7 Consecuencia para las etapas siguientes
 
@@ -232,7 +238,7 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 |:--|:--|
 | **E7a** | Espacio de opciones constreñido por el dato mensual y la escasez de etiquetas; priorización bajo capacidad obligatoria; comparación **contra la capacitación de 2025** |
 | **E7b** | Cinco exigencias convertidas en requisitos verificables: criterio escrito, ambas direcciones, techo de volumen, explicación obligatoria, registro de resolución |
-| **E7c** | Segmentación por perfil previa a la detección; estacionalidad anual sostenida por los 57 meses — **exige ejecutar antes la extracción ampliada** |
+| **E7c** | Segmentación por perfil previa a la detección; estacionalidad anual sostenida por los 57 meses — **agregados ya extraídos (A2.4); pendiente A2.1–A2.3, sin lo cual no hay barrido por cuenta** |
 | **E8** | Métricas precisión-exhaustividad; evaluación retrospectiva conservadora; dos ciclos con rediseño |
 | **E9 / E10** | Principios con objetivo → contexto → mecanismo → principio y condiciones de contorno explícitas |
 
@@ -256,7 +262,7 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 | Periodo | Actividades | Etapas |
 |:--|:--|:--|
 | 26 sep – 5 oct | Delimitación, perfil, marco teórico, estado del arte y **primer borrador de propuesta** | E2–E5, este documento |
-| 6 – 12 oct | **Ejecución de la extracción ampliada a 2022** (A2.1–A2.4); resolución de los huecos B1, B2 y B3; primera pasada de E6 | A2.1–A2.4, E6 |
+| 6 – 12 oct | ~~Ejecución de la extracción ampliada a 2022 (A2.1–A2.4)~~ **A2.4 ejecutado el 5 oct con `DATOS desde 2022.xlsx`; B1, B2 y B3 cerrados.** Pendientes **A2.1–A2.3** (nivel de registro) y la primera pasada de E6 | A2.1–A2.3, E6 |
 | 13 – 26 oct | Diagnóstico con indicadores; alternativas, requisitos y diseño | E6, E7a–E7c |
 | 27 – 31 oct | Plan de construcción, criterio de suficiencia; **propuesta completa** | E7d |
 | 1 – 8 nov | Construcción y verificación interna; ficha del artefacto | E7e, E7f |
@@ -336,8 +342,10 @@ Zhang, B., Lin, G., Zheng, K., & Du, J. (2026). Anomaly detection and data repai
 **Pendencias que quedan fuera de esta lista** y se siguen en `04_marco_teorico.md` §10:
 
 - **Hevner et al. (2004):** se conserva 75–105 **(DEC-5)**; Crossref reporta 75–106.
-- **Plantilla objetivo → contexto → mecanismo → principio:** `[por verificar]` el capítulo y la página de Wieringa (2014). Cuatro búsquedas el 2 oct 2026 no la localizaron; **consulta pendiente al tutor**. La plantilla se usa igualmente.
-- **Control interno y auditoría (DEC-3):** búsqueda complementaria en bases de regulación y política energética **el 3–4 de octubre**; si no hay fuente, queda fuera del marco por decisión explícita.
+- **Plantilla objetivo → contexto → mecanismo → principio:** `[por verificar]` el capítulo y la página de Wieringa (2014). Cuatro búsquedas el 2 oct 2026 no la localizaron; **consulta redactada el 5 oct y lista para enviar al tutor**. La plantilla se usa igualmente.
+- **Control interno y auditoría (DEC-3 → DEC-15):** **repetida el 5 de octubre de 2026 con cuenta de registros**: 60 identificados = 55 eliminados + 5 incluidos, **ninguno de los cinco sobre pérdidas no técnicas**, y la cadena `control interno auditoría…` en **0 de 20**. Las seis fuentes institucionales **no fueron consultables** (DEC-23): **0 extraídos, no 0 existentes**. **Queda fuera del marco teórico por decisión explícita — DEC-34 (E4-5, opción A), 7 oct 2026.**
+- **Ampliación del estado del arte (DEC-1 → DEC-14):** **repetida el 5 de octubre de 2026 con cuenta de registros** — 58 identificados = 26 eliminados + 32 incluidos → **28 trabajos distintos**. Se corrió en **OpenAlex y DOAJ** porque SciELO, IEEE Xplore y BVS **no fueron consultables** (DEC-20): se declara como **limitación de acceso**, no como ausencia. **Con esto la brecha de §9.5 quedó cerrada — DEC-35, 7 oct 2026.**
+- **«Lectura mal tomada» (E5-4):** **cerrada el 5 de octubre de 2026 (DEC-16)**, español e inglés, dos índices: **330 identificados = 308 eliminados + 22 incluidos → 21 trabajos distintos**, de los cuales **0 en español sobre 164 registros cribados**. **El vacío pasó a constatación.**
 - **Materiales internos `referencias/ds_ch*.md` (DEC-4):** **no se citan**; sus afirmaciones se sustituyeron por la fuente primaria correspondiente.
 
 ## 13. Anexo: artefacto previsto

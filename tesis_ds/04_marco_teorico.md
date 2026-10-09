@@ -138,7 +138,7 @@ Tres condiciones la hacen *operativa* —es decir, verificable por una persona q
 
 Chandola et al. (2009) distinguen los métodos **supervisados** —requieren datos etiquetados de anomalía y de normalidad— de los **no supervisados** —construyen un modelo de normalidad y marcan como anómalo lo que se desvía—, más una categoría intermedia.
 
-La restricción de este estudio es empírica y medida: **62 reclamos procedentes en 21 meses** (`DATOS.xlsx`, Tabla 1). Sobre un universo facturable de 532 258 registros (Tabla 3), las etiquetas positivas disponibles son extremadamente escasas y, además, **no son etiquetas de detección**: son el resultado de un reclamo del usuario que llegó *después* de facturar.
+La restricción de este estudio es empírica y medida: **174 reclamos procedentes en 57 meses** —136 de lecturas sin código, 78,16 %— sobre un universo facturable de **1 389 941 registros** (`DATOS desde 2022.xlsx`, ene 2022 – sep 2026). *Con la ventana corta de 21 meses la cifra era de 62 sobre 532 258 (`DATOS.xlsx`, Tabla 1 y Tabla 3), y el resultado se mantiene.* Sobre cualquiera de los dos denominadores, las etiquetas positivas disponibles son extremadamente escasas y, además, **no son etiquetas de detección**: son el resultado de un reclamo del usuario que llegó *después* de facturar.
 
 **Consecuencia para el diseño.** Este marco **no elige la técnica** —eso es de E7a—, pero **constriñe el espacio de opciones**: cualquier alternativa que exija un corpus amplio de casos etiquetados parte con una desventaja documentada, y la verdadera referencia de verdad de referencia tendrá que construirse en E8, no tomarse prestada.
 
@@ -207,11 +207,11 @@ Hevner (2007) ubica en el **ciclo de relevancia** el intercambio entre la invest
 
 ### 5.2 Parte de este eje se elimina
 
-El eje 3 estaba redactado en el borrador como *"auditoría, control interno y atención de reclamos bajo normativa del ente regulador"*. **Se buscó y no se localizó ninguna fuente verificable** sobre control interno, auditoría o atención de reclamos en servicios eléctricos regulados que cambiara el diseño del método (consulta a Crossref, 2 oct 2026; registro en `05_estado_del_arte.md`, sección 8).
+El eje 3 estaba redactado en el borrador como *"auditoría, control interno y atención de reclamos bajo normativa del ente regulador"*. **Se buscó y no se localizó ninguna fuente verificable** sobre control interno, auditoría o atención de reclamos en servicios eléctricos regulados que cambiara el diseño del método. **La búsqueda corrió dos veces y con cuenta de registros:** preliminar por Crossref el 2 de octubre de 2026, y **repetición el 5 de octubre (DEC-15): 60 identificados = 55 eliminados + 5 incluidos**, ninguno de los cinco sobre auditoría o control interno aplicado a pérdidas no técnicas —tres de tarifas y regulación, uno de control de pérdidas, uno de facturación prepago—, con la cadena `control interno auditoría…` en **0 de 20**. **Las seis fuentes institucionales, en cambio, no fueron ejecutables** (DEC-23): **0 extraídos, no 0 existentes**. Registro completo en `05_estado_del_arte.md` §2.4 y §9.
 
 Aplicando la prueba de eliminación declarada: **esa sección se retira del marco teórico**. Sus contenidos —que la corrección quede registrada, que haya constancia del criterio y de la evidencia, que exista un reporte accesible— **no desaparecen del estudio**: entran por el camino correcto, como **condiciones de contorno empíricas** documentadas en E2 y E6, y como requisitos de diseño en E7b.
 
-Queda pendiente `[por verificar]` **solo si** la búsqueda complementaria devuelve algo. E5 no localizó esa literatura (`05_estado_del_arte.md` §9). **Decisión del asesor, 2 oct 2026 (DEC-3):** se hará **una búsqueda complementaria en bases de regulación y política energética el 3–4 de octubre**; si tampoco devuelve fuente verificable, el tema queda fuera del marco teórico por decisión explícita y se deja constancia. **No se rellena con una fuente dudosa.**
+**Cerrado por decisión explícita el 7 de octubre de 2026 — DEC-34 (E4-5, opción A): la sección queda eliminada con la limitación escrita.** E5 no localizó esa literatura, la repetición de DEC-3 a través de DEC-15 corrió con cuenta de registros y no rindió fuente pertinente, y las seis fuentes institucionales **no pudieron consultarse** (DEC-23). **No se afirma que no exista: se afirma que no se pudo consultar.** En consecuencia el tema **pasa a condición de contorno empírica documentada en E2 y E6**, y este párrafo queda fijo: **si alguna de esas fuentes llega a ser consultable y devuelve algo que cambie el diseño del método, la sección vuelve y se actualiza la tabla de la sección 6**; mientras tanto, **no se rellena con una fuente dudosa**.
 
 ---
 
@@ -237,7 +237,7 @@ Queda pendiente `[por verificar]` **solo si** la búsqueda complementaria devuel
 | **Auditoría y control interno (5.2)** | **No: sus efectos entran por E2, E6 y E7b** | **Se elimina** del marco teórico |
 | Marco regulatorio boliviano (AETN, ODECO) como sección teórica | No: es contexto documentado en E2, no teoría | **Se elimina** del marco teórico |
 
-Dos secciones eliminadas de diecisiete. No es una reducción grande, pero es el resultado honesto de aplicar la prueba que el propio documento declara. La eliminación de *auditoría y control interno* queda **sujeta a la búsqueda complementaria** de la sección 10: si alguna fuente devuelve algo que cambie el diseño, la sección vuelve y se actualiza esta tabla.
+Dos secciones eliminadas de diecisiete. No es una reducción grande, pero es el resultado honesto de aplicar la prueba que el propio documento declara. **La eliminación de *auditoría y control interno* dejó de estar sujeta el 7 de octubre de 2026 (DEC-34, E4-5 opción A): la búsqueda complementaria corrió dos veces —2 de octubre y 5 de octubre con cuenta de registros (DEC-15)— y no rindió fuente pertinente, y las seis fuentes institucionales resultaron no consultables (DEC-23).** La tabla queda **definitiva**, con la salvedad de que **si alguna de esas fuentes llega a ser consultable y devuelve algo que cambie el diseño, la sección vuelve y se reescribe esta fila.**
 
 ---
 
@@ -303,7 +303,7 @@ Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica co
 
 **Materiales internos: no se citan.** Decisión del asesor del 2 de octubre de 2026. Los capítulos `referencias/ds_ch*.md` se usaron como fuente de trabajo, pero **no entran a la lista de referencias**; toda afirmación que parecía apoyarse en ellos quedó reatribuida a su fuente primaria o reformulada como criterio adoptado por este estudio. Donde no había fuente primaria verificable, se marcó `[por verificar]` —hoy un solo caso: la plantilla de §2.7.
 
-**Fuentes descartadas por no superar la verificación.** Buscaciones sobre auditoría, control interno y atención de reclamos ante entes reguladores devolvieron resultados sin relación con el problema (sección 5.2). **No se incorporaron.** Se hará una búsqueda complementaria en bases de regulación y política energética **el 3–4 de octubre de 2026** (DEC-3/DEC-7); si tampoco hay fuente, el tema queda fuera del marco teórico por decisión explícita.
+**Fuentes descartadas por no superar la verificación.** Buscaciones sobre auditoría, control interno y atención de reclamos ante entes reguladores devolvieron resultados sin relación con el problema (sección 5.2). **No se incorporaron.** **DEC-3 se intentó el 3–4 de octubre (DEC-13) sobre bases de regulación y política energética, pero no dejó registro de resultado: se repite en la ventana 6–12 de octubre.** En cuanto haya algo volcado: si hubo fuente, la sección de §5.2 vuelve y se rehace la tabla de §6; si no la hubo, el tema queda fuera del marco teórico **por decisión explícita**.
 
 ---
 
@@ -318,7 +318,7 @@ Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica co
 | 5 | No se deciden aquí las decisiones que corresponden a E6, E7a, E7b y E7c | **Cumple** (sección 8) |
 | 6 | Se identifica al menos una consecuencia verificable para E7a, E7b y E8 | **Cumple**: técnica constreñida por escasez de etiquetas; umbral escrito con techo de volumen; métricas precisión-exhaustividad |
 | 7 | El marco no contiene secciones decorativas | **Cumple**: dos eliminadas de diecisiete |
-| 8 | Las cifras citadas provienen de documentos ya cerrados, con su fuente declarada | **Cumple**: 62, 21, 532 258, 242,2, ≈11, 57, 4 — todas trazadas a `DATOS.xlsx` o a declaraciones registradas |
+| 8 | Las cifras citadas provienen de documentos ya cerrados, con su fuente declarada | **Cumple**: 174 · 57 · 1 389 941 · 136 · 78,16 % · 99,12 % · 0,88 % · (y, como ventana de referencia, 62 · 532 258 · 74,19 %) · 242,2 · ≈11 · 4 — todas trazadas a `DATOS desde 2022.xlsx`, `DATOS.xlsx` o a declaraciones registradas |
 
 **Gate de E4.**
 
@@ -327,7 +327,11 @@ Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica co
 - ~~Título y forma de citación del manuscrito `referencias/ds_ch*.md`~~ → **los materiales internos no se citan**; sus afirmaciones se sustituyeron por la fuente primaria o se reformularon como criterio de este estudio.
 - ~~Discrepancia de páginas de Hevner et al. (2004)~~ → **se conserva 75–105**; la nota se retiró del borrador.
 
-*Abiertos, antes de la propuesta completa:*
+*Resuelto el 7 de octubre de 2026:*
 
-1. **Confirmar el capítulo y la página de Wieringa (2014)** donde consta la plantilla objetivo → contexto → mecanismo → principio (§2.7). **Cuatro búsquedas en DuckDuckGo el 2 oct 2026 no la localizaron** y los PDF de Springer, de la Universidad de Twente y de GBV no se pudieron leer con las herramientas disponibles. **Confirmado: la tesista no tiene el libro → la consulta va al tutor**, que lo cita en su manuscrito. *Por enviar.* Hasta entonces la plantilla **se usa** pero la atribución queda marcada. **No bloquea la entrega del 5 de octubre.**
-2. **Búsqueda complementaria sobre control interno y auditoría** en bases de regulación y política energética. Si no devuelve fuente verificable, el tema queda fuera del marco teórico por decisión explícita y se deja constancia (§5.2).
+- ~~**Búsqueda complementaria sobre control interno y auditoría (DEC-3)**~~ → **CERRADA por DEC-34 (E4-5, opción A).** Se repitió una sola vez, el 5 de octubre de 2026 con DEC-15, y con cuenta de registros: **60 identificados = 55 eliminados + 5 incluidos**, ninguno de los cinco pertinente, y `control interno auditoría…` en **0 de 20**. Las seis fuentes institucionales **no fueron consultables** (DEC-23): **0 extraídos, no 0 existentes**. **El tema queda fuera del marco teórico por decisión explícita**, con constancia en §5.2, y la tabla de la sección 6 queda **definitiva**.
+
+*Abierto, antes de la propuesta completa:*
+
+1. **Confirmar el capítulo y la página de Wieringa (2014)** donde consta la plantilla objetivo → contexto → mecanismo → principio (§2.7). **Cuatro búsquedas en DuckDuckGo el 2 oct 2026 no la localizaron** y los PDF de Springer, de la Universidad de Twente y de GBV no se pudieron leer con las herramientas disponibles. **Confirmado: la tesista no tiene el libro → la consulta va al tutor**, que lo cita en su manuscrito. *Consulta **redactada el 5 oct 2026, lista para enviar** (DEC-12; texto en `00_estado.md`).* Hasta entonces la plantilla **se usa** pero la atribución queda marcada. **No bloquea la entrega del 5 de octubre.**
+
