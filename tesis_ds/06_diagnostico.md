@@ -245,11 +245,105 @@ Sustituto verificado: el archivo consolidado registra para agosto de 2026 un tot
 ## Vacíos que restan para cerrar E6
 
 1. **Ejecutar la extracción ampliada a enero de 2022** (57 meses, cuatro ciclos anuales completos). *Confirmado el 2 oct 2026:* reclamos y correcciones llegan a 2022, mismo esquema, extracción viable. Especificación A2.1–A2.4 en `consultas_base_datos.md`, con verificación de reproducibilidad obligatoria. Condiciona la estacionalidad de E7c y la verdad de referencia de E8.
-2. **Tiempo promedio por corrección manual**, en consulta con el personal. Debe venir **desglosado por rama** —revisión en pantalla y visita con fotografía—, porque consumen tiempos distintos. Condiciona el criterio de éxito n.º 3. *(Pendiente de respuesta, 2 oct 2026.)*
-3. **Visitás que no terminan en corrección:** ¿cuántas solicitudes de visita al domicilio terminan sin cambiar la lectura? Es la tasa de falsos positivos de la detección manual actual y la línea base del criterio 2.
+2. **Tiempo promedio por corrección manual**, en consulta con el personal. Debe venir **desglosado por rama** —revisión en pantalla y visita con fotografía—, porque consumen tiempos distintos. Condiciona el criterio de éxito n.º 3. *(Pendiente de respuesta, 2 oct 2026.)* **Redactado el seguimiento con la especificación fina el 19 oct 2026 (DEC-41):**
+
+   > **Asunto:** Seguimiento — tiempo por corrección manual de lectura, desglosado por rama
+   >
+   > Estimado/a docente:
+   >
+   > El 2 de octubre de 2026 le envié una consulta sobre el tiempo que consume cada corrección manual de lectura. Doy seguimiento porque esa respuesta es la que me permite **fijar, antes de construir, el valor de uno de los criterios de éxito de mi estudio**. Sin ella no puedo cerrar esa sección.
+   >
+   > Necesito el **tiempo promedio por corrección**, separado en dos ramas, porque consumen tiempos muy distintos:
+   >
+   > | Rama | Qué incluye |
+   > |:--|:--|
+   > | **Revisión en pantalla** | Detección y corrección hechas en el sistema, sin desplazamiento |
+   > | **Visita con fotografía** | Desplazamiento al domicilio, respaldo fotográfico del medidor y retorno a la oficina |
+   >
+   > Para **cada rama** necesito tres cosas:
+   >
+   > 1. **El tiempo promedio por corrección**, en minutos u horas.
+   > 2. **Cuántas correcciones corresponden a cada rama**, para poder ponderar el total. *Si no viene desglosado, sirve el total de correcciones y el tiempo promedio general, con la aclaración de que no está separado por rama.*
+   > 3. **El periodo exacto** al que corresponde el dato —mes, gestión o rango de fechas— y **de dónde sale**: reporte del sistema, planilla de control o estimación del personal.
+   >
+   > **Si ese tiempo no está registrado en ningún sistema y es una estimación del personal, dígamelo así.** Lo registraré como estimación declarada y no como medición, y esa distinción queda escrita en el estudio. Lo que no puedo hacer es fijar un valor de criterio sin saber de dónde salió.
+   >
+   > Le agradecería la respuesta **antes del 22 de octubre de 2026**, fecha en la que cierro esa parte del estudio.
+   >
+   > Agradezco de antemano. Quedo atenta.
+   >
+   > Natalia Fabiola Medrano Cambará
+
+   **Cierre de la pregunta, 19 oct 2026 (DEC-42):** la respuesta fue **«el tiempo no está registrado en ningún sistema, no está medido»**. Se registra como **dato no disponible**, que era la respuesta prevista en la propia consulta, y **no como cero ni como estimación**. **Consecuencia REAL: SÍ bloquea. (CORREGIDO EL MISMO DÍA, DEC-44.)** El criterio 3 de `02_delimitacion.md` es **«Carga de verificación: alertas generadas por ciclo dentro de la capacidad real del equipo (base: 3 a 4 h por caso)»**, y **trae su línea base escrita como 3 a 4 horas por caso**. La respuesta de hoy declara **que ese dato no está medido**, de modo que **los 3 a 4 h quedan como estimación declarada y no como medición**, y **E7b no puede fijar el valor del criterio 3 con dato medido**. **Inconsistencia que la medición habría cerrado y que queda abierta:** la capacidad de **≈11 visitas por día** —242 correcciones mensuales ÷ 22 días hábiles— **multiplicada por 3 a 4 h por caso da 33 a 44 horas por día**, que **no cabe en una jornada**. Solo se sostiene si el equipo es **varias personas** o si las 3 a 4 h son **tiempo transcurrido y no horas-hombre**. **Hay que declararlo en E6, y no se puede resolver con dato propio.**
+
+3. **Visitás que no terminan en corrección:** ¿cuántas solicitudes de visita al domicilio terminan sin cambiar la lectura? Es la tasa de falsos positivos de la detección manual actual y la línea base del criterio 2. **Consulta redactada por primera vez el 19 oct 2026 (DEC-41), sin enviar:**
+
+   > **Asunto:** Consulta — visitas al domicilio que no terminan en cambio de lectura
+   >
+   > Estimado/a docente:
+   >
+   > Estoy estableciendo la línea base de mi estudio y necesito saber **cuántas de las visitas que se hacen al domicilio terminan sin cambiar la lectura**. Ese dato es la tasa de falsos positivos de la detección manual actual, y sin él no puedo fijar uno de mis criterios de éxito.
+   >
+   > **Primero necesito saber si el dato se registra:**
+   >
+   > 1. ¿Existe algún registro de **solicitudes de visita al domicilio** para verificar una lectura? Si existe, ¿en qué sistema o planilla?
+   >
+   > **Si existe, necesito para el periodo que se pueda —preferentemente enero de 2022 a septiembre de 2026—:**
+   >
+   > 2. **Total de solicitudes de visita** en ese periodo.
+   > 3. **Cuántas terminaron con cambio de lectura** —la lectura registrada se modificó tras la visita—.
+   > 4. **Cuántas terminaron sin cambio de lectura** —la lectura quedó igual que antes de la visita—.
+   > 5. **El periodo exacto** de cada cifra y **de dónde sale**.
+   >
+   > **Si el dato no existe o no se puede extraer, dígamelo así y no lo estime.** Registraré «dato no disponible» en el estudio, y esa es una respuesta válida para mí. Lo que no puedo hacer es publicar un número que después nadie pueda reproducir.
+   >
+   > Para mí sirve también:
+   >
+   > - un **conteo de un año representativo**, si el total de 57 meses no se puede armar;
+   > - o una **hoja de cálculo mes a mes**, que es lo que más me conviene para calcular la tasa.
+   >
+   > Le agradecería la respuesta **antes del 22 de octubre de 2026**, que es cuando cierro esa sección.
+   >
+   > Agradezco de antemano. Quedo atenta.
+   >
+   > Natalia Fabiola Medrano Cambará
+
+   **Advertencia corregida el 19 oct 2026 (DEC-42):** el techo de **≈11 visitas por día** se derivó como *242 correcciones mensuales ÷ 22 días hábiles*. **La advertencia que estaba escrita aquí estaba mal de dirección:** 242 son correcciones **efectivamente realizadas**, no una estimación de visitas, de modo que el techo **no puede estar sobreestimado** —lo que no se sabe es si el equipo despacha **más** visitas que esas 242, porque las visitas no se registran. **La consecuencia correcta:** 242/mes es un **piso** de la capacidad de visitas y no un techo; usarlo como tope de alertas es **conservador**, y por eso se sostiene.
+
+   **Cierre de la pregunta, 19 oct 2026 (DEC-42):** la respuesta fue **«no existe registro de solicitud de visita a domicilio»**. Se registra como **dato no disponible**, que era la respuesta prevista en la propia consulta, y **no como cero**. **Consecuencia REAL: confirma que el criterio 2 NO tiene línea base, y esa ausencia ya estaba declarada. (CORREGIDO EL MISMO DÍA, DEC-44.)** El criterio 2 de `02_delimitacion.md` es **«Falsos positivos: proporción de alertas descartadas por el verificador»** y **trae su línea base escrita como «sin criterio actual»**. La respuesta de hoy **confirma que esa línea base no se puede construir con dato de ENDE**, porque no existe registro de las solicitudes de visita. **De modo que el criterio 2 se fija sin comparación contra el proceso actual, y esa es una limitación que se escribe y no se disimula.** **Comparador único disponible, rotulado con su alcance:** el **canal de reclamos** —174 de 1 053 terminaron en corrección, **16,52 % y 83,48 % de falsa alarma**—, **que no es el proceso completo** sino **solo una de las tres vías de detección**, de modo que sirve como referencia secundaria y declarada. **La pregunta queda cerrada, no pendiente.**
 4. **Conciliación de los totales:** para 2025-01, la Tabla 2 suma 27 370 lecturas y la Tabla 3 suma 28 355. Diferencia de ~1 000 por mes; hay que declarar el filtro de cada tabla antes de publicar ambas.
 5. **Consulta 2.3:** tiempos de respuesta reales en la ODECO.
 6. **Destino completo de la fotografía:** se confirma que vive en la computadora del encargado; queda saber si además se imprime o se copia, y si existe algún respaldo si ese equipo falla.
+
+7. **Personal que atiende la revisión y la corrección** — consulta redactada el 19 oct 2026 (DEC-46), sin enviar. **Motivo:** la capacidad documentada —**242 correcciones mensuales ÷ 22 días hábiles ≈ 11 por día**— y la base declarada del criterio 3 —**3 a 4 h por caso**— **no cuadran**: 11 × 3–4 h = **33 a 44 horas por día**, que **no cabe en la jornada de una persona**. De eso depende el **presupuesto de alertas**. **Si no hay respuesta o el dato no está medido, el criterio 3 se fija sobre la capacidad observada —DEC-45—, que es volumen y no horas.**
+
+   > **Asunto:** Consulta — personal que atiende la revisión y corrección de lecturas
+   >
+   > Estimado/a docente:
+   >
+   > Estoy fijando, antes de construir, el valor de uno de mis criterios de éxito: la carga de verificación que mi método puede pedirle al equipo. Para eso necesito saber **cuántas personas atienden esa tarea**.
+   >
+   > La razón de la pregunta es que tengo **dos cifras que no cuadran entre sí** y necesito saber cuál aplica:
+   >
+   > - por un lado, **242 correcciones mensuales ÷ 22 días hábiles ≈ 11 correcciones por día**;
+   > - por otro, una base declarada de **3 a 4 horas por caso**.
+   >
+   > **11 casos por día a 3 a 4 horas cada uno dan 33 a 44 horas por día**, que no cabe en la jornada de una sola persona. Necesito saber por qué se sostiene.
+   >
+   > Por favor, indíqueme:
+   >
+   > 1. **Cuántas personas** trabajan en la **revisión en pantalla** de lecturas.
+   > 2. **Cuántas personas** trabajan en la **corrección y visita** a domicilio.
+   > 3. Si las **3 a 4 horas por caso** son **horas-hombre** —tiempo total de todas las personas— o **tiempo transcurrido** —desde que se detecta hasta que se resuelve—.
+   > 4. **El periodo al que corresponde** cada dato y **de dónde sale**.
+   >
+   > **Si alguna de estas cifras no está registrada, dígamelo así y no la estime.** Registraré «dato no disponible» y fijaré mi criterio sobre la capacidad observada —las 242 correcciones mensuales—, que sí es reproducible.
+   >
+   > Le agradecería la respuesta **antes del 22 de octubre de 2026**, fecha en la que cierro esa parte del estudio.
+   >
+   > Agradezco de antemano. Quedo atenta.
+   >
+   > Natalia Fabiola Medrano Cambará
 
 ### Cerrados
 

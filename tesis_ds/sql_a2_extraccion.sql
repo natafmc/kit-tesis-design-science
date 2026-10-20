@@ -226,7 +226,143 @@ GROUP BY 1
 ORDER BY 1;
 
 
--- 0.7 EL CATÁLOGO DE IRREGULARIDADES — nombre confirmado por la tesista 6 oct 2026
+-- 0.6.f CORRECCIÓN DEL 0.6.e.3 - EL JOIN MULTIPLICÓ (20 oct 2026)
+--     El 0.6.e.3 corrió el 20 oct 2026 y devolvió:
+--         distintos 29 786 | historico nulo 44 732 | iguales 1 316 140
+--     Suma: 1 390 658. Pero tfv_cobranza tiene 1 389 282 filas, de modo
+--     que SOBRAN 1 376 filas. Sobran porque tfv_historico_lecturador
+--     trae id_lectura repetidos y el LEFT JOIN los multiplica: es
+--     exactamente la advertencia escrita en el propio 0.6.e.3, que se
+--     cumplió. CONSECUENCIA: EL RESULTADO ANTERIOR NO SE PUEDE
+--     INTERPRETAR. Ningún número de ahí sale a ningún documento.
+--
+--     Dos datos de ese resultado SÍ son fiables, porque un LEFT JOIN
+--     sin match no se multiplica:
+--       · 44 732 lecturas de cobranza (3,22 %) no tienen fila en
+--         tfv_historico_lecturador.
+--       · Las 1 376 filas de más caen TODAS en 'distintos', que es la
+--         firma de un id_lectura repetido con consumo DIFERENTE, es
+--         decir de una corrección. PERO ESO ES UNA SOSPECHA: hay que
+--         confirmarlo con el CONTROL 3 antes de publicarlo.
+--
+--     Dato aritmético declarado y NO publicado: si el JOIN no
+--     multiplicara, 'distintos' sería
+--     1 389 282 − 1 316 140 − 44 732 = 28 410. Es una derivación con
+--     supuesto —cada lectura repetida aporta una sola fila de más—,
+--     de modo que se confirma con el CONTROL 4.
+
+-- CONTROL 3 - cardinalidad de tfv_historico_lecturador
+--     Mismo diseño que el CONTROL 1, aplicado a la tabla que multiplicó.
+--     Debe dar filas − lecturas = 1 376. Si no da eso, el problema no
+--     era el JOIN y hay que revisar antes de seguir.
+SELECT COUNT(*)                                            AS filas,
+       COUNT(DISTINCT id_lectura)                          AS lecturas,
+       COUNT(*) - COUNT(DISTINCT id_lectura)               AS filas_de_mas,
+       MAX(n)                                              AS max_filas_por_lectura,
+       COUNT(*) FILTER (WHERE n > 1)                       AS lecturas_repetidas,
+       COUNT(*) FILTER (WHERE n > 1 AND consumo_distinto > 1)
+                                                           AS repetidas_con_consumo_variado
+FROM ( SELECT id_lectura,
+              COUNT(*)                AS n,
+              COUNT(DISTINCT consumo) AS consumo_distinto
+       FROM tfv_historico_lecturador
+       GROUP BY id_lectura ) x;
+
+-- CONTROL 4 - LA PRUEBA CORREGIDA, SIN MULTIPLICAR
+--     h se deduplica por id_lectura ANTES del JOIN, de modo que cada
+--     fila de tfv_cobranza entra UNA sola vez y el total DEBE salir
+--     exactamente 1 389 282. Si no sale esa cifra, esta consulta tampoco
+--     vale y hay que volver al CONTROL 3.
+WITH h AS (
+    SELECT id_lectura,
+           COUNT(*)                AS n_filas,
+           COUNT(DISTINCT consumo) AS consumo_distinto,
+           MAX(consumo)            AS consumo_max
+    FROM tfv_historico_lecturador
+    GROUP BY id_lectura
+)
+SELECT CASE WHEN h.id_lectura IS NULL       THEN 'sin historico'
+            WHEN h.consumo_distinto > 1     THEN 'historico con consumo variado'
+            WHEN h.consumo_max <> c.consumo THEN 'distintos'
+            ELSE 'iguales' END                AS comparacion,
+       COUNT(*)                               AS lecturas
+FROM tfv_cobranza c
+LEFT JOIN h ON h.id_lectura = c.id_lectura
+GROUP BY 1
+ORDER BY 1;
+-- AUTOCHEQUEO OBLIGATORIO: la suma de las cuatro categorías DEBE dar
+-- 1 389 282. Si no cuadra, no se interpreta nada.
+--
+-- Si 'historico con consumo variado' da > 0, ESAS son las lecturas que
+-- tienen más de un consumo registrado: el candidato a corrección manual
+-- A NIVEL DE REGISTRO, que es lo que [B2] necesita para abrir A2.4.3.
+-- Antes de publicar esa cifra hay que buscarla por año y cuadrarla
+-- contra la hoja historico de `DATOS desde 2022.xlsx`: 9 604 en 2025 y
+-- 2 180 en 2026. Si no cuadra, NO se publica.
+
+-- 0.6.g LA PRUEBA POR AÑO - el contraste final contra la hoja (20 oct 2026)
+--     El CONTROL 4 (L271) midió: distintos 28 499, con consumo variado 1 259,
+--     iguales 1 314 620, sin historico 44 904. Suma 1 389 282, que cuadra
+--     exacto, de modo que la consulta no multiplicó.
+--     LO DECISIVO: NO SALIÓ TODO EN 'IGUALES'. Solo 94,63 % salió igual, de
+--     modo que `tfv_cobranza.consumo` NO es copia desnormalizada y ESTA VIA
+--     ESTA VIVA, que era el escenario en que el archivo decía que no servía.
+--     Quedan 29 758 lecturas candidatas (2,14 %) contra 47 982 de la hoja
+--     (3,22 %): mismo orden de magnitud, factor 1,61, pero NO coinciden.
+--     El contraste que falta es POR AÑO, contra 9 604 en 2025 y 2 180 en 2026.
+--
+--     SALVEDAD DECLARADA ANTES DE CORRER: `gestion_fac` es el año de FACTURACIÓN
+--     y la hoja `historico` agrupa por período de LECTURA. Pueden no coincidir,
+--     y si no coinciden la diferencia no es un error sino una diferencia de
+--     llave. Eso se declara y se comprueba, no se supone.
+
+-- 0.6.g.1 - el cruce completo por año
+WITH h AS (
+    SELECT id_lectura,
+           COUNT(*)                AS n_filas,
+           COUNT(DISTINCT consumo) AS consumo_distinto,
+           MAX(consumo)            AS consumo_max
+    FROM tfv_historico_lecturador
+    GROUP BY id_lectura
+)
+SELECT c.gestion_fac                        AS gestion,
+       CASE WHEN h.id_lectura IS NULL       THEN 'sin historico'
+            WHEN h.consumo_distinto > 1     THEN 'historico con consumo variado'
+            WHEN h.consumo_max <> c.consumo THEN 'distintos'
+            ELSE 'iguales' END              AS comparacion,
+       COUNT(*)                             AS lecturas
+FROM tfv_cobranza c
+LEFT JOIN h ON h.id_lectura = c.id_lectura
+GROUP BY 1, 2
+ORDER BY 1, 2;
+-- AUTOCHEQUEO: la suma de TODA la tabla debe dar 1 389 282. Si no cuadra,
+-- esta consulta tampoco vale y hay que volver al CONTROL 4.
+
+-- 0.6.g.2 - el total de candidatos por año, listo para comparar de un vistazo
+WITH h AS (
+    SELECT id_lectura,
+           COUNT(DISTINCT consumo) AS consumo_distinto,
+           MAX(consumo)            AS consumo_max
+    FROM tfv_historico_lecturador
+    GROUP BY id_lectura
+)
+SELECT c.gestion_fac                                        AS gestion,
+       COUNT(*)                                             AS lecturas,
+       COUNT(*) FILTER (WHERE h.consumo_distinto > 1
+                          OR h.consumo_max <> c.consumo)    AS candidatos_a_correccion,
+       COUNT(*) FILTER (WHERE h.id_lectura IS NULL)         AS sin_historico
+FROM tfv_cobranza c
+LEFT JOIN h ON h.id_lectura = c.id_lectura
+GROUP BY 1
+ORDER BY 1;
+-- COMPARAR contra la hoja `historico` de `DATOS desde 2022.xlsx`:
+--     2022  8 509   2023 10 230   2024 17 459   2025 9 604   2026 2 180
+--     Total hoja 47 982. Total de registro 29 758. NO CUADRAN y eso se
+--     declara. Lo que se busca aquí es el PATRÓN POR AÑO, no la igualdad.
+--     Si el patrón tampoco se parece, la vía cierra y la hoja queda como
+--     única fuente de las correcciones, con su linaje ya declarado.
+
+-- 0.7 EL CATÁLOGO DE IRREGULARIDADES - nombre confirmado por la tesista 6 oct 2026
 --     Fuente externa: CODIGOS_IRREGULARES.xlsx (6 oct 2026, 10 169 bytes),
 --     hoja codigo_irregular, encabezados en fila 1, 48 filas, id 0 a 47.
 --     Debe reproducirse tal cual.
