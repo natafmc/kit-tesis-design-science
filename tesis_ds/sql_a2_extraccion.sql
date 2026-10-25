@@ -668,7 +668,7 @@ ORDER BY table_name, ordinal_position;
 --     archivo, de modo que tal como está aquí NO reproduce lo que DEC-59
 --     dice haber corrido. No se parchea esta consulta: la ventana con sus
 --     tres autocalculos vive ahora en CONTROL 5.j, más abajo, junto con
---     sw_procedente.
+--     sw_procendente.
 SELECT t.tipo_lectura,
        COUNT(DISTINCT r.id_reclamo)                                     AS reclamos,
        COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.sw_proceso = 'si') AS sw_proceso_si,
@@ -723,8 +723,8 @@ ORDER BY 1, 2;
 
 -- CONTROL 5.i CARDINALIDAD DE tfv_respuesta_reclamo (24 oct 2026)
 --     Respondido por la tesista con el CONTROL 5.g: la tabla que trae
---     sw_procedente es tfv_respuesta_reclamo, relacionada con tfv_reclamo
---     por id_reclamo, y su campo sw_procedente indica si el reclamo tiene
+--     sw_procendente es tfv_respuesta_reclamo, relacionada con tfv_reclamo
+--     por id_reclamo, y su campo sw_procendente indica si el reclamo tiene
 --     pronunciamiento procedente o improcedente.
 --     SE MIDE LA CARDINALIDAD ANTES DE CONTAR NADA, porque el 0.6.f, el
 --     CONTROL 3 y el CONTROL 5 enseñaron que un JOIN multiplicado devuelve
@@ -735,11 +735,11 @@ ORDER BY 1, 2;
 --     filas_excedentes + reclamos_con_respuesta.
 --     AUTOCHEQUEO 2: con_valores_discrepantes debe ser 0. Si no lo es, hay
 --     reclamos con dos respuestas y valores distintos, y ENTONCES no se cuenta
---     por sw_procedente hasta saber cuál manda: se detiene y se pregunta.
+--     por sw_procendente hasta saber cuál manda: se detiene y se pregunta.
 WITH rr AS (
     SELECT id_reclamo,
            COUNT(*)                      AS n_filas,
-           COUNT(DISTINCT sw_procedente) AS n_valores
+           COUNT(DISTINCT sw_procendente) AS n_valores
     FROM tfv_respuesta_reclamo
     GROUP BY id_reclamo
 )
@@ -768,11 +768,11 @@ FROM rr;
 --     1 053. Si no da, LA VENTANA ESTÁ APLICADA A LA FECHA EQUIVOCADA: se
 --     prueba con rl.fecha_odeco y con la fecha de tfv_lectura antes de
 --     publicar nada. No se ajusta la ventana para que cuadre.
---     AUTOCHEQUEO 2: agrupando solo por sw_procedente debe dar 174 con
+--     AUTOCHEQUEO 2: agrupando solo por sw_procendente debe dar 174 con
 --     procedente y 878 + 1 con los improcedentes.
 --     AUTOCHEQUEO 3: entre los procedentes, tipo 1 debe dar 136, que es
 --     78,16 % de 174 en los 57 meses.
-SELECT COALESCE(rr.sw_procedente::text, '(sin respuesta)') AS sw_procedente,
+SELECT COALESCE(rr.sw_procendente::text, '(sin respuesta)') AS sw_procendente,
        COALESCE(t.tipo_lectura::text,  '(sin tipo)')       AS tipo_lectura,
        COUNT(DISTINCT r.id_reclamo)                        AS reclamos
 FROM tfv_reclamo r
@@ -783,6 +783,56 @@ WHERE r.fecha_hora_reg >= DATE '2022-01-01'
   AND r.fecha_hora_reg <  DATE '2026-10-01'
 GROUP BY 1, 2
 ORDER BY 1, 2;
+
+
+-- CONTROL 5.k LOS 8 QUE FALTAN: TIENEN LECTURA PERO tipo_lectura SALE NULO (25 oct 2026)
+--     DEC-65: la ventana 2022-01 a 2026-09 tiene 1 053 reclamos con lectura
+--     —igual que la hoja— y el 5.j solo 1 045 con tipo, así que los 8 están
+--     en la fila «(sin tipo)». NO ES LA VENTANA: es el tipo el que no está,
+--     y mover el filtro no habría servido para nada.
+--     AUTOCHEQUEO 1: por año debe dar 71 en 2021, que son los ya identificados
+--     con el 5.e, y la suma de 2022 en adelante debe dar 8.
+--     AUTOCHEQUEO 2: con_lectura_con_tipo + con_lectura_sin_tipo = con_lectura
+--     en cada año, y con_lectura debe reproducir los 104 / 326 / 309 / 213 de
+--     la hoja y 117 en 2026 —que es 101 de la hoja más 16 de octubre, porque
+--     este control no filtra—.
+--     AUTOCHEQUEO 3: sin_lectura + con_lectura = reclamos de cada año.
+SELECT EXTRACT(YEAR FROM r.fecha_hora_reg)::int             AS anio,
+       COUNT(*) FILTER (WHERE rl.id_lectura IS NOT NULL
+                          AND t.tipo_lectura IS NULL)        AS con_lectura_sin_tipo,
+       COUNT(*) FILTER (WHERE rl.id_lectura IS NOT NULL
+                          AND t.tipo_lectura IS NOT NULL)    AS con_lectura_con_tipo,
+       COUNT(*) FILTER (WHERE rl.id_lectura IS NULL)         AS sin_lectura,
+       COUNT(*)                                              AS reclamos
+FROM tfv_reclamo r
+LEFT JOIN tfv_reclamo_lectura rl ON rl.id_reclamo = r.id_reclamo
+LEFT JOIN tfv_lectura t          ON t.id_lectura  = rl.id_lectura
+GROUP BY 1
+ORDER BY 1;
+
+
+-- CONTROL 5.l HUERFANAS DE tfv_lectura, SIN LA TRAMPA DE NOT IN (25 oct 2026)
+--     El 5.c usa `id_lectura NOT IN (SELECT id_lectura FROM tfv_lectura)`.
+--     NOT IN devuelve 0 filas si la subconsulta contiene UN SOLO NULL, haya
+--     o no huérfanas, de modo que el 0 que dio puede ser un 0 real o un 0
+--     silencioso. El «0 huérfanos» de DEC-58(3) se apoya en eso, y sobre él
+--     se sostuvo la retractación de los «71 huérfanos» de DEC-56.
+--     NO se concluye que esté mal: se corren las DOS versiones a la vez y se
+--     comparan en la misma salida.
+--     AUTOCHEQUEO: filas_lectura debe seguir dando 1 140.
+--       - Si las dos dan 0, el del 5.c era real y DEC-58(3) se sostiene.
+--       - Si NOT EXISTS da más de 0 y NOT IN da 0, el 5.c estaba enmascarando
+--         huérfanas y hay que reabrir DEC-56 y DEC-58(3).
+SELECT COUNT(*)                                            AS filas_lectura,
+       COUNT(*) FILTER (WHERE rl.id_lectura IS NULL)       AS sin_id_lectura,
+       COUNT(*) FILTER (WHERE rl.id_lectura IS NOT NULL
+                          AND NOT EXISTS
+                            (SELECT 1 FROM tfv_lectura tl
+                              WHERE tl.id_lectura = rl.id_lectura)) AS huerfanas_not_exists,
+       COUNT(*) FILTER (WHERE rl.id_lectura IS NOT NULL
+                          AND rl.id_lectura NOT IN
+                            (SELECT id_lectura FROM tfv_lectura))   AS huerfanas_not_in
+FROM tfv_reclamo_lectura rl;
 
 
 -- =====================================================================
@@ -907,7 +957,7 @@ ORDER BY 1;
 --      abierto es el nivel de REGISTRO, que es lo que pide A2.4.3.
 --
 -- [B3] CERRADO: NO EQUIVALEN (DEC-59, 22 oct 2026), y el campo fue
---      localizado el 24 oct 2026 (DEC-61): sw_procedente está en
+--      localizado el 24 oct 2026 (DEC-61): sw_procendente está en
 --      tfv_respuesta_reclamo, enlazada con tfv_reclamo por id_reclamo.
 --      sw_proceso es OTRO campo, binario, y no lo sustituye.
 --      El recuento reproducible desde la base está en CONTROL 5.j;
