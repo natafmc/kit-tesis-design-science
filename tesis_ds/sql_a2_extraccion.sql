@@ -853,6 +853,78 @@ ORDER BY nro_cuenta, fecha_lec;
 
 
 -- =====================================================================
+-- A2.3.a CONTROL DEL PANEL — el contrato de A2.3 contra lo que sale
+--                                  (25 oct 2026)
+--
+--     DOS PROBLEMAS QUE SE LEEN DEL ARCHIVO ANTES DE CORRER NADA.
+--
+--     (1) A2.3 DECLARA «una fila por cuenta y mes» PERO NO LO HACE.
+--         Viene SIN GROUP BY y SIN DISTINCT: devuelve una fila POR
+--         LECTURA. Si una cuenta se leyó dos veces en un mes, ese mes
+--         sale dos veces y la desviación de E7a se calcularía contra una
+--         referencia duplicada. Que hoy no haya duplicados no arregla la
+--         consulta: solo la hace funcionar por suerte.
+--
+--     (2) LA CIFRA NO CUADRA CON EL CONTROL 3. El CONTROL 3 (L267)
+--         midió 1 491 175 filas en la tabla COMPLETA, SIN filtro de
+--         fecha. A2.3, que SÍ filtra fecha_lec >= 2022-01-01, devolvió
+--         1 519 833: o sea 28 658 filas de MÁS que toda la tabla junta.
+--         Un filtrado no puede devolver más que el total, salvo que la
+--         tabla haya crecido entre el 20 y el 25 de octubre —DEC-55 y
+--         DEC-64 ya dejaron establecido que estas tablas son vivas—.
+--         NO SE CONSTRUYE SOBRE EL PANEL SIN SABER CUÁL DE LAS DOS
+--         CORRIDAS MANDA.
+--
+--     A2.3 TAMBIÉN NO TIENE AUTOCALCULO. Lo único escrito es «~1,7
+--     millones de filas», que es una ESTIMACIÓN —57 meses x 29 750
+--     cuentas = 1 695 750—, no una comprobación. Este control la pone.
+--
+--     AUTOCHEQUEO 1: filas_desde_2022 DEBE dar lo que devolvió A2.3.
+--         Si no lo da, A2.3 se corrió en otra fecha y manda esta corrida
+--         con su sello.
+--     AUTOCHEQUEO 2: filas_totales >= filas_desde_2022. Si NO se
+--         cumple, ninguna de las dos cifras es utilizable y se repite
+--         las dos seguidas en la misma sesión antes de escribir nada.
+--     AUTOCHEQUEO 3: cuentas_mes_distintas == filas_desde_2022 ES LA
+--         CONDICIÓN DE QUE EL PANEL CUMPLA SU CONTRATO. Si es menor,
+--         A2.3 se corrige con GROUP BY ANTES de usarla, y la diferencia
+--         está en lecturas_sobrantes.
+--     AUTOCHEQUEO 4: fecha_maxima dice hasta cuándo llega el histórico.
+--         E7a exige CUATRO ciclos anuales completos (E4 §4.2). Si no
+--         alcanza, la A2 no se puede calcular en los términos elegidos y
+--         la contingencia A1 gana terreno.
+--     AUTOCHEQUEO 5: filas_totales = filas_anteriores_2022 +
+--         filas_desde_2022 + fecha_nula. Debe cerrar exacto.
+-- =====================================================================
+WITH h AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec) AS mes,
+           fecha_lec
+      FROM tfv_historico_lecturador
+)
+SELECT COUNT(*)                                               AS filas_totales,
+       COUNT(*) FILTER (WHERE fecha_lec >= DATE '2022-01-01') AS filas_desde_2022,
+       COUNT(*) FILTER (WHERE fecha_lec < DATE '2022-01-01')  AS filas_anteriores_2022,
+       COUNT(*) FILTER (WHERE fecha_lec IS NULL)              AS fecha_nula,
+       MIN(fecha_lec)                                         AS fecha_minima,
+       MAX(fecha_lec)                                         AS fecha_maxima,
+       COUNT(DISTINCT nro_cuenta)                             AS cuentas,
+       COUNT(DISTINCT mes)                                    AS meses,
+       (SELECT COUNT(*)
+          FROM (SELECT 1
+                  FROM h
+                 WHERE fecha_lec >= DATE '2022-01-01'
+                 GROUP BY nro_cuenta, mes) cm)                AS cuentas_mes_distintas,
+       (COUNT(*) FILTER (WHERE fecha_lec >= DATE '2022-01-01'))
+         - (SELECT COUNT(*)
+              FROM (SELECT 1
+                      FROM h
+                     WHERE fecha_lec >= DATE '2022-01-01'
+                     GROUP BY nro_cuenta, mes) cm2)           AS lecturas_sobrantes
+  FROM h;
+
+
+-- =====================================================================
 -- A2.4 — AGREGADOS MENSUALES (los tres de DATOS.xlsx, extendidos a 2022)
 -- =====================================================================
 
