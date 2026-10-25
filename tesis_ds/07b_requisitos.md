@@ -79,7 +79,7 @@ Convención: **F = fijado** — no depende de nada pendiente. ◆ **= depende de
 | R3.1 | La salida del método es un **listado de alertas agrupadas por ruta**, nunca cuentas sueltas | **F** |
 | R3.2 | La agrupación es **parte del método y no un agregado posterior** — así lo exige la nota de linaje del criterio 3 | **F** |
 | R3.3 | Cada grupo lleva el **número de cuentas** y la **estimación de tiempo** que implica | **F** |
-| R3.4 | El campo con el que se agrupa —la ruta— **debe existir en el dato** y su identificador se fija en E7c | **P** — ver §5, punto pendiente 3 |
+| R3.4 | El campo con el que se agrupa —la ruta— **debe existir en el dato** y su identificador se fija en E7c | **P** — ver Gate, punto 4 |
 
 ### R4 — Cada alerta lleva su explicación ◆ F
 
@@ -144,7 +144,7 @@ Sin esto, el método no arranca.
 
 | ID | Requisito | Estado |
 |:--|:--|:--|
-| R9.1 | El panel de consumo con **una fila por cuenta y mes** existe y está verificado | **P — bloqueante.** Ver §5 |
+| R9.1 | El panel de consumo con **una fila por cuenta y mes** existe y está verificado | **P — bloqueante.** Ver §4.3 |
 | R9.2 | El histórico cubre **enero de 2022 a la fecha de corrida** | **P — `A2.3.a` sin correr** |
 | R9.3 | Las tablas son **vivas**: toda cifra lleva **sello de fecha** | **F** — DEC-55, DEC-64 |
 | R9.4 | El catálogo de 48 códigos de irregularidad está disponible | **F** — medido 6 oct 2026 |
@@ -211,7 +211,7 @@ El criterio **2** —falsos positivos— y el criterio **3** —capacidad— **e
 
 > **Decisión de E7b:** **la capacidad manda.** El techo de 242 es **inviolable**; dentro de ese techo se optimiza la cobertura. Un método que prioriza mal dentro de sus 242 sigue siendo útil; uno que se pasa de 242 **no se adopta**.
 
-**Consecuencia para el criterio 2:** con la capacidad como techo, la proporción de alertas descartadas **no puede esperarse baja**. El criterio 2 se fija como **límite de desperdicio** y no como meta de excelencia, y su valor numérico sale de §4.2 paso 3, no de una aspiración.
+**Consecuencia para el criterio 2:** con la capacidad como techo, la proporción de alertas descartadas **no puede esperarse baja**. El criterio 2 se fija como **límite de desperdicio** y no como meta de excelencia, y su valor numérico sale de §4.3 —calibrado `θ` corriendo sobre el panel—, no de una aspiración.
 
 ---
 
@@ -241,10 +241,11 @@ El criterio **2** —falsos positivos— y el criterio **3** —capacidad— **e
 
 ## Gate de E7b — abierto
 
-**Se cierra esta etapa cuando se cumplan tres cosas:**
+**Se cierra esta etapa cuando se cumplan cuatro cosas:**
 
 1. **E7a cierra su gate** y confirma A2. ◆ *Si dice otra cosa, se reabren R1.2, R3.1, R6.3, R8 y R9.*
 2. **`A2.3.a` corre y su panel se da por verificado.** Sin esto no hay R9.1 y no hay §4.3.
 3. **`θ` se fija con su valor y su sello de fecha** por los cinco pasos de §4.2, y se vuelca al criterio 2 de `02_delimitacion.md`.
+4. **El campo de ruta existe en el dato y su identificador se fija.** **No se ha verificado.** Sin él, R3.1 y R3.2 no se pueden cumplir: un método que no sabe a qué ruta pertenece cada cuenta no puede agrupar, y DEC-57 establece que **la agrupación es parte del método y no un agregado posterior**. Si la ruta no está en el dato, **R3 se reabre** y hay que decidir con la tesista con qué otro campo se agrupa.
 
-**Dos de los tres siguen sin tocar.** Mientras eso pase, **no se escribe un solo número nuevo en ningún documento**: el procedimiento está fijado, la restricción está fijada, y el valor espera a su consulta —que es la única forma en que un umbral deja de ser una opinión.
+**Los cuatro siguen sin tocar.** Mientras eso pase, **no se escribe un solo número nuevo en ningún documento**: el procedimiento está fijado, la restricción está fijada, y el valor espera a su consulta —que es la única forma en que un umbral deja de ser una opinión.
