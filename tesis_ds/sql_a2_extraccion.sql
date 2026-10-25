@@ -264,6 +264,23 @@ ORDER BY 1;
 --     Mismo diseño que el CONTROL 1, aplicado a la tabla que multiplicó.
 --     Debe dar filas − lecturas = 1 376. Si no da eso, el problema no
 --     era el JOIN y hay que revisar antes de seguir.
+--
+--     ****************************************************************
+--     ADVERTENCIA, 25 OCT 2026: ESTA CONSULTA NO PUEDE DAR LO QUE
+--     DEC-50 REPORTÓ. Ver CONTROL 3.b, más abajo.
+--
+--     La subconsulta agrupa POR id_lectura ANTES de contar, así que en
+--     x ya hay una fila por lectura y las dos primeras columnas salen
+--     iguales: filas = COUNT(*) sobre grupos = número de id_lectura, y
+--     lecturas = COUNT(DISTINCT id_lectura) = lo mismo. filas_de_mas
+--     queda en 0, o en 1 si hay id nulo.
+--
+--     DEC-50 reportó filas 1 491 175, lecturas 1 489 791 y filas_de_mas
+--     1 384: ESAS TRES NO SALEN DE AQUÍ.
+--
+--     NO SE MODIFICA NI SE BORRA: la corrida ya ocurrió y su resultado
+--     está registrado. Se corrige el control al lado.
+--     ****************************************************************
 SELECT COUNT(*)                                            AS filas,
        COUNT(DISTINCT id_lectura)                          AS lecturas,
        COUNT(*) - COUNT(DISTINCT id_lectura)               AS filas_de_mas,
@@ -271,6 +288,56 @@ SELECT COUNT(*)                                            AS filas,
        COUNT(*) FILTER (WHERE n > 1)                       AS lecturas_repetidas,
        COUNT(*) FILTER (WHERE n > 1 AND consumo_distinto > 1)
                                                            AS repetidas_con_consumo_variado
+FROM ( SELECT id_lectura,
+              COUNT(*)                AS n,
+              COUNT(DISTINCT consumo) AS consumo_distinto
+       FROM tfv_historico_lecturador
+       GROUP BY id_lectura ) x;
+
+
+-- =====================================================================
+-- CONTROL 3.b - LA VERSION CORREGIDA: MIDE LA TABLA EN BRUTO
+--                                  (25 oct 2026)
+--
+--     QUE FALLABA. El CONTROL 3 agrupa y luego cuenta los grupos, de
+--     modo que su columna `filas` no es el numero de filas de la tabla
+--     sino el numero de lecturas distintas. Su propio comentario dice
+--     "Debe dar filas - lecturas = 1 376", que es un resultado SOLO
+--     posible contando la tabla en bruto. La consulta no puede dar lo
+--     que su comentario espera.
+--
+--     POR QUE LAS CIFRAS DE DEC-50 SI SON COHERENTES ENTRE SI. Leidas
+--     como conteo de la tabla en bruto: 1 489 791 + 1 384 = 1 491 175,
+--     y "ninguna mas de dos veces" es exactamente lo que hace esa suma.
+--     De las seis columnas del CONTROL 3, dos SI salen bien sobre
+--     grupos -`lecturas_repetidas` = 1 384 y
+--     `repetidas_con_consumo_variado` = 1 261- y por eso coinciden. Lo
+--     probable es que la corrida del 20 oct usara otra consulta y la
+--     del archivo se haya escrito despues. NO SE REESCRIBE LA
+--     HISTORIA: se declara la diferencia y se corrige el control.
+--
+--     AUTOCHEQUEO 1: filas = lecturas + filas_de_mas. Por construccion.
+--     AUTOCHEQUEO 2: si ninguna lectura se repite mas de dos veces,
+--         filas_de_mas DEBE ser igual a lecturas_repetidas. Si difieren,
+--         hay lecturas repetidas mas de dos veces y DEC-50(1) se reabre.
+--     AUTOCHEQUEO 3: sin_id_lectura debe ser 0. Si no lo es, hay filas
+--         sin clave y filas_de_mas las contaria como extra por error.
+--     AUTOCHEQUEO 4: ESTA CORRIDA NO ES REPRODUCIBLE EN EL TIEMPO.
+--         LA TABLA ES VIVA -confirmado por la tesista el 25 oct 2026:
+--         la lecturacion de octubre se esta cargando ahora-, de modo
+--         que `filas` sin filtro de fecha CAMBIA CADA DIA. TODA CORRIDA
+--         LLEVA SU FECHA y toda cifra publicada tambien.
+-- =====================================================================
+SELECT (SELECT COUNT(*)                     FROM tfv_historico_lecturador) AS filas,
+       (SELECT COUNT(DISTINCT id_lectura)   FROM tfv_historico_lecturador) AS lecturas,
+       (SELECT COUNT(*)                     FROM tfv_historico_lecturador)
+         - (SELECT COUNT(DISTINCT id_lectura)
+              FROM tfv_historico_lecturador)                               AS filas_de_mas,
+       (SELECT COUNT(*) FROM tfv_historico_lecturador
+         WHERE id_lectura IS NULL)                                         AS sin_id_lectura,
+       MAX(x.n)                                                            AS max_filas_por_lectura,
+       COUNT(*) FILTER (WHERE x.n > 1)                                     AS lecturas_repetidas,
+       COUNT(*) FILTER (WHERE x.n > 1 AND x.consumo_distinto > 1)          AS repetidas_con_consumo_variado
 FROM ( SELECT id_lectura,
               COUNT(*)                AS n,
               COUNT(DISTINCT consumo) AS consumo_distinto
@@ -310,7 +377,7 @@ ORDER BY 1;
 -- 2 180 en 2026. Si no cuadra, NO se publica.
 
 -- 0.6.g LA PRUEBA POR AÑO - el contraste final contra la hoja (20 oct 2026)
---     El CONTROL 4 (L271) midió: distintos 28 499, con consumo variado 1 259,
+--     El CONTROL 4 (L347) midió: distintos 28 499, con consumo variado 1 259,
 --     iguales 1 314 620, sin historico 44 904. Suma 1 389 282, que cuadra
 --     exacto, de modo que la consulta no multiplicó.
 --     LO DECISIVO: NO SALIÓ TODO EN 'IGUALES'. Solo 94,63 % salió igual, de
@@ -372,7 +439,7 @@ ORDER BY 1;
 --     única fuente de las correcciones, con su linaje ya declarado.
 
 -- 0.6.g.3 POR AÑO DE LECTURA - la llave declarada, no la de facturacion (21 oct 2026)
---     El 0.6.g.2 (L341) agrupo por `gestion_fac`, que es el anio de FACTURACION.
+--     El 0.6.g.2 (L417) agrupo por `gestion_fac`, que es el anio de FACTURACION.
 --     La hoja `historico` agrupa por periodo de LECTURA. Esa diferencia de llave
 --     quedo declarada ANTES de correr, y este bloque es su comprobacion.
 --     No se supone: se mide.
@@ -838,7 +905,27 @@ FROM tfv_reclamo_lectura rl;
 -- =====================================================================
 -- A2.3 — PANEL DE CONSUMO: una fila por cuenta y mes
 -- Sin esto no hay detección: las tablas agregadas no permiten calcular
--- desviaciones por cuenta. Volumen estimado ~1,7 millones de filas.
+-- desviaciones por cuenta.
+--
+--     VENTANA OBLIGATORIA, 25 OCT 2026: 2022-01-01 a 2026-09-30.
+--     La tesis cubre 57 meses, enero de 2022 a septiembre de 2026, y
+--     EL CIERRE ES OBLIGATORIO POR DOS MOTIVOS:
+--       (a) La lecturación de octubre está EN CURSO, así que ese mes
+--           está incompleto y meterlo desplaza toda la serie.
+--       (b) LA TABLA ES VIVA —lo confirmó la tesista el 25 oct 2026—:
+--           crece mientras se lee. Un panel sin fecha de cierre no es
+--           reproducible, y una desviación calculada contra un panel
+--           que cambió ayer no es auditable.
+--     Dos corridas de la tesista el 25 oct 2026 lo demuestran:
+--       · sin cierre (>= 2022-01-01)              → 1 519 833 filas
+--       · con cierre (2022-01-01 a 2026-09-30)    → 1 491 175 filas
+--       · diferencia = 28 658, que es la lecturación de octubre
+--     La segunda coincide exacto con las 1 491 175 del CONTROL 3 del
+--     20 oct: el histórico del periodo de la tesis no cambió.
+--
+--     El ~1,7 millones de abajo es UNA ESTIMACIÓN DE ESQUEMA
+--     —57 meses x 29 750 cuentas = 1 695 750— y NO es una
+--     comprobación. La comprobación es el CONTROL A2.3.a, más abajo.
 -- =====================================================================
 
 SELECT nro_cuenta,
@@ -849,6 +936,7 @@ SELECT nro_cuenta,
        fecha_lec
 FROM tfv_historico_lecturador
 WHERE fecha_lec >= DATE '2022-01-01'
+  AND fecha_lec <  DATE '2026-10-01'
 ORDER BY nro_cuenta, fecha_lec;
 
 
@@ -856,7 +944,9 @@ ORDER BY nro_cuenta, fecha_lec;
 -- A2.3.a CONTROL DEL PANEL — el contrato de A2.3 contra lo que sale
 --                                  (25 oct 2026)
 --
---     DOS PROBLEMAS QUE SE LEEN DEL ARCHIVO ANTES DE CORRER NADA.
+--     DOS PROBLEMAS QUE SE LEEN DEL ARCHIVO. EL (2) QUEDÓ RESUELTO EL
+--     25 OCT POR LA TESISTA —DEC-69—; EL (1) SIGUE ABIERTO Y ES EL
+--     QUE HACE CORRER ESTE CONTROL.
 --
 --     (1) A2.3 DECLARA «una fila por cuenta y mes» PERO NO LO HACE.
 --         Viene SIN GROUP BY y SIN DISTINCT: devuelve una fila POR
@@ -865,27 +955,31 @@ ORDER BY nro_cuenta, fecha_lec;
 --         referencia duplicada. Que hoy no haya duplicados no arregla la
 --         consulta: solo la hace funcionar por suerte.
 --
---     (2) LA CIFRA NO CUADRA CON EL CONTROL 3. El CONTROL 3 (L267)
---         midió 1 491 175 filas en la tabla COMPLETA, SIN filtro de
---         fecha. A2.3, que SÍ filtra fecha_lec >= 2022-01-01, devolvió
---         1 519 833: o sea 28 658 filas de MÁS que toda la tabla junta.
---         Un filtrado no puede devolver más que el total, salvo que la
---         tabla haya crecido entre el 20 y el 25 de octubre —DEC-55 y
---         DEC-64 ya dejaron establecido que estas tablas son vivas—.
---         NO SE CONSTRUYE SOBRE EL PANEL SIN SABER CUÁL DE LAS DOS
---         CORRIDAS MANDA.
+--     (2) LA CIFRA NO CUADRABA CON EL CONTROL 3 — RESUELTO EL 25 OCT
+--         POR LA TESISTA. DEC-69.
+--         Dos corridas suyas el mismo día:
+--           · >= 2022-01-01, SIN cierre            → 1 519 833
+--           · 2022-01-01 a 2026-09-30, CON cierre  → 1 491 175
+--         El resto —28 658 filas— ES LA LECTURACIÓN DE OCTUBRE, QUE
+--         ESTÁ EN CURSO, y LA TABLA ES VIVA: ella misma lo declara.
+--         La ventana cerrada coincide exacto con las 1 491 175 del
+--         CONTROL 3 del 20 oct, de modo que EL HISTÓRICO DEL PERÍODO
+--         DE LA TESIS NO HA CAMBIADO. La contradicción no estaba en
+--         los datos: estaba en que A2.3 no traía fecha de cierre.
+--         CONSECUENCIA: EL PANEL SE CORRE SIEMPRE CON CIERRE
+--         2026-09-30. Un panel sin cierre no es reproducible.
 --
 --     A2.3 TAMBIÉN NO TIENE AUTOCALCULO. Lo único escrito es «~1,7
 --     millones de filas», que es una ESTIMACIÓN —57 meses x 29 750
 --     cuentas = 1 695 750—, no una comprobación. Este control la pone.
 --
---     AUTOCHEQUEO 1: filas_desde_2022 DEBE dar lo que devolvió A2.3.
+--     AUTOCHEQUEO 1: filas_ventana DEBE dar lo que devolvió A2.3.
 --         Si no lo da, A2.3 se corrió en otra fecha y manda esta corrida
 --         con su sello.
---     AUTOCHEQUEO 2: filas_totales >= filas_desde_2022. Si NO se
+--     AUTOCHEQUEO 2: filas_totales >= filas_ventana. Si NO se
 --         cumple, ninguna de las dos cifras es utilizable y se repite
 --         las dos seguidas en la misma sesión antes de escribir nada.
---     AUTOCHEQUEO 3: cuentas_mes_distintas == filas_desde_2022 ES LA
+--     AUTOCHEQUEO 3: cuentas_mes_distintas == filas_ventana ES LA
 --         CONDICIÓN DE QUE EL PANEL CUMPLA SU CONTRATO. Si es menor,
 --         A2.3 se corrige con GROUP BY ANTES de usarla, y la diferencia
 --         está en lecturas_sobrantes.
@@ -894,7 +988,7 @@ ORDER BY nro_cuenta, fecha_lec;
 --         alcanza, la A2 no se puede calcular en los términos elegidos y
 --         la contingencia A1 gana terreno.
 --     AUTOCHEQUEO 5: filas_totales = filas_anteriores_2022 +
---         filas_desde_2022 + fecha_nula. Debe cerrar exacto.
+--         filas_ventana + filas_octubre + fecha_nula. Debe cerrar exacto.
 -- =====================================================================
 WITH h AS (
     SELECT nro_cuenta,
@@ -903,7 +997,8 @@ WITH h AS (
       FROM tfv_historico_lecturador
 )
 SELECT COUNT(*)                                               AS filas_totales,
-       COUNT(*) FILTER (WHERE fecha_lec >= DATE '2022-01-01') AS filas_desde_2022,
+       COUNT(*) FILTER (WHERE fecha_lec >= DATE '2022-01-01' AND fecha_lec < DATE '2026-10-01') AS filas_ventana,
+       COUNT(*) FILTER (WHERE fecha_lec >= DATE '2026-10-01') AS filas_octubre,
        COUNT(*) FILTER (WHERE fecha_lec < DATE '2022-01-01')  AS filas_anteriores_2022,
        COUNT(*) FILTER (WHERE fecha_lec IS NULL)              AS fecha_nula,
        MIN(fecha_lec)                                         AS fecha_minima,
@@ -913,13 +1008,13 @@ SELECT COUNT(*)                                               AS filas_totales,
        (SELECT COUNT(*)
           FROM (SELECT 1
                   FROM h
-                 WHERE fecha_lec >= DATE '2022-01-01'
+                 WHERE fecha_lec >= DATE '2022-01-01' AND fecha_lec < DATE '2026-10-01'
                  GROUP BY nro_cuenta, mes) cm)                AS cuentas_mes_distintas,
-       (COUNT(*) FILTER (WHERE fecha_lec >= DATE '2022-01-01'))
+       (COUNT(*) FILTER (WHERE fecha_lec >= DATE '2022-01-01' AND fecha_lec < DATE '2026-10-01'))
          - (SELECT COUNT(*)
               FROM (SELECT 1
                       FROM h
-                     WHERE fecha_lec >= DATE '2022-01-01'
+                     WHERE fecha_lec >= DATE '2022-01-01' AND fecha_lec < DATE '2026-10-01'
                      GROUP BY nro_cuenta, mes) cm2)           AS lecturas_sobrantes
   FROM h;
 

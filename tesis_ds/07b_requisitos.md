@@ -145,7 +145,7 @@ Sin esto, el método no arranca.
 | ID | Requisito | Estado |
 |:--|:--|:--|
 | R9.1 | El panel de consumo con **una fila por cuenta y mes** existe y está verificado | **P — bloqueante.** Ver §4.3 |
-| R9.2 | El histórico cubre **enero de 2022 a la fecha de corrida** | **P — `A2.3.a` sin correr** |
+| R9.2 | El histórico cubre **enero de 2022 a septiembre de 2026**: ventana **fija**, con **cierre obligatorio el 30/09/2026** | **P — `A2.3.a` sin correr.** **Cierre añadido por DEC-69:** la tesis cubre 57 meses y la lecturación de octubre está en curso, de modo que «a la fecha de corrida» era un blanco móvil —un panel sin cierre no es reproducible, y una desviación contra un panel que cambió ayer no es auditable— |
 | R9.3 | Las tablas son **vivas**: toda cifra lleva **sello de fecha** | **F** — DEC-55, DEC-64 |
 | R9.4 | El catálogo de 48 códigos de irregularidad está disponible | **F** — medido 6 oct 2026 |
 
