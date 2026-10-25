@@ -1020,6 +1020,140 @@ SELECT COUNT(*)                                               AS filas_totales,
 
 
 -- =====================================================================
+-- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
+--                                  (25 oct 2026)
+--
+--     DICTAMEN DE LA TESISTA, 25 OCT 2026 — CADENA DECLARADA:
+--         tfv_ruta (id_ruta)
+--             ^ tfv_cliente (id_cliente, id_ruta, nro_cuenta)
+--                     ^ tfv_lectura (nro_cuenta)
+--     Y para el método lo que manda es su variante sobre el PANEL:
+--         tfv_historico_lecturador.nro_cuenta -> tfv_cliente.nro_cuenta
+--                                              -> tfv_ruta.id_ruta
+--
+--     POR QUÉ SE VERIFICA Y NO SE TOMA LA PALABRA. R3.4 pide que el
+--     campo con el que se agrupa EXISTA EN EL DATO. Que las tablas
+--     existan es solo la primera de cuatro condiciones; las otras
+--     tres son las que hacen que la agrupación sea posible:
+--
+--       (1) COBERTURA — ¿toda cuenta del panel tiene fila en
+--           tfv_cliente? Una cuenta sin fila es una cuenta sin ruta,
+--           y una alerta sin ruta no se puede agrupar. DEC-57
+--           establece que la agrupación es PARTE DEL MÉTODO y no un
+--           agregado posterior, así que una alerta huérfana de ruta
+--           rompe el método, no solo el informe.
+--       (2) UNICIDAD — ¿cada cuenta cae en UN SOLO id_ruta? Si
+--           tfv_cliente tuviera dos filas para la misma cuenta con
+--           rutas distintas, «la ruta de la cuenta» no estaría
+--           definida y habría que fijar una regla de desempate —la
+--           vigente, la del periodo leído, la mayor— ANTES de diseñar
+--           el agrupador en E7c.
+--       (3) NO NULIDAD — id_ruta nulo es lo mismo que sin ruta.
+--       (4) GRANULARIDAD — cuántas rutas hay y cómo se reparten las
+--           cuentas. No es un dato decorativo: la revisión es de 1 a
+--           3 técnicos con 3 a 4 horas TOPE (DEC-57), de modo que una
+--           ruta que acapara la mitad de la ciudad y una con doscientas
+--           cuentas no son la misma unidad de trabajo.
+--
+--     AUTOCHEQUEO 1 (6.d): cuentas_en_panel = cuentas_sin_fila +
+--         cuentas_sin_id_ruta + cuentas_de_una_ruta +
+--         cuentas_con_varias_rutas. Los cuatro cubos son excluyentes
+--         y deben cerrar el total.
+--     AUTOCHEQUEO 2 (6.e): la suma de `cuentas` por ruta debe ser
+--         exactamente `cuentas_de_una_ruta` del 6.d.
+--     AUTOCHEQUEO 3 (6.c): cuentas_con_varias_rutas debe ser 0. Si no
+--         lo es, NO se agrupa: se fija la regla de desempate con la
+--         tesista y se vuelve a correr.
+--     AUTOCHEQUEO 4 (6.b): id_ruta_nulo y nro_cuenta_nulo deben ser 0.
+--     AVISO: tfv_ruta y tfv_cliente pueden ser tablas vivas como las
+--         demás —toda corrida lleva sello de fecha.
+-- =====================================================================
+
+-- 6.a Las dos tablas existen y estas son sus columnas
+SELECT table_name, column_name, data_type
+  FROM information_schema.columns
+ WHERE table_name IN ('tfv_ruta', 'tfv_cliente')
+ ORDER BY table_name, ordinal_position;
+-- Si una de las dos no aparece, o si a tfv_cliente le falta
+-- `nro_cuenta` o `id_ruta`, R3.4 NO se cumple y R3 se reabre.
+
+-- 6.b UNICIDAD EN BRUTO de tfv_cliente
+SELECT COUNT(*)                                 AS filas_cliente,
+       COUNT(DISTINCT nro_cuenta)               AS cuentas,
+       COUNT(DISTINCT id_ruta)                  AS rutas,
+       COUNT(*) FILTER (WHERE id_ruta IS NULL)     AS id_ruta_nulo,
+       COUNT(*) FILTER (WHERE nro_cuenta IS NULL)  AS nro_cuenta_nulo
+  FROM tfv_cliente;
+-- filas_cliente > cuentas no es un error por sí mismo: una cuenta
+-- puede tener varios clientes. LO ES cuando además tienen rutas
+-- distintas, y eso lo decide el 6.c.
+
+-- 6.c LA CONDICIÓN QUE ZANJA: cada cuenta cae en UNA sola ruta
+SELECT COUNT(*)                                    AS cuentas,
+       COUNT(*) FILTER (WHERE n_rutas = 1)         AS cuentas_de_una_ruta,
+       COUNT(*) FILTER (WHERE n_rutas > 1)         AS cuentas_con_varias_rutas,
+       COUNT(*) FILTER (WHERE n_rutas = 0)         AS cuentas_con_ruta_nula,
+       MAX(n_rutas)                                AS max_rutas_por_cuenta
+  FROM ( SELECT nro_cuenta, COUNT(DISTINCT id_ruta) AS n_rutas
+           FROM tfv_cliente
+          WHERE nro_cuenta IS NOT NULL
+          GROUP BY nro_cuenta ) c;
+-- cuentas_con_varias_rutas > 0 => la ruta de la cuenta NO está
+-- definida y hay que fijar la regla de desempate ANTES de E7c.
+
+-- 6.d COBERTURA DEL PANEL — la que decide si se puede agrupar
+WITH panel AS (
+    SELECT DISTINCT nro_cuenta
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+cli AS (
+    SELECT nro_cuenta,
+           COUNT(DISTINCT id_ruta) AS n_rutas
+      FROM tfv_cliente
+     WHERE nro_cuenta IS NOT NULL
+     GROUP BY nro_cuenta
+)
+SELECT (SELECT COUNT(*) FROM panel)                        AS cuentas_en_panel,
+       COUNT(*) FILTER (WHERE c.nro_cuenta IS NULL)        AS cuentas_sin_fila,
+       COUNT(*) FILTER (WHERE c.n_rutas = 0)               AS cuentas_sin_id_ruta,
+       COUNT(*) FILTER (WHERE c.n_rutas = 1)               AS cuentas_de_una_ruta,
+       COUNT(*) FILTER (WHERE c.n_rutas > 1)               AS cuentas_con_varias_rutas
+  FROM panel p
+  LEFT JOIN cli c ON c.nro_cuenta = p.nro_cuenta;
+
+-- 6.e GRANULARIDAD: cómo se reparten las cuentas del panel por ruta
+WITH panel AS (
+    SELECT DISTINCT nro_cuenta
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+cli AS (
+    SELECT nro_cuenta, MIN(id_ruta) AS id_ruta
+      FROM tfv_cliente
+     WHERE nro_cuenta IS NOT NULL
+       AND id_ruta IS NOT NULL
+     GROUP BY nro_cuenta
+    HAVING COUNT(DISTINCT id_ruta) = 1
+)
+SELECT c.id_ruta,
+       COUNT(*)                                              AS cuentas,
+       ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2)    AS pct
+  FROM panel p
+  JOIN cli c ON c.nro_cuenta = p.nro_cuenta
+ GROUP BY c.id_ruta
+ ORDER BY cuentas DESC;
+-- MIRAR LA FORMA, NO SOLO EL TOTAL. Si unas pocas rutas acaparan
+-- casi todas las cuentas, agrupar por ruta no nivela la carga de los
+-- 1 a 3 técnicos; si hay rutas con poquísimas, cada alerta se revisa
+-- casi aislada. La forma del reparto decide si la agrupación sirve
+-- para REPARTIR el trabajo o solo para ORDENARLO, y eso se traduce a
+-- E7c.
+
+
+-- =====================================================================
 -- A2.4 — AGREGADOS MENSUALES (los tres de DATOS.xlsx, extendidos a 2022)
 -- =====================================================================
 

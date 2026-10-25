@@ -171,11 +171,13 @@ Entrenar un clasificador tomando como positivos los reclamos procedentes —174 
 
 ---
 
-## Gate de E7a — abierto
+## Gate de E7a — cerrado
 
-**Pendiente de la tesista:**
+**Decisión de la tesista, 25 de octubre de 2026 (DEC-70):**
 
-1. **Confirmar o rechazar la selección de A2** como criterio principal, con A1 como contingencia y A3 reclasificada como paso previo.
-2. **Confirmar que la tipología se mantiene en `método`** — consecuencia directa de no elegir A4.
+1. **A2 —ciclo anual por cuenta— es el criterio principal de detección.** Queda con **A1** —ventana de 6 meses— como regla de **contingencia declarada** para cuentas con menos de cuatro ciclos anuales completos, y con **A3** —normalidad por segmento— reclasificada como **paso previo obligatorio del método** y no como alternativa competidora. *Respuesta (a).*
+2. **La tipología se mantiene en `método`**, con instanciación de apoyo *exemplar*. *Respuesta (a).* Es consecuencia directa de no haber elegido A4.
 
-**No se cierra esta etapa sin decisión explícita de la tesista sobre ambos puntos.** Una etapa de alternativas sin elección registrada no es una etapa cerrada: es un listado.
+**Efecto en las demás etapas.** Al confirmarse A2 **no se reabren `R1.2`, `R3.1`, `R6.3`, `R8` ni `R9`**, que era la condición que fijaba la cabecera de `07b_requisitos.md`. **El punto 1 del gate de E7b queda cumplido.**
+
+**Lo que este gate NO resuelve.** **(a)** Que **A3 se pruebe en E7c**: aquí solo se clasificó su papel en el método, no se midió su efecto. **(b)** Que **A2 tenga con qué calcularse**: la elección está cerrada, el dato todavía no — **`A2.3.a` sigue sin correr.** Una alternativa elegida sin panel es una elección, no una medición.

@@ -1,8 +1,8 @@
 # E7b — Requisitos del artefacto
 
-> **Borrador abierto el 25 de octubre de 2026, versión v1. Gate abierto.**
+> **Borrador abierto el 25 de octubre de 2026, versión v1. Gate abierto — punto 1 cumplido.**
 >
-> **Hipótesis de trabajo autorizada por la tesista el 25 oct 2026:** *«sí, avanza»* — E7b se redacta tomando **A2 (ciclo anual por cuenta)** como criterio de detección. La selección formal de **E7a** **sigue sin cerrar** en sus dos puntos; si el gate de E7a cambia la alternativa, **se reabre esta etapa y se revisan los requisitos marcados con ◆**.
+> **Hipótesis de trabajo autorizada por la tesista el 25 oct 2026:** *«sí, avanza»* — E7b se redacta tomando **A2 (ciclo anual por cuenta)** como criterio de detección. **La selección de E7a se confirmó el 25 oct 2026 (DEC-70): A2 es el criterio principal, con A1 como contingencia y A3 como paso previo, y la tipología se mantiene en `método`.** La condición de reabrirla —*si el gate de E7a cambia la alternativa, se reabre esta etapa y se revisan los requisitos marcados con ◆*— **no se activó: no se reabren `R1.2`, `R3.1`, `R6.3`, `R8` ni `R9`.**
 >
 > **Insumos:** `07a_alternativas.md` (E7a, v1), `04_marco_teorico.md` §3.1, §3.3, §3.4, §3.5, §3.6 y §8, `02_delimitacion.md` §1 —los cuatro criterios de éxito y la nota de linaje del criterio 3—, `DEC-45`, `DEC-57`, `DEC-62`, `DEC-64` y `DEC-65`.
 
@@ -79,7 +79,7 @@ Convención: **F = fijado** — no depende de nada pendiente. ◆ **= depende de
 | R3.1 | La salida del método es un **listado de alertas agrupadas por ruta**, nunca cuentas sueltas | **F** |
 | R3.2 | La agrupación es **parte del método y no un agregado posterior** — así lo exige la nota de linaje del criterio 3 | **F** |
 | R3.3 | Cada grupo lleva el **número de cuentas** y la **estimación de tiempo** que implica | **F** |
-| R3.4 | El campo con el que se agrupa —la ruta— **debe existir en el dato** y su identificador se fija en E7c | **P** — ver Gate, punto 4 |
+| R3.4 | El campo con el que se agrupa —la ruta— **debe existir en el dato** y su identificador se fija en E7c | **P — cadena declarada, sin verificar.** Dictamen de la tesista, 25 oct 2026 (DEC-70): **`tfv_ruta (id_ruta)` ← `tfv_cliente (id_cliente, id_ruta, nro_cuenta)` ← `tfv_lectura (nro_cuenta)`**, y sobre el panel **`tfv_historico_lecturador.nro_cuenta` → `tfv_cliente.nro_cuenta` → `tfv_ruta`**. **Se comprueba con el CONTROL 6 —secciones 6.a a 6.e—, escrito y sin correr:** columnas de las dos tablas, unicidad, **cobertura del panel** y reparto por ruta. **Mientras no corra, se sabe que las tablas existen, pero no que toda cuenta del panel tenga fila en `tfv_cliente`, ni que cada cuenta tenga exactamente una ruta, ni cómo se reparte.** |
 
 ### R4 — Cada alerta lleva su explicación ◆ F
 
@@ -239,13 +239,13 @@ El criterio **2** —falsos positivos— y el criterio **3** —capacidad— **e
 
 ---
 
-## Gate de E7b — abierto
+## Gate de E7b — abierto: 1 de 4 puntos cumplidos
 
 **Se cierra esta etapa cuando se cumplan cuatro cosas:**
 
-1. **E7a cierra su gate** y confirma A2. ◆ *Si dice otra cosa, se reabren R1.2, R3.1, R6.3, R8 y R9.*
-2. **`A2.3.a` corre y su panel se da por verificado.** Sin esto no hay R9.1 y no hay §4.3.
-3. **`θ` se fija con su valor y su sello de fecha** por los cinco pasos de §4.2, y se vuelca al criterio 2 de `02_delimitacion.md`.
-4. **El campo de ruta existe en el dato y su identificador se fija.** **No se ha verificado.** Sin él, R3.1 y R3.2 no se pueden cumplir: un método que no sabe a qué ruta pertenece cada cuenta no puede agrupar, y DEC-57 establece que **la agrupación es parte del método y no un agregado posterior**. Si la ruta no está en el dato, **R3 se reabre** y hay que decidir con la tesista con qué otro campo se agrupa.
+1. **CUMPLIDO — 25 oct 2026, DEC-70.** **E7a cerró su gate y confirmó A2** como criterio principal, con **A1** como contingencia declarada y **A3** como paso previo del método; la tipología se mantiene en **`método`**. **La condición de reapertura —*se reabren R1.2, R3.1, R6.3, R8 y R9*— no se activó**, porque no cambió la alternativa.
+2. **PENDIENTE.** **`A2.3.a` corre y su panel se da por verificado.** Sin esto no hay **R9.1** y no hay §4.3. **Se corre con la ventana cerrada 2022-01-01 a 2026-09-30 —DEC-69— y devuelve 11 columnas.**
+3. **PENDIENTE.** **`θ` se fija con su valor y su sello de fecha** por los cinco pasos de §4.2, y se vuelca al criterio 2 de `02_delimitacion.md`.
+4. **EN CURSO — cadena declarada, sin verificar.** **La tesista declaró el 25 oct 2026 que la ruta existe:** **`tfv_ruta (id_ruta)` ← `tfv_cliente (id_cliente, id_ruta, nro_cuenta)` ← `tfv_lectura (nro_cuenta)`**, y sobre el panel **`tfv_historico_lecturador.nro_cuenta` → `tfv_cliente.nro_cuenta` → `tfv_ruta`**. **Eso cubre la EXISTENCIA, que era la mitad del punto; falta la APTITUD.** **Sin cobertura y sin unicidad, R3.1 y R3.2 no se pueden cumplir**: un método que no sabe a qué ruta pertenece cada cuenta no puede agrupar, y **DEC-57 establece que la agrupación es parte del método y no un agregado posterior.** **Se comprueba con el `CONTROL 6`, secciones 6.a a 6.e, escrito y sin correr.** **Si el panel tiene cuentas sin fila en `tfv_cliente`, o cuentas con más de una ruta, este punto NO se cierra** y hay que decidir con la tesista la regla de desempate —la ruta vigente, la del periodo leído— o el campo alternativo.
 
-**Los cuatro siguen sin tocar.** Mientras eso pase, **no se escribe un solo número nuevo en ningún documento**: el procedimiento está fijado, la restricción está fijada, y el valor espera a su consulta —que es la única forma en que un umbral deja de ser una opinión.
+**Un punto cumplido, uno en curso y dos sin tocar.** Mientras eso pase, **no se escribe un solo número nuevo en ningún documento**: el procedimiento está fijado, la restricción está fijada, y el valor espera a su consulta —que es la única forma en que un umbral deja de ser una opinión—.
