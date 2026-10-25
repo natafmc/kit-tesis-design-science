@@ -81,6 +81,8 @@ Convención: **F = fijado** — no depende de nada pendiente. ◆ **= depende de
 | R3.3 | Cada grupo lleva el **número de cuentas** y la **estimación de tiempo** que implica | **F** |
 | R3.4 | El campo con el que se agrupa —la ruta— **debe existir en el dato** y su identificador se fija en E7c | **P — cadena declarada, sin verificar.** Dictamen de la tesista, 25 oct 2026 (DEC-70): **`tfv_ruta (id_ruta)` ← `tfv_cliente (id_cliente, id_ruta, nro_cuenta)` ← `tfv_lectura (nro_cuenta)`**, y sobre el panel **`tfv_historico_lecturador.nro_cuenta` → `tfv_cliente.nro_cuenta` → `tfv_ruta`**. **Se comprueba con el CONTROL 6 —secciones 6.a a 6.e—, escrito y sin correr:** columnas de las dos tablas, unicidad, **cobertura del panel** y reparto por ruta. **Mientras no corra, se sabe que las tablas existen, pero no que toda cuenta del panel tenga fila en `tfv_cliente`, ni que cada cuenta tenga exactamente una ruta, ni cómo se reparte.** |
 
+**Regla de desempate fijada por la tesista el 25 oct 2026 — `DEC-71`.** Si una cuenta aparece con **más de una ruta**, **manda la ruta vigente en `tfv_cliente`**. Sin una sola ruta por cuenta, «agrupar por ruta» no está definido, de modo que esta regla es lo que hace enunciable `R3.1`. **Pendiente confirmar con la `6.a` que `tfv_cliente` tiene un campo que exprese esa vigencia** —estado, baja, fecha fin—: **si no lo tiene, la regla está escrita pero no se puede aplicar** y hay que volver con la tesista a elegir entre las que sí se calculan.
+
 ### R4 — Cada alerta lleva su explicación ◆ F
 
 *(E4 §3.5, sobre Nwafor et al. (2023) y Noorchenarboo y Grolinger (2025): quien verifica no puede adoptar una alerta que no entiende.)*

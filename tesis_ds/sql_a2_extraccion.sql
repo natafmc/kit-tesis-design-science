@@ -1045,9 +1045,10 @@ SELECT COUNT(*)                                               AS filas_totales,
 --       (2) UNICIDAD — ¿cada cuenta cae en UN SOLO id_ruta? Si
 --           tfv_cliente tuviera dos filas para la misma cuenta con
 --           rutas distintas, «la ruta de la cuenta» no estaría
---           definida y habría que fijar una regla de desempate —la
---           vigente, la del periodo leído, la mayor— ANTES de diseñar
---           el agrupador en E7c.
+--           definida. **LA REGLA YA ESTÁ FIJADA —DEC-71, 25 OCT
+--           2026—: MANDA LA RUTA VIGENTE EN tfv_cliente.** Lo que
+--           falta por ver no es la regla, es si la tabla puede
+--           aplicarla, y eso lo dice la 6.a.
 --       (3) NO NULIDAD — id_ruta nulo es lo mismo que sin ruta.
 --       (4) GRANULARIDAD — cuántas rutas hay y cómo se reparten las
 --           cuentas. No es un dato decorativo: la revisión es de 1 a
@@ -1062,8 +1063,10 @@ SELECT COUNT(*)                                               AS filas_totales,
 --     AUTOCHEQUEO 2 (6.e): la suma de `cuentas` por ruta debe ser
 --         exactamente `cuentas_de_una_ruta` del 6.d.
 --     AUTOCHEQUEO 3 (6.c): cuentas_con_varias_rutas debe ser 0. Si no
---         lo es, NO se agrupa: se fija la regla de desempate con la
---         tesista y se vuelve a correr.
+--         lo es NO se agrupa todavía, pero **TAMPOCO SE VUELVE A
+--         PREGUNTAR**: manda DEC-71 —la ruta vigente en tfv_cliente—
+--         y lo que hay que comprobar es que la 6.a encuentre la
+--         columna que expresa esa vigencia.
 --     AUTOCHEQUEO 4 (6.b): id_ruta_nulo y nro_cuenta_nulo deben ser 0.
 --     AVISO: tfv_ruta y tfv_cliente pueden ser tablas vivas como las
 --         demás —toda corrida lleva sello de fecha.
@@ -1076,6 +1079,15 @@ SELECT table_name, column_name, data_type
  ORDER BY table_name, ordinal_position;
 -- Si una de las dos no aparece, o si a tfv_cliente le falta
 -- `nro_cuenta` o `id_ruta`, R3.4 NO se cumple y R3 se reabre.
+-- BUSCAR TAMBIÉN, EN LA COLUMNA `column_name`, QUÉ CAMPO EXPRESA LA
+-- VIGENCIA DE UNA FILA —estado, baja, fecha fin, vigencia—. Es lo
+-- que hace implementable DEC-71, que manda la ruta vigente. La
+-- tesista declaró `id_cliente, id_ruta, nro_cuenta` y «otros campos»
+-- sin nombrarlos. Si entre esos otros no hay ninguno que distinga la
+-- fila en pie, «la ruta vigente» no está definida y DEC-71 queda
+-- escrita pero SIN IMPLEMENTAR: en ese caso se vuelve con la tesista
+-- a elegir entre las que sí se pueden calcular —la del periodo
+-- leído, la que más veces aparece—.
 
 -- 6.b UNICIDAD EN BRUTO de tfv_cliente
 SELECT COUNT(*)                                 AS filas_cliente,
@@ -1099,7 +1111,11 @@ SELECT COUNT(*)                                    AS cuentas,
           WHERE nro_cuenta IS NOT NULL
           GROUP BY nro_cuenta ) c;
 -- cuentas_con_varias_rutas > 0 => la ruta de la cuenta NO está
--- definida y hay que fijar la regla de desempate ANTES de E7c.
+-- definida en el dato. **NO ES UNA PARADA QUE OBLIGUE A VOLVER A
+-- PREGUNTAR: LA REGLA YA ESTÁ —DEC-71— Y MANDA LA RUTA VIGENTE EN
+-- tfv_cliente.** La parada que queda es comprobar, con la salida de
+-- la 6.a, que esa vigencia se puede calcular con las columnas que la
+-- tabla tiene.
 
 -- 6.d COBERTURA DEL PANEL — la que decide si se puede agrupar
 WITH panel AS (
@@ -1124,6 +1140,14 @@ SELECT (SELECT COUNT(*) FROM panel)                        AS cuentas_en_panel,
   LEFT JOIN cli c ON c.nro_cuenta = p.nro_cuenta;
 
 -- 6.e GRANULARIDAD: cómo se reparten las cuentas del panel por ruta
+--     OJO: el `HAVING COUNT(DISTINCT id_ruta) = 1` deja FUERA a las
+--     cuentas con más de una ruta. Está así a propósito, para que el
+--     autocalculeo 2 cierre exacto contra `cuentas_de_una_ruta` del
+--     6.d. **PERO SI EL 6.c DA > 0, ESTE 6.e MIDE MENOS DE LO QUE EL
+--     MÉTODO VA A AGRUPAR** y hay que reescribirlo aplicando DEC-71
+--     —la ruta vigente— en lugar del HAVING. No se reescribe ahora:
+--     hacerlo a ciegas sería inventar la columna que decide cuál es
+--     la vigente.
 WITH panel AS (
     SELECT DISTINCT nro_cuenta
       FROM tfv_historico_lecturador
