@@ -1145,6 +1145,35 @@ LIMIT 50;
 -- lecturas muy antiguas, es dato real y solo hay que declararlo
 -- —hipótesis (a)—.
 
+-- 7.d DÓNDE CAE 1601 EN LA CADENA DE LA CUENTA 110589
+--     La fila imposible es UNA SOLA —cuenta 110589, lec_actual 1601,
+--     consumo 282, id_lectura 1308446—. Se ordena por `lec_actual` y
+--     no por fecha, precisamente para que la fila mal fechada no se
+--     escape al principio: lo que importa es EN QUÉ PUNTO DE LA
+--     ÍNDICE se mete y qué lecturas la rodean.
+SELECT fecha_lec, lec_actual, consumo, id_lectura
+  FROM tfv_historico_lecturador
+ WHERE nro_cuenta = 110589
+ ORDER BY lec_actual;
+
+-- 7.e ¿LA CUENTA 110589 TIENE LECTURA DE MAYO DE 2023?
+--     Esta es la consulta que zanja. Se filtra por 2023, así que la
+--     fila mal fechada QUEDA FUERA por construcción:
+--       · SI LE FALTA MAYO —y 1601 cae en la serie entre las lecturas
+--         de 2023—, ESA FILA ES LA DE MAYO DE 2023 con el año mal
+--         escrito: FALTA EN EL PANEL y se decide P3.
+--       · SI MAYO ESTÁ, la fila no es de 2023: es un resto ajeno y
+--         solo hay que declararla.
+--     AUTOCHEQUEO: contar las filas. Con 12 la cuenta tiene su año
+--     completo y la fila imposible no le falta; con 11, le falta una.
+SELECT fecha_lec, lec_actual, consumo, id_lectura,
+       COUNT(*) OVER () AS filas_del_anio
+  FROM tfv_historico_lecturador
+ WHERE nro_cuenta = 110589
+   AND fecha_lec >= DATE '2023-01-01'
+   AND fecha_lec <  DATE '2024-01-01'
+ ORDER BY fecha_lec;
+
 
 -- =====================================================================
 -- CONTROL 8 — LOS 5 619: LA FORMA REAL DE LOS DUPLICADOS DEL PANEL
@@ -1238,6 +1267,44 @@ LIMIT 20;
 -- más reciente es siempre la mayor —eso sería una corrección al
 -- alza— o si el orden es azar, porque el criterio de colapso depende
 -- de eso y no de mi preferencia.
+
+-- 8.c LOS 5 619 MES A MES: ¿ES UN MES MALO O SON LOS 57?
+--     Esta consulta decide la forma de la respuesta a P2, y cambia lo
+--     que hay que hacer:
+--       · SI ESTÁN CONCENTRADOS en uno o dos meses, ES UN CARGUE
+--         ERRÓNEO AISLADO —la nota de la tesista apunta a febrero de
+--         2022, cuando cargaron el archivo de enero por error— y se
+--         resuelve declarando ese mes, sin inventar una regla general
+--         para un problema que no es general.
+--       · SI ESTÁN REPARTIDOS por los 57 meses, ES SISTEMÁTICO
+--         —relecturas ordinarias— y entonces sí hace falta una regla
+--         de colapso general, justificada y aplicada a todo el panel.
+--     AUTOCHEQUEO: la suma de cuentas_mes_duplicadas DEBE dar 5 619,
+--         igual que 8.a y que A2.3.a. Si no da, una de las corridas
+--         no es la misma.
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec) AS mes,
+           consumo
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+d AS (
+    SELECT nro_cuenta,
+           mes,
+           (COUNT(DISTINCT consumo) <= 1) AS consumo_identico
+      FROM w
+     GROUP BY nro_cuenta, mes
+    HAVING COUNT(*) > 1
+)
+SELECT mes::date,
+       COUNT(*)                                  AS cuentas_mes_duplicadas,
+       COUNT(*) FILTER (WHERE consumo_identico)  AS consumo_identico,
+       COUNT(*) FILTER (WHERE NOT consumo_identico) AS consumo_distinto
+  FROM d
+ GROUP BY mes
+ ORDER BY mes;
 
 
 -- =====================================================================
