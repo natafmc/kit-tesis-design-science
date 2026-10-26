@@ -903,6 +903,66 @@ FROM tfv_reclamo_lectura rl;
 
 
 -- =====================================================================
+-- CONTROL 9 — ¿LOS 8 O LOS 16? EL 5.j Y EL 5.k NO MIDEN LO MISMO
+--                                  (25 oct 2026)
+--
+--     LO QUE SE VIO AL CRUZAR LAS SALIDAS DE HOY:
+--       · 5.k, ventana, filas con tipo         -> 1 037
+--       · 5.k, ventana, filas sin tipo         ->    16
+--       · 5.k, ventana, filas con lectura      -> 1 053  == la hoja
+--       · 5.j, ventana, RECLAMOS con tipo      -> 1 045
+--       · DEC-65 dedujo sin tipo por resta     ->     8  (1 053 - 1 045)
+--
+--     LA CONTRADICCIÓN: 5.j da 1 045 y 5.k da 1 037 con la MISMA
+--     ventana y el mismo JOIN. COUNT(DISTINCT) NUNCA puede dar más
+--     que COUNT(*), así que o uno de los dos no filtra igual, o
+--     miden poblaciones distintas. Y la cifra 8 aparece dos veces con
+--     signo contrario: falta 8 en «con tipo» y sobran 8 en «sin
+--     tipo».
+--
+--     LAS TRES HIPÓTESIS, en orden de lo que cambiaría:
+--       (a) SON 8 RECLAMOS CON DOS ENLACES CADA UNO. Cuentan 16 filas
+--           y 8 reclamos; los dos controles tendrían razón y lo que
+--           habría que corregir es el recuento de DEC-65, no los
+--           datos.
+--       (b) SON 16 RECLAMOS DISTINTOS. Entonces DEC-65 está corto en
+--           8 y el 5.j es el que no cuadra.
+--       (c) ES UN EFECTO DE LA TABLA VIVA. El 5.j se corrió el 24 oct
+--           y el 5.k el 25 oct; entre las dos corridas cambió algo
+--           dentro de una ventana que se supone cerrada. Sería el
+--           segundo indicio —después de octubre en A2.3— de que
+--           «cerrado» no significa «inmóvil».
+--
+--     AUTOCHEQUEO 1: reclamos_con_lectura DEBE dar 1 053, la misma
+--         cifra de la hoja y la del propio 5.j.
+--     AUTOCHEQUEO 2: filas_sin_tipo DEBE dar 16 y filas_con_tipo
+--         DEBE dar 1 037, que es lo que produjo el 5.k. Si no lo
+--         dan, el 5.k no se reproduce y se repite antes de usarlo.
+--     AUTOCHEQUEO 3: lo que falta es reclamos_sin_tipo. Si da 8, se
+--         sostiene DEC-65 y se anota que el 5.k contaba filas. Si da
+--         16, se rectifica DEC-65.
+-- =====================================================================
+
+WITH wl AS (
+    SELECT rl.id_reclamo,
+           t.tipo_lectura
+      FROM tfv_reclamo r
+      JOIN tfv_reclamo_lectura rl ON rl.id_reclamo = r.id_reclamo
+      LEFT JOIN tfv_lectura t     ON t.id_lectura  = rl.id_lectura
+     WHERE r.fecha_hora_reg >= DATE '2022-01-01'
+       AND r.fecha_hora_reg <  DATE '2026-10-01'
+)
+SELECT COUNT(*) FILTER (WHERE tipo_lectura IS NULL)    AS filas_sin_tipo,
+       COUNT(DISTINCT id_reclamo)
+              FILTER (WHERE tipo_lectura IS NULL)      AS reclamos_sin_tipo,
+       COUNT(*) FILTER (WHERE tipo_lectura IS NOT NULL) AS filas_con_tipo,
+       COUNT(DISTINCT id_reclamo)
+              FILTER (WHERE tipo_lectura IS NOT NULL)  AS reclamos_con_tipo,
+       COUNT(DISTINCT id_reclamo)                      AS reclamos_con_lectura
+  FROM wl;
+
+
+-- =====================================================================
 -- A2.3 — PANEL DE CONSUMO: una fila por cuenta y mes
 -- Sin esto no hay detección: las tablas agregadas no permiten calcular
 -- desviaciones por cuenta.
@@ -1017,6 +1077,167 @@ SELECT COUNT(*)                                               AS filas_totales,
                      WHERE fecha_lec >= DATE '2022-01-01' AND fecha_lec < DATE '2026-10-01'
                      GROUP BY nro_cuenta, mes) cm2)           AS lecturas_sobrantes
   FROM h;
+
+
+-- =====================================================================
+-- CONTROL 7 — LA FECHA IMPOSIBLE: fecha_minima CON AÑO 0023
+--                                  (25 oct 2026, sobre A2.3.a)
+--
+--     QUÉ DIO A2.3.a QUE OBLIGA A ESTE CONTROL:
+--       · fecha_minima            = 12/5/0023   -> AÑO 0023
+--       · filas_anteriores_2022   = 184 732
+--       · meses                   = 68
+--       · fecha_maxima            = 22/10/2026
+--
+--     POR QUÉ NO SE PASA POR ALTO. La ventana del panel es
+--     2022-01-01 a 2026-09-30 y el filtro es `fecha_lec >=
+--     2022-01-01`. UNA FILA CON EL AÑO MAL ESCRITO CAE FUERA DE LA
+--     VENTANA aunque su lectura corresponda a 2023. Eso no ensucia el
+--     panel: LO DEJA INCOMPLETO, que es peor, porque una fila ausente
+--     no se ve en ningún autocalculeo —los cinco de A2.3.a cierran
+--     exacto aunque esa fila esté fuera—.
+--
+--     DOS HIPÓTESIS, Y LAS DOS IMPORTAN:
+--       (a) ES DATO REAL ANTIGUO. La tabla trae lecturas previas a
+--           2022 y una de ellas tiene el año mal escrito. Efecto
+--           sobre el panel: NINGUNO; solo hay que declararlo.
+--       (b) ES UNA LECTURA DE 2023 CON EL AÑO DE DOS DÍGITOS —clásico
+--           `23` leído como año 23 en vez de 2023—. Efecto: ESA FILA
+--           FALTA EN EL PANEL, y si el patrón se repite faltan más.
+--           Habría que corregir el año ANTES de calcular cualquier
+--           desviación, porque una cuenta con un mes de menos en su
+--           serie no es una cuenta con un dato faltante: es una
+--           cuenta cuyo ciclo anual está roto.
+--
+--     AUTOCHEQUEO 1 (7.a): la suma de `filas` por año DEBE cerrar
+--         exacto con filas_totales del A2.3.a = 1 704 565.
+--     AUTOCHEQUEO 2 (7.b): filas_anteriores_2000. Si es 0, manda la
+--         hipótesis (a); si es mayor que 0, manda la (b).
+--     AVISO: la tabla es viva —toda corrida lleva sello de fecha.
+-- =====================================================================
+
+-- 7.a PERFIL COMPLETO POR AÑO — incluye los años imposibles
+SELECT EXTRACT(YEAR FROM fecha_lec)::int AS anio,
+       COUNT(*)                          AS filas,
+       COUNT(DISTINCT nro_cuenta)        AS cuentas,
+       MIN(fecha_lec)                    AS fecha_minima,
+       MAX(fecha_lec)                    AS fecha_maxima
+  FROM tfv_historico_lecturador
+ GROUP BY 1
+ ORDER BY 1;
+-- Esperar años de 2021 a 2026. Si aparece algún año por debajo de
+-- 2000, ese es el problema. AUTOCHEQUEO 1: SUM(filas) = 1 704 565.
+
+-- 7.b CUÁNTAS FILAS TIENEN EL AÑO ANTES DE 2000
+SELECT COUNT(*) AS filas_anteriores_2000
+  FROM tfv_historico_lecturador
+ WHERE fecha_lec < DATE '2000-01-01';
+
+-- 7.c ESAS FILAS, EN BRUTO
+SELECT fecha_lec, nro_cuenta, lec_actual, consumo, id_lectura
+  FROM tfv_historico_lecturador
+ WHERE fecha_lec < DATE '2000-01-01'
+ ORDER BY fecha_lec
+LIMIT 50;
+-- QUÉ MIRAR: si `lec_actual` sigue la escala de las lecturas de 2023
+-- de ESA MISMA cuenta, el año está mal escrito y la fila le
+-- pertenece a 2023 —hipótesis (b)—. Si el número es coherente con
+-- lecturas muy antiguas, es dato real y solo hay que declararlo
+-- —hipótesis (a)—.
+
+
+-- =====================================================================
+-- CONTROL 8 — LOS 5 619: LA FORMA REAL DE LOS DUPLICADOS DEL PANEL
+--                                  (25 oct 2026, sobre A2.3.a)
+--
+--     QUÉ DIO A2.3.a — AUTOCHEQUEO 3 NO CIERRÓ:
+--       · filas_ventana            = 1 491 175
+--       · cuentas_mes_distintas    = 1 485 556
+--       · lecturas_sobrantes       =     5 619   <- exacto
+--
+--     El contrato de A2.3 es «una fila por cuenta y mes» y NO SE
+--     CUMPLE: hay 5 619 filas de más, lecturas repetidas dentro de un
+--     mismo mes. POR ESO A2.3 NO SE USA TAL COMO ESTÁ —el defecto
+--     estaba declarado desde su cabecera, ahora está medido—.
+--
+--     QUÉ FALTA ANTES DE CORREGIRLA CON GROUP BY. Agrupar exige
+--     DECIDIR QUÉ SE HACE CON LAS FILAS QUE COLLAPSAN, y esa decisión
+--     no se toma a ciegas:
+--       · si las duplicadas traen EL MISMO consumo, da igual cuál se
+--         quede y basta con DISTINCT;
+--       · si traen CONSUMOS DISTINTOS, hay que elegir —la lectura
+--         más reciente del mes, la mayor, la del lec_actual vigente—
+--         Y LA ELECCIÓN CAMBIA LA DESVIACIÓN DE E7a. Por eso se mide
+--         antes de decidir, y no al revés.
+--
+--     AUTOCHEQUEO 1 (8.a): filas_sobrantes DEBE dar 5 619, la misma
+--         cifra que A2.3.a en esta misma sesión. Si no coincide, una
+--         de las dos corridas no es la misma y se repiten las dos
+--         seguidas antes de escribir nada.
+--     AUTOCHEQUEO 2 (8.a): con_consumo_identico + con_consumo_distinto
+--         DEBE cerrar con cuentas_mes_con_mas_de_una.
+--     AUTOCHEQUEO 3 (8.a): filas_en_grupos_duplicados =
+--         cuentas_mes_con_mas_de_una + filas_sobrantes.
+--     AVISO: la ventana se corre con cierre 2026-09-30, igual que
+--         A2.3 y A2.3.a. Una corrida con otra fecha no compara.
+-- =====================================================================
+
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec) AS mes,
+           consumo,
+           lec_actual
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+d AS (
+    SELECT nro_cuenta,
+           mes,
+           COUNT(*)                                        AS n_filas,
+           (COUNT(*) - 1)                                  AS filas_sobrantes,
+           (COUNT(DISTINCT consumo) <= 1)                  AS consumo_identico,
+           (COUNT(DISTINCT lec_actual) <= 1)               AS lec_actual_identico,
+           COUNT(*) FILTER (WHERE consumo IS NULL)         AS consumos_nulos
+      FROM w
+     GROUP BY nro_cuenta, mes
+    HAVING COUNT(*) > 1
+)
+SELECT COUNT(*)                                              AS cuentas_mes_con_mas_de_una,
+       SUM(filas_sobrantes)                                  AS filas_sobrantes,
+       SUM(n_filas)                                          AS filas_en_grupos_duplicados,
+       SUM(CASE WHEN consumo_identico THEN 1 ELSE 0 END)     AS con_consumo_identico,
+       SUM(CASE WHEN consumo_identico THEN 0 ELSE 1 END)     AS con_consumo_distinto,
+       SUM(CASE WHEN lec_actual_identico THEN 1 ELSE 0 END)  AS con_lec_actual_identico,
+       SUM(consumos_nulos)                                   AS consumos_nulos,
+       MAX(n_filas)                                          AS max_filas_por_cuenta_mes
+  FROM d;
+
+-- 8.b DIEZ EJEMPLOS DE DOBLE LECTURA, PARA VER QUÉ SON
+WITH dup AS (
+    SELECT nro_cuenta, DATE_TRUNC('month', fecha_lec) AS mes
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+     GROUP BY 1, 2
+    HAVING COUNT(*) > 1
+)
+SELECT h.nro_cuenta,
+       DATE_TRUNC('month', h.fecha_lec)::date AS mes,
+       h.fecha_lec,
+       h.lec_actual,
+       h.consumo,
+       h.id_lectura
+  FROM tfv_historico_lecturador h
+  JOIN dup d ON d.nro_cuenta = h.nro_cuenta
+            AND d.mes = DATE_TRUNC('month', h.fecha_lec)
+ ORDER BY h.nro_cuenta, h.fecha_lec
+LIMIT 20;
+-- QUÉ MIRAR: si las dos filas del mismo mes traen el mismo consumo,
+-- la corrección es trivial. Si traen consumos distintos, ver si la
+-- más reciente es siempre la mayor —eso sería una corrección al
+-- alza— o si el orden es azar, porque el criterio de colapso depende
+-- de eso y no de mi preferencia.
 
 
 -- =====================================================================
