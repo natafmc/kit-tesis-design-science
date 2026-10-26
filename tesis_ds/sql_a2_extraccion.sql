@@ -1398,17 +1398,25 @@ LIMIT 20;
 -- alza— o si el orden es azar, porque el criterio de colapso depende
 -- de eso y no de mi preferencia.
 
--- 8.c LOS 5 619 MES A MES: ¿ES UN MES MALO O SON LOS 57?
---     Esta consulta decide la forma de la respuesta a P2, y cambia lo
---     que hay que hacer:
---       · SI ESTÁN CONCENTRADOS en uno o dos meses, ES UN CARGUE
---         ERRÓNEO AISLADO —la nota de la tesista apunta a febrero de
---         2022, cuando cargaron el archivo de enero por error— y se
---         resuelve declarando ese mes, sin inventar una regla general
---         para un problema que no es general.
---       · SI ESTÁN REPARTIDOS por los 57 meses, ES SISTEMÁTICO
---         —relecturas ordinarias— y entonces sí hace falta una regla
---         de colapso general, justificada y aplicada a todo el panel.
+-- 8.c LOS 5 619 MES A MES: DÓNDE SE PRODUCEN, NO SI HAY QUE ARREGLARLOS
+--                     (26 oct 2026 — alcance cambiado por DEC-76, Q2 = (b))
+--
+--     QUÉ CAMBIÓ DESDE QUE SE ESCRIBIÓ: al principio esta consulta
+--     servía para decidir si hacía falta una regla general de colapso.
+--     La tesista respondió Q2 = (b): LA REGLA SE APLICA A TODOS LOS
+--     MESES IGUAL, YA ESTÁ ESCRITA EN A2.3.b Y NO DEPENDE DE ESTA
+--     SALIDA. Cambiar una regla por ver qué número sale sería
+--     exactamente lo que la trazabilidad viene a evitar, y por eso la
+--     regla se escribió antes de correr nada.
+--
+--     ENTONCES, PARA QUÉ SIRVE AHORA: para declarar la CAUSA en las
+--     limitaciones con la distribución medida y no supuesta. La nota
+--     de la tesista apunta a febrero de 2022 —cuando cargaron el
+--     archivo de enero por error—, y 8.c dice si efectivamente está
+--     ahí y si se queda solo en uno o dos meses. EL RESULTADO NO MUEVE
+--     NINGUNA REGLA NI NINGÚN PANEL: entra a la tesis como hallazgo y
+--     como explicación, y nada más.
+--
 --     AUTOCHEQUEO: la suma de cuentas_mes_duplicadas DEBE dar 5 619,
 --         igual que 8.a y que A2.3.a. Si no da, una de las corridas
 --         no es la misma.
