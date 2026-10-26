@@ -146,8 +146,8 @@ Sin esto, el método no arranca.
 
 | ID | Requisito | Estado |
 |:--|:--|:--|
-| R9.1 | El panel de consumo con **una fila por cuenta y mes** existe y está verificado | **P — bloqueante.** Ver §4.3 |
-| R9.2 | El histórico cubre **enero de 2022 a septiembre de 2026**: ventana **fija**, con **cierre obligatorio el 30/09/2026** | **P — `A2.3.a` sin correr.** **Cierre añadido por DEC-69:** la tesis cubre 57 meses y la lecturación de octubre está en curso, de modo que «a la fecha de corrida» era un blanco móvil —un panel sin cierre no es reproducible, y una desviación contra un panel que cambió ayer no es auditable— |
+| R9.1 | El método recibe el **histórico crudo** dentro de una **ventana fija** y lo depura él mismo —**la depuración es paso del método**, `DEC-75` `P4` (a)— | **P — bloqueante, con regla y consulta escritas y sin correr (DEC-75, 26 oct).** **`A2.3.a` midió que el crudo NO da una fila por cuenta y mes: 5 619 filas de más.** **`A2.3.b` aplica la regla de `P1` —manda la fecha más reciente— y trae diez autocalculeos.** **Se da por cumplido cuando `filas_de_mas` dé `0` y `cuentas` dé 30 411.** Ver §4.3 |
+| R9.2 | El histórico cubre **enero de 2022 a septiembre de 2026**: ventana **fija**, con **cierre obligatorio el 30/09/2026** | **P — casi: falta un solo autocalculeo.** **Cierre confirmado el 25 oct (DEC-72): 1 491 175 con cierre contra 1 519 833 sin cierre, Δ 28 658 = la lecturación de octubre.** **Falta `meses = 57` de `A2.3.b`: hasta ahora solo se probó que el FILTRO es correcto, no que los 57 meses tengan dato —`COUNT(DISTINCT mes)` da 57 solo si enero de 2022 y septiembre de 2026 están efectivamente cubiertos—.** **Cierre añadido por DEC-69:** la tesis cubre 57 meses y la lecturación de octubre está en curso, de modo que «a la fecha de corrida» era un blanco móvil —un panel sin cierre no es reproducible, y una desviación contra un panel que cambió ayer no es auditable— |
 | R9.3 | Las tablas son **vivas**: toda cifra lleva **sello de fecha** | **F** — DEC-55, DEC-64 |
 | R9.4 | El catálogo de 48 códigos de irregularidad está disponible | **F** — medido 6 oct 2026 |
 
@@ -193,10 +193,12 @@ alerta     si desviación ≥ θ
 >
 > **Qué falta, en orden:**
 >
-> 1. **Correr `A2.3.a`** — su salida decide si el panel existe tal como está escrito.
-> 2. Si `lecturas_sobrantes > 0`, **corregir `A2.3` con `GROUP BY`** antes de calibrar.
+> 1. ~~**Correr `A2.3.a`**~~ → **hecho el 25 oct (DEC-72): `lecturas_sobrantes = 5 619`, o sea que sí hacía falta corregir el panel.**
+> 2. ~~**Corregir `A2.3` con `GROUP BY`**~~ → **regla fijada por la tesista el 26 oct (DEC-75, `P1` = (a)) — manda la fecha más reciente — y consulta escrita: `A2.3.b`. Falta correrla.**
 > 3. **Producir el panel** y ejecutar los cinco pasos de §4.2.
 > 4. **Registrar `θ` con su sello de fecha** y volcarlo a `02_delimitacion.md`, celda del criterio 2.
+>
+> **Y un condicionante que no depende de §4.2:** mientras el `7.e` no corra, **el panel es provisional en un aspecto** —si a la cuenta 110589 le falta mayo de 2023, se corrige el año y `A2.3.b` **se rehace**, porque esa fila entra al panel y cambia sus diez cifras (DEC-75, `P3` = (a))—.
 >
 > **Todo esto ocurre ANTES de construir** (E7d/E7e), que es la condición que impuso `02_delimitacion.md` §1: *los valores se fijan en E6 y E7b, antes de construir*.
 
@@ -238,6 +240,7 @@ El criterio **2** —falsos positivos— y el criterio **3** —capacidad— **e
 | R8.1 | La **implementación de la contingencia**, sin que contamine al criterio principal |
 | §4.2 | El **cálculo automático de `θ`** para que sea recalculable cuando cambie el dato |
 | Criterio 4 | El **procedimiento de aplicabilidad** con su valor |
+| `DEC-75` `P4` | El **paso de depuración** —una fila por cuenta y mes, con la regla de colapso de `P1`—: **es parte del método** y E7c lo diseña como paso, con su regla a la vista y no escondida en una consulta |
 
 ---
 
@@ -246,7 +249,7 @@ El criterio **2** —falsos positivos— y el criterio **3** —capacidad— **e
 **Se cierra esta etapa cuando se cumplan cuatro cosas:**
 
 1. **CUMPLIDO — 25 oct 2026, DEC-70.** **E7a cerró su gate y confirmó A2** como criterio principal, con **A1** como contingencia declarada y **A3** como paso previo del método; la tipología se mantiene en **`método`**. **La condición de reapertura —*se reabren R1.2, R3.1, R6.3, R8 y R9*— no se activó**, porque no cambió la alternativa.
-2. **CORRIÓ, PERO NO SE DA POR VERIFICADO — DEC-72.** **`A2.3.a` se corrió el 25 oct 2026 y sus cinco autocalculeos dieron: AC1 ✓, AC2 ✓, AC4 ✓, AC5 ✓ y AC3 ✗.** **`cuentas_mes_distintas = 1 485 556` contra `filas_ventana = 1 491 175`: el contrato de A2.3 —«una fila por cuenta y mes»— NO SE CUMPLE y faltan 5 619 filas de más, cifra que `lecturas_sobrantes` dio exacta.** **Hasta que el `CONTROL 8` diga qué son esas 5 619 y A2.3 se corrija con `GROUP BY`, no hay panel —y sin panel no hay `R9.1` ni §4.3—.** **Lo que esta corrida sí resolvió: `fecha_maxima = 22/10/2026` confirma que la ventana contiene CUATRO ciclos anuales completos —2022, 2023, 2024 y 2025—, de modo que A2 es calculable como se eligió y la contingencia A1 NO se activa.**
+2. **CORRIÓ, PERO NO SE DA POR VERIFICADO — DEC-72, DEC-74 y DEC-75.** **`A2.3.a` se corrió el 25 oct 2026 y sus cinco autocalculeos dieron AC1 ✓, AC2 ✓, AC4 ✓, AC5 ✓ y AC3 ✗:** **`cuentas_mes_distintas = 1 485 556` contra `filas_ventana = 1 491 175`, o sea 5 619 filas de más.** **El `CONTROL 8` ya corrió y las caracterizó —3 930 con consumo idéntico y 1 689 con consumo distinto, todas de exactamente dos filas—, y la tesista fijó el 26 oct la regla que faltaba —`DEC-75` `P1` = (a), manda la fecha más reciente—, de modo que `A2.3.b` YA EXISTE Y ESTÁ ESCRITA, con diez autocalculeos.** **Falta correrla: hasta que `filas_de_mas` dé `0` y `meses` dé `57` no hay panel —y sin panel no hay `R9.1` ni §4.3—.** **Van con ella pendientes el `7.e` —que decide si la fila de año 0023 entra al panel— y los cinco pasos de §4.2.** **Lo que la corrida del `A2.3.a` sí resolvió: `fecha_maxima = 22/10/2026` confirma CUATRO ciclos anuales completos —2022, 2023, 2024 y 2025—, de modo que A2 es calculable como se eligió y la contingencia A1 NO se activa.**
 3. **PENDIENTE.** **`θ` se fija con su valor y su sello de fecha** por los cinco pasos de §4.2, y se vuelca al criterio 2 de `02_delimitacion.md`.
 4. **CUMPLIDO — 25 oct 2026, `CONTROL 6` corrido y verificado (DEC-74).** **La ruta existe, está completa y es única, medido y no declarado.** **`6.a`** —existe: **`tfv_ruta.id_ruta`** y **`tfv_cliente.id_ruta` + `nro_cuenta`**, ambas presentes—. **`6.b`** —**38 339 filas = 38 339 cuentas, o sea 1:1 sin duplicados; 78 rutas; cero `id_ruta` nulo; cero `nro_cuenta` nulo**—. **`6.c`** —**0 cuentas con más de una ruta** y `max_rutas_por_cuenta = 1`, así que **la regla de desempate de `DEC-71` queda escrita y NO SE ACTIVA**—. **`6.d`** —**cobertura total del panel: 30 411 cuentas, 0 sin fila en `tfv_cliente`, 0 sin `id_ruta`**, y los cuatro cubos cierran exactos contra 30 411—. **`6.e`** —**58 rutas con cuentas en el panel y la suma de `cuentas` da 30 411, exacto**—. **El identificador por el que se agrupa queda fijado en `tfv_ruta.id_ruta`.** **Lo único que `tfv_ruta` tiene de particular y conviene declarar en E7c: `tfv_cliente` es tabla viva —así lo avisó la tesista—, así que `30 411` y `38 339` llevan fecha de corrida.**
 

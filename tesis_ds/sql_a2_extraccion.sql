@@ -1080,6 +1080,136 @@ SELECT COUNT(*)                                               AS filas_totales,
 
 
 -- =====================================================================
+-- A2.3.b — EL PANEL COLLAPSADO: LA REGLA DE COLAPSO, APLICADA
+--                     (26 oct 2026 — DEC-75, regla fijada ANTES de correr)
+--
+--     POR QUÉ EXISTE ESTA CONSULTA:
+--     A2.3.a demostró que A2.3 declara «una fila por cuenta y mes» y NO
+--     LO HACE: en la ventana hay 1 491 175 filas contra 1 485 556
+--     (cuenta, mes), es decir 5 619 de más. El 26 oct la tesista fijó la
+--     regla de colapso —DEC-75, P1 = (a)— y A2.3.b ES ESA REGLA
+--     APLICADA. La regla se escribe antes de ver la salida, como manda
+--     la trazabilidad, y no después de mirar qué número conviene.
+--
+--     LA REGLA — DEC-75, P1 = (a), dictada por la tesista:
+--       dentro de cada (cuenta, mes) MANDA LA LECTURA DE FECHA MÁS
+--       RECIENTE. Si las dos fechas coinciden —lo usual según 8.b—,
+--       desempata el id_lectura MÁS ALTO, o sea lo cargado después.
+--       Ese segundo criterio no es una decisión de contenido: esas dos
+--       filas traen el mismo consumo y lo único que hace es dejar la
+--       corrida determinista.
+--
+--     LO QUE LA REGLA NO DECIDE, Y POR QUÉ SE MIDE EN VEZ DE CREERSE:
+--       en las cuentas con dos fechas distintas el consumo puede subir
+--       o bajar indistintamente, y A2.3.b los cuenta por separado
+--       —`colapso_al_alza` contra `colapso_a_la_baja`— para que la
+--       cifra esté medida y no supuesta. El 8.b ya mostró un caso en
+--       el que la regla BAJA el consumo: cuenta 100009, abril de 2022,
+--       con 10/4 y 62 contra 12/4 y 45, de modo que manda la de 45.
+--       Sin consumos nulos —lo midió 8.a— la comparación no puede
+--       quedarse sin cubo.
+--
+--     AUTOCHEQUEOS — cada uno se comprueba contra OTRA corrida:
+--       1. filas_originales = 1 491 175 = filas_ventana de A2.3.a.
+--       2. filas_colapsadas = 5 619 = lecturas_sobrantes de A2.3.a
+--          = filas_sobrantes del CONTROL 8.
+--       3. filas_finales = 1 485 556 = cuentas_mes_distintas.
+--       4. filas_de_mas = 0 — el contrato de A2.3, cumplido aquí POR
+--          CONSTRUCCIÓN y no por declaración: es exactamente el control
+--          que falló en A2.3.a.
+--       5. cuentas = 30 411 = cifra del 6.d, medida contra otra tabla.
+--       6. meses = 57 — la ventana entera, enero de 2022 a septiembre
+--          de 2026.
+--       7. grupos_con_consumo_distinto = 1 689 = cifra del 8.a.
+--       8. colapso_al_alza + colapso_a_la_baja = 1 689.
+--       9. carga_duplicada + relecturas = 5 619 = grupos_duplicados.
+--       10. fecha_minima >= 2022-01-01 — la fila con año 0023 no entró
+--           por el filtro de ventana y aquí se ve que no entró.
+--
+--     PENDIENTE — DEC-75, P3 = (a): si el 7.e confirma que a la cuenta
+--     110589 le falta mayo de 2023, se corrige el año de esa fila y
+--     A2.3.b SE VUELVE A CORRER, porque la corrección entra al panel y
+--     cambia sus diez cifras. Hasta entonces esta corrida es definitiva
+--     en regla y provisional en ese aspecto.
+-- =====================================================================
+
+-- A2.3.b SALIDA — EL PANEL: una fila por cuenta y mes, ya real
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+)
+SELECT DISTINCT ON (nro_cuenta, mes)
+       nro_cuenta,
+       mes,
+       fecha_lec  AS fecha_de_la_lectura_que_manda,
+       lec_actual,
+       consumo,
+       id_lectura
+  FROM w
+ ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC;
+
+
+-- A2.3.b AUTOCALCULEO — los diez contra otras corridas
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+g AS (
+    SELECT nro_cuenta,
+           mes,
+           MAX(consumo)              AS consumo_maximo,
+           MIN(consumo)              AS consumo_minimo,
+           COUNT(DISTINCT consumo)   AS consumos_distintos,
+           COUNT(DISTINCT fecha_lec) AS fechas_distintas
+      FROM w
+     GROUP BY nro_cuenta, mes
+    HAVING COUNT(*) > 1
+)
+SELECT (SELECT COUNT(*) FROM w)                                     AS filas_originales,
+       (SELECT COUNT(*) FROM p)                                     AS filas_finales,
+       (SELECT COUNT(*) FROM w) - (SELECT COUNT(*) FROM p)          AS filas_colapsadas,
+       (SELECT COUNT(*)
+          FROM (SELECT 1
+                  FROM p
+                 GROUP BY nro_cuenta, mes
+                HAVING COUNT(*) > 1) dm)                            AS filas_de_mas,
+       (SELECT COUNT(DISTINCT nro_cuenta) FROM p)                   AS cuentas,
+       (SELECT COUNT(DISTINCT mes) FROM p)                          AS meses,
+       (SELECT MIN(fecha_lec) FROM p)                               AS fecha_minima,
+       (SELECT MAX(fecha_lec) FROM p)                               AS fecha_maxima,
+       COUNT(*)                                                     AS grupos_duplicados,
+       COUNT(*) FILTER (WHERE g.consumos_distintos > 1)              AS grupos_con_consumo_distinto,
+       COUNT(*) FILTER (WHERE g.consumos_distintos > 1
+                          AND pk.consumo = g.consumo_maximo)         AS colapso_al_alza,
+       COUNT(*) FILTER (WHERE g.consumos_distintos > 1
+                          AND pk.consumo = g.consumo_minimo)         AS colapso_a_la_baja,
+       COUNT(*) FILTER (WHERE g.fechas_distintas = 1)                AS carga_duplicada,
+       COUNT(*) FILTER (WHERE g.fechas_distintas > 1)                AS relecturas
+  FROM g
+  JOIN p pk ON pk.nro_cuenta = g.nro_cuenta AND pk.mes = g.mes;
+
+
+-- =====================================================================
 -- CONTROL 7 — LA FECHA IMPOSIBLE: fecha_minima CON AÑO 0023
 --                                  (25 oct 2026, sobre A2.3.a)
 --
