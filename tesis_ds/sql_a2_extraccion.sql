@@ -1305,6 +1305,39 @@ SELECT fecha_lec, lec_actual, consumo, id_lectura,
  ORDER BY fecha_lec;
 
 
+-- 7.f LAS FILAS CON ÍNDICE CERO DENTRO DE LA VENTANA
+--     Salió sin buscarla: al correr el 7.d apareció que la cuenta
+--     110589 trae el 14/12/2025 con lec_actual = 0 y consumo =
+--     948455, donde la cadena de la propia cuenta pide 59403 y
+--     7858 —67166 menos 7763 da el cierre de diciembre, y 59403
+--     menos 51545 da su consumo—.
+--
+--     NO CORRER ANTES QUE A2.3.b: no desbloquea nada (DEC-73, P4).
+--     A2.3.b no filtra por consumo, así que esta fila no mueve
+--     ninguno de los diez autocalculeos ni ningún punto del gate.
+--
+--     QUÉ DEBE DECIDIR: si es UN CASO AISLADO, se declara como
+--     anomalía de una sola cuenta en las limitaciones. Si son
+--     VARIAS, es una clase de suciedad —tercera después del año
+--     0023 y de las manchas de 2000-2001— y hay que medirla antes
+--     de calibrar θ, porque el techo de 242 alertas/mes se mide
+--     contra consumos y estos dos números no lo son.
+--
+--     AUTOCHEQUEO: la cuenta 110589 tiene que aparecer con su fila
+--     del 14/12/2025. Si no aparece, el filtro está mal escrito.
+SELECT nro_cuenta,
+       fecha_lec,
+       lec_actual,
+       consumo,
+       id_lectura,
+       COUNT(*) OVER () AS filas_con_indice_cero
+  FROM tfv_historico_lecturador
+ WHERE fecha_lec >= DATE '2022-01-01'
+   AND fecha_lec <  DATE '2026-10-01'
+   AND lec_actual = 0
+ ORDER BY nro_cuenta, fecha_lec;
+
+
 -- =====================================================================
 -- CONTROL 8 — LOS 5 619: LA FORMA REAL DE LOS DUPLICADOS DEL PANEL
 --                                  (25 oct 2026, sobre A2.3.a)
