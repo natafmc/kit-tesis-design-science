@@ -23,8 +23,8 @@
 --        · tipo_lectura POR LECTURA: esta en tfv_lectura, por id_lectura.
 --          -> A2.1.c DESBLOQUEADO y escrito sin placeholders.
 --        · id_cod_irre POR LECTURA: esta en tfv_lec_irregular, por
---          id_lectura. -> 0.7.b ESCRITO y ejecutable; quedan pendientes
---          de correr sus DOS CONTROLES antes de dar nada por bueno.
+--          id_lectura. -> 0.7.b ESCRITO y ejecutable; CORRIDO EL 20 OCT
+--          2026 JUNTO CON SUS DOS CONTROLES (DEC-48 y DEC-49).
 --   [B2] LA TABLA CANDIDATA EXISTE — 0.6.d ejecutado 9 oct 2026 (DEC-39):
 --        tfv_cobranza, 34 columnas, con id_lectura NOT NULL, consumo,
 --        periodo_fac y gestion_fac. Quedan tres cosas que el esquema no
@@ -532,8 +532,12 @@ GROUP BY 1 ORDER BY 1;
 --     tfv_lectura y el id_cod_irre por lectura vive en tfv_lec_irregular,
 --     y AMBAS enlazan por id_lectura —0.6.b corregido el mismo día por la
 --     tesista—. Con eso la consulta queda ESCRITA, sin placeholders.
---     NO SE HA EJECUTADO TODAVÍA: leer los dos controles de abajo antes
---     de dar nada por bueno.
+--     CORRIDO EL 20 OCT 2026 (DEC-48): el tipo 1 salió SOLO con «sin
+--     codigo» y «codigo 0», sin ninguna lectura tipo 1 con código real,
+--     de modo que DEC-30 quedó CERRADA CON DATO. Los dos controles de
+--     abajo cerraron también: el Control 1 dio max_codigos_por_lectura
+--     = 1 y lecturas_con_varios = 0, y el Control 2 reprodujo las cinco
+--     cifras desde la base.
 --
 --     Diseño: la agrupación va en una CTE para que cada lectura entre UNA
 --     sola vez. Si tfv_lec_irregular trae varios códigos por lectura, un
@@ -1126,11 +1130,13 @@ SELECT COUNT(*)                                               AS filas_totales,
 --       10. fecha_minima >= 2022-01-01 — la fila con año 0023 no entró
 --           por el filtro de ventana y aquí se ve que no entró.
 --
---     PENDIENTE — DEC-75, P3 = (a): si el 7.e confirma que a la cuenta
---     110589 le falta mayo de 2023, se corrige el año de esa fila y
---     A2.3.b SE VUELVE A CORRER, porque la corrección entra al panel y
---     cambia sus diez cifras. Hasta entonces esta corrida es definitiva
---     en regla y provisional en ese aspecto.
+--     PENDIENTE RESUELTO — DEC-79, 27 oct 2026: el 7.e CORRIÓ Y NO LE
+--     FALTA MAYO DE 2023 —12 de 12 filas, mayo incluido: 14/5/2023,
+--     lec_actual 823816, id_lectura 595803—. P3 NO SE ACTIVA: el año no
+--     se corrige y el panel no se rehace. Esta corrida es definitiva en
+--     regla y definitiva también en ese aspecto.
+--     RESULTADO DE A2.3.b, 27 oct 2026 (DEC-80): LOS DOCE AUTOCALCUELOS
+--     CIERRAN. filas_de_mas = 0 cierra R9.1 y meses = 57 cierra R9.2.
 -- =====================================================================
 
 -- A2.3.b SALIDA — EL PANEL: una fila por cuenta y mes, ya real
@@ -1705,13 +1711,14 @@ ORDER BY 1;
 --      · id_cod_irre POR LECTURA: ESTÁ en tfv_lec_irregular, y su clave de
 --        enlace ES id_lectura — confirmado con el 0.6.b corregido—. 0.7.b
 --        queda ESCRITO y ejecutable.
---      Lo que falta ya no es esquema: es EJECUCIÓN. Correr 0.7.b y sus DOS
---      CONTROLES. Control 1, cardinalidad de tfv_lec_irregular —si una
---      lectura admite varios códigos, la CTE del 0.7.b ya lo absorbe, pero
---      hay que anotarlo—. Control 2, reproducción desde la base de
---      0,88 % y 99,12 %: 177 784 · 1 377 641 · 12 300 · 1 389 941 · 1 567 725.
---      Hasta que los dos controles cuadren, la salvedad de DEC-30 sigue
---      abierta y ninguna de las dos cifras se republica.
+--      EJECUTADO EL 20 OCT 2026 (DEC-48 y DEC-49). Control 1, cardinalidad
+--      de tfv_lec_irregular: max_codigos_por_lectura = 1 y
+--      lecturas_con_varios = 0, o sea 1:1 con la lectura. Control 2,
+--      reproducción desde la base de 0,88 % y 99,12 %: 177 784 ·
+--      1 377 641 · 12 300 · 1 389 941 · 1 567 725, LAS CINCO CUADRADAS.
+--      0.7.b dio que el tipo 1 sale solo con «sin codigo» y «codigo 0»,
+--      de modo que la salvedad de DEC-30 quedó CERRADA y las dos cifras
+--      quedan sostenidas por el cruce y no solo por la declaración.
 --
 -- [B2] LA TABLA CANDIDATA EXISTE — 0.6.d EJECUTADO EL 9 OCT 2026 (DEC-39).
 --      tfv_cobranza tiene 34 columnas, entre ellas:
