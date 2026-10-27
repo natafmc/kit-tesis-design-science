@@ -62,6 +62,21 @@
 
 > **Sin siglas, a propósito:** ni la empresa distribuidora ni la oficina de consumidor se nombran —la regla 8 lo prohíbe—. **`ENDE` y `ODECO` no aparecen.** Las cifras del problema quedan escritas por su valor, no por su sigla.
 
+**Trazabilidad de las cifras — `DEC-13`: ningún número entra a un documento sin su consulta y su fuente.**
+
+| Cifra del resumen | De dónde sale o cómo se calculó | Comprobación |
+|:--|:--|--:|
+| **0,88 %** | 12 300 ÷ 1 389 941 | **0,8849 %** → redondea a **0,88** ✓ |
+| **12 300** | registros con código de irregularidad, ene 2022 – sep 2026 | `06_diagnostico.md` L17 |
+| **1 389 941** | lecturas facturables tipo 1 en 57 meses | `06_diagnostico.md` L72 |
+| **57 meses** | ene 2022 a sep 2026 **inclusive**: 48 (2022–2025) + 9 (ene–sep 2026) | **57** ✓ |
+| **1 053** | reclamos tramitados por la oficina de consumidor en 57 meses | `06_diagnostico.md` L57 |
+| **174** | reclamos procedentes | 174 ÷ 1 053 = **16,52 %** ✓ |
+| **136** | de los 174, correspondientes a lecturas sin código | 136 ÷ 174 = **78,16 %** ✓ |
+| **242 alertas** | techo de capacidad: 242 correcciones/mes ÷ 22 días hábiles ≈ 11/día | `DEC-45` · criterio 3 de `02_delimitacion.md` |
+
+> **Advertencia para quien vuelva a verificar esto:** **la cuenta de meses tiene que ser inclusiva.** *Enero de 2022* es el mes 1 y *septiembre de 2026* es el mes **57**; una cuenta que omite un extremo da **56** y es errónea. Lo comprobado por conteo de fechas, no por una resta.
+
 ---
 
 ## 5. Índice
