@@ -25,11 +25,20 @@
 --        · id_cod_irre POR LECTURA: esta en tfv_lec_irregular, por
 --          id_lectura. -> 0.7.b ESCRITO y ejecutable; CORRIDO EL 20 OCT
 --          2026 JUNTO CON SUS DOS CONTROLES (DEC-48 y DEC-49).
---   [B2] LA TABLA CANDIDATA EXISTE — 0.6.d ejecutado 9 oct 2026 (DEC-39):
---        tfv_cobranza, 34 columnas, con id_lectura NOT NULL, consumo,
---        periodo_fac y gestion_fac. Quedan tres cosas que el esquema no
---        dice y que resuelve el 0.6.e. A2.4.3 sigue bloqueado hasta
---        entonces: NO se rellenan sus placeholders todavía.
+--   [B2] CERRADO. Y A2.4.3, RETIRADO — DEC-82, 27 oct 2026:
+--        tfv_cobranza existe (0.6.d, 9 oct, DEC-39), pero la via por
+--        consumo CERRO en DEC-53, y lo que la forma agregada daria ya
+--        esta en la Prueba 2 de consultas_base_datos.md. A2.4.3 NO se
+--        reformula: SE RETIRA. Sus tres motivos estan en DEC-82.
+--        LO QUE QUEDA ABIERTO NO ES SQL: se llama «definición de
+--        lecturas_diferentes» y es una consulta a quien elaboró la hoja
+--        historico de DATOS desde 2022.xlsx — la hoja no tiene NINGUNA
+--        fórmula y no nombra el segundo campo, así que no puede
+--        responderlo nadie que solo lea el archivo —.
+--        Declara además el descuadre de 185: la hoja suma 1 491 360 y la
+--        ventana de la base 1 491 175. NO toca el 242,2 —que es 2 180
+--        dividido 9 y no usa total_lecturas—; sí toca las tasas anuales.
+--        Pendiente de localizar mes a mes por DEC-73/P4: no desbloquea.
 --   [B5] La tesista declaró el 6 oct 2026 que tipo_lectura = 1 es lectura
 --        SIN código de irregularidad (DEC-30), y con eso se publicaron
 --        0,88 % y 99,12 %. El 0.7.b es la CONFIRMACIÓN con dato, no un
@@ -152,11 +161,11 @@ WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
   AND table_name IN ('tfv_lec_irregular', 'tfv_lectura')
 ORDER BY table_name, ordinal_position;
 
--- 0.6.d CANDIDATA A LECTURA FACTURADA — levanta [B2]
+-- 0.6.d CANDIDATA A LECTURA FACTURADA — levantó [B2] (cabecera histórica)
 --     El 0.6.b devolvió tfv_cobranza entre las tablas enlazables por
---     id_lectura. Es la candidata natural a <TABLA_FACTURADA> de A2.4.3,
---     pero todavía no se ha escrito ninguna de sus columnas: se mira aquí
---     antes de tocar A2.4.3.
+--     id_lectura. Fue la candidata a <TABLA_FACTURADA> de A2.4.3 —cuya
+--     consulta está hoy RETIRADA, DEC-82— y así se escribió esta nota.
+--     Se conserva como registro de por qué existía.
 SELECT column_name, data_type, is_nullable
 FROM information_schema.columns
 WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
@@ -165,7 +174,8 @@ ORDER BY ordinal_position;
 
 
 -- 0.6.e QUÉ TRAE tfv_cobranza — para decidir si levanta [B2] (9 oct 2026)
---     El 0.6.d devolvió 34 columnas. Las que interesan para A2.4.3:
+--     El 0.6.d devolvió 34 columnas. Las que interesaban para A2.4.3
+--     —consulta RETIRADA en DEC-82, esta nota queda como registro—:
 --       · id_lectura   bigint   NOT NULL -> clave contra tfv_historico_lecturador
 --       · nro_cuenta   integer  NOT NULL
 --       · consumo      numeric  NOT NULL -> candidata a lectura facturada
@@ -181,15 +191,18 @@ ORDER BY ordinal_position;
 --     LO QUE EL ESQUEMA NO PUEDE DECIR, Y NO SE DEDUCE:
 --       (a) si tfv_cobranza.consumo es la lectura CORREGIDA o una copia
 --           desnormalizada de tfv_historico_lecturador.consumo. A2.4.3
---           compara contra lec_actual, pero tfv_cobranza NO trae
---           columna de lectura: trae consumo. Si las dos columnas
+--           habría comparado contra lec_actual, pero tfv_cobranza NO
+--           trae columna de lectura: trae consumo. Si las dos columnas
 --           consumo son iguales siempre, esta via NO sirve;
 --       (b) si una lectura genera UNA o VARIAS cobranzas — fecha_anulada,
 --           id_nota, sw_nota, obs_fac_saltada y cant_imprime sugieren
 --           varias—. Si son varias, el JOIN multiplica filas y multiplica
 --           tambien las correcciones;
 --       (c) si la tabla cubre 2022-2026.
---     Tres preguntas, tres queries. Correrlas ANTES de escribir A2.4.3.
+--     Tres preguntas, tres queries. Se corrieron: 0.6.e.1 y 0.6.e.2 el
+--     20 oct (DEC-48), 0.6.e.3 inválido —el JOIN multiplicó 1 376
+--     filas— y sustituido por el CONTROL 4 (DEC-51). Lo que «antes de
+--     escribir A2.4.3» ya no aplica: esa consulta está RETIRADA (DEC-82).
 
 -- 0.6.e.1 Cardinalidad, ventana temporal e integridad
 SELECT COUNT(*)                                            AS filas,
@@ -203,8 +216,11 @@ SELECT COUNT(*)                                            AS filas,
        COUNT(*) FILTER (WHERE id_factura IS NULL)          AS sin_factura,
        COUNT(*) FILTER (WHERE consumo IS NULL)             AS consumo_nulo
 FROM tfv_cobranza;
--- Si filas = lecturas, tfv_cobranza es 1:1 con la lectura y el JOIN de
--- A2.4.3 es seguro. Si no, hay que agregar antes de cruzar.
+-- Si filas = lecturas, tfv_cobranza es 1:1 con la lectura y un JOIN
+-- habría sido seguro. Si no, habría que agregar antes de cruzar.
+-- RESULTADO (DEC-48): filas = lecturas = 1 389 282, o sea 1:1. La
+-- condición se cumplió, pero A2.4.3 quedó RETIRADO igual (DEC-82): lo
+-- que lo mató no fue la cardinalidad, fue DEC-53.
 
 -- 0.6.e.2 Dominios de las columnas cortas — estado_fac y los sw_*
 SELECT 'estado_fac'   AS columna, estado_fac::text   AS valor, COUNT(*) AS filas FROM tfv_cobranza GROUP BY 2
@@ -371,7 +387,8 @@ ORDER BY 1;
 --
 -- Si 'historico con consumo variado' da > 0, ESAS son las lecturas que
 -- tienen más de un consumo registrado: el candidato a corrección manual
--- A NIVEL DE REGISTRO, que es lo que [B2] necesita para abrir A2.4.3.
+-- A NIVEL DE REGISTRO, que era lo que [B2] necesitaba para abrir A2.4.3
+-- —consulta hoy RETIRADA, DEC-82—.
 -- Antes de publicar esa cifra hay que buscarla por año y cuadrarla
 -- contra la hoja historico de `DATOS desde 2022.xlsx`: 9 604 en 2025 y
 -- 2 180 en 2026. Si no cuadra, NO se publica.
@@ -1732,11 +1749,33 @@ WHERE r.fecha_hora_reg >= DATE '2022-01-01'
 GROUP BY 1
 ORDER BY 1;
 
--- A2.4.3 [BLOQUEADO por B2] Correcciones manuales por mes.
---        Vía declarada por la tesista: comparar la lectura facturada contra
---        tfv_historico_lecturador.lec_actual. Falta la tabla de la lectura
---        facturada. Esperado al ejecutarlo: 1 507/mes ene-may 2025,
---        295/mes jun-dic 2025, 242,2/mes en 2026.
+-- A2.4.3 [RETIRADO — DEC-82, 27 oct 2026] Correcciones manuales por mes.
+--        NO SE REFORMULA Y NO SE EJECUTA. Tres motivos, y ninguno de
+--        ellos es «ya está verificado en DEC-24»:
+--          (a) su forma a nivel de registro está MUERTA, no bloqueada:
+--              el rótulo anterior decía [BLOQUEADO por B2], incorrecto
+--              dos veces — B2 está cerrado, y quien lo mató fue DEC-53,
+--              que cerró la vía tfv_cobranza.consumo contra
+--              tfv_historico_lecturador.consumo al cumplirse el criterio
+--              que quedó fijado ANTES de correr;
+--          (b) su forma agregada sería una tautología: la Prueba 2 de
+--              consultas_base_datos.md ya hace esa extracción y se
+--              reverificó el 6 oct con script, diez de diez;
+--          (c) nada espera en él: el criterio 3 está fijado y volcado a
+--              02_delimitacion.md desde DEC-54.
+--
+--        LO QUE LA RETIRADA NO CIERRA, Y POR QUÉ NO SE DEJA VACÍO:
+--        `lecturas_diferentes` sigue sin definición, y sobre ella se
+--        apoyan tres cosas — el criterio 3 (02_delimitacion L50),
+--        06_diagnostico L78 y 07a_alternativas L63, que mide sobre esa
+--        columna el efecto de una alternativa. El sustituto se llama
+--        «definición de lecturas_diferentes» y NO ES SQL: es una consulta
+--        a quien elaboró la hoja historico de DATOS desde 2022.xlsx. La
+--        hoja no tiene una sola fórmula y no nombra el segundo campo, así
+--        que nadie que solo lea el archivo puede responderlo.
+--        Quien la elaboró sigue sin declararse —preguntado el 27 oct—.
+--
+--        CONSULTA ORIGINAL, CONSERVADA COMO REGISTRO — NO EJECUTAR:
 -- SELECT DATE_TRUNC('month', <FECHA_FACTURACION>)::date AS mes,
 --        COUNT(*)
 -- FROM <TABLA_FACTURADA> f
@@ -1744,6 +1783,9 @@ ORDER BY 1;
 -- WHERE f.lectura_facturada <> h.lec_actual
 --   AND <FECHA_FACTURACION> >= DATE '2022-01-01'
 -- GROUP BY 1;
+--        Esperado en su día: 1 507/mes ene-may 2025, 295/mes jun-dic
+--        2025 y 242,2/mes en 2026 — las tres reproducidas ya desde la
+--        hoja, por Prueba 2 y por verificación propia.
 
 
 -- =====================================================================
@@ -1804,13 +1846,19 @@ ORDER BY 1;
 --        (b) si una lectura genera UNA o VARIAS cobranzas — fecha_anulada,
 --            id_nota, sw_nota y obs_fac_saltada sugieren varias—;
 --        (c) si la tabla cubre 2022-2026.
---      Lo resuelve el 0.6.e (tres queries, ver arriba). Hasta entonces
---      A2.4.3 SIGUE BLOQUEADO. Regla que ya valió en DEC-36: con una lista
---      de esquema incompleta no se deduce nada y se pregunta.
---      NOTA: en `00_estado.md` B2 aparece como cerrado el 5 oct (DEC-24),
---      pero allí se cerró por los AGREGADOS — 242,2 = 2 180/9 y 800,3 =
---      9 604/12, reproducibles desde la hoja historico—. Lo que sigue
---      abierto es el nivel de REGISTRO, que es lo que pide A2.4.3.
+--      Lo resolvía el 0.6.e (tres queries, ver arriba). RESULTADO: el
+--      0.6.e.1 y el 0.6.e.2 cerraron el 20 oct (DEC-48), el 0.6.e.3
+--      resultó inválido —el JOIN multiplicó 1 376 filas— y lo sustituyó
+--      el CONTROL 4 (DEC-51), y la vía por consumo CERRÓ en DEC-53.
+--      CON ESO A2.4.3 QUEDÓ RETIRADO (DEC-82), NO BLOQUEADO: B2 cerró a
+--      nivel agregado desde DEC-24 — 242,2 = 2 180/9 y 800,3 = 9 604/12,
+--      reproducibles desde la hoja historico— y a nivel de registro quedó
+--      como RUTA MUERTA DOCUMENTADA, probada con dato. Regla que valió en
+--      DEC-36 y siguió valiendo: con una lista de esquema incompleta no
+--      se deduce nada y se pregunta.
+--      LO QUE SIGUE ABIERTO NO PERTENECE A ESTE BLOQUE: se llama
+--      «definición de lecturas_diferentes» y es una consulta a quien
+--      elaboró la hoja, no una consulta SQL.
 --
 -- [B3] CERRADO: NO EQUIVALEN (DEC-59, 22 oct 2026), y el campo fue
 --      localizado el 24 oct 2026 (DEC-61): sw_procendente está en
