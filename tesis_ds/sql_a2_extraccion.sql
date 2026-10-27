@@ -1343,6 +1343,71 @@ SELECT nro_cuenta,
    AND lec_actual = 0
  ORDER BY nro_cuenta, fecha_lec;
 
+-- 7.g ¿CUÁNTAS CELDAS DEL PANEL GANA UNA FILA CON ÍNDICE CERO?
+--     El 7.f dio 39 064 filas con lec_actual = 0 DENTRO de la ventana:
+--     no es un caso aislado, es una clase. La rama del encabezado del
+--     7.f que decía «si son varias, es una clase de suciedad» es la que
+--     queda elegida.
+--
+--     NO BLOQUEABA A2.3.b —que no filtra por lec_actual—, pero SÍ
+--     CONDICIONA θ: la calibración se hace sobre el consumo del panel,
+--     y antes de fijar un umbral hay que saber cuántas celdas del
+--     panel traen un consumo cuyo índice de contador es cero. El
+--     alcance de DEC-79, punto 5, queda rectificado por DEC-81.
+--
+--     QUÉ MIDE, y por qué en este orden:
+--       · celdas_indice_cero — cuántas celdas del panel quedaron
+--         GANADAS por una fila con índice cero DESPUÉS del colapso.
+--         Las 39 064 del 7.f son filas crudas; algunas se descartan al
+--         colapsar, y solo las que mandan importan para θ.
+--       · cuentas_afectadas y meses_afectados — si es un puñado de
+--         cuentas o un fenómeno de toda la base, y si está repartido o
+--         concentrado en uno o dos meses.
+--       · el perfil de consumo de esas celdas contra el del resto.
+--         Si los dos promedios son del mismo orden, el índice cero no
+--         contamina el consumo y θ se calibra igual. Si el de las
+--         celdas con índice cero se despega, no se calibra hasta que
+--         se decida qué hacer con ellas.
+--
+--     AUTOCHEQUEO OBLIGATORIO: celdas_total DEBE dar 1 485 556, la
+--     misma cifra que filas_finales del A2.3.b. Si no la da, la
+--     construcción del panel está mal escrita aquí y no se interpreta
+--     nada de esta salida.
+--
+--     LA DECISIÓN QUE ESTA SALIDA PREPARA QUEDA PENDIENTE A PROPÓSITO:
+--     las opciones se registran en DEC-81 y no se eligen antes de ver
+--     el dato, igual que hizo DEC-75 con P2.
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+)
+SELECT COUNT(*)                                                   AS celdas_total,
+       COUNT(*) FILTER (WHERE p.lec_actual = 0)                   AS celdas_indice_cero,
+       COUNT(DISTINCT p.nro_cuenta)
+              FILTER (WHERE p.lec_actual = 0)                     AS cuentas_afectadas,
+       COUNT(DISTINCT p.mes)
+              FILTER (WHERE p.lec_actual = 0)                     AS meses_afectados,
+       MIN(p.mes) FILTER (WHERE p.lec_actual = 0)                 AS mes_minimo,
+       MAX(p.mes) FILTER (WHERE p.lec_actual = 0)                 AS mes_maximo,
+       ROUND(AVG(p.consumo) FILTER (WHERE p.lec_actual = 0), 1)   AS consumo_prom_cero,
+       ROUND(AVG(p.consumo) FILTER (WHERE p.lec_actual <> 0), 1)  AS consumo_prom_resto,
+       MIN(p.consumo) FILTER (WHERE p.lec_actual = 0)             AS consumo_min_cero,
+       MAX(p.consumo) FILTER (WHERE p.lec_actual = 0)             AS consumo_max_cero
+  FROM p;
+
 
 -- =====================================================================
 -- CONTROL 8 — LOS 5 619: LA FORMA REAL DE LOS DUPLICADOS DEL PANEL
