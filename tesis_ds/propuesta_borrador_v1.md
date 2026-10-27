@@ -6,9 +6,11 @@
 
 ---
 
-## 1. Título provisional
+## 1. Título
 
-**Método para la detección y verificación previa a la facturación de lecturas anómalas no declaradas en la distribución de energía eléctrica: aplicación en ENDE.**
+**Método de detección y verificación previa a la facturación de lecturas anómalas en distribución eléctrica**
+
+> **Fijado el 27 oct 2026 (DEC-77)** para el IFI: **15 palabras —máximo que permite la guía— y ninguna sigla.** El provisional tenía **24 palabras** y contenía **`ENDE`**, prohibida por la regla 8; **la guía exige que la característica se cumpla en todos los títulos del trabajo.**
 
 ## 2. Planteamiento del problema
 

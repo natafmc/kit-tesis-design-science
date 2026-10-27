@@ -2,11 +2,13 @@
 
 > Entregado a la tesista el 26 de septiembre de 2026 y **cerrado el mismo día**. El gate de E3 exigía **una sola oración, con las palabras de la tesista, que enuncie la contribución original de conocimiento**; la oración está escrita, adoptada y registrada en la sección final de este documento.
 
-## 1. Título provisional
+## 1. Título
 
-**Método para la detección y verificación de lecturas anómalas no declaradas en la distribución de energía eléctrica: aplicación en ENDE.**
+**Método de detección y verificación previa a la facturación de lecturas anómalas en distribución eléctrica**
 
-Declara artefacto (método), clase de problema (lecturas anómalas no declaradas) y contexto (distribución de energía eléctrica, caso ENDE). No declara técnica, porque ésta se decide en E7a.
+> **Fijado el 27 oct 2026 (DEC-77)** para el IFI: **15 palabras —máximo permitido por la guía— y ninguna sigla.** El provisional —*«Método para la detección y verificación previa a la facturación de lecturas anómalas no declaradas en la distribución de energía eléctrica: aplicación en ENDE.»*— tenía **24 palabras** y contenía **`ENDE`**, prohibida por la regla 8. **La guía dice que esas características aplican para todos los títulos del trabajo.**
+
+Declara artefacto —método—, clase de problema —lecturas anómalas— y contexto —distribución de energía eléctrica—. **El caso empírico no se nombra ya en el título por falta de espacio, no por decisión de alcance.** No declara técnica, porque ésta se decide en E7a.
 
 ## 2. Planteamiento del problema
 
