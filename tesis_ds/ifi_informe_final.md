@@ -41,9 +41,17 @@
 
 ## 3. Dedicatoria
 
-**DECIDIDO EL 27 OCT 2026 (`DEC-85`, `Q2` = (c)): NO SE INCLUYE.** *Guía:* **L142 —«Su presencia no es de carácter obligatorio»—**, igual que los agradecimientos en **L128**. **Se decidió después de consultar la regla, no por omisión.**
+**RECTIFICADO EL 28 OCT 2026 (`DEC-92`): SE INCLUYE — HABRÁ DEDICATORIA.**
 
-**Abierto: si este apartado se marca como *omitido* conservando la numeración de 14 de la guía —L19 a L47—, o si se elimina y los apartados se renumeran a 13.** **En los dos casos el índice no se ve afectado:** arranca **a partir de la Introducción** —guía L186—, o sea en el apartado 6.
+**Lo que había decidido `DEC-85` el 27 oct era exactamente lo contrario: su titular es literal *«NO SE INCLUYE».*** Lo revirtió la tesista el 28 oct —*«mantener el apartado, ya no omitirlo, se hará la dedicatoria»*—, de modo que **queda anulada la negativa de `DEC-85` punto 1 y se mantiene todo lo demás de esa decisión.**
+
+**Y con esto se cierra la pregunta de numeración que `DEC-85` dejó abierta, y por una tercera vía que allí no estaba planteada:** la guía lista **14 apartados numerados —L19 a L47—** y la dedicatoria es el **3**; **como se incluye, los 14 se conservan y NINGUNO se marca como *omitido*.** *Quedan descartadas las dos opciones de `DEC-85` por igual: ni «14 con el 3 omitido» ni «renumerar a 13».*
+
+**El índice no se ve afectado:** arranca **a partir de la Introducción** —guía L186—, o sea en el apartado 6, **y `indicadores_revision_ifi.md` L49 lo confirma: el índice no incluye Resumen, Agradecimientos ni Dedicatoria.**
+
+**Reglas que trae al redactarse, tal como están en la guía — L134 a L148:** es **homenaje a personas o instituciones que colaboraron significativamente con la realización del estudio** —L134— · **se dirige a quienes colaboraron con el estudio** —L138— · **suelen ser breves** —L140— · **generalmente se escriben en primera persona** —L144— · **deben caracterizarse por la seriedad del texto** —L146— · **no deben ser demasiado emotivas ni sentimentales** —L148—. **Y L142 —«su presencia no es de carácter obligatorio»— es justamente lo que hace de esto una decisión y no una obligación, en las dos direcciones: se pudo omitir y se pudo incluir.**
+
+*Pendiente: la redacción, que es suya.*
 
 ---
 
@@ -108,6 +116,12 @@
 ## 9. Capítulo III. Modelo teórico de la investigación
 
 **`[POR VERIFICAR]` — pendiente y SIN INSUMO.** *Guía:* el modelo teórico define la estructura conceptual sobre la que se construye. **No existe todavía**: es el apartado que E7c y la verificación del panel tienen que producir.
+
+**Representación gráfica — DECIDIDA EL 28 OCT 2026 (`DEC-92`): DOS FIGURAS SEPARADAS.** **La primera modela el artefacto** —el objeto de investigación— **y la segunda el proceso de lecturación y facturación** —el campo de acción—, **en ese orden, que es el que fijó `DEC-84`: primero el objeto y después el campo, conforme a `indicadores_revision_ifi.md` L197 y `guia_ifi_contenido.md` L288.** **Con esto se cierra el ítem (i) que `DEC-84` dejó abierto en su punto 7 —dos figuras o una con dos capas—.**
+
+**Dos vigilancias que `DEC-84` puso y siguen vivas:** la guía exige **«representación gráfica de los componentes y relaciones esenciales»** —L320— y **«se debe representar gráficamente la estructura que se modela»** —L290—, **y dos figuras cumplen eso solo si cada una es una estructura y no un diagrama de flujo**; **y la salvedad del punto 3 de `DEC-84` no cambia: si el bloque del proceso termina siendo un recuento de tablas, está duplicado contra el Capítulo I y hay que recortarlo.**
+
+*Siguen sin decidir, según `DEC-84(7)`: la **fundamentación epistemológica** y la **«ley fundamental de la profesión»** —L318—, y **si el capítulo se redacta antes o después de E7c**.*
 
 ---
 
