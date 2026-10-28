@@ -1980,6 +1980,98 @@ SELECT salida,
 
 
 -- =====================================================================
+-- A2.3.f — DÓNDE APLICA LA DEPURACIÓN: EL HISTÓRICO, LA OBSERVADA, O LOS DOS
+--                                  (28 oct 2026 — gate de E7c, punto 2)
+--
+--     POR QUÉ EXISTE. DEC-98 eligió la rama (a): se depura, y la
+--     depuración es paso del método. Pero la regla todavía no está
+--     escrita porque su alcance tiene dos lecturas y las dos cuestan
+--     cosas distintas:
+--       (i)  depurar SOLO la celda observada, la de 2026, dejando el
+--            historial de 2022 a 2025 intacto;
+--       (ii) depurar TAMBIEN el historial, sacando del ciclo previo
+--            cualquier celda con lec_actual = 0.
+--
+--     POR QUÉ NO SE ELIGE A CIEGAS — DOS MOTIVOS MEDIDOS:
+--       1. Con cuatro valores la mediana es (v2 + v3) / 2. UN ciclo
+--          corrupto cae a la posicion 4 y no la toca —100, 110, 130,
+--          59563 da 120—. DOS la destruyen —100, 110, 59563, 60000
+--          da 29836—. La pregunta es de CONTEO, no de criterio.
+--       2. Depurar el historial rompe la garantia de cuatro ciclos de
+--          P1 = (a): una cuenta que pierde un ciclo cae en A1, que ya
+--          lleva el 28,49 % del universo de 2026 (DEC-96).
+--
+--     CRITERIO FIJADO ANTES DE CORRER:
+--       · se cuenta sobre el PANEL COLLAPSADO —p— y no sobre filas
+--         crudas, igual que todo lo de A2.3.
+--       · "corrupto" es lec_actual = 0. No se mira el consumo para
+--         decidirlo: la regla es determinista y no admite umbral.
+--       · "grupo" es (cuenta, mes_del_anio), que es la unidad sobre
+--         la que se construye la referencia.
+--       · "pierde los cuatro" es tener ciclos_disponibles >= 4 y
+--         ciclos_disponibles - ciclos_corruptos < 4, o sea que la
+--         limpieza baja el grupo por debajo del mínimo que exige
+--         P1 = (a). Los grupos que YA empezaron con menos de cuatro
+--         no se cuentan como perdidos: ya estaban en A1.
+--
+--     AUTOCALCUELOS:
+--       1. sin_corrupcion + un_corrupto + dos_o_mas_corruptos DEBE dar
+--          grupos_cuenta_mes. Los tres cubos son excluyentes.
+--       2. celdas_indice_cero DEBE dar 36 211 — las 38 969 de DEC-86
+--          menos las 2 758 del universo de 2026 que censo A2.3.e en
+--          DEC-97. Es una comprobación CONTRA OTRA CORRIDA: si no da,
+--          una de las dos medidas no es del mismo panel y se repiten
+--          las dos seguidas antes de interpretar nada.
+-- =====================================================================
+
+-- A2.3.f SALIDA — el índice cero dentro del historial que construye la referencia
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           lec_actual
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+g AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*)                               AS ciclos_disponibles,
+           COUNT(*) FILTER (WHERE lec_actual = 0) AS ciclos_corruptos
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+)
+SELECT COUNT(*)                                                       AS grupos_cuenta_mes,
+       SUM(ciclos_corruptos)                                          AS celdas_indice_cero,
+       COUNT(*) FILTER (WHERE ciclos_corruptos = 0)                   AS sin_corrupcion,
+       COUNT(*) FILTER (WHERE ciclos_corruptos = 1)                   AS un_corrupto,
+       COUNT(*) FILTER (WHERE ciclos_corruptos >= 2)                  AS dos_o_mas_corruptos,
+       COUNT(*) FILTER (WHERE ciclos_disponibles >= 4
+                          AND ciclos_disponibles - ciclos_corruptos < 4) AS grupos_que_pierden_los_cuatro,
+       COUNT(DISTINCT nro_cuenta) FILTER (WHERE ciclos_disponibles >= 4
+                          AND ciclos_disponibles - ciclos_corruptos < 4) AS cuentas_afectadas,
+       COUNT(DISTINCT nro_cuenta)                                     AS cuentas_en_el_historial
+  FROM g;
+
+
+-- =====================================================================
 -- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
 --                                  (25 oct 2026)
 --
