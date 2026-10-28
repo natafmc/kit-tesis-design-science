@@ -128,6 +128,26 @@ Con exactamente cuatro valores —que es lo que garantiza `P1` = (a)— **la med
 
 *Consulta escrita en `sql_a2_extraccion.sql`, bloque `A2.3.c`, **con su criterio fijado antes de correrla**. La corrida y sus cifras se registran como decisión nueva —`DEC-96`— en el momento de correrla y no antes.*
 
+**RESULTADO — corrido el 28 de octubre de 2026 (`DEC-96`). Los cuatro autocalculeos cierran.**
+
+| Salida | Celdas | Cuentas | % del universo 2026 |
+|:--|--:|--:|--:|
+| **1 valor calculado** | **183 541** | 22 978 | **69,42 %** |
+| **2 declaración A1 — le faltan ciclos** | **75 319** | 13 856 | **28,49 %** |
+| **3 declaración sin `referencia` — no positiva** | **5 524** | 1 834 | **2,09 %** |
+| **4 declaración fuera del universo** | **1 221 172** | 29 784 | — |
+| **Total panel** | **1 485 556** | **30 411** | — |
+
+*Los tres porcentajes del universo suman 100,00 % sobre **264 384 celdas de 2026** —183 541 + 75 319 + 5 524—, que es el 17,80 % del panel. **`cuentas` por grupo NO se suman** —38 668 contra 30 411— porque **una cuenta puede caer en más de un grupo**: tener ciclos en algunos meses y faltarle en otros no es una contradicción, es lo normal.*
+
+**Tres cosas que esta salida enseña y que ninguna decisión preveía:**
+
+- **Más de una cuarta parte del universo de detección no puede evaluarse con la regla principal.** **75 319 celdas —28,49 %— caen en A1** porque a la cuenta le falta al menos uno de los cuatro ciclos previos de ese mes. **Eso no es un detalle: significa que la contingencia A1 no es un caso raro para cuentas nuevas, es el camino que tomará más de una de cada cuatro celdas de 2026.** Le da peso real al entregable 3.4.
+- **La restricción `referencia > 0` mordió de verdad: 5 524 celdas —2,09 %—.** Consume histórico cuyo valor central de los cuatro años es cero o negativo. **Si esa restricción no se hubiera escrito, esas celdas habrían producido divisiones entre cero o desviaciones negativas sin que se viera**, y ahora salen rotuladas.
+- **183 541 celdas sí reciben valor** —69,42 %—, **y esa es la masa sobre la que se calibrará `θ`.**
+
+*La desviación máxima del panel —**1 999 597**— pertenece al grupo con índice cero (`A2.3.d`). Con desviaciones de esa magnitud conviene recordar, para cuando se calibre `θ`, que **la razón se dispara por denominadores chicos y no por consumos enormes**: `desviación` divide entre `referencia`, y una referencia pequeña multiplica la razón aunque el consumo sea corriente.*
+
 **La afirmación que había que separar, porque se leía como una sola — y `DEC-90` la separa:** el `AC4` de `DEC-72` acredita que *la ventana **contiene** cuatro ciclos*, lo cual es cierto y es lo que permitió elegir A2; `P1` = (a) decide que **la desviación se calcula solo donde los cuatro están**. **Son dos afirmaciones distintas: una es sobre los datos y la otra sobre el paso del método.** **Por eso E7a no se reabre:** `07b_requisitos.md` L56 condiciona la reapertura a que el histórico **no alcance** cuatro ciclos, y sí los alcanza —lo que cambia es cuántos meses se les aplica, no si existen—.
 
 **Consecuencia declarada en `DEC-90`, punto 5, y todavía sin decidir: el criterio 1 se acota a esos mismos nueve meses.** La cobertura retrospectiva está fijada sobre **174 procedentes y 1 053 reclamos de 57 meses** (`DEC-64`, `DEC-65`); si la detección solo corre en enero–septiembre de 2026, **solo ahí se puede medir retroactivamente**. *No está medido cuántos reclamos caen en esos nueve meses — ver §7, P4.*
@@ -194,11 +214,11 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo.
 
 ---
 
-## 5. Gate de E7c — abierto: **0 de 6**
+## 5. Gate de E7c — abierto: **1 de 6**
 
 **Se cierra esta etapa cuando se cumplan seis cosas:**
 
-1. **EN CURSO — la referencia anual.** **Las tres decisiones ya están tomadas (`DEC-90`):** estadístico = **mediana** (`P3` = (b)) · años = **los cuatro previos, solo donde existen** (`P1` = (a)) · **los otros 48 meses = sin `desviación`, la detección no corre sobre ellos.** **La fórmula YA ESTÁ ESCRITA — 28 oct 2026, en §3.1 — con las tres puestas y con la restricción `referencia > 0` dentro**, en tres pasos y cuatro salidas excluyentes que cubren el panel entero. **Queda UNA sola cosa: correr el autocalculeo de cierre** (`A2.3.c`), **y eso depende de una corrida de la tesista** —no hay cliente SQL en este entorno—. *Autocalculeo de cierre: la fórmula, tal como quedó escrita, debe poder aplicarse a las 1 485 556 celdas del panel **sin definir ninguna variable nueva**, devolviendo un valor para las que caen dentro del universo de detección y **una declaración —no un relleno— para las que quedan fuera**. **Cuatro comprobaciones escritas en §3.1; la primera y principal: las cuatro salidas suman 1 485 556.***
+1. **CUMPLIDO el 28 oct 2026 — la referencia anual.** **La fórmula quedó escrita en §3.1** con las tres decisiones de `DEC-90` dentro y con la restricción `referencia > 0`, **y el autocalculeo de cierre corrió y cerró** (`A2.3.c`, `DEC-96`). **Las tres comprobaciones:** `suma_las_cuatro` = **1 485 556** —exacto, sin hueco y sin solape— · `diferencia_contra_el_panel` = **0** · `diferencia_celdas_2026` = **0**. **Y la cuarta, que era la de no perder celdas por el `LEFT JOIN`:** `celdas_2026_clasificadas` = **264 384** = `celdas_2026_en_el_panel`. **`cuentas` = 30 411, la misma de `A2.3.b` (`DEC-80`),** de modo que el panel con el que se clasificó es el panel verificado. *La fórmula se aplicó a las 1 485 556 celdas **sin definir ninguna variable nueva** —usó solo `consumo` y `mes`— y devolvió **valor** para las que caen dentro del universo y **declaración** para las que quedan fuera, que era la condición del punto.*
 2. **PENDIENTE — las 38 969 celdas.** Una de las tres ramas de `DEC-81`, punto 5, **con la regla escrita ANTES de aplicarse**. *Autocalculeo de cierre: la regla aplicada deja un número de celdas y de cuentas afectadas, y ese número se registra con su consulta.*
 3. **PENDIENTE — los segmentos A3.** Corte propuesto y prueba de que es razonable.
 4. **PENDIENTE — la contingencia A1.** Regla ejecutable: qué cuenta un ciclo completo y cuándo entra A1.
@@ -224,7 +244,7 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo.
 ## 7. Preguntas abiertas de la etapa
 
 - **P1 — Meses sin cuatro ciclos (48 de 57, y 12 de 2022 sin ninguno).** ¿Qué se hace con los meses que no tienen cuatro años previos en la ventana? **(a)** calcular la desviación **solo donde sí hay cuatro** —los 9 meses de 2026— y ajustar §4.2, que hoy dice *cada cuenta y cada mes*; **(b)** calcular con **los ciclos disponibles según el año** y dejar que los 12 de 2022 caigan en la contingencia A1; **(c)** **medir primero** cuántas cuentas tienen realmente cuatro ciclos completos antes de elegir entre (a) y (b). **RESUELTA el 28 oct 2026 — `P1` = (a).** *Justificación y consecuencias en `DEC-90`.*
-- **P2 — Las 38 969 celdas.** (a) depurar / (b) declarar / (c) medir y decidir. **Depende de 3.1** —`DEC-86`, punto 5—: sin la referencia no está medido su lugar en el ranking. *Abierta el 27 oct 2026 (`DEC-81`), reprogramada al 28 oct (`DEC-87`).*
+- **P2 — Las 38 969 celdas.** (a) depurar / (b) declarar / (c) medir y decidir. **MEDIDA EL 28 OCT 2026 — `A2.3.d`, `DEC-96`. La rama (c) ya no es una opción: se cumplió.** *Y el resultado salió contundente: sobre las desviaciones calculables, las celdas con índice cero tienen **mediana 5,666667** contra **0,434783** del resto, o sea **13,0 veces**, **muy por encima del umbral de 2× que se fijó antes de correr**. **El criterio preescrito dice entonces que sí desplazan la distribución.** **Pero hay una salvedad que la propia corrida dejó al descubierto y que hay que cerrar antes de elegir rama:** solo **541 celdas —411 cuentas—** de ese grupo resultaron calculables, y **esas 541 no se sabe si son casi todas las celdas con índice cero de 2026 o una fracción pequeña**, porque el resto pudo caer en A1 o en «sin referencia», que no traen el desglose de índice. **La rama no se elige sobre un subconjunto de tamaño desconocido** —consulta `A2.3.e`, redactada el 28 oct—. *Abierta el 27 oct 2026 (`DEC-81`), reprogramada al 28 oct (`DEC-87`).*
 - **P3 — El estadístico de la referencia.** (a) media aritmética de los mismos meses de los años anteriores / (b) mediana / (c) el año anterior solamente / (d) se decide al ver cuál de (a) o (b) es menos sensible a los extremos que midió `DEC-86`. **RESUELTA el 28 oct 2026 — `P3` = (b): la mediana.** *Justificación en `DEC-90`, punto 3.*
 - **P4 — El criterio 1 contra los nueve meses.** `P1` = (a) acota la detección a enero–septiembre de 2026, y la cobertura retrospectiva —criterio 1— está fijada sobre **174 procedentes y 1 053 reclamos de 57 meses**. **¿Se mide la base de 2026?** **(a)** **medir** cuántos reclamos y cuántos procedentes caen en esos nueve meses —consulta nueva, con criterio fijado antes de correr— y reevaluar el criterio 1 sobre esa ventana; **(b)** **no medir** y dejar la base de 57 meses como línea descriptiva, declarando en limitaciones que el método retroevaluable alcanza solo 9 meses; **(c)** **medir** y, si la base de 2026 es demasiado pequeña para sostener la evaluación, **reabrir `P1`** para (b). **RESUELTA el 28 oct 2026 — `P4` = (b): NO SE ABRE NINGUNA CONSULTA NUEVA.** La base de 57 meses se conserva íntegra como **caracterización empírica del problema (E6)**, y **la limitación queda escrita en `propuesta_borrador_v1.md` §10**: el **protocolo de retroevaluación algorítmica aplica sobre los nueve meses de 2026**, por disponibilidad de los cuatro ciclos previos que exige R1.2.
 

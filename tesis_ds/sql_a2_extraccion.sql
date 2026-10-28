@@ -1874,6 +1874,112 @@ SELECT CASE
 
 
 -- =====================================================================
+-- A2.3.e — EL ÍNDICE DE CONTADOR EN LAS TRES SALIDAS DE 2026 (P2, cierre)
+--                                  (28 oct 2026 — gate de E7c, punto 2)
+--
+--     POR QUÉ EXISTE. A2.3.d midió que las celdas con lec_actual = 0
+--     tienen mediana de desviación 5,666667 contra 0,434783 del resto
+--     —13,0 veces—, muy por encima del umbral de 2× fijado antes de
+--     correr. PERO solo 541 celdas de ese grupo resultaron
+--     calculables, y la propia salida no puede decir si esas 541 son
+--     casi todas las celdas con índice cero de 2026 o una fracción
+--     pequeña, porque el resto pudo caer en "2 A1" o en
+--     "3 sin referencia", que A2.3.d descarta por construccion.
+--
+--     POR QUÉ NO SE ELIGE LA RAMA SIN ESTO. Elegir entre depurar y
+--     declarar sobre un subconjunto de tamaño desconocido seria
+--     decidir a medias. Si 541 son casi el total, la medicion de
+--     A2.3.d es representativa y manda. Si el total de 2026 fuera,
+--     digamos, seis mil, entonces 541 es el 9 % y la mediana de
+--     A2.3.d describe a una minoria, no a la clase.
+--
+--     CRITERIO FIJADO ANTES DE CORRER:
+--       · no se comparan medianas aqui; se CUENTA. Es un censo del
+--         indice dentro del universo de 2026, y nada mas.
+--       · las tres salidas y los tres grupos de indice son
+--         excluyentes entre si, asi que la tabla tiene NUEVE filas
+--         como maximo —no todas tienen por que existir—.
+--       · el orden de lectura es por salida primero y por indice
+--         despues, para que se vea de un vistazo donde se concentra
+--         el indice cero.
+--
+--     AUTOCALCUEO OBLIGATORIO: la suma de `celdas` de las nueve
+--     filas DEBE dar 264 384, la misma cifra que celdas_2026_en_el_panel
+--     del A2.3.c. Si no la da, esta consulta filtro distinto y no se
+--     interpreta.
+-- =====================================================================
+
+-- A2.3.e SALIDA — censo del indice de contador dentro del universo 2026
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+clasif AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado,
+           r.ciclos_disponibles,
+           r.referencia,
+           CASE
+             WHEN p.mes < DATE '2026-01-01'
+               THEN '4 fuera del universo de deteccion'
+             WHEN r.nro_cuenta IS NULL OR r.ciclos_disponibles < 4
+               THEN '2 A1 - le faltan ciclos'
+             WHEN r.referencia <= 0
+               THEN '3 sin referencia - no positiva'
+             ELSE '1 valor calculado'
+           END AS salida
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+)
+SELECT salida,
+       CASE
+         WHEN lec_actual IS NULL THEN '3 indice nulo'
+         WHEN lec_actual = 0     THEN '1 indice cero'
+         ELSE                          '2 indice normal'
+       END                        AS grupo_indice,
+       COUNT(*)                   AS celdas,
+       COUNT(DISTINCT nro_cuenta) AS cuentas
+  FROM clasif
+ WHERE mes >= DATE '2026-01-01'
+   AND mes <  DATE '2026-10-01'
+ GROUP BY 1, 2
+ ORDER BY 1, 2;
+
+
+-- =====================================================================
 -- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
 --                                  (25 oct 2026)
 --
