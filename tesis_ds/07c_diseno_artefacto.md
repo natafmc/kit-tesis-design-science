@@ -35,7 +35,8 @@ desviación = abs(consumo_observado − referencia) / referencia
 |:--|:--|:--|
 | **Alternativa elegida: A2 — ciclo anual por cuenta** | cerrado | `07a_alternativas.md` L142 · `DEC-70` |
 | **Requisitos R1 a R10** | borrador v1, gate 3 de 4 | `07b_requisitos.md` |
-| **Forma de `θ` y procedimiento de calibración** | fijados, sin valor | `07b_requisitos.md` §4.1 y §4.2 |
+| **Forma de `θ` y procedimiento de calibración** | fijados, sin valor | `07b_requisitos.md` §4.1 y §4.2 — **paso 1 ajustado el 28 oct con `P1` = (a) y `P3` = (b), `DEC-90`** |
+| **Referencia: estadístico y alcance** | **decidido** | `DEC-90`: **mediana** · **solo los nueve meses de 2026** · cuatro ciclos previos |
 | **Panel de consumo** | verificado | `DEC-80`: 1 485 556 celdas · 30 411 cuentas · 57 meses · 5 619 duplicados colapsados |
 | **Cuatro ciclos anuales completos disponibles** | verificado | `AC4` de `A2.3.a` (`DEC-72`): la ventana 2022-01 a 2026-09 contiene 2022, 2023, 2024 y 2025, **de modo que A2 es calculable y la contingencia A1 no se activa por falta de historial** |
 | **Cierre de la ventana** | fijado | `DEC-69`: la ventana cierra el 30/9/2026 |
@@ -59,11 +60,11 @@ Están **asignados antes de abrir la etapa**: tres los pone `07a_alternativas.md
 
 R1.2 dice que se compara contra *«su propio ciclo anual —el mismo mes de los años anteriores—»* y L56 fija que *«la referencia se calcula con **cuatro ciclos anuales completos** (E4 §4.2)»*.
 
-**Lo que falta decidir son dos cosas, y ninguna está escrita:**
+**Dos cosas había que decidir. Las dos se resolvieron el 28 oct 2026 (`DEC-90`):**
 
-**(a) Con qué estadístico se resume el ciclo.** La media, la mediana o el año anterior solamente no están escogidos en ningún archivo, y son distintos entre sí: con consumos de la magnitud que tiene el panel —`DEC-86` mide extremos de **−1 343 050** a **39 987 040**— una media y una mediana no quedan en el mismo orden de magnitud.
+**(a) Con qué estadístico se resume el ciclo — RESUELTO. `P3` = (b): LA MEDIANA.** Se descartaron la media y el año anterior solamente por el mismo motivo: con consumos de la magnitud que tiene el panel —`DEC-86` mide extremos de **−1 343 050** a **39 987 040**— **un solo valor extremo arrastraría la referencia de los otros tres años**, y **la mediana no se arrastra**. Además, con los cuatro ciclos que garantiza `P1` = (a), **la mediana es el promedio de los dos valores centrales**, que es **recalculable a mano por un verificador que no participó del estudio (R1.4)**. *La opción (c) —el año anterior solamente— se descartó por usar **1 de los 4 ciclos**; la (d) —decidir después de medir— ya no hace falta: se eligió con el dato de `DEC-86` a la vista.*
 
-**(b) Cuántos de los 57 meses pueden usar cuatro ciclos.** *Cuenta propia, no medida por consulta:* la ventana cierra el 30/9/2026 (`DEC-69`), de modo que 2026 aporta **9 meses** y cada año anterior, 12. Para el mismo mes de cada año, los años previos disponibles dentro de la ventana son:
+**(b) Cuántos de los 57 meses pueden usar cuatro ciclos — RESUELTO. `P1` = (a): SOLO LOS 9 DE 2026.** *Cuenta propia, no medida por consulta:* la ventana cierra el 30/9/2026 (`DEC-69`), de modo que 2026 aporta **9 meses** y cada año anterior, 12. Para el mismo mes de cada año, los años previos disponibles dentro de la ventana son:
 
 | Año del mes a evaluar | Meses | Años previos en la ventana | Cuatro ciclos completos |
 |:--|--:|:--|:--|
@@ -75,9 +76,19 @@ R1.2 dice que se compara contra *«su propio ciclo anual —el mismo mes de los 
 
 **Cuadra con un dato ya verificado: 9 + 48 = 57 = `meses` de `A2.3.b` (`DEC-80`).** De ahí salen dos derivadas: **48 de 57 meses —84,2 %— no pueden usar cuatro ciclos**, y **los 12 de 2022 no tienen ningún año previo dentro de la ventana**, o sea que `referencia` no existe para ellos y `desviación` no se puede calcular.
 
-**Consecuencia que hay que resolver aquí y no más adelante:** el `AC4` de `DEC-72` acredita que *la ventana **contiene** cuatro ciclos*, lo cual es cierto y es lo que permitió elegir A2; **pero eso no dice que cada uno de los 57 meses tenga cuatro ciclos para compararse.** Son dos afirmaciones distintas y hasta ahora se han leído como una sola.
+**La regla de referencia que resulta de las dos decisiones — esta es la entrega 3.1 en su parte de decisión:**
 
-*Pregunta de la etapa: ver §7, P1.*
+- **Universo de detección: los nueve meses de 2026** —enero a septiembre—. Sobre los otros **48 meses no se calcula `desviación`**: no se les asigna ningún valor de relleno, la detección simplemente no corre ahí.
+- **Para cada cuenta y cada mes de 2026:** `referencia` = **mediana** de los `consumo` de esa misma cuenta en ese mismo mes de **2022, 2023, 2024 y 2025**, o sea cuatro valores.
+- **Si a la cuenta le falta alguno de los cuatro ciclos:** **no entra al paso 1 de §4.2 y cae en A1** —ventana de 6 meses, R8.1—, **y la alerta lo declara** —R4.4—.
+- **Restricción que hay que escribir en la fórmula y hasta hoy no estaba escrita: `referencia` no puede ser 0 ni negativa.** §4.1 divide entre ella y el panel tiene `consumo` desde **−1 343 050** (`DEC-86`). **Lo que cumpla eso se declara, no se rellena.**
+- **La segmentación no se acota:** **A3 se sigue midiendo sobre los 57 meses.** Se acota el paso de detección, no el dato.
+
+**La afirmación que había que separar, porque se leía como una sola — y `DEC-90` la separa:** el `AC4` de `DEC-72` acredita que *la ventana **contiene** cuatro ciclos*, lo cual es cierto y es lo que permitió elegir A2; `P1` = (a) decide que **la desviación se calcula solo donde los cuatro están**. **Son dos afirmaciones distintas: una es sobre los datos y la otra sobre el paso del método.** **Por eso E7a no se reabre:** `07b_requisitos.md` L56 condiciona la reapertura a que el histórico **no alcance** cuatro ciclos, y sí los alcanza —lo que cambia es cuántos meses se les aplica, no si existen—.
+
+**Consecuencia declarada en `DEC-90`, punto 5, y todavía sin decidir: el criterio 1 se acota a esos mismos nueve meses.** La cobertura retrospectiva está fijada sobre **174 procedentes y 1 053 reclamos de 57 meses** (`DEC-64`, `DEC-65`); si la detección solo corre en enero–septiembre de 2026, **solo ahí se puede medir retroactivamente**. *No está medido cuántos reclamos caen en esos nueve meses — ver §7, P4.*
+
+*Resuelta: ver §7, P1 — `DEC-90`.*
 
 ### 3.2 — Qué hacer con los huecos de serie: las 38 969 celdas
 
@@ -143,7 +154,7 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo.
 
 **Se cierra esta etapa cuando se cumplan seis cosas:**
 
-1. **PENDIENTE — la referencia anual.** Forma de `referencia` decidida: con qué estadístico, con cuántos años, y **qué pasa en cada uno de los 57 meses**. *Autocalculeo de cierre: la fórmula, tal como quedó escrita, debe poder evaluarse sobre las 1 485 556 celdas del panel sin definir ninguna variable nueva —las que no se puedan evaluar se declaran, no se rellenan.*
+1. **EN CURSO — la referencia anual.** **Las tres decisiones ya están tomadas (`DEC-90`):** estadístico = **mediana** (`P3` = (b)) · años = **los cuatro previos, solo donde existen** (`P1` = (a)) · **los otros 48 meses = sin `desviación`, la detección no corre sobre ellos.** **Queda:** escribir la fórmula con las tres puestas —incluida la restricción `referencia > 0`— **y correr el autocalculeo de cierre.** *Autocalculeo de cierre: la fórmula, tal como quedó escrita, debe poder aplicarse a las 1 485 556 celdas del panel **sin definir ninguna variable nueva**, devolviendo un valor para las que caen dentro del universo de detección y **una declaración —no un relleno— para las que quedan fuera**.*
 2. **PENDIENTE — las 38 969 celdas.** Una de las tres ramas de `DEC-81`, punto 5, **con la regla escrita ANTES de aplicarse**. *Autocalculeo de cierre: la regla aplicada deja un número de celdas y de cuentas afectadas, y ese número se registra con su consulta.*
 3. **PENDIENTE — los segmentos A3.** Corte propuesto y prueba de que es razonable.
 4. **PENDIENTE — la contingencia A1.** Regla ejecutable: qué cuenta un ciclo completo y cuándo entra A1.
@@ -168,9 +179,10 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo.
 
 ## 7. Preguntas abiertas de la etapa
 
-- **P1 — Meses sin cuatro ciclos (48 de 57, y 12 de 2022 sin ninguno).** ¿Qué se hace con los meses que no tienen cuatro años previos en la ventana? **(a)** calcular la desviación **solo donde sí hay cuatro** —los 9 meses de 2026— y ajustar §4.2, que hoy dice *cada cuenta y cada mes*; **(b)** calcular con **los ciclos disponibles según el año** y dejar que los 12 de 2022 caigan en la contingencia A1; **(c)** **medir primero** cuántas cuentas tienen realmente cuatro ciclos completos antes de elegir entre (a) y (b). *Abierta el 28 oct 2026.*
+- **P1 — Meses sin cuatro ciclos (48 de 57, y 12 de 2022 sin ninguno).** ¿Qué se hace con los meses que no tienen cuatro años previos en la ventana? **(a)** calcular la desviación **solo donde sí hay cuatro** —los 9 meses de 2026— y ajustar §4.2, que hoy dice *cada cuenta y cada mes*; **(b)** calcular con **los ciclos disponibles según el año** y dejar que los 12 de 2022 caigan en la contingencia A1; **(c)** **medir primero** cuántas cuentas tienen realmente cuatro ciclos completos antes de elegir entre (a) y (b). **RESUELTA el 28 oct 2026 — `P1` = (a).** *Justificación y consecuencias en `DEC-90`.*
 - **P2 — Las 38 969 celdas.** (a) depurar / (b) declarar / (c) medir y decidir. **Depende de 3.1** —`DEC-86`, punto 5—: sin la referencia no está medido su lugar en el ranking. *Abierta el 27 oct 2026 (`DEC-81`), reprogramada al 28 oct (`DEC-87`).*
-- **P3 — El estadístico de la referencia.** (a) media aritmética de los mismos meses de los años anteriores / (b) mediana / (c) el año anterior solamente / (d) se decide al ver cuál de (a) o (b) es menos sensible a los extremos que midió `DEC-86`. *Abierta el 28 oct 2026.*
+- **P3 — El estadístico de la referencia.** (a) media aritmética de los mismos meses de los años anteriores / (b) mediana / (c) el año anterior solamente / (d) se decide al ver cuál de (a) o (b) es menos sensible a los extremos que midió `DEC-86`. **RESUELTA el 28 oct 2026 — `P3` = (b): la mediana.** *Justificación en `DEC-90`, punto 3.*
+- **P4 — El criterio 1 contra los nueve meses.** `P1` = (a) acota la detección a enero–septiembre de 2026, y la cobertura retrospectiva —criterio 1— está fijada sobre **174 procedentes y 1 053 reclamos de 57 meses**. **¿Se mide la base de 2026?** **(a)** **medir** cuántos reclamos y cuántos procedentes caen en esos nueve meses —consulta nueva, con criterio fijado antes de correr— y reevaluar el criterio 1 sobre esa ventana; **(b)** **no medir** y dejar la base de 57 meses como línea descriptiva, declarando en limitaciones que el método retroevaluable alcanza solo 9 meses; **(c)** **medir** y, si la base de 2026 es demasiado pequeña para sostener la evaluación, **reabrir `P1`** para (b). *Abierta el 28 oct 2026 (`DEC-90`, punto 5).*
 
 ---
 
