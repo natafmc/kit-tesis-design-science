@@ -1569,6 +1569,311 @@ SELECT mes::date,
 
 
 -- =====================================================================
+-- A2.3.c — LA REFERENCIA Y LA DESVIACIÓN, APLICADAS AL PANEL ENTERO
+--                                  (28 oct 2026 — gate de E7c, punto 1)
+--
+--     QUÉ CIERRA. Es el autocalculeo de cierre del punto 1 del gate de
+--     E7c. La fórmula está escrita en 07c_diseno_artefacto.md §3.1 con
+--     las tres decisiones de DEC-90 dentro: mediana (P3 = b), cuatro
+--     ciclos previos solo donde existen (P1 = a) y la restricción
+--     referencia > 0, que era la que faltaba escrita.
+--
+--     LA FÓRMULA, EN TRES PASOS:
+--       A. referencia(c,m) = mediana de los consumo de esa cuenta en
+--          ese mismo mes de 2022, 2023, 2024 y 2025.
+--          Con cuatro valores exactos, la mediana es el promedio de
+--          los dos centrales ordenados.
+--       B. desviacion(c,m) = ABS(consumo_observado - referencia)
+--                            / referencia
+--          solo para enero-septiembre de 2026.
+--       C. CUATRO SALIDAS EXCLUYENTES, que cubren el panel entero:
+--            1 valor calculado
+--            2 declaracion A1  - le faltan ciclos previos
+--            3 declaracion sin referencia - no positiva
+--            4 declaracion fuera del universo de deteccion
+--
+--     CRITERIO FIJADO ANTES DE CORRER — no se ajusta después:
+--       · "Tiene los cuatro ciclos" significa QUE EXISTE LA CELDA DE
+--         ESA MISMA CUENTA EN ESE MISMO MES DE ESE AÑO. No se pide el
+--         año completo: eso es el entregable 3.4 y sigue abierto. La
+--         fórmula no lo necesita para aplicarse.
+--       · "Le faltan ciclos" es ciclos_disponibles < 4, contado sobre
+--         las celdas del panel, no sobre filas crudas.
+--       · Lo que no recibe valor recibe DECLARACIÓN. No hay relleno
+--         de ningún tipo, ni ceros ni promedios sustitutos.
+--       · PERCENTILE_CONT(0.5) devuelve la media de los dos centrales
+--         cuando hay cuatro valores pares, que es exactamente lo que
+--         dice la fórmula de §3.1.
+--
+--     AUTOCALCUELOS DE CIERRE — los cuatro de §3.1:
+--       1. suma_las_cuatro DEBE dar 1 485 556. Si no la da, la
+--          clasificación no cubre el panel y no se interpreta nada.
+--       2. diferencia_contra_el_panel DEBE dar 0. Es lo mismo que el
+--          punto 1 visto al revés: ningún hueco, ningún solape.
+--       3. diferencia_celdas_2026 DEBE dar 0. Ninguna celda de 2026
+--          se pierde por filtro ni por un LEFT JOIN sin coincidencia.
+--       4. con_valor + con_a1 + con_referencia_no_positiva DEBE dar
+--          celdas_2026_en_el_panel. Las tres dentro del universo son
+--          excluyentes y lo cubren todo.
+--
+--     AVISO SOBRE LOS DOS CAMPOS QUE USA: consumo y mes. No pide
+--     ninguno que A2.3.b no traiga, que era la condición del
+--     autocalculeo —aplicarse sin definir variables nuevas—.
+--
+--     LA TABLA ES VIVA: el panel se corre con cierre 2026-09-30
+--     (DEC-69) y toda corrida lleva sello de fecha.
+-- =====================================================================
+
+-- A2.3.c SALIDA — las cuatro salidas, una fila por salida
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+clasif AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado,
+           r.ciclos_disponibles,
+           r.referencia,
+           CASE
+             WHEN p.mes < DATE '2026-01-01'
+               THEN '4 fuera del universo de deteccion'
+             WHEN r.nro_cuenta IS NULL OR r.ciclos_disponibles < 4
+               THEN '2 A1 - le faltan ciclos'
+             WHEN r.referencia <= 0
+               THEN '3 sin referencia - no positiva'
+             ELSE '1 valor calculado'
+           END AS salida,
+           CASE
+             WHEN p.mes >= DATE '2026-01-01'
+              AND r.nro_cuenta IS NOT NULL
+              AND r.ciclos_disponibles >= 4
+              AND r.referencia > 0
+               THEN ABS(p.consumo - r.referencia) / r.referencia
+           END AS desviacion
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+)
+SELECT salida,
+       COUNT(*)                            AS celdas,
+       COUNT(DISTINCT nro_cuenta)          AS cuentas,
+       MIN(mes)::text                      AS mes_minimo,
+       MAX(mes)::text                      AS mes_maximo,
+       MIN(desviacion)                     AS desviacion_minima,
+       MAX(desviacion)                     AS desviacion_maxima,
+       ROUND(AVG(desviacion)::numeric, 6)  AS desviacion_media
+  FROM clasif
+ GROUP BY salida
+ ORDER BY salida;
+
+
+-- A2.3.c AUTOCALCUELO — los cuatro contra el panel
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+clasif AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado,
+           r.ciclos_disponibles,
+           r.referencia,
+           CASE
+             WHEN p.mes < DATE '2026-01-01'
+               THEN '4 fuera del universo de deteccion'
+             WHEN r.nro_cuenta IS NULL OR r.ciclos_disponibles < 4
+               THEN '2 A1 - le faltan ciclos'
+             WHEN r.referencia <= 0
+               THEN '3 sin referencia - no positiva'
+             ELSE '1 valor calculado'
+           END AS salida,
+           CASE
+             WHEN p.mes >= DATE '2026-01-01'
+              AND r.nro_cuenta IS NOT NULL
+              AND r.ciclos_disponibles >= 4
+              AND r.referencia > 0
+               THEN ABS(p.consumo - r.referencia) / r.referencia
+           END AS desviacion
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+)
+SELECT (SELECT COUNT(*) FROM p)                                                     AS celdas_panel,
+       SUM(CASE WHEN salida = '1 valor calculado'                  THEN 1 ELSE 0 END) AS con_valor,
+       SUM(CASE WHEN salida = '2 A1 - le faltan ciclos'           THEN 1 ELSE 0 END) AS con_a1,
+       SUM(CASE WHEN salida = '3 sin referencia - no positiva'    THEN 1 ELSE 0 END) AS con_referencia_no_positiva,
+       SUM(CASE WHEN salida = '4 fuera del universo de deteccion' THEN 1 ELSE 0 END) AS fuera_del_universo,
+       COUNT(*)                                                                       AS suma_las_cuatro,
+       COUNT(*) - (SELECT COUNT(*) FROM p)                                            AS diferencia_contra_el_panel,
+       (SELECT COUNT(*) FROM p WHERE mes >= DATE '2026-01-01')                        AS celdas_2026_en_el_panel,
+       SUM(CASE WHEN mes >= DATE '2026-01-01' THEN 1 ELSE 0 END)                      AS celdas_2026_clasificadas,
+       SUM(CASE WHEN mes >= DATE '2026-01-01' THEN 1 ELSE 0 END)
+         - (SELECT COUNT(*) FROM p WHERE mes >= DATE '2026-01-01')                    AS diferencia_celdas_2026,
+       COUNT(DISTINCT nro_cuenta)                                                     AS cuentas
+  FROM clasif;
+
+
+-- =====================================================================
+-- A2.3.d — EL LUGAR DE LAS CELDAS CON ÍNDICE CERO EN EL RANKING (P2)
+--                                  (28 oct 2026 — gate de E7c, punto 2)
+--
+--     QUÉ RESUELVE. DEC-81, punto 5, dejó tres ramas abiertas sobre
+--     las 38 969 celdas con lec_actual = 0 y advirtió que NO ESTABA
+--     MEDIDO su lugar en el ranking de desviación porque para eso
+--     hacía falta la referencia del ciclo anual, que es A2.3.c.
+--     A2.3.c la acaba de producir, así que P2 se puede medir.
+--
+--     SALVEDAD ESCRITA ANTES DE CORRER — y cambia cómo se lee:
+--       las 38 969 son una cifra de 57 MESES (DEC-86). La desviación
+--       solo existe para los nueve de 2026, así que AQUÍ NO SE MIDE
+--       AQUELLAS 38 969: se mide EL SUBCONJUNTO DE 2026 QUE CAE EN
+--       "valor calculado". Si el subconjunto resulta chico, esa es en
+--       sí una hallazgo y se declara, no se esconde.
+--
+--     CRITERIO FIJADO ANTES DE CORRER — no se ajusta después:
+--       se comparan los dos grupos por SU MEDIANA de desviación,
+--       porque la media se arrastraría con los extremos que midió
+--       DEC-86 —mismo motivo por el que P3 eligió la mediana—.
+--       Se considera que contaminan si la mediana del grupo con
+--       índice cero es AL MENOS EL DOBLE de la del resto.
+--       El factor 2 se fija aquí, con el mismo criterio de comparación
+--       que usó el 7.g —«se despegan o no se despegan»—, y NO se
+--       mueve después de ver la salida.
+--       · menos de 2x  -> el índice cero no desplaza la distribución
+--       · 2x o más     -> sí la desplaza
+--       Las dos lecturas se llevan a la tesista con el dato en
+--       pantalla para elegir entre (a), (b) y (c). EL UMBRAL NO ELIGE
+--       LA RAMA: mide y para ahí.
+-- =====================================================================
+
+-- A2.3.d SALIDA — los dos grupos, sobre las desviaciones calculables
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+calculable AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           ABS(p.consumo - r.referencia) / r.referencia AS desviacion
+      FROM p
+      JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND p.mes <  DATE '2026-10-01'
+       AND r.ciclos_disponibles >= 4
+       AND r.referencia > 0
+)
+SELECT CASE
+         WHEN lec_actual IS NULL THEN '3 indice nulo'
+         WHEN lec_actual = 0     THEN '1 indice cero'
+         ELSE                          '2 indice normal'
+       END                                              AS grupo,
+       COUNT(*)                                          AS celdas,
+       COUNT(DISTINCT nro_cuenta)                        AS cuentas,
+       ROUND((PERCENTILE_CONT(0.5)
+              WITHIN GROUP (ORDER BY desviacion))::numeric, 6) AS mediana_desviacion,
+       ROUND(MIN(desviacion)::numeric, 6)                AS minima,
+       ROUND(MAX(desviacion)::numeric, 6)                AS maxima
+  FROM calculable
+ GROUP BY 1
+ ORDER BY 1;
+
+
+-- =====================================================================
 -- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
 --                                  (25 oct 2026)
 --

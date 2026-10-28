@@ -84,6 +84,50 @@ R1.2 dice que se compara contra *«su propio ciclo anual —el mismo mes de los 
 - **Restricción que hay que escribir en la fórmula y hasta hoy no estaba escrita: `referencia` no puede ser 0 ni negativa.** §4.1 divide entre ella y el panel tiene `consumo` desde **−1 343 050** (`DEC-86`). **Lo que cumpla eso se declara, no se rellena.**
 - **La segmentación no se acota:** **A3 se sigue midiendo sobre los 57 meses.** Se acota el paso de detección, no el dato.
 
+**La fórmula, escrita completa antes de correrla — esto es la entrega 3.1 en su parte formal.** Se aplica a las **1 485 556 celdas del panel** —`A2.3.b`, `DEC-80`— y usa **solo dos campos que el panel ya trae: `consumo` y `mes`.** **No define ninguna variable nueva**, que era la condición del autocalculeo.
+
+**Paso A — la referencia.** Para cada cuenta `c` y cada mes `m` del año:
+
+    referencia(c, m) = mediana { consumo(c, m, 2022), consumo(c, m, 2023),
+                                  consumo(c, m, 2024), consumo(c, m, 2025) }
+
+Con exactamente cuatro valores —que es lo que garantiza `P1` = (a)— **la mediana es el promedio de los dos centrales una vez ordenados los cuatro**, y eso es lo que la hace recalculable a mano por un verificador que no participó del estudio (R1.4):
+
+    referencia(c, m) = ( v₂ + v₃ ) / 2        con v₁ ≤ v₂ ≤ v₃ ≤ v₄
+
+**Paso B — la desviación.** Para cada cuenta `c` y cada mes `m` **de enero a septiembre de 2026**:
+
+    desviación(c, m) = | consumo_observado(c, m) − referencia(c, m) | / referencia(c, m)
+
+**Paso C — las cuatro salidas. Son excluyentes y cubren el panel entero:** toda celda cae en **exactamente una**.
+
+| Salida | Condición | Qué devuelve |
+|:--|:--|:--|
+| **valor** | `mes` ∈ enero–septiembre 2026 · la cuenta tiene las cuatro celdas previas de ese mes · `referencia > 0` | `desviación(c, m)` |
+| **declaración A1** | `mes` ∈ enero–septiembre 2026 · **a la cuenta le falta alguna de las cuatro celdas previas** | *sin desviación — entra a la contingencia A1, ventana de 6 meses (R8.1); la alerta lo declara (R4.4)* |
+| **declaración sin `referencia`** | `mes` ∈ enero–septiembre 2026 · tiene las cuatro · **`referencia ≤ 0`** | *sin desviación — la referencia no es positiva y §4.1 divide entre ella* |
+| **declaración fuera** | `mes` ∈ 2022–2025 | *sin desviación — fuera del universo de detección (`P1` = (a))* |
+
+**Las tres decisiones de `DEC-90` quedan dentro de la fórmula y no como nota al margen:** el estadístico —la mediana, `P3` = (b)— · el alcance —los nueve meses de 2026, `P1` = (a)— · **y la restricción de positividad, que era la que faltaba escrita**: `referencia > 0`, porque §4.1 divide entre ella y el panel alcanza `consumo` de **−1 343 050** (`DEC-86`).
+
+**Lo que esta fórmula NO es — dos aclaraciones que evitan leerla mal:**
+
+- **No es un umbral.** `θ` se fija aparte —gate de E7b, punto 3—, calibrando sobre las desviaciones que esta fórmula devuelve. **La fórmula produce el dato; el umbral se decide sobre él y después.**
+- **No es la segmentación.** A3 sigue midiendo sobre los 57 meses, porque **se acota el paso de detección y no el dato**.
+
+**Un matiz que la fórmula necesita y que todavía no cierra, declarado para que no se lea como omisión:** para saber si una celda de 2026 tiene sus cuatro ciclos previos basta con **que exista la celda de ese mismo mes en ese año** —eso es lo que la fórmula pregunta—. **Qué cuenta un ciclo *completo* a nivel de año —las doce lecturas, o solo la existencia del mes— es el entregable 3.4 y sigue abierto.** La fórmula no lo espera porque no necesita esa definición para aplicarse.
+
+---
+
+**Autocalculeo de cierre de 3.1 — el que tiene que cerrar para que el punto 1 del gate pase a cumplido.** La fórmula se aplica al panel entero y la salida tiene que mostrar, en este orden:
+
+1. **Las cuatro salidas suman exactamente 1 485 556** —cubrimiento completo, sin hueco y sin solape—.
+2. **Ninguna celda recibe valor de relleno:** las que quedan fuera del universo devuelven **declaración**.
+3. **Dentro del universo de 2026:** `valor` + `A1` + `sin referencia` = el total de celdas de 2026.
+4. **Las celdas de 2026 clasificadas coinciden con las que el panel trae en 2026** —que no se escape ninguna por filtro ni por un `LEFT JOIN` que no encuentre su referencia—.
+
+*Consulta escrita en `sql_a2_extraccion.sql`, bloque `A2.3.c`, **con su criterio fijado antes de correrla**. La corrida y sus cifras se registran como decisión nueva —`DEC-96`— en el momento de correrla y no antes.*
+
 **La afirmación que había que separar, porque se leía como una sola — y `DEC-90` la separa:** el `AC4` de `DEC-72` acredita que *la ventana **contiene** cuatro ciclos*, lo cual es cierto y es lo que permitió elegir A2; `P1` = (a) decide que **la desviación se calcula solo donde los cuatro están**. **Son dos afirmaciones distintas: una es sobre los datos y la otra sobre el paso del método.** **Por eso E7a no se reabre:** `07b_requisitos.md` L56 condiciona la reapertura a que el histórico **no alcance** cuatro ciclos, y sí los alcanza —lo que cambia es cuántos meses se les aplica, no si existen—.
 
 **Consecuencia declarada en `DEC-90`, punto 5, y todavía sin decidir: el criterio 1 se acota a esos mismos nueve meses.** La cobertura retrospectiva está fijada sobre **174 procedentes y 1 053 reclamos de 57 meses** (`DEC-64`, `DEC-65`); si la detección solo corre en enero–septiembre de 2026, **solo ahí se puede medir retroactivamente**. *No está medido cuántos reclamos caen en esos nueve meses — ver §7, P4.*
@@ -154,7 +198,7 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo.
 
 **Se cierra esta etapa cuando se cumplan seis cosas:**
 
-1. **EN CURSO — la referencia anual.** **Las tres decisiones ya están tomadas (`DEC-90`):** estadístico = **mediana** (`P3` = (b)) · años = **los cuatro previos, solo donde existen** (`P1` = (a)) · **los otros 48 meses = sin `desviación`, la detección no corre sobre ellos.** **Queda:** escribir la fórmula con las tres puestas —incluida la restricción `referencia > 0`— **y correr el autocalculeo de cierre.** *Autocalculeo de cierre: la fórmula, tal como quedó escrita, debe poder aplicarse a las 1 485 556 celdas del panel **sin definir ninguna variable nueva**, devolviendo un valor para las que caen dentro del universo de detección y **una declaración —no un relleno— para las que quedan fuera**.*
+1. **EN CURSO — la referencia anual.** **Las tres decisiones ya están tomadas (`DEC-90`):** estadístico = **mediana** (`P3` = (b)) · años = **los cuatro previos, solo donde existen** (`P1` = (a)) · **los otros 48 meses = sin `desviación`, la detección no corre sobre ellos.** **La fórmula YA ESTÁ ESCRITA — 28 oct 2026, en §3.1 — con las tres puestas y con la restricción `referencia > 0` dentro**, en tres pasos y cuatro salidas excluyentes que cubren el panel entero. **Queda UNA sola cosa: correr el autocalculeo de cierre** (`A2.3.c`), **y eso depende de una corrida de la tesista** —no hay cliente SQL en este entorno—. *Autocalculeo de cierre: la fórmula, tal como quedó escrita, debe poder aplicarse a las 1 485 556 celdas del panel **sin definir ninguna variable nueva**, devolviendo un valor para las que caen dentro del universo de detección y **una declaración —no un relleno— para las que quedan fuera**. **Cuatro comprobaciones escritas en §3.1; la primera y principal: las cuatro salidas suman 1 485 556.***
 2. **PENDIENTE — las 38 969 celdas.** Una de las tres ramas de `DEC-81`, punto 5, **con la regla escrita ANTES de aplicarse**. *Autocalculeo de cierre: la regla aplicada deja un número de celdas y de cuentas afectadas, y ese número se registra con su consulta.*
 3. **PENDIENTE — los segmentos A3.** Corte propuesto y prueba de que es razonable.
 4. **PENDIENTE — la contingencia A1.** Regla ejecutable: qué cuenta un ciclo completo y cuándo entra A1.
