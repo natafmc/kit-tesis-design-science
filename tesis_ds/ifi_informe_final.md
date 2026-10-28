@@ -35,9 +35,9 @@
 
 ## 2. Agradecimientos
 
-**ESCRITO EL 28 OCT 2026 CON TEXTO DICTADO POR LA TESISTA (`DEC-93`).** **151 palabras · 2 párrafos · 9 oraciones** —*la guía no fija tope en este apartado: L120 a L130 no pone número alguno.*
+**ESCRITO EL 28 OCT 2026 CON TEXTO DICTADO POR LA TESISTA (`DEC-93`); SU APERTURA SE CORRIGIÓ EL MISMO DÍA (`DEC-94`).** **150 palabras** —151 antes de corregir la apertura— **· 2 párrafos · 9 oraciones** —*la guía no fija tope en este apartado: L120 a L130 no pone número alguno.*
 
-> Deseo expresar mi más sincero agradecimiento a mi familia, cuyo respaldo constante, aliento y comprensión hicieron posible culminar esta etapa de formación avanzada; su presencia ha sido el soporte firme a lo largo de todo este proceso. De manera muy especial, agradezco a mis padres; sus principios, sacrificios y ejemplo de trabajo íntegro me inculcaron la disciplina y el compromiso necesarios para alcanzar este objetivo. Todo lo que soy y logro a nivel personal y profesional encuentra su raíz en sus enseñanzas: este resultado es tan suyo como mío.
+> Expreso mi más sincero agradecimiento a mi familia, cuyo respaldo constante, aliento y comprensión hicieron posible culminar esta etapa de formación avanzada; su presencia ha sido el soporte firme a lo largo de todo este proceso. De manera muy especial, agradezco a mis padres; sus principios, sacrificios y ejemplo de trabajo íntegro me inculcaron la disciplina y el compromiso necesarios para alcanzar este objetivo. Todo lo que soy y logro a nivel personal y profesional encuentra su raíz en sus enseñanzas: este resultado es tan suyo como mío.
 >
 > A mi pareja, mi profunda gratitud y reconocimiento por su apoyo constante y por el tiempo invaluable brindado a este proyecto. Gracias por escuchar mis ideas, acompañarme en las largas jornadas de trabajo con paciencia y comprensión en los momentos de mayor exigencia, y recordarme siempre el valor de la perseverancia; tu colaboración y aliento fueron indispensables para hacer posible este camino.
 
@@ -49,9 +49,11 @@
 | **L124** — *«el elemento importante es simplemente la cortesía»* | **Cumple.** No hay reclamos ni justificaciones. |
 | **L126** — *«No hay nada que sea realmente científico en esta sección»* | **Cumple.** Cero tecnicismos y cero cifras. |
 | **L128** — su presencia no es obligatoria | **Cumple.** Se incluye por decisión (`DEC-85`, confirmada por `DEC-92`). |
-| **L130** — *«Se debe ser cuidadoso con el uso de la palabra **deseo**. En muchas ocasiones es superflua y expresa un sentido negativo»* | **⚠️ INCUMPLIDA: «Deseo» son las dos PRIMERAS PALABRAS del texto.** |
+| **L130** — *«Se debe ser cuidadoso con el uso de la palabra **deseo**. En muchas ocasiones es superflua y expresa un sentido negativo»* | **Cumple DESPUÉS DE CORREGIR (`DEC-94`).** El texto dictado abría con *«Deseo expresar…»*; **se cambió el arranque por *«Expreso…»***. |
 
-> **Lo que hay que resolver y no se resuelve solo:** la guía nombra **una sola palabra** en todo este apartado —la regla 5 de L120-130—, **y el texto la abre con ella.** **`DEC-93` la deja marcada sin cambiarla: el texto es de la tesista y no se edita sin decisión.**
+> **La única palabra que la guía nombra en todo el apartado —regla 5 de L120-130— estaba justamente en la frase de apertura.** **`DEC-93` la marcó y no la tocó; `DEC-94` la corrigió por decisión de la tesista (opción (a)).**
+>
+> **Texto original dictado, conservado para que sea recuperable:** *«**Deseo expresar** mi más sincero agradecimiento a mi familia…»* → **ahora:** *«**Expreso** mi más sincero agradecimiento a mi familia…»*. **Cambian dos palabras y nada más: el resto de los dos párrafos quedó idéntico al texto dictado.**
 
 **A quién se agradece — pregunta que quedó abierta y ahora la contesta el texto:** **familia, padres y pareja.** **NO aparece la empresa** —sigue sin autorizarse; la única prohibición escrita es la del **resumen** (`DEC-77`) y la guía tampoco la extiende a este apartado, **pero eso no la autoriza**—, **ni el tutor.** *Si Roberto debe entrar, es decisión de la tesista: **L122** cubre «cualquier ayuda importante recibida de cualquier persona», y él revisa la propuesta el **viernes 30** (ítem 13).*
 
