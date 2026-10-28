@@ -35,23 +35,54 @@
 
 ## 2. Agradecimientos
 
-**`[POR VERIFICAR]` — pendiente de redacción; la decisión de incluirlo ya está tomada (`DEC-85`, `Q2` = (c)).** *Guía:* apartado propio, sin regla de extensión. **Tres reglas al redactar:** **L122** —agradecer *«cualquier ayuda importante recibida de cualquier persona»*— · **L126** —*«No hay nada que sea realmente científico en esta sección»*— · **L130** —evitar la palabra **«deseo»**, que *«en muchas ocasiones es superflua y expresa un sentido negativo»*—. **Sin decidir: a quién se agradece y si aparece el nombre de la empresa** —la prohibición de nombrarla es del **resumen** (`DEC-77`), y la guía no la extiende a este apartado, **pero eso tampoco la autoriza**—.
+**ESCRITO EL 28 OCT 2026 CON TEXTO DICTADO POR LA TESISTA (`DEC-93`).** **151 palabras · 2 párrafos · 9 oraciones** —*la guía no fija tope en este apartado: L120 a L130 no pone número alguno.*
+
+> Deseo expresar mi más sincero agradecimiento a mi familia, cuyo respaldo constante, aliento y comprensión hicieron posible culminar esta etapa de formación avanzada; su presencia ha sido el soporte firme a lo largo de todo este proceso. De manera muy especial, agradezco a mis padres; sus principios, sacrificios y ejemplo de trabajo íntegro me inculcaron la disciplina y el compromiso necesarios para alcanzar este objetivo. Todo lo que soy y logro a nivel personal y profesional encuentra su raíz en sus enseñanzas: este resultado es tan suyo como mío.
+>
+> A mi pareja, mi profunda gratitud y reconocimiento por su apoyo constante y por el tiempo invaluable brindado a este proyecto. Gracias por escuchar mis ideas, acompañarme en las largas jornadas de trabajo con paciencia y comprensión en los momentos de mayor exigencia, y recordarme siempre el valor de la perseverancia; tu colaboración y aliento fueron indispensables para hacer posible este camino.
+
+**Control contra las cinco reglas de la guía — L122 a L130:**
+
+| Regla | Cómo queda |
+|:--|:--|
+| **L122** — agradecer *«cualquier ayuda importante recibida de cualquier persona»* | **Cumple.** Familia, padres y pareja. |
+| **L124** — *«el elemento importante es simplemente la cortesía»* | **Cumple.** No hay reclamos ni justificaciones. |
+| **L126** — *«No hay nada que sea realmente científico en esta sección»* | **Cumple.** Cero tecnicismos y cero cifras. |
+| **L128** — su presencia no es obligatoria | **Cumple.** Se incluye por decisión (`DEC-85`, confirmada por `DEC-92`). |
+| **L130** — *«Se debe ser cuidadoso con el uso de la palabra **deseo**. En muchas ocasiones es superflua y expresa un sentido negativo»* | **⚠️ INCUMPLIDA: «Deseo» son las dos PRIMERAS PALABRAS del texto.** |
+
+> **Lo que hay que resolver y no se resuelve solo:** la guía nombra **una sola palabra** en todo este apartado —la regla 5 de L120-130—, **y el texto la abre con ella.** **`DEC-93` la deja marcada sin cambiarla: el texto es de la tesista y no se edita sin decisión.**
+
+**A quién se agradece — pregunta que quedó abierta y ahora la contesta el texto:** **familia, padres y pareja.** **NO aparece la empresa** —sigue sin autorizarse; la única prohibición escrita es la del **resumen** (`DEC-77`) y la guía tampoco la extiende a este apartado, **pero eso no la autoriza**—, **ni el tutor.** *Si Roberto debe entrar, es decisión de la tesista: **L122** cubre «cualquier ayuda importante recibida de cualquier persona», y él revisa la propuesta el **viernes 30** (ítem 13).*
 
 ---
 
 ## 3. Dedicatoria
 
-**RECTIFICADO EL 28 OCT 2026 (`DEC-92`): SE INCLUYE — HABRÁ DEDICATORIA.**
+**ESCRITA EL 28 OCT 2026 CON TEXTO DICTADO POR LA TESISTA (`DEC-93`).** **76 palabras · un vocativo y un párrafo · 5 oraciones · 452 caracteres.**
 
-**Lo que había decidido `DEC-85` el 27 oct era exactamente lo contrario: su titular es literal *«NO SE INCLUYE».*** Lo revirtió la tesista el 28 oct —*«mantener el apartado, ya no omitirlo, se hará la dedicatoria»*—, de modo que **queda anulada la negativa de `DEC-85` punto 1 y se mantiene todo lo demás de esa decisión.**
+> **A mis padres,**
+>
+> Por su amor incondicional, su guía constante y los sacrificios silenciosos que forjaron el camino hacia cada una de mis metas. Gracias por inculcarme desde el primer día que la educación, la integridad y el trabajo perseverante son el mayor legado; su ejemplo de vida es y será siempre el cimiento de mis logros personales y profesionales. Esta tesis es, ante todo, el fruto de su esfuerzo compartido. Con admiración y gratitud infinita.
 
-**Y con esto se cierra la pregunta de numeración que `DEC-85` dejó abierta, y por una tercera vía que allí no estaba planteada:** la guía lista **14 apartados numerados —L19 a L47—** y la dedicatoria es el **3**; **como se incluye, los 14 se conservan y NINGUNO se marca como *omitido*.** *Quedan descartadas las dos opciones de `DEC-85` por igual: ni «14 con el 3 omitido» ni «renumerar a 13».*
+**Control contra las seis reglas de la guía — L138 a L148:**
 
-**El índice no se ve afectado:** arranca **a partir de la Introducción** —guía L186—, o sea en el apartado 6, **y `indicadores_revision_ifi.md` L49 lo confirma: el índice no incluye Resumen, Agradecimientos ni Dedicatoria.**
+| Regla | Cómo queda |
+|:--|:--|
+| **L138** — se dirige a las personas o instituciones que colaboraron con el estudio | **Cumple.** Sus padres. |
+| **L140** — *«Suelen ser generalmente breves»* | **Cumple.** 76 palabras. |
+| **L142** — su presencia no es obligatoria | **Cumple.** Se incluye por decisión (`DEC-92`). |
+| **L144** — *«Generalmente se escribe en primera persona»* | **Cumple de forma implícita:** traen la primera persona **mis** ×3 e **incúlcarme**, **sin el pronombre «yo» explícito.** |
+| **L146** — *«Deben caracterizarse por la seriedad del texto»* | **Cumple.** |
+| **L148** — *«No deben ser demasiado emotivas o sentimentales»* | **⚠️ EN LA LÍNEA:** seis términos con carga — *incondicional · silenciosos · amor · sacrificios · siempre · infinita*. |
 
-**Reglas que trae al redactarse, tal como están en la guía — L134 a L148:** es **homenaje a personas o instituciones que colaboraron significativamente con la realización del estudio** —L134— · **se dirige a quienes colaboraron con el estudio** —L138— · **suelen ser breves** —L140— · **generalmente se escriben en primera persona** —L144— · **deben caracterizarse por la seriedad del texto** —L146— · **no deben ser demasiado emotivas ni sentimentales** —L148—. **Y L142 —«su presencia no es de carácter obligatorio»— es justamente lo que hace de esto una decisión y no una obligación, en las dos direcciones: se pudo omitir y se pudo incluir.**
+> **L148 no es una regla numérica sino un juicio —dice *demasiado*—, y por eso queda como EXPUESTA y no como incumplida.** **El cierre *«Con admiración y gratitud infinita»* es el tramo más expuesto:** *infinita* no admite verificación y el resto del texto sí la admite en sentido figurado. **`DEC-93` deja el texto tal como vino —no se edita lo que dictó la tesista sin decisión—.**
 
-*Pendiente: la redacción, que es suya.*
+**Qué es este apartado — `guia_ifi_contenido.md` L134:** *«el texto mediante el cual se expresa homenaje a personas o instituciones que colaboraron significativamente con la realización del estudio.»* **Y L142 —«su presencia no es de carácter obligatorio»— es lo que hace de esto una decisión y no una obligación, en las dos direcciones: se pudo omitir y se pudo incluir.**
+
+**Por qué existe: `DEC-92` lo rectificó.** **Lo que había decidido `DEC-85` el 27 oct era exactamente lo contrario: su titular es literal *«NO SE INCLUYE».*** Lo revirtió la tesista el 28 oct —*«mantener el apartado, ya no omitirlo, se hará la dedicatoria»*—, de modo que **queda anulada la negativa de `DEC-85` punto 1 y se mantiene todo lo demás de esa decisión.**
+
+**Numeración e índice:** **la guía lista 14 apartados numerados —L19 a L47— y la dedicatoria es el 3; como se incluye, los 14 se conservan y NINGUNO se marca como *omitido*.** *Quedan descartadas las dos opciones de `DEC-85` por igual: ni «14 con el 3 omitido» ni «renumerar a 13».* **El índice no se ve afectado:** arranca **a partir de la Introducción** —guía L186—, o sea en el apartado 6, **y `indicadores_revision_ifi.md` L49 lo confirma: el índice no incluye Resumen, Agradecimientos ni Dedicatoria.**
 
 ---
 
