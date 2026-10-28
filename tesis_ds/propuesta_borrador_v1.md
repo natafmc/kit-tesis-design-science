@@ -1,6 +1,7 @@
 # Propuesta de investigación — primer borrador
 
 > **Entrega: lunes 5 de octubre de 2026.** Documento de trabajo; se construye sobre E0–E5, **todas cerradas** (E4 y E5 cerradas y **entregadas al grupo el 2 de octubre de 2026**, dos días antes de lo declarado).
+> **Predefensa: sábado 31 de octubre de 2026 (DEC-88).** Los ítems que se entregan ese día son el **11 al 14** del checklist —**propuesta completa, documentación completa, revisión con el tutor y documento v1 completo** (`assets/sesion1.md` L26-31)—; **el informe final corresponde a los ítems 15 y 16, de la defensa de noviembre, y por eso no está en esta entrega.**
 > **Actualización del 6 de octubre de 2026 (DEC-27): todas las cifras pasan de 21 meses a 57 meses**, con la llegada de `DATOS desde 2022.xlsx` (ene 2022 – sep 2026), que **reproduce exactamente las nueve cifras de la extracción corta** y por eso se acepta como continuación de la misma fuente. **La versión entregada el 5 de octubre no se toca: lo que se envió, se envió.** Registro de las cifras nuevas en `consultas_base_datos.md` y `06_diagnostico.md`.
 > Las secciones 8, 9 y 12 quedan completas con fuentes verificadas una a una en Crossref. Siguen pendientes, **por diseño**, las secciones de E6 y E7 (criterios con valores numéricos, alternativas y diseño). **Salvedad de alcance levantada el 7 de octubre de 2026 (E5-3 → DEC-35): la brecha de §9.5 deja de ir provisional.** La ampliación se ejecutó el 5 de octubre con cuenta de registros — **DEC-14, DEC-15 y DEC-16: 448 identificados = 389 eliminados + 59 incluidos → 54 trabajos distintos**, volcados en `05_estado_del_arte.md` §2.4— y **la tesista resolvió ampliarla, no confirmarla ni retirarla**. La formulación nueva está en §9.5.
 
@@ -240,7 +241,7 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 |:--|:--|
 | **E7a** | Espacio de opciones constreñido por el dato mensual y la escasez de etiquetas; priorización bajo capacidad obligatoria; comparación **contra la capacitación de 2025** |
 | **E7b** | Cinco exigencias convertidas en requisitos verificables: criterio escrito, ambas direcciones, techo de volumen, explicación obligatoria, registro de resolución |
-| **E7c** | Segmentación por perfil previa a la detección; estacionalidad anual sostenida por los 57 meses — **agregados ya extraídos (A2.4); pendiente A2.1–A2.3, sin lo cual no hay barrido por cuenta** |
+| **E7c** | Segmentación por perfil previa a la detección; estacionalidad anual sostenida por los 57 meses — **el panel `A2.3` está ejecutado y verificado desde el 27 oct (`DEC-80`), de modo que sí hay barrido por cuenta; los agregados `A2.4` se extrajeron el 5 oct; siguen pendientes `A2.1.a`–`A2.1.c`** |
 | **E8** | Métricas precisión-exhaustividad; evaluación retrospectiva conservadora; dos ciclos con rediseño |
 | **E9 / E10** | Principios con objetivo → contexto → mecanismo → principio y condiciones de contorno explícitas |
 
@@ -264,9 +265,9 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 | Periodo | Actividades | Etapas |
 |:--|:--|:--|
 | 26 sep – 5 oct | Delimitación, perfil, marco teórico, estado del arte y **primer borrador de propuesta** | E2–E5, este documento |
-| 6 – 12 oct | ~~Ejecución de la extracción ampliada a 2022 (A2.1–A2.4)~~ **A2.4 ejecutado el 5 oct con `DATOS desde 2022.xlsx`; B1, B2 y B3 cerrados.** Pendientes **A2.1–A2.3** (nivel de registro) y la primera pasada de E6 | A2.1–A2.3, E6 |
+| 6 – 12 oct | ~~Ejecución de la extracción ampliada a 2022 (A2.1–A2.4)~~ **A2.4 ejecutado el 5 oct con `DATOS desde 2022.xlsx`; B1, B2 y B3 cerrados.** **`A2.3` ejecutado el 27 oct: panel de consumo por cuenta y mes, doce autocalculeos cerrando (`DEC-80`), así que YA NO está pendiente.** **Siguen pendientes `A2.1.a`, `A2.1.b` y `A2.1.c`** —escritas, sin corrida registrada, de modo que no cuentan como ejecutadas (`DEC-13`)— **y la primera pasada de E6** | A2.1, E6 |
 | 13 – 26 oct | Diagnóstico con indicadores; alternativas, requisitos y diseño | E6, E7a–E7c |
-| 27 – 31 oct | Plan de construcción, criterio de suficiencia; **propuesta completa** | E7d |
+| 27 – 31 oct | Plan de construcción, criterio de suficiencia; **propuesta completa**. **PREDEFENSA: sábado 31 de octubre de 2026** (`DEC-88`) | E7d; **E7c, abierta el 28 oct** |
 | 1 – 8 nov | Construcción y verificación interna; ficha del artefacto | E7e, E7f |
 | 9 – 15 nov | Evaluación formativa de campo | E8 formativa |
 | **16 – 18 nov** | **Rediseño documentado** | E8 |
