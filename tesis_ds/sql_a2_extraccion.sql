@@ -31,10 +31,12 @@
 --        esta en la Prueba 2 de consultas_base_datos.md. A2.4.3 NO se
 --        reformula: SE RETIRA. Sus tres motivos estan en DEC-82.
 --        LO QUE QUEDA ABIERTO NO ES SQL: se llama «definición de
---        lecturas_diferentes» y es una consulta a quien elaboró la hoja
---        historico de DATOS desde 2022.xlsx — la hoja no tiene NINGUNA
+--        lecturas_diferentes» y es una consulta a ENDE, que es quien
+--        elaboró la hoja historico de DATOS desde 2022.xlsx —declarado
+--        por la tesista el 27 oct, DEC-83; la consulta ya está redactada
+--        y sin enviar, en 00_estado.md—. La hoja no tiene NINGUNA
 --        fórmula y no nombra el segundo campo, así que no puede
---        responderlo nadie que solo lea el archivo —.
+--        responderlo nadie que solo lea el archivo.
 --        Declara además el descuadre de 185: la hoja suma 1 491 360 y la
 --        ventana de la base 1 491 175. NO toca el 242,2 —que es 2 180
 --        dividido 9 y no usa total_lecturas—; sí toca las tasas anuales.
@@ -1773,7 +1775,12 @@ ORDER BY 1;
 --        a quien elaboró la hoja historico de DATOS desde 2022.xlsx. La
 --        hoja no tiene una sola fórmula y no nombra el segundo campo, así
 --        que nadie que solo lea el archivo puede responderlo.
---        Quien la elaboró sigue sin declararse —preguntado el 27 oct—.
+--        QUIEN LA ELABORÓ: ENDE —declarado por la tesista el 27 oct 2026,
+--        DEC-83—. La consulta ya está redactada y SIN ENVIAR, en
+--        00_estado.md §Preguntas abiertas. Pregunta cuatro cosas, entre
+--        ellas el defecto de abril de 2025 (28 556 contra 28 554).
+--        NO bloquea el gate de E7b: 242,2 = 2 180 / 9 no usa
+--        total_lecturas, así que ni el 185 ni el 2 la mueven.
 --
 --        CONSULTA ORIGINAL, CONSERVADA COMO REGISTRO — NO EJECUTAR:
 -- SELECT DATE_TRUNC('month', <FECHA_FACTURACION>)::date AS mes,
