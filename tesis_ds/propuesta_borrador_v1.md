@@ -254,9 +254,11 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 | Ciclo | Propósito | Método | Muestra |
 |:--|:--|:--|:--|
 | Formativa de campo | Detectar problemas y rediseñar | Aplicación a un periodo histórico acotado por el equipo de validación, con registro de hallazgos y rediseños | Personal de validación en sitio, no involucrado en la delimitación |
-| Sumativa de campo | Demostrar utilidad y sustentar la contribución | Prueba retrospectiva: ¿el método habría alertado antes los reclamos procedentes? + carga de verificación + aplicabilidad | Reclamos de un periodo completo; verificadores y personal de respuesta al ODECO |
+| Sumativa de campo | Demostrar utilidad y sustentar la contribución | Prueba retrospectiva: ¿el método habría alertado antes los reclamos procedentes? + carga de verificación + aplicabilidad | **Reclamos de la ventana donde el método es aplicable —enero a septiembre de 2026 (`DEC-91`)**; verificadores y personal de respuesta al ODECO |
 
 **Criterios de éxito** (valores numéricos a fijar en E6 y E7b, **antes** de construir): cobertura retrospectiva de reclamos procedentes; falsos positivos; carga de verificación dentro de la capacidad del equipo; aplicabilidad sin asistencia de la autora.
+
+**Limitación de la retroevaluación, fijada el 28 oct 2026 (`DEC-91`).** La línea base de 57 meses —**1 053 reclamos, 174 procedentes y 136 de esos 174 en tipo de lectura 1**— se conserva íntegra como **caracterización empírica del problema** (E6). El **protocolo de retroevaluación algorítmica aplica sobre los nueve meses de enero a septiembre de 2026**, porque es la única ventana en la que R1.2 puede comparar contra **cuatro ciclos previos completos** dentro de la ventana. **No se abre ninguna consulta para ampliar esa ventana:** la limitación se declara y la cobertura se mide sobre la ventana en la que el método es aplicable.
 
 **Métodos propios de la tipología:** aplicabilidad y efectividad. No se emplean pruebas de rendimiento de software, que corresponden a una instanciación.
 
@@ -266,8 +268,8 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 |:--|:--|:--|
 | 26 sep – 5 oct | Delimitación, perfil, marco teórico, estado del arte y **primer borrador de propuesta** | E2–E5, este documento |
 | 6 – 12 oct | ~~Ejecución de la extracción ampliada a 2022 (A2.1–A2.4)~~ **A2.4 ejecutado el 5 oct con `DATOS desde 2022.xlsx`; B1, B2 y B3 cerrados.** **`A2.1.a`, `A2.1.b` y `A2.1.c` ejecutadas el 22 oct (`DEC-56`) —con la salvedad de que ese mismo día se dictó NO PUBLICAR ninguno de sus totales: 14 164 reclamos contra 1 053 de la hoja y 1 000 procedentes contra 174—; los tres controles que se escribieron con ellas corrieron el 22 (`DEC-58`) y descartaron la multiplicación, y los 174 y el 1 053 se reprodujeron desde la base el 25 oct (`DEC-64`, `DEC-65`).** **`A2.3` ejecutado el 27 oct —panel de consumo, doce autocalculeos cerrando (`DEC-80`)—.** **Sigue pendiente la primera pasada de E6** | A2.1, E6 |
-| 13 – 26 oct | Diagnóstico con indicadores; alternativas, requisitos y diseño | E6, E7a–E7c |
-| 27 – 31 oct | Plan de construcción, criterio de suficiencia; **propuesta completa**. **PREDEFENSA: sábado 31 de octubre de 2026** (`DEC-88`) | E7d; **E7c, abierta el 28 oct** |
+| 13 – 26 oct | Diagnóstico con indicadores; alternativas, requisitos y diseño | **E6: EN CURSO al 28 oct** · **E7a: CERRADA** (`DEC-70`) · **E7b: 3 de 4** · **E7c: ABIERTA EL 28 OCT**, o sea dos días después de la ventana que este renglón declaraba |
+| 27 – 31 oct | Plan de construcción, criterio de suficiencia; **propuesta completa**. **Alcance fijado el 28 oct (`DEC-91`): se cierra el NÚCLEO DE DISEÑO —`E7c` → `θ` → `E7b` 4 de 4— y lo que no alcance se DECLARA EN CURSO: `E6` y `E7d`.** **Revisión con el tutor, ítem 13: viernes 30 de octubre, agendada.** **PREDEFENSA: sábado 31 de octubre de 2026** (`DEC-88`) | **E7d: EN CURSO — no se cierra antes del sábado** |
 | 1 – 8 nov | Construcción y verificación interna; ficha del artefacto | E7e, E7f |
 | 9 – 15 nov | Evaluación formativa de campo | E8 formativa |
 | **16 – 18 nov** | **Rediseño documentado** | E8 |
