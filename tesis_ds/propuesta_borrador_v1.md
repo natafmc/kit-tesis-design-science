@@ -241,7 +241,7 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 |:--|:--|
 | **E7a** | Espacio de opciones constreñido por el dato mensual y la escasez de etiquetas; priorización bajo capacidad obligatoria; comparación **contra la capacitación de 2025** |
 | **E7b** | Cinco exigencias convertidas en requisitos verificables: criterio escrito, ambas direcciones, techo de volumen, explicación obligatoria, registro de resolución |
-| **E7c** | Segmentación por perfil previa a la detección; estacionalidad anual sostenida por los 57 meses — **el panel `A2.3` está ejecutado y verificado desde el 27 oct (`DEC-80`), de modo que sí hay barrido por cuenta; los agregados `A2.4` se extrajeron el 5 oct; siguen pendientes `A2.1.a`–`A2.1.c`** |
+| **E7c** | Segmentación por perfil previa a la detección; estacionalidad anual sostenida por los 57 meses — **el panel `A2.3` está ejecutado y verificado desde el 27 oct (`DEC-80`), de modo que sí hay barrido por cuenta; los agregados `A2.4` se extrajeron el 5 oct; `A2.1.a`–`A2.1.c` se ejecutaron el 22 oct (`DEC-56`)** |
 | **E8** | Métricas precisión-exhaustividad; evaluación retrospectiva conservadora; dos ciclos con rediseño |
 | **E9 / E10** | Principios con objetivo → contexto → mecanismo → principio y condiciones de contorno explícitas |
 
@@ -265,7 +265,7 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 | Periodo | Actividades | Etapas |
 |:--|:--|:--|
 | 26 sep – 5 oct | Delimitación, perfil, marco teórico, estado del arte y **primer borrador de propuesta** | E2–E5, este documento |
-| 6 – 12 oct | ~~Ejecución de la extracción ampliada a 2022 (A2.1–A2.4)~~ **A2.4 ejecutado el 5 oct con `DATOS desde 2022.xlsx`; B1, B2 y B3 cerrados.** **`A2.3` ejecutado el 27 oct: panel de consumo por cuenta y mes, doce autocalculeos cerrando (`DEC-80`), así que YA NO está pendiente.** **Siguen pendientes `A2.1.a`, `A2.1.b` y `A2.1.c`** —escritas, sin corrida registrada, de modo que no cuentan como ejecutadas (`DEC-13`)— **y la primera pasada de E6** | A2.1, E6 |
+| 6 – 12 oct | ~~Ejecución de la extracción ampliada a 2022 (A2.1–A2.4)~~ **A2.4 ejecutado el 5 oct con `DATOS desde 2022.xlsx`; B1, B2 y B3 cerrados.** **`A2.1.a`, `A2.1.b` y `A2.1.c` ejecutadas el 22 oct (`DEC-56`) —con la salvedad de que ese mismo día se dictó NO PUBLICAR ninguno de sus totales: 14 164 reclamos contra 1 053 de la hoja y 1 000 procedentes contra 174—; los tres controles que se escribieron con ellas corrieron el 22 (`DEC-58`) y descartaron la multiplicación, y los 174 y el 1 053 se reprodujeron desde la base el 25 oct (`DEC-64`, `DEC-65`).** **`A2.3` ejecutado el 27 oct —panel de consumo, doce autocalculeos cerrando (`DEC-80`)—.** **Sigue pendiente la primera pasada de E6** | A2.1, E6 |
 | 13 – 26 oct | Diagnóstico con indicadores; alternativas, requisitos y diseño | E6, E7a–E7c |
 | 27 – 31 oct | Plan de construcción, criterio de suficiencia; **propuesta completa**. **PREDEFENSA: sábado 31 de octubre de 2026** (`DEC-88`) | E7d; **E7c, abierta el 28 oct** |
 | 1 – 8 nov | Construcción y verificación interna; ficha del artefacto | E7e, E7f |
