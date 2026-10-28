@@ -35,13 +35,15 @@
 
 ## 2. Agradecimientos
 
-**`[POR VERIFICAR]` — pendiente.** *Guía:* apartado propio, sin regla de extensión; no se rellena hasta que la tesista lo redacte.
+**`[POR VERIFICAR]` — pendiente de redacción; la decisión de incluirlo ya está tomada (`DEC-85`, `Q2` = (c)).** *Guía:* apartado propio, sin regla de extensión. **Tres reglas al redactar:** **L122** —agradecer *«cualquier ayuda importante recibida de cualquier persona»*— · **L126** —*«No hay nada que sea realmente científico en esta sección»*— · **L130** —evitar la palabra **«deseo»**, que *«en muchas ocasiones es superflua y expresa un sentido negativo»*—. **Sin decidir: a quién se agradece y si aparece el nombre de la empresa** —la prohibición de nombrarla es del **resumen** (`DEC-77`), y la guía no la extiende a este apartado, **pero eso tampoco la autoriza**—.
 
 ---
 
 ## 3. Dedicatoria
 
-**`[POR VERIFICAR]` — pendiente.** *Guía:* apartado propio, redacción libre de la tesista.
+**DECIDIDO EL 27 OCT 2026 (`DEC-85`, `Q2` = (c)): NO SE INCLUYE.** *Guía:* **L142 —«Su presencia no es de carácter obligatorio»—**, igual que los agradecimientos en **L128**. **Se decidió después de consultar la regla, no por omisión.**
+
+**Abierto: si este apartado se marca como *omitido* conservando la numeración de 14 de la guía —L19 a L47—, o si se elimina y los apartados se renumeran a 13.** **En los dos casos el índice no se ve afectado:** arranca **a partir de la Introducción** —guía L186—, o sea en el apartado 6.
 
 ---
 
