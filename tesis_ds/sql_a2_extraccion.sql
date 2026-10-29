@@ -2493,6 +2493,213 @@ SELECT (SELECT COUNT(*) FROM cobertura)                        AS cuentas_en_el_
 
 
 -- =====================================================================
+-- A2.3.k — QUÉ CUENTA UN CICLO COMPLETO: ¿EXISTA EL MES O TENGA LAS 12?
+--                                  (29 oct 2026 — gate de E7c, punto 4)
+--
+--     POR QUÉ EXISTE. Es la primera de las dos preguntas que §3.4 deja
+--     abiertas. La fórmula de §3.1 está escrita y autocalculada, pero su
+--     test es éste: para saber si una celda de 2026 tiene sus cuatro
+--     ciclos previos basta con que exista la celda de ese mismo mes en
+--     ese año (07c §3.1, nota de cierre). Un "ciclo anual completo"
+--     podría exigir las 12 lecturas, y las dos definiciones NO dan el
+--     mismo resultado.
+--
+--     LAS DOS DEFINICIONES, ESCRITAS ANTES DE MEDIR:
+--       · DEFINICIÓN A —la vigente, la de §3.1—: un año cuenta para el
+--         mes m si la cuenta TIENE el mes m en ese año.
+--       · DEFINICIÓN B —la de 12—: un año cuenta para el mes m solo si
+--         la cuenta TIENE LOS 12 MESES de ese año.
+--
+--     DOS CONSECUENCIAS QUE SE DEDUCEN ANTES DE CORRER y que la corrida
+--     confirma o refuta:
+--       · B es más exigente que A, de modo que B es SUBCONJUNTO de A:
+--         ninguna celda puede tener valor bajo B sin tenerlo bajo A.
+--         Eso es `lo_contrario_deberia_ser_cero`, que DEBE dar 0.
+--       · Y cuando las dos dicen "valor", la referencia es la MISMA.
+--         Si B da cuatro ciclos son los cuatro años 2022 a 2025
+--         completos, o sea los mismos cuatro años que A contaría para
+--         ese mes, así que la mediana sale de los mismos cuatro valores.
+--         POR ESO NO SE REHACE LA REFERENCIA: se usa la de §3.1 tal
+--         cual. Redefinirla sería reabrir el punto 1 del gate, cerrado
+--         con DEC-90 y DEC-96.
+--
+--     CRITERIO FIJADO ANTES DE CORRER:
+--       · Universo = el de §3.1: `mes >= 2026-01-01` y
+--         `nro_cuenta IS NOT NULL`, o sea 264 384 celdas.
+--       · Se cambia SOLO el test de ciclos. La restricción
+--         `referencia > 0` queda idéntica en las dos definiciones.
+--       · No se decide nada con este número: se mide primero y se
+--         decide después, con la cifra a la vista.
+--
+--     AUTOCALCUELOS:
+--       1. `valor_def_A` + `sin_referencia_def_A` + `a1_def_A` DEBE dar
+--          `celdas_2026`.
+--       2. `celdas_2026` DEBE dar 264 384 —A2.3.c, DEC-96—.
+--       3. `valor_def_A` DEBE dar 183 541 —A2.3.c y A2.3.g, DEC-101—.
+--          Si no da, este universo no es el mismo que clasificó A2.3.c y
+--          se revisa antes de interpretar nada.
+--       4. `sin_referencia_def_A` DEBE dar 5 524 —A2.3.c—.
+--       5. `a1_def_A` DEBE dar 75 319 —A2.3.c—.
+--       6. `valor_def_A` = `valor_def_B` + `pasan_a_a1`.
+--       7. `lo_contrario_deberia_ser_cero` DEBE dar 0. ES LA
+--          COMPROBACIÓN DEL RAZONAMIENTO DE ARRIBA: si diera más que 0,
+--          la deducción "B es subconjunto de A" está mal y se para todo.
+-- =====================================================================
+
+-- A2.3.k SALIDA — las dos definiciones sobre el mismo universo
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           mes,
+           EXTRACT(YEAR  FROM mes)::int AS anio,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref_A AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+anos_completos AS (
+    SELECT nro_cuenta, anio
+      FROM hist
+     GROUP BY nro_cuenta, anio
+    HAVING COUNT(DISTINCT mes_del_anio) = 12
+),
+cob AS (
+    SELECT nro_cuenta, COUNT(*) AS anos_completos
+      FROM anos_completos
+     GROUP BY nro_cuenta
+),
+clasif AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           COALESCE(rA.ciclos_disponibles, 0) AS ciclos_A,
+           COALESCE(rA.referencia, 0)         AS referencia_A,
+           COALESCE(cob.anos_completos, 0)    AS ciclos_B
+      FROM p
+      LEFT JOIN ref_A rA
+        ON rA.nro_cuenta   = p.nro_cuenta
+       AND rA.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+      LEFT JOIN cob
+        ON cob.nro_cuenta  = p.nro_cuenta
+     WHERE p.mes >= DATE '2026-01-01'
+       AND p.nro_cuenta IS NOT NULL
+)
+SELECT COUNT(*)                                                     AS celdas_2026,
+       COUNT(*) FILTER (WHERE ciclos_A >= 4 AND referencia_A > 0)   AS valor_def_A,
+       COUNT(*) FILTER (WHERE ciclos_A >= 4 AND referencia_A <= 0)  AS sin_referencia_def_A,
+       COUNT(*) FILTER (WHERE ciclos_A <  4)                        AS a1_def_A,
+       COUNT(*) FILTER (WHERE ciclos_B >= 4 AND referencia_A > 0)   AS valor_def_B,
+       COUNT(*) FILTER (WHERE ciclos_A >= 4 AND referencia_A > 0
+                          AND ciclos_B <  4)                        AS pasan_a_a1,
+       COUNT(*) FILTER (WHERE ciclos_B >= 4 AND referencia_A > 0
+                          AND ciclos_A <  4)                        AS lo_contrario_deberia_ser_cero
+  FROM clasif;
+
+
+-- =====================================================================
+-- A2.3.k2 — LAS CUATRO ANTES DE LA DECISIÓN, CUÉNTANSE POR CUENTA
+--                                  (29 oct 2026 — gate de E7c, punto 4)
+--
+--     POR QUÉ EXISTE. `A2.3.k` decide cuántas CELDAS se mueven; ésta
+--     dice cuántas CUENTAS se quedan sin cuatro años completos, que es
+--     como `R8.1` está escrita —"las cuentas con menos de cuatro
+--     ciclos"— y como `07a` L159 lo formula: "A1 opera solo cuando no
+--     hay cuatro ciclos".
+--
+--     CRITERIO FIJADO ANTES DE CORRER:
+--       · Un año es COMPLETO si la cuenta tiene los 12 meses de ese año
+--         en el panel colapsado —la misma regla de colapso de A2.3.b,
+--         sin redefinir—.
+--       · Se cuenta sobre los cuatro años de referencia 2022 a 2025,
+--         porque de ellos depende poder calcular `referencia` para 2026.
+--       · Cuentas sin año completo entran con 0 y no se descartan.
+--
+--     AUTOCALCUELOS:
+--       1. Los cinco recuentos DEBEN sumar `cuentas_en_el_panel`.
+--       2. `cuentas_en_el_panel` DEBE dar 30 411 —A2.3.h, DEC-104—.
+-- =====================================================================
+
+-- A2.3.k2 SALIDA — años completos por cuenta
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(YEAR  FROM mes)::int AS anio,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+anos_completos AS (
+    SELECT nro_cuenta, anio
+      FROM hist
+     GROUP BY nro_cuenta, anio
+    HAVING COUNT(DISTINCT mes_del_anio) = 12
+),
+cob AS (
+    SELECT nro_cuenta, COUNT(*) AS anos_completos
+      FROM anos_completos
+     GROUP BY nro_cuenta
+),
+cuentas AS (
+    SELECT DISTINCT nro_cuenta
+      FROM p
+),
+t AS (
+    SELECT COALESCE(cob.anos_completos, 0) AS anos
+      FROM cuentas c
+      LEFT JOIN cob
+        ON cob.nro_cuenta = c.nro_cuenta
+)
+SELECT COUNT(*)                   AS cuentas_en_el_panel,
+       COUNT(*) FILTER (WHERE anos = 4) AS con_cuatro_años_completos,
+       COUNT(*) FILTER (WHERE anos = 3) AS con_tres,
+       COUNT(*) FILTER (WHERE anos = 2) AS con_dos,
+       COUNT(*) FILTER (WHERE anos = 1) AS con_uno,
+       COUNT(*) FILTER (WHERE anos = 0) AS con_cero
+  FROM t;
+
+
+-- =====================================================================
 -- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
 --                                  (25 oct 2026)
 --
