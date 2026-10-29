@@ -230,9 +230,26 @@ A3 —normalidad por segmento— se reclasificó como **paso previo obligatorio 
 - **1 861 cuentas —6,12 %— tienen mediana mensual no positiva**, y **928 —3,05 %— no llegan a doce meses observados.**
 - **La banda «con código» coincide exactamente con la regla operativa de `DEC-30`** —tipos 2 y 3 son «con código»— **y con lo que la alerta ya declara en `R4.3`.** **Lo nuevo del eje no es que exista: es que «no facturada» queda separada en vez de escondida dentro de «sin código»** —15 075 celdas contra 167 036—.
 
-**Lo único que falta para cerrar el punto 3: la prueba de estabilidad.** El gate pide demostrar que el corte es razonable y no una partición a conveniencia. **Los cuartiles ya resuelven la mitad de esa exigencia** —la regla es mecánica y se fijó **antes** de correr, así que ningún número se pudo ajustar—, **pero eso prueba que EL CORTE no está hecho a conveniencia, no que LA VARIABLE sea real**: cualquier columna se reparte en cuartiles y sale equitativo igualmente. **Lo que hace a un perfil útil como segmento es que la cuenta conserve su banda de un periodo al otro**, y eso mide `A2.3.j`, **con su criterio de rechazo escrito antes de correr: con cuatro bandas el azar acierta el 25 % y se exige 50 % —el doble—; si no se alcanza, se declara que el perfil no es estable y la segmentación no se presenta ante el jurado como segmentación del método.**
+**Lo único que faltaba para cerrar el punto 3: la prueba de estabilidad.** El gate pide demostrar que el corte es razonable y no una partición a conveniencia. **Los cuartiles ya resuelven la mitad de esa exigencia** —la regla es mecánica y se fijó **antes** de correr, así que ningún número se pudo ajustar—, **pero eso prueba que EL CORTE no está hecho a conveniencia, no que LA VARIABLE sea real**: cualquier columna se reparte en cuartiles y sale equitativo igualmente. **Lo que hace a un perfil útil como segmento es que la cuenta conserve su banda de un periodo al otro.**
 
-*Pendiente: `A2.3.j` sin correr.*
+**La prueba está corrida y pasó — `A2.3.j`, cerrada el 29 oct (`DEC-108`):**
+
+| Resultado | Valor |
+|:--|--:|
+| **Conservación de banda** — **criterio fijado antes de correr: ≥ 50 %** | **59,1 %** ✓ |
+| Azar con cuatro bandas — el suelo de referencia | 25,0 % |
+| **Dentro de una banda** — misma + adyacente | **89,6 %** |
+| Dos bandas o más de distancia | 10,4 % |
+| **Desplazamiento medio** | **0,539 bandas** |
+| Cuentas comparadas sobre el panel | 26 209 de 30 411 |
+
+**Cómo se corrió, y que fuera honesta es parte del resultado:** el panel se partió en **dos mitades —2022-01 a 2024-04, 28 meses, y 2024-05 a 2026-09, 29 meses, que suman los 57 sin recortar nada—**; el perfil se calculó **de cada cuenta en cada mitad por separado**, con **los cuartiles de esa misma mitad**, y se midió cuántas conservaban la banda. **El criterio de rechazo estaba escrito antes de correr y no se movió: 50 % contra el 25 % del azar.** **Y no se trató ningún dato distinto: los `999 976` del máximo siguieron adentro, porque si el perfil es real tenía que serlo también con la cola presente.**
+
+**4 202 cuentas —13,8 %— existen en un solo periodo** y quedan fuera de la comparación por ser un JOIN interno: **la resta cierra, 26 209 + 4 202 = 30 411.** **Se declara para que el 59,1 % se lea sobre 26 209 y no sobre el panel entero.**
+
+**Con esto el punto 3 cierra.** **La segmentación queda como componente de diseño con las tres cosas que `DEC-84`, punto 5, le pide al Capítulo III —rol, ejes y prueba— y con sus relaciones fijadas: no fija `θ` y no sustituye la referencia.**
+
+*Cerrado: punto 3 del gate — E7c en 3 de 6.*
 
 ### 3.4 — El tratamiento de la contingencia A1
 
@@ -282,13 +299,13 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo 
 
 ---
 
-## 5. Gate de E7c — abierto: **2 de 6**
+## 5. Gate de E7c — abierto: **3 de 6**
 
 **Se cierra esta etapa cuando se cumplan seis cosas:**
 
 1. **CUMPLIDO el 28 oct 2026 — la referencia anual.** **La fórmula quedó escrita en §3.1** con las tres decisiones de `DEC-90` dentro y con la restricción `referencia > 0`, **y el autocalculeo de cierre corrió y cerró** (`A2.3.c`, `DEC-96`). **Las tres comprobaciones:** `suma_las_cuatro` = **1 485 556** —exacto, sin hueco y sin solape— · `diferencia_contra_el_panel` = **0** · `diferencia_celdas_2026` = **0**. **Y la cuarta, que era la de no perder celdas por el `LEFT JOIN`:** `celdas_2026_clasificadas` = **264 384** = `celdas_2026_en_el_panel`. **`cuentas` = 30 411, la misma de `A2.3.b` (`DEC-80`),** de modo que el panel con el que se clasificó es el panel verificado. *La fórmula se aplicó a las 1 485 556 celdas **sin definir ninguna variable nueva** —usó solo `consumo` y `mes`— y devolvió **valor** para las que caen dentro del universo y **declaración** para las que quedan fuera, que era la condición del punto.*
 2. **CUMPLIDO el 29 oct 2026 — las 38 969 celdas.** **La rama se eligió en `DEC-98` —(a) depurar como paso del método—, el alcance en `DEC-100` —(i) solo la celda observada—, la regla se escribió ANTES de aplicarse y el número entró en `A2.3.g` (`DEC-101`).** **La regla: toda celda del universo 2026 con `lec_actual = 0` se excluye del cálculo de desviación y del listado de alertas; se registran cuántas y de cuántas cuentas; el historial de 2022 a 2025 no se limpia.** **El resultado: 541 celdas de 411 cuentas excluidas de un universo calculable de 183 541 celdas y 22 978 cuentas —0,29 % de las celdas—, y 60,1 alertas al mes devueltas al canal humano, el 24,8 % del techo de 242.** **Los tres autocalculeos cerraron exactos, dos de ellos contra corridas anteriores; y una cuarta coincidencia no pedida confirmó el resultado: 183 000 y 22 966 son las mismas cifras del grupo «índice normal» que midió `A2.3.d` por otro camino.** **La limitación que la decisión deja quedó escrita en §10 de la propuesta: el 1,71 % de los grupos de referencia de 2022 a 2025 se construye sobre dos o más ciclos con `lec_actual = 0`.** *Cerrado con su consulta registrada en `sql_a2_extraccion.sql`.*
-3. **PENDIENTE — los segmentos A3.** Corte propuesto y prueba de que es razonable.
+3. **CUMPLIDO el 29 oct 2026 — los segmentos A3.** **El ROL se fijó en `DEC-103`: caracterización previa que viaja con la alerta, calculada antes de la detección sobre los 57 meses, sin cambiar qué celdas alertan, sin fijar `θ` y sin sustituir la referencia.** **Los DOS EJES se midieron con el criterio escrito antes de correr (`DEC-104`).** **Perfil de consumo:** mediana mensual por cuenta sobre 57 meses, **cuatro bandas por cuartiles —`0–26` · `27–69` · `70–135` · `>135`—, regla fijada antes de correr y ratificada antes de ver los números.** **Familia de código:** **tres bandas —no facturada · lectura normal sin código · con código—** (`DEC-105`), **alineadas con la regla operativa de `DEC-30` y con lo que `R4.3` ya declara.** **La PRUEBA de que no es una partición a conveniencia corrió y pasó (`DEC-108`): conservación de banda del 59,1 % contra el 50 % exigido y el 25 % del azar, con el criterio de rechazo escrito antes de correr y sin moverse después.** **Y la variable resultó ser una propiedad de la cuenta y no ruido: 89,6 % se queda dentro de una banda y el desplazamiento medio es de 0,539 bandas.** **Limitación declarada en §10 de la propuesta: la segunda lente computacional —(b), comparar contra el patrón del segmento— queda como extensión de diseño con su costo escrito, que es reabrir `07b` §4.2.** *(Consultas: `A2.3.h`, `A2.3.i` y `A2.3.j`, las tres con sus autocalculeos cerrando y registradas en `sql_a2_extraccion.sql`.)*
 4. **PENDIENTE — la contingencia A1.** Regla ejecutable: qué cuenta un ciclo completo y cuándo entra A1.
 5. **PENDIENTE — el criterio 4, aplicabilidad.** Valor y procedimiento, como pide `07b_requisitos.md` L231.
 6. **PENDIENTE — el paso de depuración.** Escrito como paso del método, con su lugar en la secuencia y su registro (`DEC-75`, `P4`).
