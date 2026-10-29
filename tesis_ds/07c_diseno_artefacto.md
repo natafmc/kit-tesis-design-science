@@ -213,16 +213,26 @@ A3 —normalidad por segmento— se reclasificó como **paso previo obligatorio 
 
 **Lo que (b) —la segunda lente computacional que compara contra el patrón del segmento— habilitaría y aquí no se hace:** ver cuentas **normales para sí mismas pero anómalas para sus pares** (`07a` L103). **Se declara como extensión de diseño en §10 de la propuesta, con su costo escrito: reabrir `§4.2`.**
 
-**Los dos ejes, y una simplificación que apareció al mirarlos:**
+**Los dos ejes, medidos y ya con corte — `A2.3.h` y `A2.3.i`, ambos cerrados el 29 oct (`DEC-104`):**
 
-| **Eje** | **Estado** |
-|:--|:--|
-| **Perfil de consumo** | **Por definir.** Medida en `A2.3.h`: mediana mensual por cuenta sobre los 57 meses y su distribución. **El corte se fija por REGLA mecánica —cuartiles— antes de correr, no a mano después.** |
-| **Familia de código** | **Ya existe y ya está definida.** Son los cuatro valores de `tipo_lectura` —`0` LC no facturada · `1` LN lectura normal · `2` LE estimada · `3` NE normal estimada—, con los 48 códigos repartidos en esas cuatro (`02_delimitacion.md` L14; `consultas_base_datos.md` L212-215), y la variable está en `tfv_lectura` enlazando por `id_lectura` (`DEC-36`). **La alerta ya declara si la lectura tenía código (`R4.3`); lo que falta es hacer esa declaración de cuatro vías en vez de binaria.** Reparto medido en `A2.3.i`. |
+| **Eje** | **Cómo se mide** | **Corte** |
+|:--|:--|:--|
+| **Perfil de consumo** | **Mediana del consumo mensual por cuenta, sobre los 57 meses** —`A2.3.h`, 30 411 cuentas, ambos autocalculeos cerrados— | **Cuatro bandas por cuartiles, con la regla fijada antes de correr y ratificada por la tesista:** **`0` a `26` · `27` a `69` · `70` a `135` · `más de 135`** |
+| **Familia de código** | **`tfv_lectura.tipo_lectura` de la lectura de esa celda, enlazando por `id_lectura`** —`A2.3.i`, las 183 541 celdas; **el JOIN no multiplicó ni perdió y `f_sin_dato = 0`**— | **Tres bandas (`DEC-105`):** **(0) no facturada = 15 075 —8,21 %— · (1) lectura normal sin código = 167 036 —91,01 %— · (2+3) con código = 1 430 —0,78 %—** |
 
-**Falta, en orden:** **(1)** la distribución del perfil y **(2)** el reparto por familia, **ambas medidas antes de proponer cualquier corte**; **(3)** la regla de corte fijada y aplicada; **(4)** la prueba de que es razonable —que los cortes sean empíricamente distinguibles y no una partición a conveniencia—.
+**Dos cosas de esos cortes que se declara en vez de esconderlas:**
 
-*Pendiente: no se propone ningún corte antes de tener las dos distribuciones.*
+- **La banda 4 de perfil no tiene techo.** El máximo del perfil es **999 976**, de modo que va de `135` hasta ese valor: **un rango interno de más de siete mil veces**. Los cuartiles garantizan **población** equitativa y no **anchura**. **No se corrige** —el perfil no cambia qué alerta, así que al verificador le basta saber en qué cuartil cae la cuenta—, **se declara.**
+- **La banda «con código» es chica y se conserva igual.** **1 430 celdas, 0,78 %** se dejan como banda con su etiqueta en la alerta y **no se fusionan con ninguna otra por ser chicas.**
+
+**Dos hallazgos que la medición produjo sin que nadie los pidiera:**
+
+- **1 861 cuentas —6,12 %— tienen mediana mensual no positiva**, y **928 —3,05 %— no llegan a doce meses observados.**
+- **La banda «con código» coincide exactamente con la regla operativa de `DEC-30`** —tipos 2 y 3 son «con código»— **y con lo que la alerta ya declara en `R4.3`.** **Lo nuevo del eje no es que exista: es que «no facturada» queda separada en vez de escondida dentro de «sin código»** —15 075 celdas contra 167 036—.
+
+**Lo único que falta para cerrar el punto 3: la prueba de estabilidad.** El gate pide demostrar que el corte es razonable y no una partición a conveniencia. **Los cuartiles ya resuelven la mitad de esa exigencia** —la regla es mecánica y se fijó **antes** de correr, así que ningún número se pudo ajustar—, **pero eso prueba que EL CORTE no está hecho a conveniencia, no que LA VARIABLE sea real**: cualquier columna se reparte en cuartiles y sale equitativo igualmente. **Lo que hace a un perfil útil como segmento es que la cuenta conserve su banda de un periodo al otro**, y eso mide `A2.3.j`, **con su criterio de rechazo escrito antes de correr: con cuatro bandas el azar acierta el 25 % y se exige 50 % —el doble—; si no se alcanza, se declara que el perfil no es estable y la segmentación no se presenta ante el jurado como segmentación del método.**
+
+*Pendiente: `A2.3.j` sin correr.*
 
 ### 3.4 — El tratamiento de la contingencia A1
 
