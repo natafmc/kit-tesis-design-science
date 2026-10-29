@@ -2072,6 +2072,114 @@ SELECT COUNT(*)                                                       AS grupos_
 
 
 -- =====================================================================
+-- A2.3.g — LA REGLA DE DEPURACIÓN APLICADA: QUÉ SACA DEL CANAL HUMANO
+--                                  (29 oct 2026 — gate de E7c, punto 2)
+--
+--     POR QUÉ EXISTE. DEC-100 fijó el ALCANCE de la depuración que
+--     DEC-98 eligió como paso del método: (i) depurar SOLO la celda
+--     observada, la de 2026, y NO el historial de 2022 a 2025. La (ii)
+--     —depurar también el historial— se descartó tras medir su precio
+--     en A2.3.f: movería 5 746 cuentas a A1, que es el 19,29 por
+--     ciento de las 29 784 del historial, y la regla de A1 es el punto
+--     4 de este gate y todavía no existe.
+--
+--     LA REGLA, ESCRITA ANTES DE APLICARSE:
+--         Toda celda del universo 2026 con lec_actual = 0 se excluye
+--         del cálculo de desviación y del listado de alertas; se
+--         registran cuántas y de cuántas cuentas.
+--         El historial de 2022 a 2025 NO se limpia.
+--
+--     CRITERIO FIJADO ANTES DE CORRER:
+--       · "universo 2026" se toma con la MISMA definición que A2.3.c:
+--         mes >= 2026-01-01, ciclos_disponibles >= 4 y referencia > 0,
+--         o sea la salida que A2.3.c llamó "1 valor calculado". No se
+--         redefine aquí: si se redefine, la comparación contra sus
+--         183 541 no significa nada.
+--       · "depurada" es lec_actual = 0. La misma regla determinista de
+--         A2.3.f: no se mira el consumo y no hay umbral.
+--       · "alertas por mes liberadas" divide entre 9 y no entre 12,
+--         porque P1 = (a) acota la detección a enero-septiembre de
+--         2026.
+--       · el techo de referencia es 242 alertas al mes, fijado en
+--         DEC-45 y DEC-54.
+--
+--     AUTOCALCUELOS:
+--       1. celdas_depuradas + celdas_que_siguen DEBE dar
+--          celdas_en_el_calculo. Los dos cubos son excluyentes y
+--          cubren la salida entera.
+--       2. celdas_en_el_calculo DEBE dar 183 541 —la salida "1 valor
+--          calculado" de A2.3.c, DEC-96—. Si no da, esta consulta no
+--          está midiendo el mismo universo que A2.3.c, y se repite
+--          A2.3.c entera antes de interpretar nada.
+--       3. celdas_depuradas DEBE dar 541 —el grupo con índice cero
+--          dentro de "valor" del censo de A2.3.e, DEC-97—. Es la
+--          tercera comprobación contra dos corridas anteriores.
+--
+--     LO QUE NO MIDE. No mide alertas: eso es E7b con θ. Mide
+--     solamente CUÁNTO DEL CANAL HUMANO se devuelve al excluir estas
+--     celdas, y eso es una cuenta de capacidad, no de detección.
+-- =====================================================================
+
+-- A2.3.g SALIDA — la regla aplicada al universo de detección
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+valor AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND r.nro_cuenta IS NOT NULL
+       AND r.ciclos_disponibles >= 4
+       AND r.referencia > 0
+)
+SELECT COUNT(*)                                                       AS celdas_en_el_calculo,
+       COUNT(DISTINCT nro_cuenta)                                     AS cuentas_en_el_calculo,
+       COUNT(*) FILTER (WHERE lec_actual = 0)                         AS celdas_depuradas,
+       COUNT(DISTINCT nro_cuenta) FILTER (WHERE lec_actual = 0)       AS cuentas_depuradas,
+       COUNT(*) FILTER (WHERE lec_actual <> 0)                        AS celdas_que_siguen,
+       COUNT(DISTINCT nro_cuenta) FILTER (WHERE lec_actual <> 0)      AS cuentas_que_siguen,
+       ROUND((COUNT(*) FILTER (WHERE lec_actual = 0)) / 9.0, 1)       AS alertas_mes_liberadas,
+       ROUND(100.0 * (COUNT(*) FILTER (WHERE lec_actual = 0)) / 9.0 / 242.0, 1) AS por_ciento_del_techo
+  FROM valor;
+
+
+-- =====================================================================
 -- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
 --                                  (25 oct 2026)
 --

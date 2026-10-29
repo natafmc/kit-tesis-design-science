@@ -260,6 +260,8 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 
 **Limitación de la retroevaluación, fijada el 28 oct 2026 (`DEC-91`).** La línea base de 57 meses —**1 053 reclamos, 174 procedentes y 136 de esos 174 en tipo de lectura 1**— se conserva íntegra como **caracterización empírica del problema** (E6). El **protocolo de retroevaluación algorítmica aplica sobre los nueve meses de enero a septiembre de 2026**, porque es la única ventana en la que R1.2 puede comparar contra **cuatro ciclos previos completos** dentro de la ventana. **No se abre ninguna consulta para ampliar esa ventana:** la limitación se declara y la cobertura se mide sobre la ventana en la que el método es aplicable.
 
+**Limitación de la referencia histórica, fijada el 29 oct 2026 (`DEC-100`).** **El método no limpia el historial de 2022 a 2025, de modo que el 1,71 % de los grupos de referencia —6 004 de 350 443— se construye sobre dos o más ciclos con `lec_actual = 0`; para esos grupos la mediana no es robusta y la referencia puede estar afectada.** **Se declara en vez de corregirse, porque corregirla habría movido 5 746 cuentas —el 19,29 % de las 29 784 del historial— a la contingencia A1, cuya regla no estaba escrita al momento de la decisión.** **Para el 79,20 % restante de los grupos con algún ciclo corrupto —22 856 de 28 860, con exactamente un ciclo— la mediana no se ve afectada: con cuatro valores es el promedio de los dos centrales, y un solo valor corrupto cae a la posición 4.**
+
 **Métodos propios de la tipología:** aplicabilidad y efectividad. No se emplean pruebas de rendimiento de software, que corresponden a una instanciación.
 
 ## 11. Cronograma
