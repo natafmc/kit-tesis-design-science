@@ -2359,6 +2359,140 @@ SELECT COUNT(*)                                                       AS celdas_
 
 
 -- =====================================================================
+-- A2.3.j — LA PRUEBA DE ESTABILIDAD: ¿EL PERFIL ES PROPIEDAD DE LA
+--           CUENTA O ES RUIDO?
+--                                  (29 oct 2026 — gate de E7c, punto 3)
+--
+--     POR QUÉ EXISTE. El gate pide demostrar que el corte es razonable
+--     y no una partición a conveniencia. A2.3.h ya resolvió la mitad
+--     de esa exigencia: los cuartiles son una REGLA MECÁNICA fijada
+--     antes de correr, así que ningún número se pudo ajustar después
+--     de visto.
+--
+--     PERO ESO PRUEBA QUE EL CORTE NO ESTÁ HECHO A CONVENIENCIA, NO
+--     QUE LA VARIABLE SEA REAL. Se puede repartir cualquier columna
+--     en cuartiles y el reparto sale equitativo igualmente. Lo que
+--     hace a un perfil útil como segmento es que la cuenta siga
+--     estando en su banda de un periodo al otro; si cambia de banda
+--     al azar, el perfil es ruido y la segmentación es decoración.
+--
+--     CÓMO SE PRUEBA. Se parte el panel en dos mitades —28 meses y
+--     29—, se calcula el perfil de cada cuenta EN CADA MITAD POR
+--     SEPARADO, se le asigna banda con los cuartiles DE ESA MISMA
+--     mitad, y se mide cuántas cuentas conservan la banda.
+--
+--     CRITERIO DE RECHAZO FIJADO ANTES DE CORRER:
+--       · Con cuatro bandas, el azar acierta el 25 % de las veces.
+--       · Se exige un 50 % de conservación de banda, o sea el DOBLE
+--         del azar, para aceptar que el perfil es propiedad de la
+--         cuenta.
+--       · SI NO SE ALCANZA, se declara: el perfil no es estable, la
+--         segmentación se describe como caracterización no operativa
+--         y NO se presenta ante el jurado como segmentación del
+--         método. Se mide antes de escribir la regla, no después.
+--       · Un dato no se trata de ninguna forma: los 999 976 del
+--         máximo de A2.3.h siguen adentro, porque si el perfil es
+--         real tiene que serlo también con la cola presente.
+--
+--     CRITERIO FIJADO ANTES DE CORRER SOBRE EL CORTE TEMPORAL:
+--       · Mitad A = 2022-01 a 2024-04 (28 meses).
+--       · Mitad B = 2024-05 a 2026-09 (29 meses).
+--       · 28 + 29 = 57: se usa el panel entero, sin recortar.
+--       · Las bandas de cada mitad se calculan CON LOS CUARTILES DE
+--         ESA MISMA mitad, no con los de A2.3.h: cada mitad se juzga
+--         con su propia escala, que es lo que hace la prueba justa.
+--
+--     AUTOCALCUELOS:
+--       1. misma_banda + banda_adyacente + banda_lejana DEBE dar
+--          cuentas_comparadas. Los tres cubos son exhaustivos.
+--       2. cuentas_en_los_dos_periodos DEBE dar cuentas_comparadas:
+--          el JOIN interno solo puede traer cuentas presentes en las
+--          dos mitades.
+--       3. cuentas_en_los_dos_periodos + cuentas_en_un_solo_periodo
+--          DEBE dar cuentas_en_el_panel.
+--       4. cuentas_en_el_panel DEBE dar 30 411 —A2.3.h, DEC-104—. Si
+--          no da, este panel no es el mismo y se repite A2.3.h antes
+--          de interpretar nada.
+-- =====================================================================
+
+-- A2.3.j SALIDA — la conservación de banda entre las dos mitades
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+mitad AS (
+    SELECT nro_cuenta,
+           consumo,
+           CASE WHEN mes < DATE '2024-05-01' THEN 'A' ELSE 'B' END AS periodo
+      FROM p
+),
+perfil AS (
+    SELECT nro_cuenta,
+           periodo,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS perfil_consumo
+      FROM mitad
+     GROUP BY nro_cuenta, periodo
+),
+cortes AS (
+    SELECT periodo,
+           PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY perfil_consumo) AS q1,
+           PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY perfil_consumo) AS q2,
+           PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY perfil_consumo) AS q3
+      FROM perfil
+     GROUP BY periodo
+),
+banda AS (
+    SELECT pf.nro_cuenta,
+           pf.periodo,
+           CASE WHEN pf.perfil_consumo <= c.q1 THEN 1
+                WHEN pf.perfil_consumo <= c.q2 THEN 2
+                WHEN pf.perfil_consumo <= c.q3 THEN 3
+                ELSE 4 END AS banda
+      FROM perfil pf
+      JOIN cortes c
+        ON c.periodo = pf.periodo
+),
+cobertura AS (
+    SELECT nro_cuenta, COUNT(*) AS periodos
+      FROM banda
+     GROUP BY nro_cuenta
+),
+par AS (
+    SELECT a.nro_cuenta,
+           a.banda AS banda_a,
+           b.banda AS banda_b
+      FROM banda a
+      JOIN banda b
+        ON b.nro_cuenta = a.nro_cuenta
+     WHERE a.periodo = 'A'
+       AND b.periodo = 'B'
+)
+SELECT (SELECT COUNT(*) FROM cobertura)                        AS cuentas_en_el_panel,
+       (SELECT COUNT(*) FROM cobertura WHERE periodos = 2)     AS cuentas_en_los_dos_periodos,
+       (SELECT COUNT(*) FROM cobertura WHERE periodos = 1)     AS cuentas_en_un_solo_periodo,
+       COUNT(*)                                                AS cuentas_comparadas,
+       COUNT(*) FILTER (WHERE banda_a = banda_b)               AS misma_banda,
+       ROUND(100.0 * COUNT(*) FILTER (WHERE banda_a = banda_b) / COUNT(*), 1) AS por_ciento_misma_banda,
+       COUNT(*) FILTER (WHERE ABS(banda_a - banda_b) = 1)      AS banda_adyacente,
+       COUNT(*) FILTER (WHERE ABS(banda_a - banda_b) >= 2)     AS banda_lejana,
+       ROUND(AVG(ABS(banda_a - banda_b))::numeric, 3)          AS desplazamiento_medio
+  FROM par;
+
+
+-- =====================================================================
 -- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
 --                                  (25 oct 2026)
 --
