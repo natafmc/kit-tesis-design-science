@@ -204,7 +204,25 @@ El criterio que se escribió **antes** de correr el `7.g` quedó activado (`DEC-
 
 A3 —normalidad por segmento— se reclasificó como **paso previo obligatorio del método** y no como alternativa competidora (`DEC-70`, punto 1). L131 lo deja claro: *«R7 no compite con R1.2: la segmentación es el paso previo y la comparación contra el ciclo anual es el criterio dentro de cada segmento.»*
 
-**Falta:** qué segmento, con qué variable de corte, y **con qué prueba se demuestra que el corte es razonable** y no una partición a conveniencia. *Pendiente: no está escrito en ningún archivo y no se decide hasta que 3.1 avance.*
+**El rol se fijó el 29 oct 2026 (`DEC-103`): (a) caracterización previa que viaja con la alerta.** **Se calcula antes de la detección sobre los 57 meses —`07b` §4.2 lo manda así—, asigna un perfil a cada cuenta y ese perfil se declara en cada alerta. NO cambia qué celdas alertan.**
+
+**Dos decisiones ya fijadas le quitan otros dos trabajos que el gate daba por sentados:**
+
+- **No puede fijar `θ`.** `07b` §4.2 calibra `θ` recorriendo **un único orden global** hasta 242 alertas por mes; un umbral por perfil exigiría reescribir ese procedimiento.
+- **No puede sustituir la referencia.** A3 perdió contra A2 en `DEC-70`; **quedó en pie su premisa (`R7`) y no su mecanismo.**
+
+**Lo que (b) —la segunda lente computacional que compara contra el patrón del segmento— habilitaría y aquí no se hace:** ver cuentas **normales para sí mismas pero anómalas para sus pares** (`07a` L103). **Se declara como extensión de diseño en §10 de la propuesta, con su costo escrito: reabrir `§4.2`.**
+
+**Los dos ejes, y una simplificación que apareció al mirarlos:**
+
+| **Eje** | **Estado** |
+|:--|:--|
+| **Perfil de consumo** | **Por definir.** Medida en `A2.3.h`: mediana mensual por cuenta sobre los 57 meses y su distribución. **El corte se fija por REGLA mecánica —cuartiles— antes de correr, no a mano después.** |
+| **Familia de código** | **Ya existe y ya está definida.** Son los cuatro valores de `tipo_lectura` —`0` LC no facturada · `1` LN lectura normal · `2` LE estimada · `3` NE normal estimada—, con los 48 códigos repartidos en esas cuatro (`02_delimitacion.md` L14; `consultas_base_datos.md` L212-215), y la variable está en `tfv_lectura` enlazando por `id_lectura` (`DEC-36`). **La alerta ya declara si la lectura tenía código (`R4.3`); lo que falta es hacer esa declaración de cuatro vías en vez de binaria.** Reparto medido en `A2.3.i`. |
+
+**Falta, en orden:** **(1)** la distribución del perfil y **(2)** el reparto por familia, **ambas medidas antes de proponer cualquier corte**; **(3)** la regla de corte fijada y aplicada; **(4)** la prueba de que es razonable —que los cortes sean empíricamente distinguibles y no una partición a conveniencia—.
+
+*Pendiente: no se propone ningún corte antes de tener las dos distribuciones.*
 
 ### 3.4 — El tratamiento de la contingencia A1
 

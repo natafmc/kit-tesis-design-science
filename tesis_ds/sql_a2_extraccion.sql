@@ -2180,6 +2180,185 @@ SELECT COUNT(*)                                                       AS celdas_
 
 
 -- =====================================================================
+-- A2.3.h — EJE 1: PERFIL DE CONSUMO POR CUENTA, SOBRE LOS 57 MESES
+--                                  (29 oct 2026 — gate de E7c, punto 3)
+--
+--     POR QUÉ EXISTE. DEC-103 fijó el rol de la segmentación: (a)
+--     caracterización previa que viaja con la alerta, sin cambiar qué
+--     celdas alertan. R7.2 nombra dos ejes y este es el primero.
+--
+--     POR QUÉ 57 MESES Y NO LOS NUEVE. 07b §4.2, último párrafo:
+--     «Los datos de segmentación no se acotan: siguen siendo los 57
+--     meses. Se acota el paso de detección, no el panel.» El perfil
+--     describe a la cuenta, no al mes que se evalúa.
+--
+--     CRITERIO FIJADO ANTES DE CORRER:
+--       · unidad = cuenta (nro_cuenta), no celda.
+--       · estadístico = MEDIANA del consumo mensual. Se elige la
+--         mediana y no la media por lo mismo que P3 = (b) en DEC-90:
+--         el panel tiene consumos desde -1 343 050 (DEC-86) y celdas
+--         con índice cero que promedian 86,7 veces el resto (DEC-86),
+--         y la media dejaría el perfil en manos de esas celdas.
+--       · el panel se colapsa con la MISMA regla de A2.3.b: manda la
+--         fecha más reciente y desempata id_lectura más alto. No se
+--         redefine aquí.
+--       · el CORTE de las bandas NO se ajusta a mano. Se propone una
+--         REGLA mecánica —cuartiles— y los números que salgan son el
+--         corte. Se cambia la regla antes de correr, no los números
+--         después de haberlos visto.
+--
+--     AUTOCALCUELOS:
+--       1. cuentas_perfil_positivo + cuentas_perfil_no_positivo DEBE
+--          dar cuentas. Los dos cubos son excluyentes.
+--       2. cuentas DEBE dar 30 411 —el panel verificado de A2.3.b,
+--          DEC-80, y de A2.3.c, DEC-96—. Si no da, este panel no es
+--          el mismo que clasificó A2.3.c y se repite A2.3.b antes de
+--          interpretar nada.
+--
+--     LO QUE NO MIDE. No mide desviación ni alertas. Mide cómo está
+--     distribuido el tamaño de las cuentas, y eso es lo que decide
+--     dónde caen los cortes de las bandas de perfil.
+-- =====================================================================
+
+-- A2.3.h SALIDA — la mediana mensual por cuenta y su distribución
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+cuenta AS (
+    SELECT nro_cuenta,
+           COUNT(*)                                                          AS meses_observados,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo)              AS perfil_consumo
+      FROM p
+     GROUP BY nro_cuenta
+)
+SELECT COUNT(*)                                                          AS cuentas,
+       COUNT(*) FILTER (WHERE perfil_consumo > 0)                        AS cuentas_perfil_positivo,
+       COUNT(*) FILTER (WHERE perfil_consumo <= 0)                       AS cuentas_perfil_no_positivo,
+       COUNT(*) FILTER (WHERE meses_observados < 12)                     AS cuentas_sin_doce_meses,
+       ROUND(MIN(perfil_consumo)::numeric, 2)                            AS perfil_minimo,
+       ROUND(PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY perfil_consumo)::numeric, 2) AS corte_q1,
+       ROUND(PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY perfil_consumo)::numeric, 2) AS corte_q2,
+       ROUND(PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY perfil_consumo)::numeric, 2) AS corte_q3,
+       ROUND(MAX(perfil_consumo)::numeric, 2)                            AS perfil_maximo
+  FROM cuenta;
+
+
+-- =====================================================================
+-- A2.3.i — EJE 2: FAMILIA DE CÓDIGO EN EL UNIVERSO DE DETECCIÓN
+--                                  (29 oct 2026 — gate de E7c, punto 3)
+--
+--     POR QUÉ EXISTE. DEC-103 fijó el rol de la segmentación, y R7.2
+--     nombra dos ejes. Este es el segundo: familia de código.
+--
+--     CADENA DECLARADA ANTES DE BUSCAR (DEC-36):
+--         tfv_lectura (id_lectura, tipo_lectura)
+--             ^ tfv_historico_lecturador (id_lectura)
+--     Las cuatro familias ya están definidas y no se inventan aquí:
+--     consultas_base_datos.md L212-215 lista los 48 códigos repartidos
+--     en 0 —LC, no facturada—, 1 —LN, lectura normal—, 2 —LE,
+--     estimada— y 3 —NE, normal estimada— (02_delimitacion.md L14).
+--
+--     CRITERIO FIJADO ANTES DE CORRER:
+--       · universo = la salida "1 valor calculado" de A2.3.c, la misma
+--         que midió A2.3.g. No se redefine: si se redefine, la
+--         comparación contra sus 183 541 no significa nada.
+--       · "familia" es tfv_lectura.tipo_lectura de la LECTURA de esa
+--         celda. Es la clasificación AETN, no la etiqueta con que se
+--         marca "con código": esa regla la resolvió DEC-30 y dice que
+--         tipo 1 es SIN código —99,12 %- y tipos 2 y 3 CON código
+--         —0,88 %-. Aquí no se aplica esa regla, se miden las cuatro
+--         familias tal como están.
+--       · el JOIN es LEFT: una celda sin dato de tipo_lectura NO se
+--         descarta, se cuenta aparte como f_sin_dato.
+--
+--     AUTOCALCUELOS:
+--       1. f0 + f1 + f2 + f3 + f_sin_dato DEBE dar celdas_en_el_
+--          calculo. Los cinco cubos son excluyentes y exhaustivos.
+--       2. celdas_en_el_calculo DEBE dar 183 541 —A2.3.g, DEC-101—.
+--          ESTE ES EL CONTROL DEL JOIN: si el JOIN multiplicara filas,
+--          la cifra saldría MAYOR que 183 541 y la consulta entera se
+--          tira sin interpretar nada.
+--       3. celdas_con_tipo + f_sin_dato DEBE dar celdas_en_el_calculo.
+--
+--     LO QUE NO MIDE. No decide si el eje sirve como segmento: eso se
+--     decide al ver si las cuatro familias están pobladas o si una
+--     sola se queda con casi todo, que es lo que este censo dirá.
+-- =====================================================================
+
+-- A2.3.i SALIDA — el reparto de las celdas de detección por familia
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+valor AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.id_lectura
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND r.nro_cuenta IS NOT NULL
+       AND r.ciclos_disponibles >= 4
+       AND r.referencia > 0
+)
+SELECT COUNT(*)                                                       AS celdas_en_el_calculo,
+       COUNT(*) FILTER (WHERE l.id_lectura IS NOT NULL)               AS celdas_con_tipo,
+       COUNT(*) FILTER (WHERE l.tipo_lectura = 0)                     AS f0_no_facturada,
+       COUNT(*) FILTER (WHERE l.tipo_lectura = 1)                     AS f1_normal_sin_codigo,
+       COUNT(*) FILTER (WHERE l.tipo_lectura = 2)                     AS f2_estimada,
+       COUNT(*) FILTER (WHERE l.tipo_lectura = 3)                     AS f3_normal_estimada,
+       COUNT(*) FILTER (WHERE l.tipo_lectura IS NULL)                 AS f_sin_dato
+  FROM valor v
+  LEFT JOIN tfv_lectura l
+    ON l.id_lectura = v.id_lectura;
+
+
+-- =====================================================================
 -- CONTROL 6 — R3.4: ¿LA RUTA EXISTE EN EL DATO?
 --                                  (25 oct 2026)
 --
