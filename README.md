@@ -48,9 +48,9 @@ La propuesta no tiene que ser software. El asesor admite como artefacto un méto
 
 ### `traductor-alsie` — traducción al modelo institucional
 
-Se usa **solo cuando la investigación ya está terminada** (todas las etapas E0–E10 cerradas). Toma los productos de `tesis_ds/`, los mapea y los reescribe en la estructura y el lenguaje del **Informe Final de Investigación (IFI) de ALSIE**, aplicando los indicadores de evaluación del nivel de maestría.
+Se usa **solo cuando la investigación ya está terminada** (todas las etapas E0–E10 cerradas). Toma los productos de `tesis_ds/`, los mapea y los reescribe en la estructura y el lenguaje del **Informe Final de Investigación (IFI) de ALSIE**, aplicando los indicadores de evaluación del nivel de maestría. No resume: vuelca el desarrollo completo de cada fase al apartado que le corresponde (solo el Resumen y la Introducción están acotados por la norma).
 
-Salida: el documento final en Markdown, `entrega_alsie/IFI_ALSIE.md`, con todos los apartados del modelo de ALSIE. El agente consulta al tesista cuando le falta información y nunca inventa datos.
+Salida: el documento final en Markdown, `entrega_alsie/IFI_ALSIE.md`, con todos los apartados del modelo de ALSIE. Además produce un **anexo de mapeo** que documenta la equivalencia entre los elementos de Design Science y los del modelo de ALSIE, incluido en el propio IFI y también como archivo de trabajo `entrega_alsie/mapeo_ds_alsie.md`. El agente consulta al tesista cuando le falta información y nunca inventa datos.
 
 ---
 
@@ -138,7 +138,7 @@ Markdown con todos los apartados del modelo. Si te falta información, pregúnta
 antes de continuar.
 ```
 
-**Paso 3.** El agente construye el mapa Design Science → ALSIE, detecta vacíos (datos de carátula, hipótesis, aporte teórico, significación práctica, población y muestra) y le pregunta al tesista. Con las respuestas, redacta `entrega_alsie/IFI_ALSIE.md`, `entrega_alsie/mapeo_ds_alsie.md` y `entrega_alsie/autoevaluacion_indicadores.md`.
+**Paso 3.** El agente construye el mapa Design Science → ALSIE (equivalencias terminológicas y mapa apartado por apartado), detecta vacíos (datos de carátula, hipótesis, aporte teórico, significación práctica, población y muestra) y le pregunta al tesista. Con las respuestas, redacta `entrega_alsie/IFI_ALSIE.md` volcando el desarrollo completo de cada fase, e incluye el mapa como **anexo del IFI** referenciado en el cuerpo; también lo entrega como archivo de trabajo `entrega_alsie/mapeo_ds_alsie.md` y genera `entrega_alsie/autoevaluacion_indicadores.md`.
 
 **Paso 4.** El tesista revisa, responde las preguntas abiertas y repite hasta que la autoevaluación no tenga indicadores incumplidos sin justificación. El archivo Markdown es la versión ALSIE del documento; su conversión a otro formato se hace después, a partir de ese archivo.
 
@@ -282,6 +282,7 @@ Los documentos normativos se guardan **solo en Markdown**. Los `.docx` originale
 - El asesor trabaja el **problema de investigación** y anota su traducción institucional a **"problema científico"**.
 - El asesor hace explícita la resignificación de Design Science: el **objeto de estudio es el artefacto propuesto**; el traductor la revierte al sentido que ALSIE exige.
 - El traductor aplica **solo los indicadores de maestría** de ALSIE y verifica las relaciones esenciales del documento.
+- El traductor **no resume**: vuelca el desarrollo completo de cada fase al apartado correspondiente, y entrega el **mapa de equivalencias Design Science → ALSIE** como anexo del IFI y como archivo de trabajo.
 
 ---
 
