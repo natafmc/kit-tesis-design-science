@@ -266,6 +266,8 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 
 **Dos límites del corte de perfil que se declaran junto con él, medidos el 29 oct 2026 (`DEC-104`).** **Primero: la banda superior no tiene techo** —va de `más de 135` hasta un perfil máximo de **999 976**, un rango interno de más de siete mil veces—, **porque los cuartiles garantizan población equitativa y no anchura.** **Segundo: `1 861` cuentas —6,12 %— tienen mediana mensual no positiva y `928` —3,05 %— no llegan a doce meses observados.** **Ninguno de los dos se corrige: el perfil no decide qué celdas alertan, así que su función es dar contexto al verificador, y ese contexto se da igual con la cola presente.**
 
+**Limitación de la carencia por año, fijada el 29 oct 2026 (`DEC-111`).** **Un año de referencia con menos de doce meses sigue contando para los meses que sí tiene, porque la regla de ciclo exige que la cuenta tenga ese mes y no las 12 lecturas del año.** **La consecuencia precisa: esos años aportan a la mediana de referencia únicamente en los meses donde existen, y un año con 8 meses no aporta en los otros 4.** **Se declara en vez de exigir las 12, porque medir las dos opciones sobre el mismo universo mostró que exigirlas habría movido 65 426 celdas —el 35,6 % de las que reciben valor— a la contingencia A1, habría dejado a esa contingencia en el 56,3 % de las cuentas y con eso habría dejado de ser cierto `R8.3`, que dice que A1 nunca puede ser el criterio principal.**
+
 **Métodos propios de la tipología:** aplicabilidad y efectividad. No se emplean pruebas de rendimiento de software, que corresponden a una instanciación.
 
 ## 11. Cronograma

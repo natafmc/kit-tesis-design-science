@@ -136,9 +136,11 @@ Derivada de la alternativa **A1** descartada como criterio principal en E7a.
 
 | ID | Requisito | Estado |
 |:--|:--|:--|
-| R8.1 | Las cuentas con **menos de cuatro ciclos** no quedan sin cobertura: se evalúan con la ventana de los **últimos 6 meses** | ◆ **F** |
+| R8.1 | **Se decide mes a mes:** cuando para un mes la cuenta tiene **menos de cuatro ciclos**, ese mes no queda sin cobertura y se evalúa con la ventana de los **últimos 6 meses**. **Ninguna cuenta completa queda fuera: la carencia se resuelve por mes y no por cuenta entera** | ◆ **F** |
 | R8.2 | Una alerta originada por R8.1 **se marca como tal** — véase R4.4 | **F** |
 | R8.3 | R8.1 **nunca** puede ser el criterio principal: es fallback | **F** |
+
+**Redacción de `R8.1` precisada en su unidad el 29 oct 2026 (`DEC-111`).** **Texto original, conservado:** *«Las cuentas con menos de cuatro ciclos no quedan sin cobertura: se evalúan con la ventana de los últimos 6 meses.»* **Se cambió solo la unidad, no la promesa.** **La fórmula de `07c` §3.1 decide POR CUENTA Y MES, de modo que una misma cuenta puede estar en A1 en unos meses y no en otros** —`07c_diseno_artefacto.md` ya lo normalizaba: *«una cuenta puede caer en más de un grupo… no es una contradicción, es lo normal»*—. **Que el requisito dijera «cuentas» dejaba la regla leíéndose más estricta de lo que es, sin que por eso cambiara a quién protege.** **La promesa NO cambia: ninguna cuenta queda sin cobertura, y la ventana sigue siendo la de los últimos 6 meses.** `R8.2` y `R8.3` **quedan intactos.**
 
 ### R9 — Precondiciones de entrada ◆ F
 

@@ -257,9 +257,36 @@ A3 —normalidad por segmento— se reclasificó como **paso previo obligatorio 
 
 A1 —ventana de 6 meses— **ya no es alternativa**: es regla de contingencia, para *«cuentas con menos de cuatro ciclos anuales completos»* (`DEC-70`, punto 1), y R4.4 exige que la alerta **lo diga** cuando ocurra.
 
-**Falta traducir eso a una regla ejecutable:** **cómo se cuenta un ciclo completo** —¿tiene que tener las 12 lecturas, o basta con que exista el mes?— y **quién dispara A1**: el criterio es por cuenta (`R8.1`), pero el hallazgo del 3.1 es que **también hay una carencia por año que ninguna de las dos formulaciones cubre hoy.**
+**Las dos preguntas se respondieron midiendo, el 29 oct 2026 — `A2.3.k` y `A2.3.k2`, `DEC-110` y `DEC-111`.** Se compararon las dos definiciones **sobre el mismo universo de 264 384 celdas y con la referencia idéntica en las dos** —redefinirla habría reabierto el punto 1 del gate, que ya cerró `DEC-96`—:
 
-*Depende de 3.1: no se decide antes.*
+| | **A — el mes existe (ELEGIDA)** | **B — las 12 lecturas (descartada)** |
+|:--|--:|--:|
+| Celdas con valor | **183 541** —69,4 %— | 118 115 —44,7 %— |
+| Celdas en A1 | **75 319** —28,5 %— | 140 745 —53,2 %— |
+| Cuentas con los 4 años completos | — | 13 285 de 30 411 —43,7 %— |
+
+**B se descartó con el número en la mano:** habría movido **65 426 celdas —el 35,6 % del universo—** a A1 y habría puesto al fallback en mayoría —**el 56,3 % de las cuentas—, lo cual deja sin efecto `R8.3`: *«R8.1 nunca puede ser el criterio principal: es fallback»*.** **Y corre un argumento que no depende de ningún porcentaje: la referencia de un mes `m` se calcula con el mes `m` de cada año, de modo que los otros once meses nunca entran en esa mediana —exigir las 12 lecturas no vuelve más correcta la referencia, solo descarta años cuyo dato para ese mes sí existe—.**
+
+**La regla ejecutable, tal como queda escrita:**
+
+| **Pregunta** | **Regla** |
+|:--|:--|
+| **Qué cuenta un ciclo completo** | Un año cuenta para el mes `m` si la cuenta **tiene ese mes** en ese año, sobre el panel colapsado con la regla de `A2.3.b`. **No se exigen las 12 lecturas.** |
+| **Cuántos ciclos se cuentan** | `ciclos` = número de años entre 2022 y 2025 que tienen ese mes para esa cuenta. |
+| **Cuándo entra a A1** | `ciclos < 4` |
+| **Cuándo recibe `desviación`** | `ciclos ≥ 4` **y** `referencia > 0` |
+| **Cuándo declara sin `referencia`** | `ciclos ≥ 4` **y** `referencia ≤ 0` — **no es A1: son tres salidas distintas.** |
+| **Qué ventana usa A1** | Los últimos 6 meses (`R8.1`). |
+| **Qué declara la alerta** | Que esa celda cayó en A1 (`R4.4`), marcada como alerta originada en `R8.1` (`R8.2`). |
+
+**Autocalculeo que cerró ANTES de decidir:** `lo_contrario_deberia_ser_cero` = **0**, o sea que **B es subconjunto de A: ninguna celda tiene valor bajo B sin tenerlo bajo A.** **No se midió una hipótesis abierta —se dedujo antes de correr y la corrida lo confirmó—.**
+
+**Dos cosas que quedan escritas y no son la regla:**
+
+- **`R8.1` se precisó en su unidad el mismo día (`DEC-111`), con su texto original conservado junto al nuevo:** la fórmula decide **por cuenta y mes**, no por cuenta entera —**lo que `07c` §3.1 ya normalizaba al declarar que las `cuentas` por grupo no se suman**—. **La promesa no cambió: ninguna cuenta queda sin cobertura.**
+- **La carencia por año se declara y no se resuelve:** bajo la definición A, **un año con 8 meses sigue contando para los 8 meses que sí tiene**, porque son esos y solo esos los que entran en la mediana de ese mes. Queda en §10 de la propuesta.
+
+*Depende de 3.1 — resuelto. Cerrado: punto 4 del gate — E7c en 4 de 6.*
 
 ### 3.5 — El valor del criterio 4 (aplicabilidad) y su procedimiento
 
@@ -299,14 +326,14 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo 
 
 ---
 
-## 5. Gate de E7c — abierto: **3 de 6**
+## 5. Gate de E7c — abierto: **4 de 6**
 
 **Se cierra esta etapa cuando se cumplan seis cosas:**
 
 1. **CUMPLIDO el 28 oct 2026 — la referencia anual.** **La fórmula quedó escrita en §3.1** con las tres decisiones de `DEC-90` dentro y con la restricción `referencia > 0`, **y el autocalculeo de cierre corrió y cerró** (`A2.3.c`, `DEC-96`). **Las tres comprobaciones:** `suma_las_cuatro` = **1 485 556** —exacto, sin hueco y sin solape— · `diferencia_contra_el_panel` = **0** · `diferencia_celdas_2026` = **0**. **Y la cuarta, que era la de no perder celdas por el `LEFT JOIN`:** `celdas_2026_clasificadas` = **264 384** = `celdas_2026_en_el_panel`. **`cuentas` = 30 411, la misma de `A2.3.b` (`DEC-80`),** de modo que el panel con el que se clasificó es el panel verificado. *La fórmula se aplicó a las 1 485 556 celdas **sin definir ninguna variable nueva** —usó solo `consumo` y `mes`— y devolvió **valor** para las que caen dentro del universo y **declaración** para las que quedan fuera, que era la condición del punto.*
 2. **CUMPLIDO el 29 oct 2026 — las 38 969 celdas.** **La rama se eligió en `DEC-98` —(a) depurar como paso del método—, el alcance en `DEC-100` —(i) solo la celda observada—, la regla se escribió ANTES de aplicarse y el número entró en `A2.3.g` (`DEC-101`).** **La regla: toda celda del universo 2026 con `lec_actual = 0` se excluye del cálculo de desviación y del listado de alertas; se registran cuántas y de cuántas cuentas; el historial de 2022 a 2025 no se limpia.** **El resultado: 541 celdas de 411 cuentas excluidas de un universo calculable de 183 541 celdas y 22 978 cuentas —0,29 % de las celdas—, y 60,1 alertas al mes devueltas al canal humano, el 24,8 % del techo de 242.** **Los tres autocalculeos cerraron exactos, dos de ellos contra corridas anteriores; y una cuarta coincidencia no pedida confirmó el resultado: 183 000 y 22 966 son las mismas cifras del grupo «índice normal» que midió `A2.3.d` por otro camino.** **La limitación que la decisión deja quedó escrita en §10 de la propuesta: el 1,71 % de los grupos de referencia de 2022 a 2025 se construye sobre dos o más ciclos con `lec_actual = 0`.** *Cerrado con su consulta registrada en `sql_a2_extraccion.sql`.*
 3. **CUMPLIDO el 29 oct 2026 — los segmentos A3.** **El ROL se fijó en `DEC-103`: caracterización previa que viaja con la alerta, calculada antes de la detección sobre los 57 meses, sin cambiar qué celdas alertan, sin fijar `θ` y sin sustituir la referencia.** **Los DOS EJES se midieron con el criterio escrito antes de correr (`DEC-104`).** **Perfil de consumo:** mediana mensual por cuenta sobre 57 meses, **cuatro bandas por cuartiles —`0–26` · `27–69` · `70–135` · `>135`—, regla fijada antes de correr y ratificada antes de ver los números.** **Familia de código:** **tres bandas —no facturada · lectura normal sin código · con código—** (`DEC-105`), **alineadas con la regla operativa de `DEC-30` y con lo que `R4.3` ya declara.** **La PRUEBA de que no es una partición a conveniencia corrió y pasó (`DEC-108`): conservación de banda del 59,1 % contra el 50 % exigido y el 25 % del azar, con el criterio de rechazo escrito antes de correr y sin moverse después.** **Y la variable resultó ser una propiedad de la cuenta y no ruido: 89,6 % se queda dentro de una banda y el desplazamiento medio es de 0,539 bandas.** **Limitación declarada en §10 de la propuesta: la segunda lente computacional —(b), comparar contra el patrón del segmento— queda como extensión de diseño con su costo escrito, que es reabrir `07b` §4.2.** *(Consultas: `A2.3.h`, `A2.3.i` y `A2.3.j`, las tres con sus autocalculeos cerrando y registradas en `sql_a2_extraccion.sql`.)*
-4. **PENDIENTE — la contingencia A1.** Regla ejecutable: qué cuenta un ciclo completo y cuándo entra A1.
+4. **CUMPLIDO el 29 oct 2026 — la contingencia A1.** **Las dos preguntas se midieron y no se decidieron a ojo (`A2.3.k` y `A2.3.k2`, `DEC-110` y `DEC-111`).** **Queda elegida la definición A —un año cuenta si la cuenta tiene ese mes—, con dos constataciones detrás: la referencia de un mes `m` solo usa el mes `m` de cada año, así que exigir las 12 lecturas no la habría vuelto más correcta; y la definición B habría movido 65 426 celdas —el 35,6 % del universo— a A1 y habría puesto al fallback en el 56,3 % de las cuentas, dejando sin efecto `R8.3`.** **La regla ejecutable está escrita en §3.4 en su forma completa: qué cuenta un ciclo, cuántos se cuentan, cuándo entra a A1, cuándo recibe `desviación`, cuándo declara sin `referencia` —tres salidas distintas—, qué ventana usa y qué declara la alerta.** **Autocalculeo de verificación: `lo_contrario_deberia_ser_cero` = 0, que confirma que B era subconjunto de A, deducido antes de correr.** **Con eso se cerraron dos cosas que colgaban de acá: `R8.1` se precisó en su unidad —con su texto original conservado—, y la carencia por año quedó declarada.** *(No se tocó `AC4` ni se reabrió E7a: `07c` §3.1 ya había separado lo que es sobre la ventana de lo que es sobre cada cuenta.)*
 5. **PENDIENTE — el criterio 4, aplicabilidad.** Valor y procedimiento, como pide `07b_requisitos.md` L231.
 6. **PENDIENTE — el paso de depuración.** Escrito como paso del método, con su lugar en la secuencia y su registro (`DEC-75`, `P4`).
 
