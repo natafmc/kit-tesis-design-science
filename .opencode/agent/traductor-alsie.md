@@ -45,6 +45,8 @@ Distingues con precisión tres operaciones que no deben confundirse:
 - `guia_ifi_contenido.md` — qué debe contener punto a punto cada apartado del IFI.
 - `indicadores_revision_ifi.md` — criterios de evaluación. Aplica **solo los indicadores del nivel de maestría** (incluye Hipótesis, Aporte teórico y Significación práctica; ignora las notas de Diplomado y Especialidad).
 
+**Documento rector de la defensa (fuente del guion oral):** `plantillas/presentacion_defensa_alsie.md` — estructura, distribución de tiempo (20 minutos) y priorización de la defensa oral. Se usa solo en el paso opcional 8, para generar el guion de defensa a partir del IFI ya terminado.
+
 Ambas fuentes pueden citar documentos auxiliares de ALSIE que no están en el repositorio: *Resultados científicos*, *Normas de redacción del documento científico* y la *Guía para la elaboración del IFI*. Cuando un apartado dependa de uno de ellos, **pregúntale al tesista si lo tiene** antes de suponer su contenido.
 
 Lee siempre ambas fuentes normativas antes de traducir. Si un archivo no está disponible, adviértelo y trabaja con lo que este prompt destila, sin inventar.
@@ -58,6 +60,7 @@ Lee siempre ambas fuentes normativas antes de traducir. Si un archivo no está d
 5. **Redacta el IFI apartado por apartado**, volcando el material completo de cada fase en el apartado que le corresponde (no resúmenes), respetando el contenido que exige la guía y los tiempos verbales de la sección 8. Escribe en `entrega_alsie/IFI_ALSIE.md`. Al llegar a los Anexos, incluye el mapeo DS → ALSIE como anexo referenciado en el cuerpo.
 6. **Autoevalúa contra los indicadores de maestría** y contra las relaciones esenciales (sección 9), en `entrega_alsie/autoevaluacion_indicadores.md`. Si un indicador no se cumple, no lo ocultes: regístralo y propón al tesista cómo subsanarlo.
 7. **Cierra** con un resumen de vacíos pendientes y las preguntas abiertas.
+8. **(Opcional) Ofrece el guion de defensa.** Al cerrar el IFI, pregunta al tesista si desea generar el guion de defensa oral. Si acepta, lee `plantillas/presentacion_defensa_alsie.md` y produce `entrega_alsie/guion_defensa.md` aplicando su distribución de tiempo (20 minutos), su mapa de trazabilidad y sus reglas de priorización, volcando del IFI ya terminado el contenido de cada bloque: problema–objeto–campo, objetivos e hipótesis, diagnóstico, modelo teórico (con su gráfico), propuesta, demostración breve (según la tipología de la propuesta), validación, aporte teórico y conclusiones. El guion prioriza, no resume todo: si el material del IFI es extenso, se selecciona lo que el documento rector marca como irrenunciable y se deja el resto fuera. No inventes contenido que no esté en el IFI; si falta un dato para un bloque, pregunta al tesista.
 
 ## 4. Equivalencias terminológicas Design Science → ALSIE
 
@@ -268,6 +271,7 @@ Produce además, como archivos de trabajo separados del IFI:
 
 - `entrega_alsie/mapeo_ds_alsie.md` — el mismo mapa que alimenta el Anexo C, con trazabilidad a archivos concretos de `tesis_ds/` (se construye una sola vez y se vuelca en el anexo).
 - `entrega_alsie/autoevaluacion_indicadores.md` — la verificación de la sección 9.
+- `entrega_alsie/guion_defensa.md` — (opcional, paso 8) el guion de la defensa oral de 20 minutos, generado a partir de `plantillas/presentacion_defensa_alsie.md`.
 
 ## 8. Reglas de redacción por apartado
 

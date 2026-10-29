@@ -50,7 +50,7 @@ La propuesta no tiene que ser software. El asesor admite como artefacto un méto
 
 Se usa **solo cuando la investigación ya está terminada** (todas las etapas E0–E10 cerradas). Toma los productos de `tesis_ds/`, los mapea y los reescribe en la estructura y el lenguaje del **Informe Final de Investigación (IFI) de ALSIE**, aplicando los indicadores de evaluación del nivel de maestría. No resume: vuelca el desarrollo completo de cada fase al apartado que le corresponde (solo el Resumen y la Introducción están acotados por la norma).
 
-Salida: el documento final en Markdown, `entrega_alsie/IFI_ALSIE.md`, con todos los apartados del modelo de ALSIE. Además produce un **anexo de mapeo** que documenta la equivalencia entre los elementos de Design Science y los del modelo de ALSIE, incluido en el propio IFI y también como archivo de trabajo `entrega_alsie/mapeo_ds_alsie.md`. El agente consulta al tesista cuando le falta información y nunca inventa datos.
+Salida: el documento final en Markdown, `entrega_alsie/IFI_ALSIE.md`, con todos los apartados del modelo de ALSIE. Además produce un **anexo de mapeo** que documenta la equivalencia entre los elementos de Design Science y los del modelo de ALSIE, incluido en el propio IFI y también como archivo de trabajo `entrega_alsie/mapeo_ds_alsie.md`. Al cerrar, ofrece generar el **guion de defensa oral de 20 minutos** (`entrega_alsie/guion_defensa.md`) a partir del documento rector `plantillas/presentacion_defensa_alsie.md`. El agente consulta al tesista cuando le falta información y nunca inventa datos.
 
 ---
 
@@ -236,6 +236,15 @@ relaciones esenciales de ALSIE. Dime qué indicadores no se cumplen y qué debo
 corregir.
 ```
 
+**Guion de defensa oral (20 minutos)**
+
+```
+Genera el guion de mi defensa oral de 20 minutos a partir de
+plantillas/presentacion_defensa_alsie.md y de mi IFI en entrega_alsie/IFI_ALSIE.md.
+Escribe el resultado en entrega_alsie/guion_defensa.md, priorizando lo que el
+documento rector marca como irrenunciable.
+```
+
 ---
 
 ## Estructura del repositorio
@@ -265,6 +274,7 @@ corregir.
     ├── ficha_artefacto.md
     ├── ficha_metodo.md
     ├── plan_aplicacion_exemplar.md
+    ├── presentacion_defensa_alsie.md     Documento rector de la defensa oral (20 min)
     └── referencias.md
 ```
 
