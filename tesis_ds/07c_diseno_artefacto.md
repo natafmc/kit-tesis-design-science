@@ -11,7 +11,7 @@
 
 Se abrió el 28 oct 2026 por `DEC-87`, y no antes por una sola razón: **el orden estaba mal escrito entre dos archivos.**
 
-`07b_requisitos.md` §4.3 exigía fijar el valor de `θ` con los cinco pasos de su §4.2, y el paso 1 de ese procedimiento dice:
+`07b_requisitos.md` §4.3 exigía fijar el valor de `θ` con los ocho pasos de su §4.2, y el paso 1 de ese procedimiento dice:
 
 > *Calcular `desviación` para **cada cuenta y cada mes** del panel.*
 
@@ -208,7 +208,7 @@ A3 —normalidad por segmento— se reclasificó como **paso previo obligatorio 
 
 **Dos decisiones ya fijadas le quitan otros dos trabajos que el gate daba por sentados:**
 
-- **No puede fijar `θ`.** `07b` §4.2 calibra `θ` recorriendo **un único orden global** hasta 242 alertas por mes; un umbral por perfil exigiría reescribir ese procedimiento.
+- **No puede fijar `θ`.** `07b` §4.2 calibra `θ_A2` recorriendo **un orden propio hasta 218 alertas por mes** —más las 24 de `A1`, que suman el techo de 242 (`R2.5`, `DEC-114`)—; un umbral por perfil exigiría reescribir ese procedimiento.
 - **No puede sustituir la referencia.** A3 perdió contra A2 en `DEC-70`; **quedó en pie su premisa (`R7`) y no su mecanismo.**
 
 **Lo que (b) —la segunda lente computacional que compara contra el patrón del segmento— habilitaría y aquí no se hace:** ver cuentas **normales para sí mismas pero anómalas para sus pares** (`07a` L103). **Se declara como extensión de diseño en §10 de la propuesta, con su costo escrito: reabrir `§4.2`.**
@@ -277,9 +277,13 @@ A1 —ventana de 6 meses— **ya no es alternativa**: es regla de contingencia, 
 | **Cuándo recibe `desviación`** | `ciclos ≥ 4` **y** `referencia > 0` |
 | **Cuándo declara sin `referencia`** | `ciclos ≥ 4` **y** `referencia ≤ 0` — **no es A1: son tres salidas distintas.** |
 | **Qué ventana usa A1** | Los últimos 6 meses (`R8.1`). |
+| **Con qué calcula `A1` su desviación** | `abs(consumo − media_6meses) / media_6meses`, en **ambas direcciones** —la media de los seis meses anteriores, `07a` L87—. |
+| **Con qué umbral alerta `A1`** | `θ_A1`, fijado por los pasos 6 a 8 de §4.2, dentro del cupo de **24 alertas por mes** (`R2.5`). |
 | **Qué declara la alerta** | Que esa celda cayó en A1 (`R4.4`), marcada como alerta originada en `R8.1` (`R8.2`). |
 
 **Autocalculeo que cerró ANTES de decidir:** `lo_contrario_deberia_ser_cero` = **0**, o sea que **B es subconjunto de A: ninguna celda tiene valor bajo B sin tenerlo bajo A.** **No se midió una hipótesis abierta —se dedujo antes de correr y la corrida lo confirmó—.**
+
+**Un hueco que solo se hizo visible al repartir el techo (29 oct 2026, `DEC-114`):** la regla de alerta de `A1` **ya estaba escrita** —`07a` L85-L87: *«ventana móvil de 6 meses **con umbral escrito**»*— y **nunca se había traído a este diseño**, porque el punto 4 del gate solo preguntaba *«cuándo entra A1»* y no *«con qué alerta»*. **§3.4 quedó entonces con qué entra y qué ventana, pero sin umbral.** **El hueco se descubrió al decidir el reparto: sin la regla de `A1` no se puede medir cuánto consume, y sin esa cifra no se puede calibrar `θ_A2` contra el cupo que le queda.** **Se cierra con las dos filas de la tabla de arriba.**
 
 **Dos cosas que quedan escritas y no son la regla:**
 
@@ -368,7 +372,7 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo 
 5. **CUMPLIDO el 29 oct 2026 — el criterio 4, aplicabilidad (`DEC-112`).** **Quedan fijados su valor y su procedimiento, que es lo que pide `07b_requisitos.md` L231:** sobre una **muestra de las alertas que el método produce**, un verificador **que no participó del estudio** las resuelve **usando solo el método escrito y sin asistencia de la autora**; **umbral: 100 % de las alertas de la muestra.** **El denominador es el de las alertas y no el del universo, y eso se escribió con su razón:** con ≈ 541 alertas sobre 183 000 celdas —0,30 %—, un verificador que nunca alertase **coincidiría con el método el 99,70 %**, de modo que un umbral medido sobre el universo entero **se aprobaría con solo no alertar nunca.** **Y el umbral no es un número elegido a gusto: `R10.1` no califica, y `R1.4` ya obligaba a que la referencia fuera recalculable a mano por un ajeno.** **La medición NO es de E7c: corre en E7f/E8** —`propuesta` L281 la programa para el 1–8 de noviembre y L213 exige verificadores ajenos—. **No existe ninguna cifra de aplicabilidad y no existirá hasta entonces.**
 6. **CUMPLIDO el 29 oct 2026 — el paso de depuración, en su lugar de la secuencia (`DEC-112`).** **§3.6 ya tenía el paso escrito** —nombre, cuándo entra, regla, qué NO hace y qué registra—, **y lo que faltaba era confirmar el orden contra lo que cerró el punto 3.** **La condición la había fijado el propio §3.6: *«ese orden se confirma al escribir A3 en el punto 3 del gate»*, y A3 se escribió (`DEC-103`).** **La confirmación es deducida y no supuesta: si la segmentación no cambia cuáles celdas tienen valor, tampoco puede rescatar una celda que la depuración ya excluyó, de modo que el orden queda demostrado —depuración → segmentación → fórmula—.** **Se declaró además un efecto acotado sin rehacer la medición: los cortes de perfil de §3.3 se midieron sobre el panel pre-depurado, y la diferencia está acotada por 541 celdas de 411 cuentas.**
 
-**Cadena de cierre que se desata al pasar de 0 de 6 a 6 de 6:** E7c cierra → **se ejecutan los cinco pasos de §4.2** con la referencia ya fijada → **se registra `θ` con su sello de fecha** → se vuelca al criterio 2 de `02_delimitacion.md` → **el punto 3 del gate de E7b pasa a cumplido → E7b cierra 4 de 4**.
+**Cadena de cierre que se desata al pasar de 0 de 6 a 6 de 6:** E7c cierra → **se ejecutan los ocho pasos de §4.2** con la referencia ya fijada → **se registra `θ_A2` y `θ_A1` con su sello de fecha** → se vuelca al criterio 2 de `02_delimitacion.md` → **el punto 3 del gate de E7b pasa a cumplido → E7b cierra 4 de 4**.
 
 *Hasta ese momento el gate de E7b no se reabre: sigue donde está, en 3 de 4.*
 
