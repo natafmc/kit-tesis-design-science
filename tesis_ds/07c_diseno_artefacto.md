@@ -290,9 +290,30 @@ A1 —ventana de 6 meses— **ya no es alternativa**: es regla de contingencia, 
 
 ### 3.5 — El valor del criterio 4 (aplicabilidad) y su procedimiento
 
-**Fuente:** `07b_requisitos.md` L231.
+**Fuente:** `07b_requisitos.md` L231 —y L160-L161, `R10.1` y `R10.2`—; `02_delimitacion.md` L51; `propuesta_borrador_v1.md` L213 y L281.
 
-El criterio 4 está **fijado como requisito R10**; **su valor se fija en E7c con procedimiento**, que es lo que dice esa línea literalmente. *Pendiente: no se toca hasta que 3.1 y 3.2 estén resueltos, porque el valor depende de qué tan costoso sea aplicar el método.*
+**El criterio 4 —aplicabilidad— queda fijado hoy con su valor y su procedimiento, el 29 oct 2026 (`DEC-112`).** **Lo que NO queda fijado es la medición, y esa distinción no es cosmética.**
+
+| **Campo** | **Contenido** |
+|:--|:--|
+| **Qué mide** | Que el equipo técnico sigue el método **sin asistencia de la autora** (`R10.1`). |
+| **Procedimiento** | Sobre una **muestra de las alertas que el método produce**, **un verificador que NO participó del estudio** resuelve cada alerta **usando solo el método escrito**. |
+| **Umbral** | **100 % de las alertas de la muestra.** |
+| **Denominador** | **Las alertas que el método produce —no el universo de celdas—.** |
+| **Dónde se mide** | **E7f/E8, no en E7c:** `propuesta` L281 programa E7e y E7f para el **1–8 de noviembre**, y `propuesta` L213 exige verificadores **ajenos** a la autora. |
+| **Estado** | **Valor y procedimiento FIJADOS; medición PENDIENTE.** |
+
+**Dos cosas de este criterio que costaron verlas, y se escriben porque sin ellas el número no significa nada.**
+
+**Primera — el denominador.** Con la tasa de alertas ya medida, **un verificador que marcara «sin alerta» en TODAS las celdas coincidiría con el método el 99,70 % de las veces:** ≈ **541 alertas** —60,1 por mes × 9 meses— sobre **183 000 celdas** = **0,30 %**. **Un umbral de coincidencia medido sobre el universo entero se aprueba con solo no alertar nunca,** y el criterio quedaría vacío. **Por eso el umbral se mide sobre las alertas, que es donde está la información.**
+
+**Segunda — el umbral no es un número redondo elegido a gusto.** `R10.1` dice *«el equipo técnico sigue el método sin asistencia de la autora»* **sin calificar**: ni «casi», ni «en su mayoría». **Y `R1.4` ya obligaba a que la referencia sea *recalculable a mano por un verificador que no participó del estudio*,** o sea que el diseño ya estaba comprometido con que un ajeno pueda reproducirlo. **Un umbral menor habría metido una letra que los requisitos no tienen.**
+
+**Lo que no cambió:** `R10.1` y `R10.2` quedan como estaban —solo se les asigna valor—; y `02_delimitacion.md` L51 deja de decir «fijar antes de construir».
+
+**No hay ninguna cifra de aplicabilidad en ningún documento, y no la habrá hasta E7f/E8.**
+
+*Cerrado: punto 5 del gate.*
 
 ### 3.6 — El paso de depuración como paso del método
 
@@ -310,7 +331,17 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo 
 | **Qué NO hace** | **No limpia el historial de 2022 a 2025.** Su precio era mover 5 746 cuentas a A1, y A1 todavía no tiene regla. |
 | **Qué registra** | **Cuántas celdas excluyó y de cuántas cuentas.** |
 
-**Relación con 3.3:** **la depuración corre antes de la segmentación A3**, porque una celda que el método excluye no tiene sentido clasificarla por normalidad. **Ese orden se confirma al escribir A3 en el punto 3 del gate.**
+**Relación con 3.3 — CONFIRMADA, el 29 oct 2026 (`DEC-112`).** **§3.6 fijó la condición exacta: *«ese orden se confirma al escribir A3 en el punto 3 del gate»* —y A3 se escribió (`DEC-103`).**
+
+**La confirmación se sigue de lo que ese punto cerró, y no de una suposición:** si la segmentación **no cambia cuáles celdas tienen valor** —es caracterización que viaja con la alerta y `θ` sigue global—, entonces **tampoco puede rescatar una celda que la depuración ya excluyó.** Con eso el orden queda demostrado y no supuesto:
+
+**depuración → segmentación → fórmula**
+
+**Es el único orden que evita clasificar celdas que después se excluyen**, y es el que §3.2 y §3.3 ya describían.
+
+**Un efecto acotado que se declara en lugar de esconderlo.** Los cortes de perfil de §3.3 —`0–26 · 27–69 · 70–135 · >135`— se midieron sobre el panel **antes** de la depuración —`A2.3.h`, `DEC-104`—, y con el orden confirmado la ejecución real los calcularía **después**. **No se rehace la medición.** **La cota es exacta y pequeña: 541 celdas de 411 cuentas** —el 0,29 % del universo de 2026 y el 1,35 % de las 30 411 cuentas—, y la depuración **no toca el historial de 2022 a 2025**, que es de donde sale la mayor parte de la mediana de perfil.
+
+*Cerrado: punto 6 del gate.*
 
 **Autocalculeo de cierre del paso — CORRIÓ Y CERRÓ (`A2.3.g`, `DEC-101`):** **541 celdas de 411 cuentas excluidas de un universo calculable de 183 541 celdas y 22 978 cuentas —0,29 % de las celdas—; 60,1 alertas al mes devueltas al canal humano, el 24,8 % del techo de 242.** **Las dos comprobaciones contra corridas anteriores cerraron —`celdas_en_el_calculo` = 183 541, la salida «valor» de `A2.3.c`; `celdas_depuradas` = 541, el censo de `A2.3.e`—; y una cuarta coincidencia no pedida las respaldó: 183 000 y 22 966 son el grupo «índice normal» que midió `A2.3.d` por otro camino.**
 
@@ -326,7 +357,7 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo 
 
 ---
 
-## 5. Gate de E7c — abierto: **4 de 6**
+## 5. Gate de E7c — CERRADO: **6 de 6**
 
 **Se cierra esta etapa cuando se cumplan seis cosas:**
 
@@ -334,8 +365,8 @@ Se decidió que la depuración **es un paso del método**, no un arreglo previo 
 2. **CUMPLIDO el 29 oct 2026 — las 38 969 celdas.** **La rama se eligió en `DEC-98` —(a) depurar como paso del método—, el alcance en `DEC-100` —(i) solo la celda observada—, la regla se escribió ANTES de aplicarse y el número entró en `A2.3.g` (`DEC-101`).** **La regla: toda celda del universo 2026 con `lec_actual = 0` se excluye del cálculo de desviación y del listado de alertas; se registran cuántas y de cuántas cuentas; el historial de 2022 a 2025 no se limpia.** **El resultado: 541 celdas de 411 cuentas excluidas de un universo calculable de 183 541 celdas y 22 978 cuentas —0,29 % de las celdas—, y 60,1 alertas al mes devueltas al canal humano, el 24,8 % del techo de 242.** **Los tres autocalculeos cerraron exactos, dos de ellos contra corridas anteriores; y una cuarta coincidencia no pedida confirmó el resultado: 183 000 y 22 966 son las mismas cifras del grupo «índice normal» que midió `A2.3.d` por otro camino.** **La limitación que la decisión deja quedó escrita en §10 de la propuesta: el 1,71 % de los grupos de referencia de 2022 a 2025 se construye sobre dos o más ciclos con `lec_actual = 0`.** *Cerrado con su consulta registrada en `sql_a2_extraccion.sql`.*
 3. **CUMPLIDO el 29 oct 2026 — los segmentos A3.** **El ROL se fijó en `DEC-103`: caracterización previa que viaja con la alerta, calculada antes de la detección sobre los 57 meses, sin cambiar qué celdas alertan, sin fijar `θ` y sin sustituir la referencia.** **Los DOS EJES se midieron con el criterio escrito antes de correr (`DEC-104`).** **Perfil de consumo:** mediana mensual por cuenta sobre 57 meses, **cuatro bandas por cuartiles —`0–26` · `27–69` · `70–135` · `>135`—, regla fijada antes de correr y ratificada antes de ver los números.** **Familia de código:** **tres bandas —no facturada · lectura normal sin código · con código—** (`DEC-105`), **alineadas con la regla operativa de `DEC-30` y con lo que `R4.3` ya declara.** **La PRUEBA de que no es una partición a conveniencia corrió y pasó (`DEC-108`): conservación de banda del 59,1 % contra el 50 % exigido y el 25 % del azar, con el criterio de rechazo escrito antes de correr y sin moverse después.** **Y la variable resultó ser una propiedad de la cuenta y no ruido: 89,6 % se queda dentro de una banda y el desplazamiento medio es de 0,539 bandas.** **Limitación declarada en §10 de la propuesta: la segunda lente computacional —(b), comparar contra el patrón del segmento— queda como extensión de diseño con su costo escrito, que es reabrir `07b` §4.2.** *(Consultas: `A2.3.h`, `A2.3.i` y `A2.3.j`, las tres con sus autocalculeos cerrando y registradas en `sql_a2_extraccion.sql`.)*
 4. **CUMPLIDO el 29 oct 2026 — la contingencia A1.** **Las dos preguntas se midieron y no se decidieron a ojo (`A2.3.k` y `A2.3.k2`, `DEC-110` y `DEC-111`).** **Queda elegida la definición A —un año cuenta si la cuenta tiene ese mes—, con dos constataciones detrás: la referencia de un mes `m` solo usa el mes `m` de cada año, así que exigir las 12 lecturas no la habría vuelto más correcta; y la definición B habría movido 65 426 celdas —el 35,6 % del universo— a A1 y habría puesto al fallback en el 56,3 % de las cuentas, dejando sin efecto `R8.3`.** **La regla ejecutable está escrita en §3.4 en su forma completa: qué cuenta un ciclo, cuántos se cuentan, cuándo entra a A1, cuándo recibe `desviación`, cuándo declara sin `referencia` —tres salidas distintas—, qué ventana usa y qué declara la alerta.** **Autocalculeo de verificación: `lo_contrario_deberia_ser_cero` = 0, que confirma que B era subconjunto de A, deducido antes de correr.** **Con eso se cerraron dos cosas que colgaban de acá: `R8.1` se precisó en su unidad —con su texto original conservado—, y la carencia por año quedó declarada.** *(No se tocó `AC4` ni se reabrió E7a: `07c` §3.1 ya había separado lo que es sobre la ventana de lo que es sobre cada cuenta.)*
-5. **PENDIENTE — el criterio 4, aplicabilidad.** Valor y procedimiento, como pide `07b_requisitos.md` L231.
-6. **PENDIENTE — el paso de depuración.** Escrito como paso del método, con su lugar en la secuencia y su registro (`DEC-75`, `P4`).
+5. **CUMPLIDO el 29 oct 2026 — el criterio 4, aplicabilidad (`DEC-112`).** **Quedan fijados su valor y su procedimiento, que es lo que pide `07b_requisitos.md` L231:** sobre una **muestra de las alertas que el método produce**, un verificador **que no participó del estudio** las resuelve **usando solo el método escrito y sin asistencia de la autora**; **umbral: 100 % de las alertas de la muestra.** **El denominador es el de las alertas y no el del universo, y eso se escribió con su razón:** con ≈ 541 alertas sobre 183 000 celdas —0,30 %—, un verificador que nunca alertase **coincidiría con el método el 99,70 %**, de modo que un umbral medido sobre el universo entero **se aprobaría con solo no alertar nunca.** **Y el umbral no es un número elegido a gusto: `R10.1` no califica, y `R1.4` ya obligaba a que la referencia fuera recalculable a mano por un ajeno.** **La medición NO es de E7c: corre en E7f/E8** —`propuesta` L281 la programa para el 1–8 de noviembre y L213 exige verificadores ajenos—. **No existe ninguna cifra de aplicabilidad y no existirá hasta entonces.**
+6. **CUMPLIDO el 29 oct 2026 — el paso de depuración, en su lugar de la secuencia (`DEC-112`).** **§3.6 ya tenía el paso escrito** —nombre, cuándo entra, regla, qué NO hace y qué registra—, **y lo que faltaba era confirmar el orden contra lo que cerró el punto 3.** **La condición la había fijado el propio §3.6: *«ese orden se confirma al escribir A3 en el punto 3 del gate»*, y A3 se escribió (`DEC-103`).** **La confirmación es deducida y no supuesta: si la segmentación no cambia cuáles celdas tienen valor, tampoco puede rescatar una celda que la depuración ya excluyó, de modo que el orden queda demostrado —depuración → segmentación → fórmula—.** **Se declaró además un efecto acotado sin rehacer la medición: los cortes de perfil de §3.3 se midieron sobre el panel pre-depurado, y la diferencia está acotada por 541 celdas de 411 cuentas.**
 
 **Cadena de cierre que se desata al pasar de 0 de 6 a 6 de 6:** E7c cierra → **se ejecutan los cinco pasos de §4.2** con la referencia ya fijada → **se registra `θ` con su sello de fecha** → se vuelca al criterio 2 de `02_delimitacion.md` → **el punto 3 del gate de E7b pasa a cumplido → E7b cierra 4 de 4**.
 

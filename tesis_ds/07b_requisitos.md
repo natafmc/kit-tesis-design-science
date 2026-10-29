@@ -158,7 +158,7 @@ Sin esto, el método no arranca.
 | ID | Requisito | Estado |
 |:--|:--|:--|
 | R10.1 | El equipo técnico sigue el método **sin asistencia de la autora** | **F** |
-| R10.2 | Esto es lo que mide el **criterio 4**, cuyo valor sigue marcado *«fijar antes de construir»* en `02_delimitacion.md` | **P** — se fija en E7c con su procedimiento |
+| R10.2 | Esto es lo que mide el **criterio 4**, **fijado el 29 oct 2026 (`DEC-112`)** | **F** — **valor y procedimiento fijados**; medición pendiente de E7f/E8 |
 
 ---
 
@@ -232,7 +232,7 @@ El criterio **2** —falsos positivos— y el criterio **3** —capacidad— **e
 | 1 | Cobertura retrospectiva | **Fijado** — `174 · 16,52 % · 136 · 78,16 % · 1 053`, dos fuentes independientes (DEC-64, DEC-65), sello 25 oct 2026 |
 | 2 | Falsos positivos | **◆ Procedimiento FIJADO (§4.2); valor PENDIENTE del panel (§4.3)** |
 | 3 | Carga de verificación | **Fijado** — **≤ 242 alertas/mes (≈ 11/día)**, DEC-45, con las dos salvedades declaradas |
-| 4 | Aplicabilidad | **Fijado como requisito (R10)**; su **valor** se fija en E7c con procedimiento |
+| 4 | Aplicabilidad | **Fijado** — `100 %` de las alertas de la muestra, por un verificador ajeno sin asistencia de la autora; procedimiento y umbral en `07c` §3.5, DEC-112, 29 oct 2026. **Medición pendiente de E7f/E8** |
 
 ---
 
