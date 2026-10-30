@@ -4003,3 +4003,389 @@ SELECT t.theta_A1,
                                GROUP BY mes
                               HAVING COUNT(*) > 242) q) AS meses_que_superan_el_techo
   FROM theta_global t;
+
+
+-- =====================================================================
+-- A2.3.n - LA CARGA COMBINADA DEL METODO COMPLETO: A2 MAS A1, MES A MES
+--           (30 oct 2026 - decision P3 = (a) de las preguntas del 30 oct)
+--
+--     QUE MIDE Y POR QUE EXISTE. Hasta hoy la carga del metodo se
+--     conocia en dos pedazos: `A2.3.l` SALIDA 4 dio **1 406 alertas**
+--     en los nueve meses con `theta_A2`, y `A2.3.m` SALIDA 4 dio
+--     **114 alertas** con `theta_A1`. La suma de las dos -el metodo
+--     COMPLETO, lo que un verificador veria llegar cada mes- solo
+--     existia como aritmetica hecha a mano entre dos salidas
+--     distintas, y por `DEC-13` una cifra que no sale de su propia
+--     consulta no entra a ningun documento.
+--
+--     CONVIERTE RAZONAMIENTO EN MEDICION. `R2.1` -el techo de 242
+--     alertas por mes- se sostenia de dos formas distintas: por
+--     construccion -A2 mide dentro de su cupo de 218 y A1 dentro de
+--     su cupo de 24, y 218 + 24 = 242 es el reparto de `DEC-114`- y
+--     ademas verificado por separado -`meses_que_superan_el_techo` = 0
+--     en las dos corridas (DEC-121)-. Lo que NUNCA se midio es la suma
+--     de los dos recuentos mes a mes. Esta consulta la mide: `R2.1`
+--     queda medido para el metodo completo y no solo para cada canal
+--     por su lado.
+--
+--     LAS DOS RAMAS, SIN CAMBIARLES SUS CONDICIONES. Reproduce los
+--     paneles de `A2.3.l` SALIDA 3 -ciclos >= 4, referencia = mediana
+--     > 0, `lec_actual` <> 0- y de `A2.3.m` SALIDA 3 -ciclos < 4 o sin
+--     ciclo, ventana de 1 a 6 meses con los que existan, media > 0,
+--     `lec_actual` <> 0-. Las dos se calculan sobre los MISMOS
+--     paneles base `p`, `hist` y `ref`, de modo que cada celda del
+--     panel cae en UNA SOLA rama y ninguna se cuenta dos veces: `ref`
+--     exige `ciclos_disponibles >= 4` en una y lo niega en la otra.
+--     Los dos umbrales se recalculan aqui de forma independiente: si
+--     `theta_A2` o `theta_A1` no coinciden con los volcados en
+--     `DEC-121`, el error esta en esta consulta y no en los valores.
+--
+--     POR QUE NO SE ESCRIBIO ANTES DE HOY. El numero combinado no se
+--     conocia hasta correr esto, y publicar la tabla de espera en un
+--     documento habria sido presentar una suma hecha a mano como si
+--     fuera medicion. Los valores de abajo son AUTOCALCULEOS -se
+--     escriben ANTES de correr y se verifican despues- y ninguno de
+--     ellos esta escrito en ningun documento todavia.
+--
+--     AUTOCALCULEOS - escritos ANTES de correrlas:
+--       1. meses_medidos DEBE dar **9**: las dos ramas ya dieron 9
+--          meses por separado sobre estos mismos paneles (DEC-119 y
+--          DEC-120). Si diera 8 o 10, el FULL OUTER JOIN mezcló mal
+--          los meses.
+--       2. cupo_a2_minimo y cupo_a2_maximo DEBEN dar **218** en los
+--          nueve meses, y cupo_a1_minimo y cupo_a1_maximo DEBEN dar
+--          **24**; meses_con_cupo_completo DEBE dar **9**. La suma,
+--          242, es exactamente el techo de `R2.1` por `DEC-114`.
+--       3. total_alertas_a2 DEBE dar **1 406** y total_alertas_a1
+--          DEBE dar **114**: son los ya medidos por separado. Si
+--          difieren, esta consulta alteró los paneles.
+--       4. total_alertas_combinadas DEBE dar **1 520** = 1 406 + 114.
+--          Es el numero que ninguna consulta devolvia. Si difiere de
+--          la suma de los dos anteriores, el cruce duplicó o perdió
+--          filas.
+--       5. maximo_alertas_en_un_mes DEBE dar **229** -abril: 218 de
+--          A2 mas 11 de A1, que son los ya medidos- y en ningun caso
+--          MAYOR que 242; meses_que_superan_el_techo DEBE dar **0**.
+--          **Si el maximo diera mas de 242, `R2.1` se romperia con el
+--          metodo completo aunque cada cupo por separado lo
+--          respetara, y habria que volver al reparto de cupos de
+--          `DEC-114`.** Ese es el unico fallo que esta consulta puede
+--          descubrir, y es justamente la razon por la que existe.
+--       6. theta_A2 DEBE dar **39,6666666666667** y theta_A1 DEBE dar
+--          **495,362260343088** -los volcados en `DEC-121`-, porque
+--          aqui se recalculan desde cero sobre los mismos paneles.
+--
+--     LO QUE NO HACE. No cambia ninguno de los dos umbrales; no
+--     recalibra los cortes de 218 y 24, que los fija `DEC-114`; no
+--     vuelve a medir la depuracion de `DEC-101` y `DEC-116` ni la
+--     ventana de `DEC-115`; y NO evalua al metodo contra reclamos -eso
+--     es de `E8`-. Aqui unicamente se cuenta cuantas alertas emitiria
+--     el metodo completo mes a mes, que es lo que el criterio 3
+--     limita.
+-- =====================================================================
+
+-- A2.3.n SALIDA 1 - la carga combinada, mes a mes, con los dos umbrales
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+a2 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           ABS(p.consumo - r.referencia) / r.referencia AS desviacion
+      FROM p
+      JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND r.ciclos_disponibles >= 4
+       AND r.referencia > 0
+       AND p.lec_actual <> 0
+),
+a2_orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM a2
+),
+a2_corte AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 218) AS theta_mes
+      FROM a2_orden
+     GROUP BY mes
+),
+a2_theta AS (
+    SELECT MAX(theta_mes) AS theta_A2 FROM a2_corte
+),
+a1 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND (r.nro_cuenta IS NULL OR r.ciclos_disponibles < 4)
+),
+ventana AS (
+    SELECT a.nro_cuenta,
+           a.mes,
+           a.lec_actual,
+           a.consumo_observado,
+           COUNT(h2.consumo) AS meses_previos_disponibles,
+           AVG(h2.consumo)   AS media_6meses
+      FROM a1 a
+      LEFT JOIN p h2
+        ON h2.nro_cuenta = a.nro_cuenta
+       AND h2.mes >= (a.mes - INTERVAL '6 months')::date
+       AND h2.mes <  a.mes
+       AND h2.lec_actual <> 0
+     GROUP BY a.nro_cuenta, a.mes, a.lec_actual, a.consumo_observado
+),
+a1_dev AS (
+    SELECT nro_cuenta,
+           mes,
+           ABS(consumo_observado - media_6meses) / media_6meses AS desviacion
+      FROM ventana
+     WHERE meses_previos_disponibles >= 1
+       AND media_6meses > 0
+       AND lec_actual <> 0
+),
+a1_orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM a1_dev
+),
+a1_corte AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 24) AS theta_mes
+      FROM a1_orden
+     GROUP BY mes
+),
+a1_theta AS (
+    SELECT MAX(theta_mes) AS theta_A1 FROM a1_corte
+),
+a2_mes AS (
+    SELECT o.mes,
+           COUNT(*)                                            AS celdas_a2_en_el_mes,
+           COUNT(*) FILTER (WHERE o.posicion <= 218)           AS alertas_a2_en_el_cupo,
+           COUNT(*) FILTER (WHERE o.desviacion >= t.theta_A2)  AS alertas_a2
+      FROM a2_orden o
+ CROSS JOIN a2_theta t
+     GROUP BY o.mes, t.theta_A2
+),
+a1_mes AS (
+    SELECT o.mes,
+           COUNT(*)                                            AS celdas_a1_en_el_mes,
+           COUNT(*) FILTER (WHERE o.posicion <= 24)            AS alertas_a1_en_el_cupo,
+           COUNT(*) FILTER (WHERE o.desviacion >= t.theta_A1)  AS alertas_a1
+      FROM a1_orden o
+ CROSS JOIN a1_theta t
+     GROUP BY o.mes, t.theta_A1
+)
+SELECT COALESCE(m2.mes, m1.mes)                                AS mes,
+       m2.celdas_a2_en_el_mes,
+       m1.celdas_a1_en_el_mes,
+       t2.theta_A2,
+       t1.theta_A1,
+       m2.alertas_a2_en_el_cupo,
+       m1.alertas_a1_en_el_cupo,
+       m2.alertas_a2,
+       m1.alertas_a1,
+       COALESCE(m2.alertas_a2, 0) + COALESCE(m1.alertas_a1, 0) AS alertas_combinadas,
+       CASE WHEN COALESCE(m2.alertas_a2, 0) + COALESCE(m1.alertas_a1, 0) > 242
+            THEN 'SUPERA EL TECHO R2.1'
+            ELSE 'dentro del techo' END                        AS techo_R2_1
+  FROM a2_mes m2
+  FULL OUTER JOIN a1_mes m1 ON m1.mes = m2.mes
+ CROSS JOIN a2_theta t2
+ CROSS JOIN a1_theta t1
+ ORDER BY 1;
+
+
+-- A2.3.n SALIDA 2 - los seis autocalculeos del metodo completo, en una fila
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+a2 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           ABS(p.consumo - r.referencia) / r.referencia AS desviacion
+      FROM p
+      JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND r.ciclos_disponibles >= 4
+       AND r.referencia > 0
+       AND p.lec_actual <> 0
+),
+a2_orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM a2
+),
+a2_corte AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 218) AS theta_mes
+      FROM a2_orden
+     GROUP BY mes
+),
+a2_theta AS (
+    SELECT MAX(theta_mes) AS theta_A2 FROM a2_corte
+),
+a1 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND (r.nro_cuenta IS NULL OR r.ciclos_disponibles < 4)
+),
+ventana AS (
+    SELECT a.nro_cuenta,
+           a.mes,
+           a.lec_actual,
+           a.consumo_observado,
+           COUNT(h2.consumo) AS meses_previos_disponibles,
+           AVG(h2.consumo)   AS media_6meses
+      FROM a1 a
+      LEFT JOIN p h2
+        ON h2.nro_cuenta = a.nro_cuenta
+       AND h2.mes >= (a.mes - INTERVAL '6 months')::date
+       AND h2.mes <  a.mes
+       AND h2.lec_actual <> 0
+     GROUP BY a.nro_cuenta, a.mes, a.lec_actual, a.consumo_observado
+),
+a1_dev AS (
+    SELECT nro_cuenta,
+           mes,
+           ABS(consumo_observado - media_6meses) / media_6meses AS desviacion
+      FROM ventana
+     WHERE meses_previos_disponibles >= 1
+       AND media_6meses > 0
+       AND lec_actual <> 0
+),
+a1_orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM a1_dev
+),
+a1_corte AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 24) AS theta_mes
+      FROM a1_orden
+     GROUP BY mes
+),
+a1_theta AS (
+    SELECT MAX(theta_mes) AS theta_A1 FROM a1_corte
+),
+a2_mes AS (
+    SELECT o.mes,
+           COUNT(*) FILTER (WHERE o.posicion <= 218)           AS cupo_a2,
+           COUNT(*) FILTER (WHERE o.desviacion >= t.theta_A2)  AS alertas_a2
+      FROM a2_orden o
+ CROSS JOIN a2_theta t
+     GROUP BY o.mes, t.theta_A2
+),
+a1_mes AS (
+    SELECT o.mes,
+           COUNT(*) FILTER (WHERE o.posicion <= 24)            AS cupo_a1,
+           COUNT(*) FILTER (WHERE o.desviacion >= t.theta_A1)  AS alertas_a1
+      FROM a1_orden o
+ CROSS JOIN a1_theta t
+     GROUP BY o.mes, t.theta_A1
+),
+comb AS (
+    SELECT COALESCE(m2.mes, m1.mes)                             AS mes,
+           COALESCE(m2.cupo_a2, 0)                              AS cupo_a2,
+           COALESCE(m1.cupo_a1, 0)                              AS cupo_a1,
+           COALESCE(m2.alertas_a2, 0)                           AS alertas_a2,
+           COALESCE(m1.alertas_a1, 0)                           AS alertas_a1,
+           COALESCE(m2.alertas_a2, 0) + COALESCE(m1.alertas_a1, 0) AS alertas_combinadas
+      FROM a2_mes m2
+      FULL OUTER JOIN a1_mes m1 ON m1.mes = m2.mes
+)
+SELECT (SELECT COUNT(*) FROM comb)                               AS meses_medidos,
+       t2.theta_A2,
+       t1.theta_A1,
+       (SELECT MIN(cupo_a2) FROM comb)                           AS cupo_a2_minimo,
+       (SELECT MAX(cupo_a2) FROM comb)                           AS cupo_a2_maximo,
+       (SELECT MIN(cupo_a1) FROM comb)                           AS cupo_a1_minimo,
+       (SELECT MAX(cupo_a1) FROM comb)                           AS cupo_a1_maximo,
+       (SELECT COUNT(*) FROM comb
+         WHERE cupo_a2 = 218 AND cupo_a1 = 24)                   AS meses_con_cupo_completo,
+       (SELECT SUM(alertas_a2) FROM comb)                        AS total_alertas_a2,
+       (SELECT SUM(alertas_a1) FROM comb)                        AS total_alertas_a1,
+       (SELECT SUM(alertas_combinadas) FROM comb)                AS total_alertas_combinadas,
+       (SELECT MAX(alertas_combinadas) FROM comb)                AS maximo_alertas_en_un_mes,
+       (SELECT mes FROM comb
+         ORDER BY alertas_combinadas DESC, mes LIMIT 1)          AS mes_del_maximo,
+       (SELECT COUNT(*) FROM comb
+         WHERE alertas_combinadas > 242)                         AS meses_que_superan_el_techo
+  FROM a2_theta t2,
+       a1_theta t1;
