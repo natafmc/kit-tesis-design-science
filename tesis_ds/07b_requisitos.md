@@ -194,7 +194,7 @@ alerta     si desviación ≥ θ
 
 **A1 — la contingencia por historial corto, 24 alertas por mes:**
 
-6. Calcular la desviación de `A1` **para cada celda que entró a ella —`ciclos < 4`—**, contra la **media de los seis meses anteriores**, en **ambas direcciones**: `|consumo − media_6meses| / media_6meses`. *Regla traída de `07a` L85-L87, donde ya estaba escrita y nunca se había llevado al diseño.*
+6. Calcular la desviación de `A1` **para cada celda que entró a ella —`ciclos < 4`—**, contra la **media de los meses previos disponibles —hasta un máximo de seis, sin incluir en esa media las celdas con `lec_actual = 0`, y solo cuando esa media sea positiva—**, en **ambas direcciones**: `abs(consumo − media_6meses) / media_6meses`. *Regla traída de `07a` L85-L87, donde ya estaba escrita y nunca se había llevado al diseño.*
 7. Ordenarlas de mayor a menor y recorrer el orden **hasta acumular 24 alertas por mes** — el cupo de `A1` (`R2.5`).
 8. **`θ_A1` es el valor en el corte**, y se somete a la misma verificación de unicidad y estabilidad del paso 5.
 
@@ -204,6 +204,14 @@ alerta     si desviación ≥ θ
 >
 > - **Paso 3, original:** *«Recorrer el orden hasta acumular **242** alertas por mes — el techo de `R2.1`.»* → **queda 218**, porque `R2.5` reserva 24 para `A1`. **`R2.1` no se tocó: sigue en 242 y sigue inviolable.** **Razón: calibrados por separado, los dos umbrales podían llenar los 242 cada uno —484 combinados—.**
 > - **Paso 5, original:** *«se fija `θ` como el **peor** —el que produce más alertas— y se declara.»* → **queda el máximo, el más estricto.** **Razón: el mínimo habría podido superar 242 en algún mes y chocaría con `R2.2` —«no se sube el techo: se sube `θ`»—.** *Decisión de la tesista, 29 oct 2026.*
+
+> **Tres cambios hechos el 30 oct 2026 al paso 6, con el texto original conservado junto al nuevo. Los tres cierran el mismo hueco: `A1` recoge cuentas nuevas —`07a` L159— y una cuenta nueva puede no tener seis meses previos, cosa que el paso asumía sin verificar.**
+>
+> - **Ventana incompleta — `DEC-115`, opción (a).** **Original:** *«contra la **media de los seis meses anteriores**».* → **queda: la media de los meses previos que existan, hasta un máximo de seis.** Una cuenta con dos meses previos se compara contra la media de esos dos y sigue siendo alertable. **Por qué no exigir los seis completos: eso habría dejado sin desviación a las cuentas nuevas, que es exactamente la población a la que `A1` existe para cobrir, y `R8.1`◆F —«ningún mes queda sin cobertura»— habría quedado vaciado por dentro, la misma falla silenciosa que `DEC-114` evitó repartiendo el cupo.**
+> - **Celdas depuradas dentro de la ventana — `DEC-116`, opción (a).** **Original:** *«la **media** de los seis meses anteriores».* → **queda: esa media se calcula sin las celdas con `lec_actual = 0`.** **Fundamento medido: el consumo de las celdas con lectura es 86,7 veces mayor**, de modo que dejar dentro las de índice cero arrastraría la media hacia cero y dispararía desviaciones artificiales —el método alertaría por arte del cero y no por anomalía real. **Lo que se declara y no se disimula:** `DEC-101` protegió el histórico de la **depuración**, y aquí se excluye del **cálculo** de una media. No es la misma operación, pero sí es un segundo efecto sobre el mismo dato, y por eso queda escrito en §10 de la propuesta junto a la carencia por año de `DEC-111`.
+> - **Media positiva — la regla que hacía falta escribir.** El paso divide por `media_6meses`; si una cuenta tuviera cero consumo en todos los meses previos disponibles, el cociente no existe. **Se aplica la misma regla que ya gobierna a `A2` con `referencia > 0` (`DEC-90`): media positiva para recibir desviación; si no, declaración.** No hay relleno de ningún tipo.
+>
+> *Las dos primeras, decisión de la tesista el 30 oct 2026. La tercera no es una decisión nueva: es la aplicación al paso 6 de una regla ya fijada para `A2`. Las dos consultas que ejecutan este procedimiento están escritas en `sql_a2_extraccion.sql` —`A2.3.l` para los pasos 1 a 5 y `A2.3.m` para los 6 a 8—, con sus autocalculeos escritos antes de correrlas.*
 
 **Alcance de esta calibración, fijado por `DEC-90`:** los ocho pasos corren sobre los **nueve meses de 2026** —la detección no corre sobre los otros 48—, así que `θ_A2` y `θ_A1` se calibran con esos nueve y el paso 5 resuelve la variación **entre ellos**. **Los datos de segmentación no se acotan: siguen siendo los 57 meses.** Se acota el paso de detección, no el panel.
 

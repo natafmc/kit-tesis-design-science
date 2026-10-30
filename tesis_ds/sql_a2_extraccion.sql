@@ -3005,3 +3005,519 @@ ORDER BY 1;
 --      El recuento reproducible desde la base está en CONTROL 5.j;
 --      la cardinalidad, en CONTROL 5.i.
 -- =====================================================================
+
+
+-- =====================================================================
+-- A2.3.l — LA CALIBRACIÓN DE θ PARA A2: EL UMBRAL EN EL CORTE DE 218
+--                                  (30 oct 2026 — gate de E7b, punto 3)
+--
+--     QUÉ CIERRA. Es el punto 3 del gate de E7b —el último—, y con él
+--     el gate queda en 4 de 4. 07b_requisitos.md §4.2 fija el
+--     procedimiento en OCHO pasos desde DEC-114: pasos 1 a 5 para A2
+--     sobre su cupo de 218, y pasos 6 a 8 para A1 sobre su cupo de 24.
+--     ESTA CONSULTA ES LOS PASOS 1 A 5. Los 6 a 8 están en A2.3.m.
+--
+--     LOS PASOS QUE EJECITA, TAL COMO ESTÁN ESCRITOS:
+--       1. desviacion(c,m) = ABS(consumo_observado - referencia)
+--                            / referencia, para cada cuenta y cada mes
+--                            de 2026 —enero a septiembre—, tomando
+--                            referencia como la MEDIANA de esa cuenta
+--                            en ese mismo mes de 2022 a 2025 (DEC-90,
+--                            P3 = (b)).
+--       2. Ordenarlas de mayor a menor.
+--       3. Recorrer el orden hasta acumular 218 alertas por mes —el
+--          cupo de A2, R2.5, fijado en DEC-114—.
+--       4. θ_A2 es el valor en el corte.
+--       5. Verificar que θ_A2 es único y estable entre los nueve
+--          meses; si variara, se fija como el MÁXIMO —el más
+--          estricto— y se declara. Ese era el paso 5 original.
+--
+--     LOS CUATRO FILTROS DEL UNIVERSO, Y DE DÓNDE SALE CADA UNO:
+--       · mes >= 2026-01-01 —DEC-90, P1 = (a): la detección corre
+--         sobre enero-septiembre de 2026 y NO sobre los 48 meses de
+--         2022 a 2025, que tampoco reciben desviación—.
+--       · ciclos_disponibles >= 4 —DEC-111, definición A: un año
+--         cuenta si la cuenta TIENE ese mes. Lo que no lo tiene va a
+--         A1 y NO ESTÁ AQUÍ: son salidas excluyentes—.
+--       · referencia > 0 —DEC-90, P3 = (b): sin referencia positiva
+--         no hay cociente, y esa celda recibe declaración, no valor.
+--       · lec_actual <> 0 —DEC-100 y DEC-101: la depuración excluye
+--         del cálculo de desviación toda celda observada de 2026 con
+--         índice de contador cero. **541 celdas de 411 cuentas.** Es
+--         el único filtro de este bloque que ya estaba medido—.
+--
+--     AUTOCALCUELOS — escritos ANTES de correr, y son la condición
+--     para interpretar cualquier cosa que salga. Ninguno es una suma
+--     interna: los tres primeros comparan contra corridas anteriores.
+--       1. celdas_en_el_calculo DEBE dar **183 000**. Es 183 541 —la
+--          salida "1 valor calculado" de A2.3.c, DEC-96— menos las 541
+--          depuradas de A2.3.g, DEC-101. Si no la da, esta consulta no
+--          está midiendo el universo de detección, y se repite A2.3.g
+--          entera antes de mirar θ.
+--       2. celdas_depuradas DEBE dar **541** y cuentas_depuradas
+--          DEBE dar **411** —DEC-101—. Es la tercera comprobación
+--          contra una corrida independiente.
+--       3. **218 + 24 = 242** —DEC-114, ya verificado antes de
+--          escribirlo—. Los dos cupos suman el techo de R2.1 sin
+--          sobrante ni faltante. R2.1 no se toca aquí.
+--       4. Cada mes DEBE tener **218 celdas o más**. Con 183 000
+--          sobre nueve meses el promedio es ≈ 20 333, de modo que el
+--          margen es de dos órdenes de magnitud. Si un mes diera
+--          menos de 218, el corte NO EXISTE para ese mes: se declara
+--          y no se rellena.
+--       5. alertas_que_alertarian PUEDE superar 218 cuando haya
+--          empates justo en el corte. Se reporta y NO se corrige: θ
+--          se fija en la posición 218 y los empates entran por
+--          desempate determinista —nro_cuenta—. Es la misma
+--          conducta que en A2.3.b con el colapso.
+--
+--     LO QUE NO HACE. No fija θ_A1 —eso es A2.3.m—; no decide el
+--     reparto, que DEC-114 ya fijó en 218 + 24; y no toca R2.1, que
+--     sigue en 242 y sigue inviolable: no se dividió el techo, se
+--     dividió el derecho a emitir dentro de él.
+-- =====================================================================
+
+-- A2.3.l SALIDA 1 — θ por cada uno de los nueve meses
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+valor AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.consumo AS consumo_observado,
+           r.referencia,
+           ABS(p.consumo - r.referencia) / r.referencia AS desviacion
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND r.nro_cuenta IS NOT NULL
+       AND r.ciclos_disponibles >= 4
+       AND r.referencia > 0
+       AND p.lec_actual <> 0
+),
+orden AS (
+    SELECT nro_cuenta,
+           mes,
+           desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM valor
+),
+corte AS (
+    SELECT mes,
+           MAX(desviacion) FILTER (WHERE posicion = 218) AS theta_mes
+      FROM orden
+     GROUP BY mes
+)
+SELECT o.mes,
+       COUNT(*)                                            AS celdas_en_el_mes,
+       c.theta_mes                                         AS theta_de_ese_mes,
+       COUNT(*) FILTER (WHERE o.posicion <= 218)           AS alertas_por_cupo,
+       COUNT(*) FILTER (WHERE o.desviacion >= c.theta_mes) AS alertas_que_alertarian
+  FROM orden o
+  JOIN corte c ON c.mes = o.mes
+ GROUP BY o.mes, c.theta_mes
+ ORDER BY o.mes;
+
+
+-- A2.3.l SALIDA 2 — los autocalculeos y θ_A2, en una sola fila
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+dep AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           ABS(p.consumo - r.referencia) / r.referencia AS desviacion
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND r.nro_cuenta IS NOT NULL
+       AND r.ciclos_disponibles >= 4
+       AND r.referencia > 0
+),
+valor AS (
+    SELECT * FROM dep WHERE lec_actual <> 0
+),
+orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM valor
+),
+meses AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 218) AS theta_mes
+      FROM orden
+     GROUP BY mes
+)
+SELECT (SELECT COUNT(*) FROM dep)                                   AS celdas_antes_de_depurar,
+       (SELECT COUNT(*) FROM dep WHERE lec_actual = 0)              AS celdas_depuradas,
+       (SELECT COUNT(DISTINCT nro_cuenta) FROM dep WHERE lec_actual = 0) AS cuentas_depuradas,
+       (SELECT COUNT(*) FROM valor)                                 AS celdas_en_el_calculo,
+       (SELECT COUNT(DISTINCT nro_cuenta) FROM valor)               AS cuentas_en_el_calculo,
+       (SELECT COUNT(*) FROM meses)                                 AS meses_medidos,
+       (SELECT MIN(celdas) FROM (SELECT COUNT(*) AS celdas FROM orden GROUP BY mes) t)
+                                                                     AS celdas_minimas_en_un_mes,
+       (SELECT MIN(theta_mes) FROM meses)                           AS theta_minimo,
+       (SELECT MAX(theta_mes) FROM meses)                           AS theta_A2,
+       (SELECT COUNT(DISTINCT theta_mes) FROM meses)                AS theta_valores_distintos;
+
+
+-- =====================================================================
+-- A2.3.m — LA CALIBRACIÓN DE θ PARA A1: EL UMBRAL EN EL CORTE DE 24
+--                                  (30 oct 2026 — gate de E7b, punto 3)
+--
+--     QUÉ ES. Los PASOS 6 A 8 de 07b_requisitos.md §4.2. A1 es la
+--     contingencia por historial corto: recoge las celdas de 2026 que
+--     le faltan ciclos previos, que bajo la definición A de DEC-111
+--     son **75 319 celdas —el 28,5 % del panel—** (DEC-110). A1 fue
+--     descartada como ALTERNATIVA en E7a (DEC-70) y sobrevive como
+--     REGLA DE CONTINGENCIA, porque R8.1 promete que ninguna cuenta
+--     queda sin cobertura.
+--
+--     LOS PASOS QUE EJECITA:
+--       6. Calcular la desviación de A1 para cada celda que entró a
+--          ella —ciclos < 4—, contra la MEDIA DE LOS SEIS MESES
+--          ANTERIORES, en ambas direcciones:
+--          ABS(consumo - media_6meses) / media_6meses.
+--          *Regla traída de 07a L85-L87, donde ya estaba escrita y
+--          nunca se había llevado al diseño.*
+--       7. Ordenarlas de mayor a menor y recorrer hasta acumular 24
+--          alertas por mes —el cupo de A1, R2.5, DEC-114—.
+--       8. θ_A1 es el valor en el corte, y se somete a la misma
+--          verificación de unicidad y estabilidad del paso 5.
+--
+--     LAS DOS DECISIONES DEL 30 OCT 2026 QUE ESTE PASO 6 ASUMÍA SIN
+--     VERIFICAR, AMBAS CON SU TEXTO ORIGINAL CONSERVADO EN 07b:
+--
+--     [DEC-115] VENTANA INCOMPLETA — la tesista eligió (a).
+--       "La media de los seis meses anteriores" supone que la cuenta
+--       tiene seis meses previos. A1 existe precisamente para cuentas
+--       NUEVAS —07a L159—, que pueden no tenerlos. La regla es:
+--           Se usan los meses previos que EXISTAN, hasta un máximo
+--           de 6. Una cuenta con dos meses previos se compara contra
+--       la media de esos dos y sigue siendo alertable.
+--       TEXTO ORIGINAL DEL PASO 6, CONSERVADO: *"contra la media de
+--       los seis meses anteriores"*.
+--       Por qué no (b) —exigir los seis completos, y sin desviación
+--       si faltan—: habría incumplido R8.1◆F, "ningún mes queda sin
+--       cobertura", vaciando por dentro el requisito que DEC-114 acaba
+--       de proteger con la reserva de cupo. Y por qué no (c) —medir
+--       primero—: el hueco ya estaba identificado y documentado en
+--       07c §3.4, y la regla exigida por R8.1 era inequívoca.
+--
+--     [DEC-116] CELDAS DEPURADAS DENTRO DE LA VENTANA — eligió (a).
+--       DEC-100 y DEC-101 depuraron 541 celdas con lec_actual = 0 de
+--       la celda OBSERVADA de 2026, y declararon que el histórico
+--       queda intacto. Pero la ventana de A1 USA el histórico: la
+--       media se calcula sobre meses previos. La regla es:
+--           Las celdas con lec_actual = 0 NO entran en el cálculo de
+--           la media de los seis meses previos.
+--       TEXTO ORIGINAL DEL PASO 6, CONSERVADO: *"la media de los seis
+--       meses anteriores"*.
+--       Fundamento medido: el consumo de las celdas con lectura es
+--       **86,7 veces mayor**, de modo que dejar las de índice cero
+--       dentro arrastraría la media hacia cero y dispararía
+--       desviaciones artificiales —el método alertaría por arte del
+--       cero y no por anomalía real.
+--       LO QUE SE DECLARA Y NO SE DISIMULA: DEC-101 protegió el
+--       histórico de la DEPURACIÓN, y aquí se excluye del CÁLCULO de
+--       una media. No es la misma operación, pero sí es un segundo
+--       efecto sobre el mismo dato, y por eso queda escrito en §10 de
+--       la propuesta junto a la carencia por año de DEC-111.
+--
+--     LA REGLA ADICIONAL QUE HACÍA FALTA ESCRIBIR — media > 0.
+--       El paso 6 divide por media_6meses. Si una cuenta tuviera
+--       cero consumo en todos los meses previos disponibles, la media
+--       daría cero y el cociente no existe. Se aplica la MISMA regla
+--       que ya gobierna a A2 con referencia > 0 (DEC-90):
+--           media_6meses > 0 para recibir desviación; si no,
+--           declaración. No hay relleno de ningún tipo.
+--
+--     EXTENSIÓN DE LA DEPURACIÓN A LA CELDA OBSERVADA DE A1 —
+--     regla escrita ANTES de correr, con su número declarado después.
+--       DEC-100 y DEC-101 acotaron su conteo a la salida "1 valor
+--       calculado", donde midieron 541. El principio decidido es que
+--       UNA CELDA SIN LECTURA NO TIENE CONSUMO OBSERVABLE y por tanto
+--       no puede producir desviación. Ese principio se aplica aquí
+--       también. **El número dentro de A1 NO ESTÁ MEDIDO**, y esta
+--       consulta lo devuelve como celdas_depuradas_a1. Si diera cero,
+--       la extensión no movió nada y eso también es un resultado; si
+--       diera más que cero, esa cifra se declara.
+--
+--     AUTOCALCUELOS — escritos ANTES de correr:
+--       1. a1_celdas_antes_de_depurar DEBE dar **75 319** —DEC-110,
+--          definición A sobre las 264 384 celdas de 2026—. Si no la
+--          da, esta consulta clasificó A1 de otra manera que la de
+--          A2.3.c y se repite esa antes de mirar θ.
+--       2. **218 + 24 = 242** —DEC-114—. El cupo de A1 es 24 y no
+--          puede mudarse sin reabrir §4.2.
+--       3. Cada mes DEBE tener **24 celdas o más con media
+--          calculable**. Con ≈ 8 369 celdas A1 por mes —75 319/9— el
+--          margen es grande; si un mes diera menos de 24, el corte NO
+--          EXISTE para ese mes y se declara.
+--       4. meses_previos_disponibles DEBE devolver valores entre
+--          **1 y 6**. Un 0 significa que la cuenta no tiene ningún mes
+--          previo: esa celda va a declaración y no a desviación, y se
+--          cuenta en a1_sin_ventana.
+--       5. Reconciliación contra el panel: las 264 384 celdas de 2026
+--          de A2.3.c se reparten en 183 541 con valor —de las que 541
+--          se depuran—, 5 524 sin referencia positiva y 75 319 en A1.
+--          Esta consulta no reabre esa partición: la respeta.
+-- =====================================================================
+
+-- A2.3.m SALIDA 1 — θ_A1 por cada uno de los nueve meses
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+cic AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           COUNT(*) AS ciclos_disponibles
+      FROM hist
+     GROUP BY nro_cuenta, EXTRACT(MONTH FROM mes)::int
+),
+a1 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado
+      FROM p
+      LEFT JOIN cic c
+        ON c.nro_cuenta   = p.nro_cuenta
+       AND c.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND (c.nro_cuenta IS NULL OR c.ciclos_disponibles < 4)
+),
+ventana AS (
+    SELECT a.nro_cuenta,
+           a.mes,
+           a.lec_actual,
+           a.consumo_observado,
+           COUNT(h2.consumo) AS meses_previos_disponibles,
+           AVG(h2.consumo)   AS media_6meses
+      FROM a1 a
+      LEFT JOIN p h2
+        ON h2.nro_cuenta = a.nro_cuenta
+       AND h2.mes >= (a.mes - INTERVAL '6 months')::date
+       AND h2.mes <  a.mes
+       AND h2.lec_actual <> 0
+     GROUP BY a.nro_cuenta, a.mes, a.lec_actual, a.consumo_observado
+),
+dev AS (
+    SELECT nro_cuenta,
+           mes,
+           consumo_observado,
+           meses_previos_disponibles,
+           media_6meses,
+           ABS(consumo_observado - media_6meses) / media_6meses AS desviacion
+      FROM ventana
+     WHERE meses_previos_disponibles >= 1
+       AND media_6meses > 0
+       AND lec_actual <> 0
+),
+orden AS (
+    SELECT nro_cuenta,
+           mes,
+           desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM dev
+),
+corte AS (
+    SELECT mes,
+           MAX(desviacion) FILTER (WHERE posicion = 24) AS theta_mes
+      FROM orden
+     GROUP BY mes
+)
+SELECT o.mes,
+       COUNT(*)                                            AS celdas_en_el_mes,
+       c.theta_mes                                         AS theta_de_ese_mes,
+       COUNT(*) FILTER (WHERE o.posicion <= 24)            AS alertas_por_cupo,
+       COUNT(*) FILTER (WHERE o.desviacion >= c.theta_mes) AS alertas_que_alertarian
+  FROM orden o
+  JOIN corte c ON c.mes = o.mes
+ GROUP BY o.mes, c.theta_mes
+ ORDER BY o.mes;
+
+
+-- A2.3.m SALIDA 2 — los autocalculeos y θ_A1, en una sola fila
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+cic AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           COUNT(*) AS ciclos_disponibles
+      FROM hist
+     GROUP BY nro_cuenta, EXTRACT(MONTH FROM mes)::int
+),
+a1 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado
+      FROM p
+      LEFT JOIN cic c
+        ON c.nro_cuenta   = p.nro_cuenta
+       AND c.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND (c.nro_cuenta IS NULL OR c.ciclos_disponibles < 4)
+),
+ventana AS (
+    SELECT a.nro_cuenta,
+           a.mes,
+           a.lec_actual,
+           a.consumo_observado,
+           COUNT(h2.consumo) AS meses_previos_disponibles,
+           AVG(h2.consumo)   AS media_6meses
+      FROM a1 a
+      LEFT JOIN p h2
+        ON h2.nro_cuenta = a.nro_cuenta
+       AND h2.mes >= (a.mes - INTERVAL '6 months')::date
+       AND h2.mes <  a.mes
+       AND h2.lec_actual <> 0
+     GROUP BY a.nro_cuenta, a.mes, a.lec_actual, a.consumo_observado
+),
+dev AS (
+    SELECT nro_cuenta, mes, meses_previos_disponibles, media_6meses,
+           ABS(consumo_observado - media_6meses) / media_6meses AS desviacion
+      FROM ventana
+     WHERE meses_previos_disponibles >= 1
+       AND media_6meses > 0
+       AND lec_actual <> 0
+),
+orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM dev
+),
+meses AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 24) AS theta_mes
+      FROM orden
+     GROUP BY mes
+)
+SELECT (SELECT COUNT(*) FROM a1)                                    AS a1_celdas_antes_de_depurar,
+       (SELECT COUNT(*) FROM a1 WHERE lec_actual = 0)               AS celdas_depuradas_a1,
+       (SELECT COUNT(*) FROM ventana)                               AS a1_celdas_con_ventana,
+       (SELECT COUNT(*) FROM ventana WHERE meses_previos_disponibles = 0) AS a1_sin_ventana,
+       (SELECT COUNT(*) FROM ventana WHERE media_6meses IS NULL
+                                        OR media_6meses <= 0)       AS a1_sin_media_positiva,
+       (SELECT COUNT(*) FROM dev)                                   AS a1_celdas_calculables,
+       (SELECT MIN(meses_previos_disponibles) FROM dev)             AS meses_previos_minimos,
+       (SELECT MAX(meses_previos_disponibles) FROM dev)             AS meses_previos_maximos,
+       (SELECT COUNT(*) FROM meses)                                 AS meses_medidos,
+       (SELECT MIN(celdas) FROM (SELECT COUNT(*) AS celdas FROM orden GROUP BY mes) t)
+                                                                     AS celdas_minimas_en_un_mes,
+       (SELECT MIN(theta_mes) FROM meses)                           AS theta_minimo,
+       (SELECT MAX(theta_mes) FROM meses)                           AS theta_A1,
+       (SELECT COUNT(DISTINCT theta_mes) FROM meses)                AS theta_valores_distintos;

@@ -277,8 +277,10 @@ A1 —ventana de 6 meses— **ya no es alternativa**: es regla de contingencia, 
 | **Cuándo recibe `desviación`** | `ciclos ≥ 4` **y** `referencia > 0` |
 | **Cuándo declara sin `referencia`** | `ciclos ≥ 4` **y** `referencia ≤ 0` — **no es A1: son tres salidas distintas.** |
 | **Qué ventana usa A1** | Los últimos 6 meses (`R8.1`). |
-| **Con qué calcula `A1` su desviación** | `abs(consumo − media_6meses) / media_6meses`, en **ambas direcciones** —la media de los seis meses anteriores, `07a` L87—. |
+| **Con qué calcula `A1` su desviación** | `abs(consumo − media_6meses) / media_6meses`, en **ambas direcciones** —la media de los meses previos disponibles, hasta un máximo de seis, sin incluir las celdas con `lec_actual = 0`, y solo cuando sea positiva; `DEC-115` y `DEC-116`—. |
 | **Con qué umbral alerta `A1`** | `θ_A1`, fijado por los pasos 6 a 8 de §4.2, dentro del cupo de **24 alertas por mes** (`R2.5`). |
+| **Qué pasa cuando la cuenta no tiene seis meses previos** | Se usan **los que existan, hasta un máximo de seis** (`DEC-115`, 30 oct 2026). **No se exigen los seis completos:** hacerlo habría dejado sin desviación a las cuentas nuevas —que es la población a la que `A1` existe para cobrir— y habría vaciado `R8.1`◆F por dentro. |
+| **Si las celdas depuradas entran en el cálculo de esa media** | **No entran** (`DEC-116`, 30 oct 2026). El consumo de las celdas con lectura es **86,7 veces mayor**, así que dejar dentro las de índice cero arrastraría la media hacia cero y produciría desviaciones artificiales. **El histórico no se borra: se excluye del cálculo, que es distinto de depurarlo —distinción declarada en §10 de la propuesta—.** |
 | **Qué declara la alerta** | Que esa celda cayó en A1 (`R4.4`), marcada como alerta originada en `R8.1` (`R8.2`). |
 
 **Autocalculeo que cerró ANTES de decidir:** `lo_contrario_deberia_ser_cero` = **0**, o sea que **B es subconjunto de A: ninguna celda tiene valor bajo B sin tenerlo bajo A.** **No se midió una hipótesis abierta —se dedujo antes de correr y la corrida lo confirmó—.**
