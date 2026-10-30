@@ -3740,3 +3740,266 @@ SELECT t.theta_A2,
                                GROUP BY mes
                               HAVING COUNT(*) > 242) q) AS meses_que_superan_el_techo
   FROM theta_global t;
+
+
+-- =====================================================================
+-- A2.3.m SALIDA 3 y SALIDA 4 - EL θ DE A1 APLICADO A LOS NUEVE MESES
+--                                  (30 oct 2026 - adición tras correr A2.3.m)
+--
+--     ES EL MISMO VACÍO QUE A2.3.l SALIDA 3 CERRÓ PARA A2, PERO CON
+--     UN RIESGO MAYOR, Y POR ESO NO SE ESCRIBÍA HASTA VER LOS NÚMEROS.
+--
+--     LO QUE YA ESTÁ MEDIDO. A2.3.m SALIDA 2 devolvió
+--     **theta_valores_distintos = 9**: A1 TAMBIÉN TIENE UN θ DISTINTO
+--     EN CADA MES, y el paso 8 de §4.2 lo somete a la misma
+--     verificación del paso 5 —tomar el MÁXIMO—. **θ_A1 =
+--     495,362260343088, el de marzo.**
+--
+--     POR QUÉ AQUÍ EL RIESGO ES REAL Y EN A2 NO LO ERA. En A2 los
+--     nueve cortes iban de 19,67 a 39,67, un factor de dos. En A1 van
+--     de **39,5688073394495** en junio a **495,362260343088** en
+--     marzo: **un factor de doce y medio.** A1 mide cuentas con
+--     historial corto contra una media de 1 a 6 meses —DEC-115—, de
+--     modo que la desviación de una cuenta nueva puede ser enorme y
+--     la de otra, minúscula.
+--
+--     LO QUE PUEDE FALLAR, Y POR QUÉ NO SE VOLCÓ NADA. Puesto el
+--     máximo de 495,36 sobre junio —cuyo propio corte era 39,57—,
+--     puede que junio tenga muy pocas celdas por encima, o NINGUNA.
+--     **Si un mes diera cero, la regla del paso 5 rompería
+--     `R8.1`◆F, «ningún mes queda sin cobertura», y habría que volver
+--     a §4.2.** Ese es el único fallo posible de este bloque, y es el
+--     que decide si `θ_A1` se volca o no.
+--
+--     AUTOCALCULEOS — escritos ANTES de correrlas:
+--       1. meses_con_corte DEBE dar **9**.
+--       2. theta_valores_distintos DEBE dar **9** —repite el hallazgo
+--          de SALIDA 2 sobre el mismo panel—.
+--       3. meses_que_fijan_el_maximo DEBE dar **1**.
+--       4. meses_con_cobertura DEBE dar **9**. **Es el único que
+--          puede FALLAR, y si falla no se volcra `θ_A1` ni `θ_A2`: se
+--          reabre §4.2, porque ambos umbrales comparten la regla del
+--          máximo.**
+--       5. maximo_alertas_en_un_mes DEBE ser **242 o menos** y
+--          meses_que_superan_el_techo DEBE dar **0**. Son `R2.1`.
+--          Con el θ global el recuento solo puede bajar desde 24, así
+--          que no debería fallar; se verifica y no solo se razona.
+--       6. total_alertas_con_theta_A1 no tiene techo —`R2.1` es por
+--          mes— pero se reporta: es la carga real de A1 sobre el
+--          canal humano.
+--
+--     POR QUÉ ESTAS DOS VAN DESPUÉS DE A2.3.m SALIDA 2 Y NO ANTES.
+--     El umbral no se conoce hasta que la corrida anterior lo entrega.
+--     Escribir esta verificación antes de saber θ_A1 habría obligado a
+--     numerar un resultado en el comentario, que es lo que DEC-13
+--     prohíbe: el número entra al documento cuando sale de su consulta.
+--
+--     LO QUE NO HACE. No cambia θ_A1, que el paso 8 fija; no
+--     recalibra el corte de 24; no toca A2; y no vuelve a medir la
+--     ventana de DEC-115 ni la depuración de DEC-116.
+-- =====================================================================
+
+-- A2.3.m SALIDA 3 — θ_A1 global aplicado a los nueve meses, mes a mes
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+cic AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+a1 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado
+      FROM p
+      LEFT JOIN cic c
+        ON c.nro_cuenta   = p.nro_cuenta
+       AND c.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND (c.nro_cuenta IS NULL OR c.ciclos_disponibles < 4)
+),
+ventana AS (
+    SELECT a.nro_cuenta,
+           a.mes,
+           a.lec_actual,
+           a.consumo_observado,
+           COUNT(h2.consumo) AS meses_previos_disponibles,
+           AVG(h2.consumo)   AS media_6meses
+      FROM a1 a
+      LEFT JOIN p h2
+        ON h2.nro_cuenta = a.nro_cuenta
+       AND h2.mes >= (a.mes - INTERVAL '6 months')::date
+       AND h2.mes <  a.mes
+       AND h2.lec_actual <> 0
+     GROUP BY a.nro_cuenta, a.mes, a.lec_actual, a.consumo_observado
+),
+dev AS (
+    SELECT nro_cuenta,
+           mes,
+           consumo_observado,
+           meses_previos_disponibles,
+           media_6meses,
+           ABS(consumo_observado - media_6meses) / media_6meses AS desviacion
+      FROM ventana
+     WHERE meses_previos_disponibles >= 1
+       AND media_6meses > 0
+       AND lec_actual <> 0
+),
+orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM dev
+),
+corte AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 24) AS theta_mes
+      FROM orden
+     GROUP BY mes
+),
+theta_global AS (
+    SELECT MAX(theta_mes) AS theta_A1 FROM corte
+)
+SELECT o.mes,
+       COUNT(*)                                            AS celdas_en_el_mes,
+       MAX(c.theta_mes)                                    AS theta_de_ese_mes,
+       t.theta_A1,
+       COUNT(*) FILTER (WHERE o.posicion <= 24)            AS alertas_en_el_cupo,
+       COUNT(*) FILTER (WHERE o.desviacion >= t.theta_A1)  AS alertas_con_theta_A1,
+       CASE WHEN COUNT(*) FILTER (WHERE o.desviacion >= t.theta_A1) > 0
+            THEN 'si'
+            ELSE 'NO - MES SIN COBERTURA' END              AS cubierto
+  FROM orden o
+  JOIN corte c ON c.mes = o.mes
+ CROSS JOIN theta_global t
+ GROUP BY o.mes, t.theta_A1
+ ORDER BY o.mes;
+
+
+-- A2.3.m SALIDA 4 — los seis autocalculeos del θ global de A1, en una fila
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+cic AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+a1 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado
+      FROM p
+      LEFT JOIN cic c
+        ON c.nro_cuenta   = p.nro_cuenta
+       AND c.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND (c.nro_cuenta IS NULL OR c.ciclos_disponibles < 4)
+),
+ventana AS (
+    SELECT a.nro_cuenta,
+           a.mes,
+           a.lec_actual,
+           a.consumo_observado,
+           COUNT(h2.consumo) AS meses_previos_disponibles,
+           AVG(h2.consumo)   AS media_6meses
+      FROM a1 a
+      LEFT JOIN p h2
+        ON h2.nro_cuenta = a.nro_cuenta
+       AND h2.mes >= (a.mes - INTERVAL '6 months')::date
+       AND h2.mes <  a.mes
+       AND h2.lec_actual <> 0
+     GROUP BY a.nro_cuenta, a.mes, a.lec_actual, a.consumo_observado
+),
+dev AS (
+    SELECT nro_cuenta, mes, meses_previos_disponibles, media_6meses,
+           ABS(consumo_observado - media_6meses) / media_6meses AS desviacion
+      FROM ventana
+     WHERE meses_previos_disponibles >= 1
+       AND media_6meses > 0
+       AND lec_actual <> 0
+),
+orden AS (
+    SELECT nro_cuenta, mes, desviacion,
+           ROW_NUMBER() OVER (PARTITION BY mes
+                              ORDER BY desviacion DESC, nro_cuenta) AS posicion
+      FROM dev
+),
+corte AS (
+    SELECT mes, MAX(desviacion) FILTER (WHERE posicion = 24) AS theta_mes
+      FROM orden
+     GROUP BY mes
+),
+theta_global AS (
+    SELECT MAX(theta_mes) AS theta_A1 FROM corte
+)
+SELECT t.theta_A1,
+       (SELECT COUNT(*) FROM corte)              AS meses_con_corte,
+       (SELECT COUNT(DISTINCT theta_mes) FROM corte) AS theta_valores_distintos,
+       (SELECT COUNT(*) FROM corte
+         WHERE theta_mes = t.theta_A1)           AS meses_que_fijan_el_maximo,
+       (SELECT COUNT(*) FROM (SELECT mes FROM orden
+                               WHERE desviacion >= t.theta_A1
+                               GROUP BY mes) x)  AS meses_con_cobertura,
+       (SELECT COALESCE(SUM(n), 0)
+          FROM (SELECT COUNT(*) AS n FROM orden
+                 WHERE desviacion >= t.theta_A1
+                 GROUP BY mes) y)                AS total_alertas_con_theta_A1,
+       (SELECT MAX(n) FROM (SELECT COUNT(*) AS n FROM orden
+                             WHERE desviacion >= t.theta_A1
+                             GROUP BY mes) z)    AS maximo_alertas_en_un_mes,
+       (SELECT COUNT(*) FROM (SELECT mes FROM orden
+                               WHERE desviacion >= t.theta_A1
+                               GROUP BY mes
+                              HAVING COUNT(*) > 242) q) AS meses_que_superan_el_techo
+  FROM theta_global t;
