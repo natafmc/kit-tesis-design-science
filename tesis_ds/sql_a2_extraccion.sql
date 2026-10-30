@@ -4389,3 +4389,205 @@ SELECT (SELECT COUNT(*) FROM comb)                               AS meses_medido
          WHERE alertas_combinadas > 242)                         AS meses_que_superan_el_techo
   FROM a2_theta t2,
        a1_theta t1;
+
+
+-- =====================================================================
+-- A2.1.d - LA MUESTRA DE E8: RECLAMOS Y PROCEDENTES DE LA VENTANA DE
+--           NUEVE MESES (30 oct 2026 - decision P3 = (a) de las
+--           preguntas del 30 oct)
+--
+--     QUE MIDE Y POR QUE EXISTE. El criterio 1 mide la cobertura del
+--     metodo sobre los reclamos PROCEDENTES de la ventana de aplicacion
+--     -enero a septiembre de 2026, fijada por `DEC-90`, P1 = (a)-. Ese
+--     recuento NOEXISTE todavia para la ventana: el CONTROL 5.j midio
+--     174 procedentes en los 57 MESES, y `DEC-91`, P4 = (b), acoto la
+--     aplicacion del metodo a los nueve. Sin este conteo, `E8` no tiene
+--     muestra y su punto 2 del gate no se puede cumplir.
+--
+--     EL FILTRO DEL PROCEDENTE SE IDENTIFICA, NO SE ADIVINA. El campo
+--     es `sw_procendente` -con doble n, el nombre que corre en el
+--     CONTROL 5.j y que se conserva tal cual—, vive en
+--     `tfv_respuesta_reclamo` y su dominio declarado es 1/2/4
+--     (`DEC-61`). CUALQUIER VALOR ESCRITO AQUI SERIA UNA ADIVINANZA, y
+--     el proyecto ya registro dos errores por nombres recordados. Por
+--     eso esta consulta BUSCA el valor por su HUELLA MEDIDA: el valor
+--     de `sw_procendente` cuyo recuento en los 57 meses da EXACTAMENTE
+--     174 —la cifra que el CONTROL 5.j reprodujo desde la base el 24
+--     de octubre de 2026— es el procedente. El autocalculeo 1 comprueba
+--     que ese valor sea UNO SOLO; si diera cero o dos, la
+--     identificacion falla y no se publica nada.
+--
+--     LA VENTANA Y SU FECHA. Se filtra por `r.fecha_hora_reg`, la
+--     misma fecha que usan A2.1.a y el CONTROL 5.j, con la misma
+--     convencion: inclusive desde el primero del mes, exclusivo hasta
+--     el primero del mes siguiente.
+--
+--     QUEDA DECLARADO EL UNICO MODO EN QUE ESTAS CIFRAS PODRIAN MOVERSE.
+--     `tfv_reclamo` es tabla viva (DEC-55), de modo que un reclamo se
+--     puede INSERTAR HOY con un `fecha_hora_reg` de marzo. Eso
+--     aumentaria `reclamos_ventana` sin que nadie lo advierta. La
+--     proteccion NO es suponer que no ocurre: es el autocalculeo 3, que
+--     exige 101 -cifra medida en DEC-65 desde dos fuentes, la hoja y el
+--     CONTROL 5.f- y obliga a investigar antes de publicar cualquier
+--     cosa si el numero difiere.
+--
+--     AUTOCALCULEOS - escritos ANTES de correrla:
+--       1. valores_que_dan_174 DEBE dar **1**: hay UN SOLO valor de
+--          `sw_procendente` con 174 procedentes en 57 meses, y ese es
+--          el filtro de todo lo demás. Si diera 0, el campo o la
+--          ventana cambiaron; si diera 2, hay dos valores con la misma
+--          huella y el filtro no es univoco.
+--       2. procedentes_57_meses DEBE dar **174** —se vuelve a medir en
+--          esta corrida, CONTROL 5.j, `DEC-64` y `DEC-65—.
+--       3. reclamos_ventana DEBE dar **101**: la hoja dio 101 reclamos
+--          de 2026 con corte en septiembre, y la base 117 sin filtro
+--          menos 16 de octubre (`DEC-65`). Si difiere, un reclamo de
+--          la ventana aparece de más o falta, y se investiga ANTES de
+--          publicar cualquier cosa.
+--       4. procedentes_ventana DEBE ser **174 o menos**: no puede
+--          haber mas procedentes en nueve meses que en cincuenta y
+--          siete.
+--       5. procedentes_con_lectura + procedentes_sin_lectura DEBE dar
+--          **procedentes_ventana**. Los sin_lectura se DECLARAN: son
+--          reclamos que la cobertura no puede evaluar, porque no tienen
+--          lectura que el metodo pudiera haber alertado.
+--       6. meses_medidos DEBE dar **9**.
+--       7. TRES cardinalidades, y no una sola, porque contar sobre
+--          `marcados` no distingue de QUE tabla vino la fila extra:
+--          ese CTE junta `tfv_reclamo_lectura` Y `tfv_respuesta_reclamo`.
+--          - reclamos_de_mas_en_marcados DEBE dar **0**: si no lo
+--            da, alguna de las dos uniones multiplico filas y los
+--            COUNT(DISTINCT) de arriba ya lo protegieron, pero la
+--            cifra se publica con esa salvedad escrita.
+--          - reclamos_con_varias_respuestas DEBE dar **0**: re-verifica
+--            sobre la ventana la cardinalidad 1:1 que confirmo el
+--            CONTROL 5.i el 24 de octubre.
+--          - reclamos_con_varias_lecturas DEBE dar **0**: mide
+--            aparte la cardinalidad de `tfv_reclamo_lectura`, que es
+--            OTRA tabla y la que en A2.1.c perdio 71 reclamos
+--            (`DEC-58`, punto 4).
+--
+--     LO QUE NO HACE. NO mide la cobertura: eso es de `E8`, cruzar
+--     estas lecturas contra las alertas que emite el metodo. No cambia
+--     las cifras de los 57 meses —1 053 · 174 · 136 · 78,16 %—; solo
+--     acota a la ventana el recuento de procedentes. No vuelve a medir
+--     `sw_proceso`, que es OTRO campo binario y cuyas cifras NO son
+--     procedentes (`DEC-59`).
+-- =====================================================================
+
+-- A2.1.d SALIDA 1 - la ventana mes a mes: reclamos, procedentes, con y sin lectura
+WITH dominio AS (
+    SELECT rr.sw_procendente,
+           COUNT(DISTINCT r.id_reclamo) FILTER (WHERE r.fecha_hora_reg >= DATE '2022-01-01'
+                                                 AND r.fecha_hora_reg <  DATE '2026-10-01') AS en_57_meses,
+           COUNT(DISTINCT r.id_reclamo) FILTER (WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+                                                 AND r.fecha_hora_reg <  DATE '2026-10-01') AS en_ventana
+      FROM tfv_reclamo r
+      LEFT JOIN tfv_respuesta_reclamo rr ON rr.id_reclamo = r.id_reclamo
+     WHERE r.fecha_hora_reg >= DATE '2022-01-01'
+       AND r.fecha_hora_reg <  DATE '2026-10-01'
+     GROUP BY rr.sw_procendente
+),
+procedente AS (
+    SELECT sw_procendente
+      FROM dominio
+     WHERE en_57_meses = 174
+),
+reclamos_ventana AS (
+    SELECT r.id_reclamo,
+           DATE_TRUNC('month', r.fecha_hora_reg)::date AS mes
+      FROM tfv_reclamo r
+     WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+       AND r.fecha_hora_reg <  DATE '2026-10-01'
+),
+marcados AS (
+    SELECT rv.id_reclamo,
+           rv.mes,
+           (rr.sw_procendente IS NOT DISTINCT FROM p.sw_procendente) AS es_procedente,
+           rl.id_lectura
+      FROM reclamos_ventana rv
+      JOIN procedente p ON TRUE
+      LEFT JOIN tfv_reclamo_lectura rl   ON rl.id_reclamo = rv.id_reclamo
+      LEFT JOIN tfv_respuesta_reclamo rr ON rr.id_reclamo = rv.id_reclamo
+)
+SELECT m.mes,
+       COUNT(DISTINCT m.id_reclamo)                                            AS reclamos,
+       COUNT(DISTINCT m.id_reclamo) FILTER (WHERE m.es_procedente)             AS procedentes,
+       COUNT(DISTINCT m.id_reclamo) FILTER (WHERE m.es_procedente
+                                              AND m.id_lectura IS NOT NULL)    AS procedentes_con_lectura,
+       COUNT(DISTINCT m.id_reclamo) FILTER (WHERE m.es_procedente
+                                              AND m.id_lectura IS NULL)        AS procedentes_sin_lectura
+  FROM marcados m
+ GROUP BY m.mes
+ ORDER BY m.mes;
+
+
+-- A2.1.d SALIDA 2 - las once columnas de la muestra, en una fila
+WITH dominio AS (
+    SELECT rr.sw_procendente,
+           COUNT(DISTINCT r.id_reclamo) FILTER (WHERE r.fecha_hora_reg >= DATE '2022-01-01'
+                                                 AND r.fecha_hora_reg <  DATE '2026-10-01') AS en_57_meses,
+           COUNT(DISTINCT r.id_reclamo) FILTER (WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+                                                 AND r.fecha_hora_reg <  DATE '2026-10-01') AS en_ventana
+      FROM tfv_reclamo r
+      LEFT JOIN tfv_respuesta_reclamo rr ON rr.id_reclamo = r.id_reclamo
+     WHERE r.fecha_hora_reg >= DATE '2022-01-01'
+       AND r.fecha_hora_reg <  DATE '2026-10-01'
+     GROUP BY rr.sw_procendente
+),
+procedente AS (
+    SELECT sw_procendente
+      FROM dominio
+     WHERE en_57_meses = 174
+),
+reclamos_ventana AS (
+    SELECT r.id_reclamo,
+           DATE_TRUNC('month', r.fecha_hora_reg)::date AS mes
+      FROM tfv_reclamo r
+     WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+       AND r.fecha_hora_reg <  DATE '2026-10-01'
+),
+marcados AS (
+    SELECT rv.id_reclamo,
+           rv.mes,
+           (rr.sw_procendente IS NOT DISTINCT FROM p.sw_procendente) AS es_procedente,
+           rl.id_lectura
+      FROM reclamos_ventana rv
+      JOIN procedente p ON TRUE
+      LEFT JOIN tfv_reclamo_lectura rl   ON rl.id_reclamo = rv.id_reclamo
+      LEFT JOIN tfv_respuesta_reclamo rr ON rr.id_reclamo = rv.id_reclamo
+)
+SELECT (SELECT COUNT(*) FROM dominio
+         WHERE en_57_meses = 174)                                   AS valores_que_dan_174,
+       (SELECT MAX(sw_procendente::text) FROM procedente)           AS valor_procedente,
+       (SELECT COALESCE(MAX(d.en_57_meses), 0)
+          FROM dominio d
+          JOIN procedente p
+            ON d.sw_procendente IS NOT DISTINCT FROM p.sw_procendente) AS procedentes_57_meses,
+       (SELECT COUNT(DISTINCT id_reclamo) FROM marcados)            AS reclamos_ventana,
+       (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
+         WHERE es_procedente)                                       AS procedentes_ventana,
+       (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
+         WHERE es_procedente AND id_lectura IS NOT NULL)            AS procedentes_con_lectura,
+       (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
+         WHERE es_procedente AND id_lectura IS NULL)                AS procedentes_sin_lectura,
+       (SELECT COUNT(*) FROM (SELECT id_reclamo FROM marcados
+                               GROUP BY id_reclamo
+                              HAVING COUNT(*) > 1) x)               AS reclamos_de_mas_en_marcados,
+       (SELECT COUNT(*) FROM (SELECT rr.id_reclamo
+                                 FROM tfv_reclamo r
+                                 JOIN tfv_respuesta_reclamo rr
+                                   ON rr.id_reclamo = r.id_reclamo
+                                WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+                                  AND r.fecha_hora_reg <  DATE '2026-10-01'
+                                GROUP BY rr.id_reclamo
+                               HAVING COUNT(*) > 1) y)              AS reclamos_con_varias_respuestas,
+       (SELECT COUNT(*) FROM (SELECT rl.id_reclamo
+                                 FROM tfv_reclamo r
+                                 JOIN tfv_reclamo_lectura rl
+                                   ON rl.id_reclamo = r.id_reclamo
+                                WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+                                  AND r.fecha_hora_reg <  DATE '2026-10-01'
+                                GROUP BY rl.id_reclamo
+                               HAVING COUNT(*) > 1) z)              AS reclamos_con_varias_lecturas,
+       (SELECT COUNT(DISTINCT mes) FROM marcados)                   AS meses_medidos;
