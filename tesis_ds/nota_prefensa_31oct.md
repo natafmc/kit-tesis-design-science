@@ -34,10 +34,22 @@ Cada umbral se verificó con **seis autocalculeos escritos antes de correrlos**;
 - **`meses_con_cobertura` = 9 en las dos ramas:** ningún mes quedó sin cobertura —ni siquiera junio de `A1`, cuyo corte propio era 39,57 y cuyo umbral global es 495,36—. El requisito `R8.1` aguanta.
 - **`meses_que_superan_el_techo` = 0 en las dos ramas:** `R2.1` aguanta, **verificado y no solo razonado**.
 
-## 5. Pendiente declarado
+## 5. La carga del método COMPLETO — medida el 30 de octubre de 2026
 
-**El total del método COMPLETO —`A2` más `A1`, mes a mes— todavía no está medido.** La suma existe solo como aritmética de dos corridas separadas, y una cifra sin su propia consulta no se publica (`DEC-13`). La consulta **`A2.3.n` está escrita** —`sql_a2_extraccion.sql` L4006, SALIDA 1 en L4087 y SALIDA 2 en L4236—, con sus seis autocalculeos antes de correrla; **al cerrarla se añade el cuadro combinado a esta nota**.
+**La consulta `A2.3.n` cerró el pendiente de la versión anterior de esta nota:** hasta hoy la carga total existía solo como aritmética de dos corridas separadas, y una cifra sin su propia consulta no se publica (`DEC-13`). Ahora sí está medida.
+
+| Rama | Ene | Feb | Mar | Abr | May | Jun | Jul | Ago | Sep | Total |
+|:--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| `A2` | 119 | 125 | 144 | **218** | 152 | 159 | 180 | 156 | 153 | **1 406** |
+| `A1` | 12 | 10 | **24** | 11 | 8 | 9 | 15 | 7 | 18 | **114** |
+| **Combinadas** | 131 | 135 | 168 | **229** | 160 | 168 | 195 | 163 | 171 | **1 520** |
+
+**Ningún mes supera el techo de 242 (`R2.1`): el más cargado es abril, con 229, y le quedan 13 de margen.** Esto es lo que antes solo se sostenía por aritmética —218 + 24 = 242 por `DEC-114`— y ahora está **medido para el método completo**: `meses_que_superan_el_techo` = **0**.
+
+**Los seis autocalculeos escritos antes de correrla cerraron los seis:** `total_alertas_a2` = **1 406** · `total_alertas_a1` = **114** · `total_alertas_combinadas` = **1 520** · `maximo_alertas_en_un_mes` = **229** en abril · `meses_que_superan_el_techo` = **0** · `meses_medidos` = **9**.
+
+**Y dos comprobaciones que no se pidieron y cerraron contra corridas anteriores:** la suma de las celdas de `A2` a lo largo de los nueve meses da **183 000**, la misma cifra del universo calculable de `A2.3.g` (`DEC-101`); y la suma de las celdas de `A1` da **70 039**, la misma de `a1_celdas_calculables` en `A2.3.m` (`DEC-120`). Además, **las nueve filas cumplen `A2` + `A1` = combinadas**.
 
 ## Fuente
 
-`tesis_ds/sql_a2_extraccion.sql` — `A2.3.l` L3080, L3155, L3583, L3661; `A2.3.m` L3333, L3430, L3802, L3904; `A2.3.n` L4006, L4087, L4236. Corridas del 30 de octubre de 2026. Umbrales volcados al criterio 2 de `02_delimitacion.md` (`DEC-121`); reparto de los cupos en `DEC-114`; techo del criterio 3 en `DEC-45`; regla del máximo en `07b_requisitos.md` §4.2.
+`tesis_ds/sql_a2_extraccion.sql` — `A2.3.l` L3080, L3155, L3583, L3661; `A2.3.m` L3333, L3430, L3802, L3904; `A2.3.n` L4009, L4087, L4236. Corridas del 30 de octubre de 2026. Umbrales volcados al criterio 2 de `02_delimitacion.md` (`DEC-121`); reparto de los cupos en `DEC-114`; techo del criterio 3 en `DEC-45`; regla del máximo en `07b_requisitos.md` §4.2.

@@ -155,6 +155,8 @@
 
 **Estado actual de la etapa: 0 de 6.**
 
+**Actualización del 30 oct 2026 (`DEC-125`): el punto 1 quedó SIN IMPEDIMENTO.** Se decidió que el método escrito vive en **`07d_metodo_escrito.md`**, archivo propio, y que el exemplar son **tres alertas**. **El punto 1 es el único de los seis que se puede cerrar sin correr ninguna consulta**, porque su evidencia es un documento y no una salida. **Los puntos 2, 3, 4 y 5 exigen el listado, que todavía no existe** —`A2.1.d` está escrita pero mide la muestra de `E8` y no produce alertas—, **y el punto 6 depende de ellos**, porque una alerta de la que no existe el listado no se puede ejemplificar. **El gate sigue en 0 de 6: desbloquear no es cerrar.**
+
 ---
 
 ## 7. Preguntas que esta etapa deja abiertas
@@ -162,8 +164,8 @@
 | **#** | **Pregunta** | **Estado** | **Dónde se resuelve** |
 |--:|:--|:--|:--|
 | 1 | **Cómo se estima el tiempo de cada grupo de ruta** (`R3.3`), si `DEC-45` (a) advierte que **convertir el techo a horas da un resultado falso** | **ABIERTA** | En E7d, con decisión de la tesista |
-| 2 | **Cuántas alertas forman el exemplar** y cuáles se eligen | **ABIERTA** | En E7d, con decisión de la tesista |
-| 3 | **Dónde vive el método escrito** —archivo propio o dentro de `07c` | **ABIERTA** | En E7d, con decisión de la tesista |
+| 2 | ~~**Cuántas alertas forman el exemplar** y cuáles se eligen~~ | **RESUELTA** — `P2` = (a): **tres alertas** —una de `A2` normal, una de `A1` que declara `R8.1`, y una con código de irregularidad (`DEC-125`) | Resuelta el 30 oct 2026 |
+| 3 | ~~**Dónde vive el método escrito** —archivo propio o dentro de `07c`~~ | **RESUELTA** — `P3` = (a): **archivo propio, `07d_metodo_escrito.md`** (`DEC-125`) | Resuelta el 30 oct 2026 |
 | 4 | **Si el `7.e` entra una fila al panel**, `A2.3.b` se rehace **antes** de construir (`DEC-75`, `P3` = (a)) | **CONDICIONAL** | Solo si la corrección llega |
 | 5 | **Qué pasa con las 6 004 referencias construidas sobre dos o más ciclos con `lec_actual = 0`** —1,71 % de los grupos— que `DEC-100` eligió no corregir | **DECLARADA** | `§10` de la propuesta, con `DEC-111` |
 
