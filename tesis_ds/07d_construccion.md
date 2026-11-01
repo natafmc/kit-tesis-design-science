@@ -163,7 +163,7 @@
 
 | **#** | **Pregunta** | **Estado** | **Dónde se resuelve** |
 |--:|:--|:--|:--|
-| 1 | **Cómo se estima el tiempo de cada grupo de ruta** (`R3.3`), si `DEC-45` (a) advierte que **convertir el techo a horas da un resultado falso** | **ABIERTA** | En E7d, con decisión de la tesista |
+| 1 | ~~**Cómo se estima el tiempo de cada grupo de ruta** (`R3.3`), si `DEC-45` (a) advierte que **convertir el techo a horas da un resultado falso**~~ | **RESUELTA** — `P3` = (a): **se declara como TOPE y no como multiplicación** — 2 a 3 técnicos, 3 a 4 horas como tope por caso. **No se multiplica alertas × tiempo** porque `DEC-45` advierte que convertir el techo a horas da un resultado falso; el tope sí llena `R3.3` y es verificable. **Viene del diseño, no de un técnico de ENDE** (`DEC-126`) | Resuelta el 30 oct 2026 |
 | 2 | ~~**Cuántas alertas forman el exemplar** y cuáles se eligen~~ | **RESUELTA** — `P2` = (a): **tres alertas** —una de `A2` normal, una de `A1` que declara `R8.1`, y una con código de irregularidad (`DEC-125`) | Resuelta el 30 oct 2026 |
 | 3 | ~~**Dónde vive el método escrito** —archivo propio o dentro de `07c`~~ | **RESUELTA** — `P3` = (a): **archivo propio, `07d_metodo_escrito.md`** (`DEC-125`) | Resuelta el 30 oct 2026 |
 | 4 | **Si el `7.e` entra una fila al panel**, `A2.3.b` se rehace **antes** de construir (`DEC-75`, `P3` = (a)) | **CONDICIONAL** | Solo si la corrección llega |

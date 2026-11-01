@@ -3,7 +3,7 @@
 > **Modelo institucional de ALSIE — nivel de maestría.**
 > **Fuente de la forma:** `instituciones/alsie/guia_ifi_contenido.md` (14 apartados) e `instituciones/alsie/indicadores_revision_ifi.md` (indicadores de maestría).
 > **Fuente del contenido:** carpeta `tesis_ds/`. Trazabilidad completa en el **Anexo C**.
-> **Estado de la traducción, 29 de octubre de 2026:** los apartados 1 a 8 y 13 están **completos**; los apartados 9, 10 y 14 son **parciales** porque dependen de etapas aún abiertas (`E7d`, `E7e`, `E7f`, `E8`, `E9`, `E10`); los apartados 11 y 12 están **pendientes** por la misma razón. Lo que falta se marca `[PENDIENTE]` con la pregunta que lo desbloquea, y **no se rellena con supuestos**.
+> **Estado de la traducción, 30 de octubre de 2026:** los apartados 1 a 8 y 13 están **completos**; el apartado 9 quedó **validado por la tesista el 30 de octubre** y conserva la marca `[PROVISIONAL]` solo por los principios de diseño de `E10`; el apartado 10 está **parcial** porque la validación del método depende de `E7d`, `E7e` y `E8`; el apartado 11 tiene **tres de cuatro conclusiones** —la del Capítulo IV espera a `E8`— y el apartado 12 tiene las recomendaciones derivadas de ellas; el apartado 14 está **parcial** porque el Anexo B espera a `E7f`. **Lo único que seguía dependiendo de una decisión de la tesista quedó resuelto el 30 de octubre (`DEC-127`).** Lo que falta se marca con la causa que lo desbloquea, y **no se rellena con supuestos**.
 > **Regla de este documento:** ningún dato entra sin su fuente. Las cifras provienen de `DATOS desde 2022.xlsx`, `DATOS.xlsx`, `CODIGOS_IRREGULARES.xlsx` y de las declaraciones registradas de la tesista.
 
 ---
@@ -31,7 +31,7 @@
 >
 > A mi pareja, mi profunda gratitud y reconocimiento por su apoyo constante y por el tiempo invaluable brindado a este proyecto. Gracias por escuchar mis ideas, acompañarme en las largas jornadas de trabajo con paciencia y comprensión en los momentos de mayor exigencia, y recordarme siempre el valor de la perseverancia; tu colaboración y aliento fueron indispensables para hacer posible este camino.
 
-*[PENDIENTE — decisión del tesista: ¿se incorpora al tutor en este apartado? La guía (L122) cubre «cualquier ayuda importante recibida de cualquier persona» y el tutor revisa la propuesta el viernes 30 de octubre.]*
+> Al tutor de esta investigación, por su rigurosa orientación académica, criterio metodológico y disposición durante el desarrollo de este trabajo.
 
 ---
 
@@ -144,7 +144,7 @@ Diseñar, construir y evaluar un método de detección y verificación previa a 
 
 ### 6.6 Hipótesis
 
-> **`[PROVISIONAL — requiere validación del tesista]`** La hipótesis se construye a partir de las decisiones de diseño ya cerradas (`07a`, `07b`, `07c`), porque los principios de diseño validados (`E10`) aún no existen. Se ofrece una formulación y se pide su validación.
+> **`[PROVISIONAL — validada el 30 de octubre de 2026]`** La hipótesis se construye a partir de las decisiones de diseño ya cerradas (`07a`, `07b`, `07c`), porque los principios de diseño validados (`E10`) aún no existen. **La tesista confirmó la formulación sin ajustes (`DEC-127`).** La marca `[PROVISIONAL]` queda **solo** por `E10` y `E8`.
 
 **Hipótesis general.** Si se aplica un método de detección y verificación que compara el consumo de cada cuenta contra su propio ciclo anual —el mismo mes de los cuatro años anteriores—, con un umbral escrito y calibrado contra un techo de capacidad, y que emite sus alertas agrupadas por ruta con la comparación que las originó, entonces se identifican lecturas anómalas no declaradas que hoy no se detectan, sin exceder la capacidad del equipo de verificación, porque concentra el esfuerzo en las cuentas cuya desviación respecto de su propio patrón estacional es mayor y devuelve al verificador la evidencia necesaria para aceptar o descartar cada alerta.
 
@@ -154,23 +154,23 @@ Diseñar, construir y evaluar un método de detección y verificación previa a 
 2. Un criterio de detección basado en el ciclo anual por cuenta mantiene el volumen de alertas dentro del techo de capacidad, a diferencia de un criterio basado en una ventana móvil de seis meses.
 3. Un método con criterio escrito, explicación obligatoria y registro de resolución es aplicable por verificadores que no participaron en su construcción.
 
-*[PENDIENTE — validación: ¿el tesista confirma esta hipótesis, la ajusta o prefiere vincularla a un principio de diseño concreto una vez cerrado E10?]*
+*Validada el 30 de octubre de 2026 (`DEC-127`): la tesista confirmó la hipótesis general y las tres específicas **sin ajustes**. Se conserva la marca `[PROVISIONAL]` por una sola causa declarada: los principios de diseño de `E10` y la magnitud medida en `E8` aún no existen.*
 
 ### 6.7 Aporte teórico
 
-> **`[PROVISIONAL — requiere validación del tesista]`** El aporte se deriva de la contribución reclamada (`03_perfil_ds.md` §10) y de las relaciones del modelo (Capítulo III), porque los principios de diseño (`E10`) aún no existen.
+> **`[PROVISIONAL — validado el 30 de octubre de 2026]`** El aporte se deriva de la contribución reclamada (`03_perfil_ds.md` §10) y de las relaciones del modelo (Capítulo III), porque los principios de diseño (`E10`) aún no existen. **La tesista confirmó el texto sin ajustes (`DEC-127`).**
 
 El aporte teórico consiste en la **formalización de la detección de lecturas anómalas no declaradas como un proceso con componentes y relaciones explícitas** —depuración, segmentación, detección con referencia anual, verificación y registro—, y en las **regularidades** que explican el comportamiento del objeto: que la comparación contra el propio ciclo anual de la cuenta resuelve la estacionalidad sin fuente externa; que la capacidad de verificación opera como techo de viabilidad y no como preferencia; y que la explicabilidad de la alerta es condición de su adopción por el verificador. Estas relaciones no estaban disponibles en el estado del arte, que trata el error de lectura como problema metrológico y no como problema de proceso.
 
-*[PENDIENTE — validación: el aporte definitivo se redactará con los principios de diseño de E10, en la forma objetivo → contexto → mecanismo → principio.]*
+*Validado el 30 de octubre de 2026 (`DEC-127`): la tesista confirmó el aporte **tal como está escrito**. La redacción definitiva en la forma objetivo → contexto → mecanismo → principio queda pendiente de dos cosas y solo de dos: los principios de `E10`, y la atribución de esa plantilla, que está con el tutor desde el paquete del 30 de oct (`DEC-12`, `DEC-117`).*
 
 ### 6.8 Significación práctica
 
-> **`[PROVISIONAL — requiere validación del tesista]`** La significación se deriva del enlace propuesta ↔ solución (`E9`) y de la evaluación (`E8`), aún pendientes.
+> **`[PROVISIONAL — validada el 30 de octubre de 2026]`** La significación se deriva del enlace propuesta ↔ solución (`E9`) y de la evaluación (`E8`), aún pendientes. **La tesista confirmó el texto sin ajustes (`DEC-127`).**
 
 La significación práctica consiste en que la distribuidora puede **incorporar detección sistemática a su ciclo de lecturación sin ampliar su equipo de verificación**, sustituyendo la dependencia de la atención de una sola persona por un criterio escrito y reproducible, y devolviendo al verificador la evidencia para resolver tanto los reclamos procedentes como los improcedentes —que hoy consumen la misma inspección técnica—. En correspondencia con el aporte teórico, la mejora observable es la reducción de la detección reactiva y la formalización del trabajo que hoy se hace a mano.
 
-*[PENDIENTE — validación: la magnitud de la mejora se fijará con los resultados de E8.]*
+*Validada el 30 de octubre de 2026 (`DEC-127`): la tesista confirmó la significación **tal como está escrita**. La magnitud de la mejora sigue pendiente de los resultados de `E8`; es el único punto que la separa de ser definitiva.*
 
 ### 6.9 Métodos y técnicas
 
@@ -513,7 +513,7 @@ flowchart TD
 | **Personológico** | Parcial | El modelo reconoce el papel del verificador y su criterio, pero no modela la persona. |
 | **Complejo** | Sí | Concurren etiquetas escasas, costo asimétrico, alternativa vigente y universo segmentado. |
 
-*[PENDIENTE — validación: el tesista debe confirmar los componentes, las relaciones y las propiedades, y aportar los principios de diseño de E10 para cerrar el capítulo.]*
+*Validado el 30 de octubre de 2026 (`DEC-127`): la tesista confirmó **los 5 componentes, las 5 relaciones y las 9 propiedades tal como están escritos**. El capítulo conserva la marca `[PROVISIONAL]` por una sola causa: la aportación de los principios de diseño de `E10`.*
 
 ---
 
@@ -598,18 +598,26 @@ La propuesta concreta el modelo del Capítulo III: cada componente del modelo (d
 
 ## 11. Conclusiones
 
-> **`[PENDIENTE — E8/E10]`** La guía exige **mínimo una conclusión por capítulo**, en términos de resultados y no de sugerencias. No se redactan hasta que existan los resultados de la evaluación (`E8`) y los principios de diseño (`E10`). Se deja la estructura prevista:
+> **`[TRES DE CUATRO]`** La guía exige **mínimo una conclusión por capítulo** (`guia_ifi_contenido.md` L366), **en términos de resultados y no de sugerencias** (`L368`), breves, concretas, objetivas y precisas (`L372`, `L374`). El 30 de octubre de 2026 se redactaron las tres primeras **con los resultados ya medidos** —sus cifras están publicadas con fuente en §7.4, §7.5 y §8.7 de este informe—. **La del Capítulo IV no se redacta, y no por falta de tiempo:** su objetivo específico es «elaborar y validar», y la validación (`E8`) todavía no ocurrió, de modo que escribirla sería afirmar un resultado inexistente.
 
-- **Conclusión del Capítulo I (Diagnóstico):** *[pendiente]* — se formulará en términos de la magnitud y el costo de la detección reactiva medidos.
-- **Conclusión del Capítulo II (Marco teórico):** *[pendiente]* — se formulará en términos de la brecha identificada.
-- **Conclusión del Capítulo III (Modelo teórico):** *[pendiente]* — se formulará en términos de los componentes y relaciones del modelo.
-- **Conclusión del Capítulo IV (Propuesta):** *[pendiente]* — se formulará en términos de la validación del método.
+**Conclusión del Capítulo I (Diagnóstico).** De los **1 053 reclamos** tramitados en 57 meses, solo **174 (16,52 %)** resultaron procedentes y **136 de esos 174 (78,16 %)** provinieron de lecturas sin código, pese a que las lecturas con código son apenas el **0,88 %** del facturable. Sobre la revisión que ya se hace a mano se midieron **47 982 correcciones manuales** en el mismo periodo, con un residuo de **242,2 correcciones mensuales en 2026** —el 0,82 % de las lecturas— que la capacitación de 2025 no eliminó. **Se concluye que el problema no es la ausencia de detección, sino su informalidad:** existe un paso que detecta, pero sin criterio escrito, sin umbral y sin registro, y no barre el **99,12 %** del facturable que circula sin código.
+
+**Conclusión del Capítulo II (Marco teórico).** La sistematización de los fundamentos arroja una **brecha de enfoque demostrada y no un no-hallazgo:** la literatura consultada resuelve **cómo puntuar una lectura** y reconoce que inspeccionar exige priorizar, pero no documenta **cómo convertir esa puntuación en una decisión operativa dentro de un ciclo de lecturación-facturación sujeto a plazo regulatorio**. El resultado se sostiene en cuatro condiciones que concurren y que ninguna solución reportada resuelve a la vez —etiquetas escasas y retardadas, costo de la alerta asimétrico y no recuperable, alternativa vigente ya eficaz, y universo segmentado por el regulador—, y en que el error de lectura aparece en esa literatura como **problema metrológico y no como problema de proceso**.
+
+**Conclusión del Capítulo III (Modelo teórico).** El modelo **precisa los componentes y las relaciones que el objetivo específico pedía:** **cinco componentes** —depuración, segmentación, detección, verificación, y resolución y registro—, **cinco relaciones** esenciales entre ellos y **nueve propiedades** que describen su comportamiento. El hallazgo de mayor alcance es que **el orden de los dos primeros componentes queda deducido y no supuesto:** si la segmentación no cambia cuáles celdas tienen valor, tampoco puede rescatar una que la depuración ya excluyó. El modelo asume además la capacidad de verificación como **techo de viabilidad —242 alertas por mes—** y no como preferencia de operación.
+
+**Conclusión del Capítulo IV (Propuesta).** *[PENDIENTE — E8]* — se formulará con los resultados de la evaluación del método: cobertura de reclamos procedentes, falsos positivos, carga de verificación dentro de la capacidad del equipo, y aplicabilidad sin asistencia de la autora. **Es la única conclusión que falta, y esta es su causa exacta.**
 
 ---
 
 ## 12. Recomendaciones
 
-> **`[PENDIENTE — E10]`** Se derivan de cada conclusión, en términos de sugerencias viables, vinculadas a estudios futuros y a la aplicación de los resultados. Se redactarán al cerrar `E10`.
+> **`[DERIVADAS DE LAS TRES CONCLUSIONES QUE EXISTEN]`** La guía pide sugerencias viables (`guia_ifi_contenido.md` L378 y L390), con relación estrecha al problema científico (`L386`) y relación con las conclusiones (`L394`). Se redactaron el 30 de octubre de 2026 a partir de las tres conclusiones que sí tienen resultado; **las que se deriven de la evaluación (`E8`) y de los principios de diseño (`E10`) se añadirán al cerrarlas.**
+
+1. **Incorporar la detección por ciclo anual al ciclo de lecturación ordinario, sobre el universo que hoy no se barre.** El 99,12 % del facturable circula sin código y ningún proceso lo recorre; la recomendación es convertir la detección en paso fijo de la rutina, no en auditoría excepcional. *(De la conclusión del Capítulo I.)*
+2. **Cerrar cada alerta con su criterio y su evidencia registrados.** La conclusión del Capítulo I muestra que lo que falta no es detectar, sino registrar: se recomienda que ninguna alerta quede sin estado confirmada, descartada o pendiente. *(De la conclusión del Capítulo I.)*
+3. **Tratar las 242 alertas mensuales como techo de viabilidad y no como meta de producción.** La capacidad medida equivale a unas 11 visitas diarias; si el criterio llegara a ese tope, se recomienda subir el umbral y no ampliar el volumen. *(De la conclusión del Capítulo III.)*
+4. **Completar la evaluación de campo antes de extender el método.** Se recomienda ejecutar los ciclos formativo y sumativo previstos y recién entonces considerar su aplicación en contextos semejantes. *(De las conclusiones del Capítulo II y del Capítulo III; se completará con la del Capítulo IV.)*
 
 ---
 
@@ -723,15 +731,15 @@ Zhang, B., Lin, G., Zheng, K., & Du, J. (2026). Anomaly detection and data repai
 | 3. Dedicatoria | `ifi_informe_final.md` §3 | Listo |
 | 4. Resumen | `ifi_informe_final.md` §4 | Listo |
 | 5. Índice | Estructura del IFI | Generado |
-| 6. Introducción | `01`, `02`, `03`, `06` | Listo (hipótesis/aporte/significación provisionales) |
+| 6. Introducción | `01`, `02`, `03`, `06` | Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por `E8` y `E10` |
 | 7. Capítulo I. Diagnóstico | `06_diagnostico.md` | Listo |
 | 8. Capítulo II. Marco teórico | `04_marco_teorico.md`, `05_estado_del_arte.md` | Listo |
-| 9. Capítulo III. Modelo teórico | `07c`, `07b` (+ `10` `[vacío]`) | Provisional |
-| 10. Capítulo IV. Propuesta | `07a`, `07b`, `07c` (+ `07d`, `07e`, `08`, `09` `[vacío]`) | Parcial |
-| 11. Conclusiones | `10` `[vacío]`, `08` `[vacío]` | Pendiente |
-| 12. Recomendaciones | `10` `[vacío]` | Pendiente |
+| 9. Capítulo III. Modelo teórico | `07c`, `07b` (+ `10` `[vacío]`) | Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10` |
+| 10. Capítulo IV. Propuesta | `07a`, `07b`, `07c` (+ `07d`, `07e`, `08`, `09` `[vacío]`) | Parcial; la validación depende de `E8` |
+| 11. Conclusiones | `06`, `04`, `05`, `07c`, `07b` (+ `08` `[vacío]`) | **Tres de cuatro** (`DEC-127`); la del Cap. IV espera a `E8` |
+| 12. Recomendaciones | `06`, `04`, `05`, `07c` (+ `08`, `10` `[vacío]`) | **Redactadas** (`DEC-127`); faltan las de `E8` y `E10` |
 | 13. Referencias | `propuesta_borrador_v1.md` §12 | Listo |
-| 14. Anexos | `06`, `07f` `[vacío]`, este mapa | Parcial |
+| 14. Anexos | `06`, `07f` `[vacío]`, este mapa | Parcial (Anexo B espera a `E7f`) |
 
 ---
 

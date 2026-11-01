@@ -34,28 +34,30 @@
 | Apartado del IFI (ALSIE) | Fuente en `tesis_ds/` | Transformación | Estado |
 |:--|:--|:--|:--|
 | 1. Carátula | `ifi_informe_final.md` §1 (datos dictados, `DEC-77`) | Completar con el tesista; no inventar | **Listo** |
-| 2. Agradecimientos | `ifi_informe_final.md` §2 (`DEC-93`, `DEC-94`) | Texto dictado por la tesista | **Listo** |
+| 2. Agradecimientos | `ifi_informe_final.md` §2 (`DEC-93`, `DEC-94`, `DEC-127`) | Texto dictado por la tesista; el tutor se añadió el 30 oct con texto dictado | **Listo** |
 | 3. Dedicatoria | `ifi_informe_final.md` §3 (`DEC-93`) | Texto dictado por la tesista | **Listo** |
 | 4. Resumen | `ifi_informe_final.md` §4 (`DEC-77`) | 241 palabras, un párrafo, pasado, voz pasiva | **Listo** |
 | 5. Índice | Estructura del propio IFI | Generar la lista de apartados, capítulos, epígrafes y subepígrafes | **Generado** |
-| 6. Introducción | `01_areas_y_temas.md`, `02_delimitacion.md`, `03_perfil_ds.md`, `06_diagnostico.md` | Perfil de investigación completo con las fórmulas 6.1–6.9 | **Listo (con hipótesis/aporte/significación provisionales)** |
+| 6. Introducción | `01_areas_y_temas.md`, `02_delimitacion.md`, `03_perfil_ds.md`, `06_diagnostico.md` | Perfil de investigación completo con las fórmulas 6.1–6.9 | **Listo — hipótesis, aporte y significación validados el 30 oct (`DEC-127`); `[PROVISIONAL]` por `E8` y `E10`** |
 | 6.1 Problema científico | `02_delimitacion.md` §1–§2, `06_diagnostico.md` | Fórmula 6.1 | **Listo** |
 | 6.2 Objeto de estudio | `02_delimitacion.md` §3, `03_perfil_ds.md` §4 | Fórmula 6.2 (resignificación inversa) | **Listo** |
 | 6.3 Campo de acción | `02_delimitacion.md` §4, `03_perfil_ds.md` §4 | Fórmula 6.3 | **Listo** |
-| 6.4 Objetivo general y específicos | `03_perfil_ds.md` §5, `propuesta_borrador_v1.md` §3 | Fórmula 6.4 | **Listo** |
-| 6.5 Hipótesis | `10_contribucion_conclusiones.md` `[vacío]` + `07a`/`07b`/`07c` | Fórmula 6.5 (provisional desde el diseño) | **Provisional — requiere validación** |
-| 6.6 Aporte teórico | `10_contribucion_conclusiones.md` `[vacío]` + `03_perfil_ds.md` §10 | Fórmula 6.6 (provisional) | **Provisional — requiere validación** |
-| 6.7 Significación práctica | `09_enlace_solucion.md` `[vacío]` + `08_evaluacion.md` `[vacío]` + `02_delimitacion.md` | Fórmula 6.7 (provisional) | **Provisional — requiere validación** |
-| 6.8 Métodos y técnicas | `03_perfil_ds.md` §8–§9, `07c_diseno_artefacto.md`, `06_diagnostico.md` | Fórmula 6.8 (teóricos/empíricos/técnicas) | **Listo** |
-| 6.9 Población y muestra | `06_diagnostico.md`, `03_perfil_ds.md` §11 | Fórmula 6.9 | **Listo** |
+| 6.4–6.5 Objetivo general y objetivos específicos | `03_perfil_ds.md` §5, `propuesta_borrador_v1.md` §3 | Fórmula 6.4 | **Listo** |
+| 6.6 Hipótesis | `10_contribucion_conclusiones.md` `[vacío]` + `07a`/`07b`/`07c` | Fórmula 6.5 (provisional desde el diseño) | **Validada por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10`** |
+| 6.7 Aporte teórico | `10_contribucion_conclusiones.md` `[vacío]` + `03_perfil_ds.md` §10 | Fórmula 6.6 (provisional) | **Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10`** |
+| 6.8 Significación práctica | `09_enlace_solucion.md` `[vacío]` + `08_evaluacion.md` `[vacío]` + `02_delimitacion.md` | Fórmula 6.7 (provisional) | **Validada por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por los resultados de `E8`** |
+| 6.9 Métodos y técnicas | `03_perfil_ds.md` §8–§9, `07c_diseno_artefacto.md`, `06_diagnostico.md` | Fórmula 6.8 (teóricos/empíricos/técnicas) | **Listo** |
+| 6.10 Población y muestra | `06_diagnostico.md`, `03_perfil_ds.md` §11 | Fórmula 6.9 | **Listo** |
 | 7. Capítulo I. Diagnóstico | `06_diagnostico.md`, `08_evaluacion.md` `[vacío]` | Volcado completo — ver §3 | **Listo (evaluación pendiente)** |
 | 8. Capítulo II. Marco teórico | `04_marco_teorico.md` + `05_estado_del_arte.md` | Volcado completo — ver §3 | **Listo** |
-| 9. Capítulo III. Modelo teórico | `10_contribucion_conclusiones.md` `[vacío]` + `07c_diseno_artefacto.md` + `07b_requisitos.md` | Fórmula 6.10 + volcado — ver §3 | **Provisional — requiere E10** |
-| 10. Capítulo IV. Propuesta | `07a_alternativas.md`, `07c_diseno_artefacto.md`, `07d_plan_construccion.md` `[vacío]`, `07e_construccion_verificacion.md` `[vacío]`, `08_evaluacion.md` `[vacío]`, `09_enlace_solucion.md` `[vacío]` | Fórmula 6.11 + volcado — ver §3 | **Parcial — E7d/E7e/E8/E9 pendientes** |
-| 11. Conclusiones | `10_contribucion_conclusiones.md` `[vacío]`, `08_evaluacion.md` `[vacío]` | Una por capítulo, en términos de resultados | **Pendiente — requiere E8/E10** |
-| 12. Recomendaciones | `10_contribucion_conclusiones.md` `[vacío]` (trabajo futuro) | Sugerencias viables | **Pendiente — requiere E10** |
+| 9. Capítulo III. Modelo teórico | `10_contribucion_conclusiones.md` `[vacío]` + `07c_diseno_artefacto.md` + `07b_requisitos.md` | Fórmula 6.10 + volcado — ver §3 | **Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10`** |
+| 10. Capítulo IV. Propuesta | `07a_alternativas.md`, `07c_diseno_artefacto.md`, `07d_construccion.md` (abierto el 30 oct, `DEC-123`), `07e_construccion_verificacion.md` `[vacío]`, `08_evaluacion.md` `[vacío]`, `09_enlace_solucion.md` `[vacío]` | Fórmula 6.11 + volcado — ver §3 | **Parcial — E7d/E7e/E8/E9 pendientes** |
+| 11. Conclusiones | `06_diagnostico.md`, `04_marco_teorico.md`, `05_estado_del_arte.md`, `07c_diseno_artefacto.md` (+ `08` `[vacío]`) | Una por capítulo, en términos de resultados | **Tres de cuatro redactadas (`DEC-127`); la del Cap. IV requiere `E8`** |
+| 12. Recomendaciones | `06_diagnostico.md`, `04_marco_teorico.md`, `05_estado_del_arte.md`, `07c_diseno_artefacto.md` (+ `08`, `10` `[vacío]`) | Sugerencias viables | **Redactadas el 30 oct (`DEC-127`); faltan las de `E8` y `E10`** |
 | 13. Referencias bibliográficas | `propuesta_borrador_v1.md` §12 (22 entradas verificadas) | APA 7; correspondencia bidireccional | **Listo** |
 | 14. Anexos | `06_diagnostico.md`, `07f_ficha_artefacto.md` `[vacío]` + este mapa | Instrumentos, ficha y mapa DS → ALSIE | **Parcial — ficha pendiente (E7f)** |
+
+> **Nota sobre la numeración de la columna «Fórmula 6.x», escrita el 1 de noviembre de 2026.** Esa columna sigue el esquema definido en la definición del agente `traductor-alsie` (`.opencode/agent/traductor-alsie.md` L95–L107), que **fusiona *objetivo general* y *objetivos específicos* en una sola fórmula —la 6.4— y coloca el *campo de acción* antes de los objetivos.** Por eso, **a partir de la hipótesis el número de apartado y el número de fórmula difieren en uno:** el apartado **6.6** corresponde a la fórmula **6.5**. **Los números de la primera columna coinciden con el índice del IFI (§5), que es la fuente autoritativa de la numeración.** La columna de fórmulas se deja como está, porque renumerarla obliga a decidir si el esquema del agente se corrige también, y esa decisión no se toma aquí.
 
 ---
 
@@ -98,7 +100,7 @@
 | Alternativas consideradas y criterios de decisión con trade-offs | `07a_alternativas.md` §4–§6 |
 | Requisitos con trazabilidad al problema | `07b_requisitos.md` §3 (R1–R10) |
 | Diseño completo (componentes, estructura, decisiones, justificación) | `07c_diseno_artefacto.md` §3 |
-| Plan de construcción y versiones | `07d_plan_construccion.md` `[vacío]` — **requiere E7d** |
+| Plan de construcción y versiones | `07d_construccion.md` — **abierto el 30 oct (`DEC-123`)**, con plan, MPV y criterio de suficiencia; gate 0 de 6 |
 | Registro de construcción y verificación interna | `07e_construccion_verificacion.md` `[vacío]` — **requiere E7e** |
 | Evaluación (ciclos formativo y sumativo) con datos y resultados | `08_evaluacion.md` `[vacío]` — **requiere E8** |
 | Matriz de trazabilidad propuesta ↔ solución | `09_enlace_solucion.md` `[vacío]` — **requiere E9**; borrador en `matriz_coherencia.md` §"Trazabilidad propuesta ↔ solución" |
@@ -106,8 +108,8 @@
 ### Conclusiones / Recomendaciones
 | Contenido del IFI | Fuente exacta |
 |:--|:--|
-| Conclusiones por capítulo | `10_contribucion_conclusiones.md` `[vacío]` — **requiere E10** |
-| Recomendaciones (trabajo futuro) | `10_contribucion_conclusiones.md` `[vacío]` — **requiere E10** |
+| Conclusiones por capítulo | Redactadas en el IFI §11 desde `06_diagnostico.md`, `04_marco_teorico.md`, `05_estado_del_arte.md` y `07c_diseno_artefacto.md` — **tres de cuatro (`DEC-127`); la del Cap. IV requiere `E8`** |
+| Recomendaciones (trabajo futuro) | Redactadas en el IFI §12 el 30 oct desde las tres conclusiones (`DEC-127`) — **las que dependen de `E8` y `E10` se añaden al cerrarlas** |
 
 ### Anexos
 | Anexo | Fuente |
@@ -122,14 +124,14 @@
 
 | # | Apartado del IFI | Qué falta | Etapa que lo produce | Pregunta al tesista |
 |:--|:--|:--|:--|:--|
-| V1 | 6.5 Hipótesis | Principios de diseño validados | E10 | ¿Valida la hipótesis provisional construida desde el diseño (A2 + techo de capacidad)? |
-| V2 | 6.6 Aporte teórico | Principios de diseño validados | E10 | ¿Valida el aporte provisional? |
-| V3 | 6.7 Significación práctica | Enlace propuesta ↔ solución y evaluación | E9/E8 | ¿Valida la significación provisional? |
-| V4 | 9. Capítulo III | Principios de diseño y propiedades del modelo | E10 | ¿Confirma los componentes y relaciones del modelo provisional? |
+| V1 | 6.6 Hipótesis | Principios de diseño validados | E10 | **RESUELTA 30 oct (`DEC-127`): la hipótesis se confirmó sin ajustes; solo queda `E10`** |
+| V2 | 6.7 Aporte teórico | Principios de diseño validados | E10 | **RESUELTA 30 oct (`DEC-127`): el aporte se confirmó sin ajustes; solo queda `E10`** |
+| V3 | 6.8 Significación práctica | Enlace propuesta ↔ solución y evaluación | E9/E8 | **RESUELTA 30 oct (`DEC-127`): la significación se confirmó sin ajustes; la magnitud queda para `E8`** |
+| V4 | 9. Capítulo III | Principios de diseño y propiedades del modelo | E10 | **RESUELTA 30 oct (`DEC-127`): se confirmaron los 5 componentes, las 5 relaciones y las 9 propiedades; solo queda `E10`** |
 | V5 | 10. Capítulo IV | Plan de construcción, construcción, evaluación, matriz de trazabilidad | E7d/E7e/E8/E9 | — (depende de etapas) |
 | V6 | 11. Conclusiones | Resultados por capítulo | E8/E10 | — (depende de etapas) |
 | V7 | 12. Recomendaciones | Trabajo futuro | E10 | — (depende de etapas) |
 | V8 | 14. Anexo B | Ficha reproducible del artefacto | E7f | — (depende de etapas) |
-| V9 | 6.5/6.6/6.7 | Estructura oficial con autor de la propuesta | E7c/tesista | ¿Cuál es la estructura oficial (con autor) sobre la que se elabora el método? |
+| V9 | 10.2 Capítulo IV | Estructura oficial con autor de la propuesta | Tutor | **CON EL TUTOR desde el paquete del 30 oct (`DEC-117`); se propuso el DSRM de Peffers et al. (2007)** |
 | V10 | 1. Carátula | Logo institucional | Tesista | ¿Se inserta el logo en el maquetado final? |
-| V11 | 2. Agradecimientos | Inclusión del tutor | Tesista | ¿Se agradece al tutor (ítem 13, revisión del 30 oct)? |
+| V11 | 2. Agradecimientos | Inclusión del tutor | Tesista | **RESUELTA 30 oct (`DEC-127`): el tutor entra, con texto dictado por la tesista** |

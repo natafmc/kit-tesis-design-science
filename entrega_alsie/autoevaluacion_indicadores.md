@@ -2,7 +2,7 @@
 
 > **Fuente de los criterios:** `instituciones/alsie/indicadores_revision_ifi.md` (solo indicadores del nivel de maestría).
 > **Documento evaluado:** `entrega_alsie/IFI_ALSIE.md`.
-> **Fecha:** 29 de octubre de 2026.
+> **Fecha:** 29 de octubre de 2026. **Actualizado el 1 de noviembre de 2026** después de aplicar `DEC-127` —tres de cuatro conclusiones y sus recomendaciones—.
 > **Veredicto:** Cumple / Parcial / No cumple. Un "Parcial" o "No cumple" **no se oculta**: se registra y se propone cómo subsanarlo.
 
 ---
@@ -119,7 +119,7 @@
 |:--|:--|:--|
 | Sistematiza los fundamentos teóricos | Cumple | §10.1 |
 | Asume una definición de lo que se propone | Cumple | §10.1 |
-| Presenta la estructura oficial, con autor | **No cumple** | §10.2 — no identificada; se pide al tesista |
+| Presenta la estructura oficial, con autor | **No cumple** | §10.2 — se propuso el DSRM de Peffers et al. (2007); **está con el tutor desde el paquete del 30 oct (`DEC-117`)** |
 | Se desarrolla sobre la definición y estructura asumida | **Parcial** | §10.5 — depende de §10.2 |
 | Concreción de lo modelado en el Capítulo III | Cumple | §10.8 |
 | Relación con los capítulos anteriores | Cumple | §10.8 |
@@ -130,21 +130,21 @@
 ### Conclusiones
 | Indicador | Veredicto | Evidencia |
 |:--|:--|:--|
-| Relación con los objetivos específicos | **No cumple** | §11 — pendiente de E8/E10 |
-| Resultados inferenciales | **No cumple** | §11 — pendiente |
-| Resultados concretos y medibles | **No cumple** | §11 — pendiente |
-| Precisión | **No cumple** | §11 — pendiente |
-| Dominio del tema | **No cumple** | §11 — pendiente |
-| Objetividad, precisión y claridad | **No cumple** | §11 — pendiente |
+| Relación con los objetivos específicos | **Parcial** | §11 — las conclusiones I, II y III responden a sus objetivos; la del Cap. IV requiere `E8` (`DEC-127`) |
+| Resultados inferenciales | **Parcial** | §11 — I e II infieren de lo medido; III describe el modelo; IV falta (`DEC-127`) |
+| Resultados concretos y medibles | **Parcial** | §11 — la I cita 1 053 / 174 / 136 / 47 982 / 242,2 con fuente en §7.4; la IV falta (`DEC-127`) |
+| Precisión | **Parcial** | §11 — tres de cuatro redactadas con cifras trazables; falta la del Cap. IV (`DEC-127`) |
+| Dominio del tema | **Parcial** | §11 — tres de cuatro; falta la del Cap. IV (`DEC-127`) |
+| Objetividad, precisión y claridad | **Parcial** | §11 — tres de cuatro, en términos de resultados y no de sugerencias; falta la del Cap. IV (`DEC-127`) |
 
 ### Recomendaciones
 | Indicador | Veredicto | Evidencia |
 |:--|:--|:--|
-| Relación con las conclusiones | **No cumple** | §12 — pendiente de E10 |
-| Aplicaciones futuras | **No cumple** | §12 — pendiente |
-| Estudios futuros | **No cumple** | §12 — pendiente |
-| Viables | **No cumple** | §12 — pendiente |
-| En términos de sugerencias | **No cumple** | §12 — pendiente |
+| Relación con las conclusiones | **Cumple** | §12 — cada una de las cuatro declara de qué conclusión sale (`DEC-127`) |
+| Aplicaciones futuras | **Cumple** | §12 — 1, 2 y 3 aplican resultados ya medidos (`DEC-127`) |
+| Estudios futuros | **Parcial** | §12 — solo la 4 (completar la evaluación de campo); faltan las que deriven de `E8` (`DEC-127`) |
+| Viables | **Cumple** | §12 — las cuatro caben en la capacidad medida de 242 alertas/mes (`DEC-127`) |
+| En términos de sugerencias | **Cumple** | §12 — ninguna se enuncia como resultado (`DEC-127`) |
 
 ### Referencias bibliográficas
 | Indicador | Veredicto | Evidencia |
@@ -179,8 +179,8 @@
 | Objetivos específicos – Métodos | Cumple | §6.9 |
 | Perfil de investigación – Estructura de la tesis | Cumple | §6 ↔ §7–§10 |
 | Objetivos específicos – Resultados por capítulos | **Parcial** | §7–§10 responden a los objetivos; los resultados de E8/E10 faltan |
-| Objetivos específicos – Conclusiones | **No cumple** | §11 pendiente |
-| Conclusiones – Recomendaciones | **No cumple** | §11–§12 pendientes |
+| Objetivos específicos – Conclusiones | **Parcial** | §11 — tres de cuatro conclusiones responden a objetivos; la IV requiere `E8` (`DEC-127`) |
+| Conclusiones – Recomendaciones | **Parcial** | §12 derivada de las tres conclusiones existentes (`DEC-127`); falta la de la conclusión IV |
 
 ---
 
@@ -191,21 +191,23 @@
 | Título | 6 | 0 | 0 |
 | Resumen | 5 | 0 | 0 |
 | Índice | 1 | 2 | 0 |
-| Introducción | 15 | 7 | 0 |
-| Capítulo I | 18 | 3 | 0 |
-| Capítulo II | 14 | 0 | 0 |
-| Capítulo III | 5 | 2 | 0 |
+| Introducción | 12 | 8 | 0 |
+| Capítulo I | 16 | 2 | 0 |
+| Capítulo II | 15 | 0 | 0 |
+| Capítulo III | 6 | 2 | 0 |
 | Capítulo IV | 7 | 1 | 1 |
-| Conclusiones | 0 | 0 | 6 |
-| Recomendaciones | 0 | 0 | 5 |
+| Conclusiones | 0 | 6 | 0 |
+| Recomendaciones | 4 | 1 | 0 |
 | Referencias | 5 | 0 | 0 |
 | Anexos | 5 | 1 | 0 |
-| Relaciones esenciales | 7 | 1 | 2 |
+| Relaciones esenciales | 7 | 3 | 0 |
 
-**Lectura.** Los apartados que dependen de material ya cerrado (título, resumen, introducción, Capítulos I y II, referencias) **cumplen**. Los apartados que dependen de etapas abiertas (Capítulo III, Capítulo IV, conclusiones, recomendaciones, anexo B) quedan **parciales o pendientes**, y **ninguno se ha rellenado con supuestos**. Los "No cumple" no son defectos de redacción: son **ausencias de material de origen** que se resolverán al cerrar `E7d`, `E7e`, `E7f`, `E8`, `E9` y `E10`.
+> **Nota de reconciliación, 1 de noviembre de 2026.** Al verificar esta síntesis contra el conteo real de las filas, se detectó que **cuatro filas no cuadraban**: `Introducción` declaraba 15/7 y sus filas dan 12/8; `Capítulo I` declaraba 18/3 y da 16/2; `Capítulo II` declaraba 14/0 y da 15/0; `Capítulo III` declaraba 5/2 y da 6/2. **La tabla reclamaba 109 filas cuando la sección 1 contiene 106.** Se verificó que el desajuste **ya existía en el commit anterior y no fue introducido por la sincronización del 30 de octubre** —los bloques afectados y sus filas no se tocaron entonces—. **Se corrigió la síntesis y no las filas**, porque las filas son las evaluaciones efectivamente hechas y cada una lleva su evidencia; la tabla es un derivado de ellas. **Total corregido: 106 filas de la sección 1 y 10 de la sección 2.**
 
-**Cómo subsanar los "No cumple":**
-1. **Estructura oficial con autor (§10.2):** preguntar al tesista cuál asume (se propone el DSRM de Peffers et al., 2007).
-2. **Conclusiones (§11):** redactar una por capítulo al cerrar `E8` y `E10`.
-3. **Recomendaciones (§12):** derivar de las conclusiones al cerrar `E10`.
-4. **Relaciones Objetivos ↔ Conclusiones y Conclusiones ↔ Recomendaciones:** se sostendrán cuando existan §11 y §12.
+**Lectura.** Los apartados que dependen de material ya cerrado (título, resumen, introducción, Capítulos I y II, referencias) **cumplen**. **El 30 de octubre de 2026 se resolvió todo lo que dependía de una decisión de la tesista (`DEC-127`)**: se validaron sin ajustes la hipótesis, el aporte y la significación, se confirmó el modelo con sus 5 componentes, 5 relaciones y 9 propiedades, se redactaron **tres de las cuatro conclusiones** y **cuatro recomendaciones**, y el tutor entró en los agradecimientos con texto dictado. **Los apartados que siguen dependiendo de etapas abiertas (Capítulo III y IV por los principios de `E10`, conclusión del Cap. IV por `E8`, anexo B por `E7f`) quedan parciales o pendientes, y ninguno se ha rellenado con supuestos.** Los "No cumple" restantes no son defectos de redacción: son **ausencias de material de origen** que se resolverán al cerrar `E7e`, `E7f`, `E8`, `E9` y `E10`.
+
+**Cómo subsanar los "No cumple" y los "Parcial" nuevos:**
+1. **Estructura oficial con autor (§10.2):** está con el tutor desde el paquete del 30 oct (`DEC-117`); se propuso el DSRM de Peffers et al., 2007. Se escribe la respuesta cuando Roberto la dé.
+2. **Conclusiones (§11):** tres de cuatro redactadas el 30 oct (`DEC-127`); falta la del Capítulo IV, que se redacta al cerrar `E8`.
+3. **Recomendaciones (§12):** cuatro redactadas el 30 oct desde las tres conclusiones (`DEC-127`); las que dependen de `E8` y `E10` se añaden al cerrarlas.
+4. **Relaciones Objetivos ↔ Conclusiones y Conclusiones ↔ Recomendaciones:** pasaron a *Parcial* el 30 oct; cierran cuando exista la conclusión del Capítulo IV.
