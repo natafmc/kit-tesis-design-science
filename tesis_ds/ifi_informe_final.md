@@ -142,7 +142,7 @@
 
 ## 8. Capítulo II. Marco teórico de la investigación
 
-**`[POR VERIFICAR]` — pendiente.** *Insumo directo:* `04_marco_teorico.md`. *Tiempos verbales:* **presente**. *Pendiente abierto:* la atribución de la plantilla de principios de diseño (`DEC-12`, consulta al tutor **sin enviar**).
+**`[POR VERIFICAR]` — pendiente.** *Insumo directo:* `04_marco_teorico.md`. *Tiempos verbales:* **presente**. *Pendiente abierto:* ~~la atribución de la plantilla de principios de diseño (`DEC-12`, consulta al tutor **sin enviar**)~~ → **cerrado el 2 nov 2026 (`DEC-131`)**: la plantilla se atribuye a van Aken (2004) y Denyer, Tranfield y van Aken (2008), con la anatomía de Gregor, Kruse y Seidel (2020), enmarcada en Wieringa (2014).
 
 ---
 

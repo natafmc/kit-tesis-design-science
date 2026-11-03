@@ -104,7 +104,7 @@ Aplicado a este estudio:
 
 ### 2.7 La forma del principio de diseño
 
-Para articular principios de diseño este estudio adopta la plantilla **objetivo → contexto → mecanismo → principio**, atribuida a Wieringa (2014) `[por verificar: capítulo y página; ruta: preguntar al tutor, que cita el libro]`. El objetivo especifica qué se pretende lograr; el contexto delimita las condiciones bajo las cuales aplica; el mecanismo explica por qué funciona; el principio prescribe qué debe tener el artefacto. Omisiones frecuentes que hay que evitar: el contexto —producen principios que suenan universales pero no lo son— y el mecanismo —dejan el principio como recomendación sin explicación—. **La plantilla se exige igualmente aunque la atribución no se confirme:** lo que estaría en juego es solo de dónde viene la forma, no si se usa.
+Para articular principios de diseño este estudio adopta la plantilla **objetivo → contexto → mecanismo → principio**. **La atribución de esa forma a Wieringa (2014) se retiró el 2 de noviembre de 2026 (`DEC-131`)**: no se pudo verificar en el libro —cuatro búsquedas y sin acceso al texto—, y la formalización cuádruple de reglas de diseño prescriptivas procede de **van Aken (2004)**, consolidada en **Denyer, Tranfield y van Aken (2008)**, con la anatomía del principio de **Gregor, Kruse y Seidel (2020)**; **Wieringa (2014) se conserva como el problema de diseño en que se enmarca la formulación**. El objetivo especifica qué se pretende lograr; el contexto delimita las condiciones bajo las cuales aplica; el mecanismo explica por qué funciona; el principio prescribe qué debe tener el artefacto. Omisiones frecuentes que hay que evitar: el contexto —producen principios que suenan universales pero no lo son— y el mecanismo —dejan el principio como recomendación sin explicación—. **La forma se declara, en consecuencia, como formulación prescriptiva estructurada según la lógica CIMO de Denyer, Tranfield y van Aken (2008) —contexto, intervención, mecanismo y resultado—, con la anatomía del principio de Gregor, Kruse y Seidel (2020), enmarcada en el problema de diseño de Wieringa (2014).**
 
 **Decisión que este marco fija.** Los principios de E10 se redactarán con esa plantilla. Se descarta de antemano derivarlos de una única evaluación con muestra pequeña.
 
@@ -254,7 +254,7 @@ Dos secciones eliminadas de diecisiete. No es una reducción grande, pero es el 
 | **Capacidad de verificación** | Volumen de alertas que el equipo puede resolver en un periodo sin exceder su carga normal: ≈11 visitas diarias |
 | **Aplicabilidad** | Que practicantes que no participaron en la investigación puedan seguir los pasos y obtener los resultados esperados |
 | **Efectividad** | Comparación de resultados con y sin el método |
-| **Principio de diseño** | Prescripción redactada como objetivo → contexto → mecanismo → principio (Wieringa, 2014) |
+| **Principio de diseño** | Prescripción redactada como objetivo → contexto → mecanismo → principio, según la lógica CIMO de Denyer, Tranfield y van Aken (2008) |
 | **Condición de contorno** | Límite bajo el cual un principio deja de ser aplicable; forma parte de la contribución, no de las limitaciones |
 | **Exemplar** | Instanciación de apoyo: las aplicaciones sobre la base de datos que muestran que el método es ejecutable |
 
@@ -276,7 +276,7 @@ Estas decisiones quedan deliberadamente abiertas. Cerrarlas aquí sería adelant
 
 ## 9. Registro de verificación de fuentes
 
-Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica con filtro de fecha, el **2 de octubre de 2026**. Cada entrada fue comprobada en autoría, título, publicación, volumen, número y páginas.
+Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica con filtro de fecha, el **2 de octubre de 2026**. Cada entrada fue comprobada en autoría, título, publicación, volumen, número y páginas. **Tres entradas nuevas** —van Aken (2004), Denyer, Tranfield y van Aken (2008) y Gregor, Kruse y Seidel (2020)— **se verificaron el 2 de noviembre de 2026** por el mismo método, y su contenido se confirmó además en OpenAlex (`DEC-131`).
 
 | N.º | Fuente | DOI verificado | Estado |
 |:--|:--|:--|:--|
@@ -287,21 +287,24 @@ Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica co
 | 5 | Venable, Pries-Heje y Baskerville (2016), *EJIS*, 25(1) | 10.1057/ejis.2014.36 | Verificada |
 | 6 | Gregor y Hevner (2013), *MIS Quarterly*, 37(2) | 10.25300/MISQ/2013/37.2.01 | Verificada |
 | 7 | Wieringa (2014), Springer | 10.1007/978-3-662-43839-8 | Verificada (libro) |
-| 8 | Chandola, Banerjee y Kumar (2009), *ACM Computing Surveys*, 41(3) | 10.1145/1541880.1541882 | Verificada |
-| 9 | Saito y Rehmsmeier (2015), *PLOS ONE*, 10(3) | 10.1371/journal.pone.0118432 | Verificada |
-| 10 | Axelsson (2000), *ACM TISSEC*, 3(3) | 10.1145/357830.357849 | Verificada |
-| 11 | Nwafor et al. (2023), *IEEE Access*, 11 | 10.1109/ACCESS.2023.3295688 | Verificada |
-| 12 | Noorchenarboo y Grolinger (2025), *Energy and Buildings*, 328 | 10.1016/j.enbuild.2024.115177 | Verificada |
-| 13 | Piscitelli et al. (2026), *Energy and Buildings*, 368 | 10.1016/j.enbuild.2026.117829 | Verificada |
-| 14 | Guerrero et al. (2018), *IEEE TPWRS*, 33(2) | 10.1109/TPWRS.2017.2721435 | Verificada |
-| 15 | Massaferro, Di Martino y Fernández (2020), *IEEE TPWRS*, 35(1) | 10.1109/TPWRS.2019.2928276 | Verificada |
-| 16 | Xia, Xiao y Liang (2020), *IEEE TIFS*, 15 | 10.1109/TIFS.2019.2921232 | Verificada |
+| 8 | van Aken (2004), *Journal of Management Studies*, 41(2) | 10.1111/j.1467-6486.2004.00430.x | Verificada (2 nov 2026) |
+| 9 | Denyer, Tranfield y van Aken (2008), *Organization Studies*, 29(3) | 10.1177/0170840607088020 | Verificada (2 nov 2026) |
+| 10 | Gregor, Kruse y Seidel (2020), *Journal of the Association for Information Systems*, 21(6) | 10.17705/1jais.00649 | Verificada (2 nov 2026) |
+| 11 | Chandola, Banerjee y Kumar (2009), *ACM Computing Surveys*, 41(3) | 10.1145/1541880.1541882 | Verificada |
+| 12 | Saito y Rehmsmeier (2015), *PLOS ONE*, 10(3) | 10.1371/journal.pone.0118432 | Verificada |
+| 13 | Axelsson (2000), *ACM TISSEC*, 3(3) | 10.1145/357830.357849 | Verificada |
+| 14 | Nwafor et al. (2023), *IEEE Access*, 11 | 10.1109/ACCESS.2023.3295688 | Verificada |
+| 15 | Noorchenarboo y Grolinger (2025), *Energy and Buildings*, 328 | 10.1016/j.enbuild.2024.115177 | Verificada |
+| 16 | Piscitelli et al. (2026), *Energy and Buildings*, 368 | 10.1016/j.enbuild.2026.117829 | Verificada |
+| 17 | Guerrero et al. (2018), *IEEE TPWRS*, 33(2) | 10.1109/TPWRS.2017.2721435 | Verificada |
+| 18 | Massaferro, Di Martino y Fernández (2020), *IEEE TPWRS*, 35(1) | 10.1109/TPWRS.2019.2928276 | Verificada |
+| 19 | Xia, Xiao y Liang (2020), *IEEE TIFS*, 15 | 10.1109/TIFS.2019.2921232 | Verificada |
 
-**Total: 16 fuentes citadas en este documento** — todas con DOI en Crossref salvo Hevner (2007), verificada en AISeL. Ninguna sin verificar.
+**Total: 19 fuentes citadas en este documento** — todas con DOI en Crossref salvo Hevner (2007), verificada en AISeL. Ninguna sin verificar.
 
 **Nota de discrepancia — resuelta el 2 de octubre de 2026.** Crossref reporta para Hevner et al. (2004) el rango **75–106** y la lista canónica del asesor (`referencias/ds_ch15_referencias.md`) reporta **75–105**. **Decisión: se conserva 75–105**, por ser la fuente institucional del trabajo; la discrepancia queda registrada y se retira la nota del borrador. Para Hevner (2007) no se localizó rango de páginas en fuente abierta: se cita el número de artículo declarado por AISeL.
 
-**Materiales internos: no se citan.** Decisión del asesor del 2 de octubre de 2026. Los capítulos `referencias/ds_ch*.md` se usaron como fuente de trabajo, pero **no entran a la lista de referencias**; toda afirmación que parecía apoyarse en ellos quedó reatribuida a su fuente primaria o reformulada como criterio adoptado por este estudio. Donde no había fuente primaria verificable, se marcó `[por verificar]` —hoy un solo caso: la plantilla de §2.7.
+**Materiales internos: no se citan.** Decisión del asesor del 2 de octubre de 2026. Los capítulos `referencias/ds_ch*.md` se usaron como fuente de trabajo, pero **no entran a la lista de referencias**; toda afirmación que parecía apoyarse en ellos quedó reatribuida a su fuente primaria o reformulada como criterio adoptado por este estudio. Donde no había fuente primaria verificable, se marcó `[por verificar]` —**hoy un solo caso: las páginas de Hevner (2007)**; el de la plantilla de §2.7 se cerró el 2 nov 2026 (`DEC-131`).
 
 **Fuentes descartadas por no superar la verificación.** Buscaciones sobre auditoría, control interno y atención de reclamos ante entes reguladores devolvieron resultados sin relación con el problema (sección 5.2). **No se incorporaron.** **DEC-3 se intentó el 3–4 de octubre (DEC-13) sobre bases de regulación y política energética, pero no dejó registro de resultado: se repite en la ventana 6–12 de octubre.** En cuanto haya algo volcado: si hubo fuente, la sección de §5.2 vuelve y se rehace la tabla de §6; si no la hubo, el tema queda fuera del marco teórico **por decisión explícita**.
 
@@ -313,7 +316,7 @@ Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica co
 |:--|:--|:--|
 | 1 | Cada eje del borrador fue evaluado con la prueba de eliminación y el resultado está escrito | **Cumple** (sección 6) |
 | 2 | Toda fuente citada fue verificada antes de citarse | **Cumple** (sección 9) |
-| 3 | Lo no verificable queda marcado `[por verificar]`, sin rellenarlo | **Cumple** (2 ítems: páginas de Hevner 2007, plantilla de Wieringa) |
+| 3 | Lo no verificable queda marcado `[por verificar]`, sin rellenarlo | **Cumple** (1 ítem: páginas de Hevner 2007) |
 | 4 | Cada decisión de diseño atribuida a una fuente está enlazada a esa fuente | **Cumple** (tablas de cada sección) |
 | 5 | No se deciden aquí las decisiones que corresponden a E6, E7a, E7b y E7c | **Cumple** (sección 8) |
 | 6 | Se identifica al menos una consecuencia verificable para E7a, E7b y E8 | **Cumple**: técnica constreñida por escasez de etiquetas; umbral escrito con techo de volumen; métricas precisión-exhaustividad |
@@ -331,7 +334,9 @@ Método: consulta a la API de Crossref por DOI o por búsqueda bibliográfica co
 
 - ~~**Búsqueda complementaria sobre control interno y auditoría (DEC-3)**~~ → **CERRADA por DEC-34 (E4-5, opción A).** Se repitió una sola vez, el 5 de octubre de 2026 con DEC-15, y con cuenta de registros: **60 identificados = 55 eliminados + 5 incluidos**, ninguno de los cinco pertinente, y `control interno auditoría…` en **0 de 20**. Las seis fuentes institucionales **no fueron consultables** (DEC-23): **0 extraídos, no 0 existentes**. **El tema queda fuera del marco teórico por decisión explícita**, con constancia en §5.2, y la tabla de la sección 6 queda **definitiva**.
 
-*Abierto, antes de la propuesta completa:*
+*Resuelto el 2 de noviembre de 2026:*
 
-1. **Confirmar el capítulo y la página de Wieringa (2014)** donde consta la plantilla objetivo → contexto → mecanismo → principio (§2.7). **Cuatro búsquedas en DuckDuckGo el 2 oct 2026 no la localizaron** y los PDF de Springer, de la Universidad de Twente y de GBV no se pudieron leer con las herramientas disponibles. **Confirmado: la tesista no tiene el libro → la consulta va al tutor**, que lo cita en su manuscrito. *Consulta **redactada el 5 oct 2026, lista para enviar** (DEC-12; texto en `00_estado.md`).* Hasta entonces la plantilla **se usa** pero la atribución queda marcada. **No bloquea la entrega del 5 de octubre.**
+1. ~~**Confirmar el capítulo y la página de Wieringa (2014)** donde consta la plantilla objetivo → contexto → mecanismo → principio (§2.7).~~ → **CERRADA el 2 nov 2026 (`DEC-131`), sin respuesta del tutor: la atribución era errónea.** La formalización cuádruple de reglas de diseño prescriptivas procede de **van Aken (2004)** y se consolidó en **Denyer, Tranfield y van Aken (2008)**; la anatomía del principio es de **Gregor, Kruse y Seidel (2020)**; **Wieringa (2014) queda como el problema de diseño en que se enmarca la formulación**. **Las páginas de Wieringa se omiten** por no haberse podido verificar. **La plantilla se usa** con esa atribución.
+
+**No queda ningún punto abierto en este marco.**
 

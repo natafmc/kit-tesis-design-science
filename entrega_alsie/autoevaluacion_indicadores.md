@@ -95,7 +95,7 @@
 | Categorías relacionadas con problema y objeto | Cumple | §8.3 |
 | Valoraciones críticas del autor | Cumple | §8.6 |
 | Toma de posición del autor | Cumple | §8.6 |
-| Estado del arte del objeto | Cumple | §8.7 |
+| Estado del arte del objeto | Cumple | §8.7 (brecha, búsquedas sin resultado y limitación); método y cuenta de registros en §8.1 y Anexo D (`DEC-130`) |
 | Organizado en epígrafes con relación a objeto y campo | Cumple | §8.1–§8.7 |
 | Organizado de forma histórico-lógica | Cumple | §8.4 |
 | Evita la atomización | Cumple | 7 epígrafes |
@@ -121,11 +121,14 @@
 | Asume una definición de lo que se propone | Cumple | §10.1 |
 | Presenta la estructura oficial, con autor | **No cumple** | §10.2 — se propuso el DSRM de Peffers et al. (2007); **está con el tutor desde el paquete del 30 oct (`DEC-117`)** |
 | Se desarrolla sobre la definición y estructura asumida | **Parcial** | §10.5 — depende de §10.2 |
-| Concreción de lo modelado en el Capítulo III | Cumple | §10.8 |
-| Relación con los capítulos anteriores | Cumple | §10.8 |
-| Nivel de detalle que facilite su aplicación | Cumple | §10.5, §10.6 |
+| Concreción de lo modelado en el Capítulo III | Cumple | §10.10 |
+| Relación con los capítulos anteriores | Cumple | §10.10 |
+| Nivel de detalle que facilite su aplicación | Cumple | §10.5, §10.6, §10.7 |
 | Metodología para su aplicación | Cumple | §10.6 |
-| Constituye la solución del problema | Cumple | §10.8 |
+| Plan de construcción con entregables, mínimo producto viable y criterio de suficiencia | Cumple | §10.7 — volcado de `07d` el 2 nov (`DEC-129`); gate 0 de 6 declarado |
+| Diseño de la validación con criterios, valores y fuentes | **Cumple (diseño)** | §10.8 — volcado de `08` el 2 nov (`DEC-129`); los resultados dependen de `E8` |
+| Matriz de trazabilidad propuesta ↔ solución | **Parcial** | §10.9 — volcado de `09` el 2 nov (`DEC-129`): 13 secciones con estado al 30 oct; el cierre depende de `E9` |
+| Constituye la solución del problema | Cumple | §10.10 |
 
 ### Conclusiones
 | Indicador | Veredicto | Evidencia |
@@ -195,14 +198,14 @@
 | Capítulo I | 16 | 2 | 0 |
 | Capítulo II | 15 | 0 | 0 |
 | Capítulo III | 6 | 2 | 0 |
-| Capítulo IV | 7 | 1 | 1 |
+| Capítulo IV | 9 | 2 | 1 |
 | Conclusiones | 0 | 6 | 0 |
 | Recomendaciones | 4 | 1 | 0 |
 | Referencias | 5 | 0 | 0 |
 | Anexos | 5 | 1 | 0 |
 | Relaciones esenciales | 7 | 3 | 0 |
 
-> **Nota de reconciliación, 1 de noviembre de 2026.** Al verificar esta síntesis contra el conteo real de las filas, se detectó que **cuatro filas no cuadraban**: `Introducción` declaraba 15/7 y sus filas dan 12/8; `Capítulo I` declaraba 18/3 y da 16/2; `Capítulo II` declaraba 14/0 y da 15/0; `Capítulo III` declaraba 5/2 y da 6/2. **La tabla reclamaba 109 filas cuando la sección 1 contiene 106.** Se verificó que el desajuste **ya existía en el commit anterior y no fue introducido por la sincronización del 30 de octubre** —los bloques afectados y sus filas no se tocaron entonces—. **Se corrigió la síntesis y no las filas**, porque las filas son las evaluaciones efectivamente hechas y cada una lleva su evidencia; la tabla es un derivado de ellas. **Total corregido: 106 filas de la sección 1 y 10 de la sección 2.**
+> **Nota de reconciliación, 1 de noviembre de 2026.** Al verificar esta síntesis contra el conteo real de las filas, se detectó que **cuatro filas no cuadraban**: `Introducción` declaraba 15/7 y sus filas dan 12/8; `Capítulo I` declaraba 18/3 y da 16/2; `Capítulo II` declaraba 14/0 y da 15/0; `Capítulo III` declaraba 5/2 y da 6/2. **La tabla reclamaba 109 filas cuando la sección 1 contiene 106.** Se verificó que el desajuste **ya existía en el commit anterior y no fue introducido por la sincronización del 30 de octubre** —los bloques afectados y sus filas no se tocaron entonces—. **Se corrigió la síntesis y no las filas**, porque las filas son las evaluaciones efectivamente hechas y cada una lleva su evidencia; la tabla es un derivado de ellas. **Total corregido: 106 filas de la sección 1 y 10 de la sección 2.** *Actualización del 2 de noviembre de 2026 (`DEC-129`): se añadieron tres filas al Capítulo IV —plan de construcción, diseño de la validación y matriz de trazabilidad—, de modo que la sección 1 pasó a 109 filas y el bloque del Capítulo IV a 12 (9/2/1). Actualización posterior del mismo día (`DEC-130`): se volcó al Capítulo I las salvedades de las cifras y al Capítulo II la etapa de revisión bibliográfica —método, cuenta de registros, búsquedas sin resultado y registro de verificación, con el detalle en el Anexo D—; **no cambia el número de filas**, porque la guía de contenido exige las dos etapas del marco teórico y los indicadores de revisión ya cubrían el estado del arte: solo se enriqueció su evidencia.*
 
 **Lectura.** Los apartados que dependen de material ya cerrado (título, resumen, introducción, Capítulos I y II, referencias) **cumplen**. **El 30 de octubre de 2026 se resolvió todo lo que dependía de una decisión de la tesista (`DEC-127`)**: se validaron sin ajustes la hipótesis, el aporte y la significación, se confirmó el modelo con sus 5 componentes, 5 relaciones y 9 propiedades, se redactaron **tres de las cuatro conclusiones** y **cuatro recomendaciones**, y el tutor entró en los agradecimientos con texto dictado. **Los apartados que siguen dependiendo de etapas abiertas (Capítulo III y IV por los principios de `E10`, conclusión del Cap. IV por `E8`, anexo B por `E7f`) quedan parciales o pendientes, y ninguno se ha rellenado con supuestos.** Los "No cumple" restantes no son defectos de redacción: son **ausencias de material de origen** que se resolverán al cerrar `E7e`, `E7f`, `E8`, `E9` y `E10`.
 
@@ -211,3 +214,4 @@
 2. **Conclusiones (§11):** tres de cuatro redactadas el 30 oct (`DEC-127`); falta la del Capítulo IV, que se redacta al cerrar `E8`.
 3. **Recomendaciones (§12):** cuatro redactadas el 30 oct desde las tres conclusiones (`DEC-127`); las que dependen de `E8` y `E10` se añaden al cerrarlas.
 4. **Relaciones Objetivos ↔ Conclusiones y Conclusiones ↔ Recomendaciones:** pasaron a *Parcial* el 30 oct; cierran cuando exista la conclusión del Capítulo IV.
+5. **Ubicación de las limitaciones del estudio (§11):** ALSIE no tiene apartado propio de limitaciones; el traductor las colocó al cierre de las conclusiones (volcadas de `10_contribucion_conclusiones.md` §4 el 2 nov, `DEC-129`). **Pendiente de confirmación de la tesista** — si ALSIE prefiere otra ubicación, se trasladan sin cambiar el texto.

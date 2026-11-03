@@ -1,11 +1,11 @@
 # Guion de defensa oral — 20 minutos (modelo ALSIE)
 
 > **Documento rector:** `plantillas/presentacion_defensa_alsie.md`.
-> **Fuente del contenido:** `entrega_alsie/IFI_ALSIE.md` (IFI ya traducido).
+> **Fuente del contenido:** `entrega_alsie/IFI_ALSIE.md` (IFI al día con `DEC-130`).
 > **Tesis:** *Método de detección y verificación previa a la facturación de lecturas anómalas en distribución eléctrica.*
 > **Postulante:** Natalia Fabiola Medrano Cambará · **Tutor:** Luis Roberto Pérez Rios, Ph.D.
-> **Fecha:** 29 de octubre de 2026.
-> **Advertencia de estado:** el IFI aún tiene apartados parciales o pendientes (`E7d`, `E7e`, `E7f`, `E8`, `E9`, `E10`). Los bloques 10, 11, 12 y 13 del guion dependen de ese material; se marcan `[PENDIENTE]` y **no se rellenan con supuestos**. El resto del guion está completo.
+> **Fecha:** 2 de noviembre de 2026 (regenerado; la versión previa era del 29 de octubre).
+> **Advertencia de estado:** el IFI tiene los apartados 1 a 8 y 13 completos; el 9 (modelo) y sus análogos del perfil están **validados por la tesista el 30 de octubre (`DEC-127`)** y conservan `[PROVISIONAL]` solo por los principios de diseño de `E10`. Quedan abiertas las etapas `E7e`, `E7f`, `E8`, `E9` y `E10`; por eso los bloques 10, 11 y 13 del guion y las notas de los bloques 4, 8, 9 y 12 se marcan `[PENDIENTE]` **y no se rellenan con supuestos**. Dos preguntas abiertas afectan la defensa oral: la **estructura oficial con autor** (bloque 9, `DEC-117`) y el **número de verificadores** de la muestra de validación (bloques 5 y 11).
 
 ---
 
@@ -63,14 +63,14 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 | Problema, objeto y campo | Introducción (§6.1–§6.3) | `02_delimitacion.md`, `03_perfil_ds.md` |
 | Objetivos e hipótesis | Introducción (§6.4–§6.6) | `03_perfil_ds.md`, `10_contribucion_conclusiones.md` |
 | Diseño metodológico | Introducción (§6.9–§6.10) | `06_diagnostico.md`, `08_evaluacion.md` |
-| Diagnóstico | Capítulo I | `06_diagnostico.md` |
-| Marco teórico esencial | Capítulo II | `04_marco_teorico.md`, `05_estado_del_arte.md` |
-| Modelo teórico | Capítulo III | `07c_diseno_artefacto.md`, `07b_requisitos.md` |
-| Propuesta | Capítulo IV | `07a_alternativas.md`, `07c_diseno_artefacto.md` |
-| Demostración breve | Capítulo IV (metodología) | `07f_ficha_artefacto.md`, `09_enlace_solucion.md` |
-| Validación y resultados | Capítulo IV (validación) y Conclusiones | `08_evaluacion.md`, `09_enlace_solucion.md` |
+| Diagnóstico | Capítulo I (§7) | `06_diagnostico.md` |
+| Marco teórico esencial | Capítulo II (§8) | `04_marco_teorico.md`, `05_estado_del_arte.md` |
+| Modelo teórico | Capítulo III (§9) | `10_contribucion_conclusiones.md`, `07c_diseno_artefacto.md`, `07b_requisitos.md` |
+| Propuesta | Capítulo IV (§10) | `07a_alternativas.md`, `07c_diseno_artefacto.md`, `07d_plan_construccion.md` |
+| Demostración breve | Capítulo IV (§10.6–§10.7) | `07f_ficha_artefacto.md`, `09_enlace_solucion.md` |
+| Validación y resultados | Capítulo IV (§10.8) y Conclusiones (§11) | `08_evaluacion.md`, `09_enlace_solucion.md` |
 | Aporte y significación | Introducción (§6.7–§6.8) | `10_contribucion_conclusiones.md` |
-| Conclusiones y recomendaciones | Conclusiones y Recomendaciones | `10_contribucion_conclusiones.md` |
+| Conclusiones y recomendaciones | §11 y §12 | `10_contribucion_conclusiones.md` |
 
 ---
 
@@ -110,17 +110,19 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué decir:** objetivo general, objetivos específicos (uno por capítulo) y la hipótesis completa.
 
-> [El objetivo general es diseñar, construir y evaluar un método de detección y verificación previa a la facturación de lecturas anómalas no declaradas, y articular los principios de diseño que de su aplicación se desprenden. Los objetivos específicos son uno por capítulo: diagnosticar, sistematizar los fundamentos, modelar y elaborar y validar la propuesta.]
+> [El objetivo general es diseñar, construir y evaluar un método de detección y verificación previa a la facturación de lecturas anómalas no declaradas, y articular los principios de diseño que de su aplicación se desprenden, contribuyendo a la formalización de la detección sistemática en distribuidoras reguladas. Los objetivos específicos son uno por capítulo: diagnosticar, sistematizar los fundamentos, modelar, y elaborar y validar la propuesta.]
 
-**Hipótesis (destacada):**
+**Hipótesis general (destacada):**
 
 > *Si se aplica un método de detección y verificación que compara el consumo de cada cuenta contra su propio ciclo anual —el mismo mes de los cuatro años anteriores—, con un umbral escrito y calibrado contra un techo de capacidad, y que emite sus alertas agrupadas por ruta con la comparación que las originó, entonces se identifican lecturas anómalas no declaradas que hoy no se detectan, sin exceder la capacidad del equipo de verificación, porque concentra el esfuerzo en las cuentas cuya desviación respecto de su propio patrón estacional es mayor y devuelve al verificador la evidencia necesaria para aceptar o descartar cada alerta.*
 
 **Qué mostrar:** la hipótesis con la flecha "si se propone X con características Y, entonces se logra Z, porque M".
 
+**Qué decir si preguntan por las específicas:** hay tres, una por objetivo 1 a 3 —la magnitud y el costo son medibles; el criterio de ciclo anual mantiene el volumen dentro del techo, a diferencia de la ventana móvil; y el método con criterio escrito, explicación y registro es aplicable por verificadores ajenos—.
+
 **Qué evitar:** objetivos redactados como tareas; una hipótesis sin mecanismo.
 
-*[PENDIENTE — validación: la hipótesis es provisional hasta que cierre E10.]*
+*[Estado: la tesista validó la hipótesis general y las tres específicas sin ajustes el 30 de octubre (`DEC-127`). La marca `[PROVISIONAL]` del IFI queda solo por los principios de `E10` y la magnitud de `E8`.]*
 
 ---
 
@@ -132,12 +134,16 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 | Método | Objetivo específico |
 |:--|:--|
-| Análisis de bases de datos, observación | I. Diagnóstico |
-| Revisión bibliográfica con protocolo, análisis-síntesis | II. Marco teórico |
+| Análisis de bases de datos, observación participante | I. Diagnóstico |
+| Revisión bibliográfica con protocolo declarado, análisis-síntesis, histórico-lógico | II. Marco teórico |
 | Modelación, sistémico | III. Modelo teórico |
-| Entrevista, estudio de caso, calibración | IV. Propuesta y validación |
+| Entrevista, estudio de caso, calibración del umbral | IV. Propuesta y validación |
 
-**Población y muestra:** 29 750 cuentas; selección analítica (caso representativo de la clase de contextos).
+**Técnicas (una línea):** consultas SQL sobre el panel de consumo; análisis de tasas por 100 000 lecturas; codificación de la cadena de corrección en cinco pasos y cinco roles; calibración del umbral por recorrido del orden de desviaciones hasta el techo de capacidad.
+
+**Población y muestra:** 29 750 cuentas; unidades de análisis: 1 485 556 celdas cuenta-mes, 1 389 941 lecturas y 1 053 reclamos en 57 meses; selección **analítica, no estadística** (caso representativo de la clase de contextos); la muestra de validación será un lote de las alertas del método, resuelto por un verificador que no participó del estudio.
+
+*[PENDIENTE: número exacto de verificadores y su disponibilidad —§6.10 del IFI.]*
 
 **Qué evitar:** enumerar métodos sin propósito; detallar instrumentos (van al diagnóstico).
 
@@ -149,7 +155,9 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 > [El diagnóstico midió tres cosas. Primero, la magnitud: el 99,12 % del facturable circula sin código. Segundo, el costo: de 174 reclamos procedentes, 136 vinieron de lecturas sin código. Tercero, la carga: 242,2 correcciones manuales por mes, que equivalen a unas 11 visitas diarias y fijan el techo de capacidad. La regularidad central es que el código de irregularidad es una señal de riesgo —31,3 veces la tasa de procedencia por lectura— pero no un ámbito de trabajo, porque la mayoría de los procedentes no lo lleva.]
 
-**Qué mostrar:** tabla de línea base (Indicadores 1–3).
+**Qué mostrar:** tabla de línea base (indicadores 1–3).
+
+**Si preguntan por las salvedades de las cifras:** están declaradas en §7.4.6 del IFI —el defecto de 2 unidades en abril de 2025 se cotejó y no se corrigió (declarado), agosto de 2026 se cotejó sin desfase, los denominadores son mes a mes y el código de irregularidad no está en el archivo de reclamos—.
 
 **Qué evitar:** narrar cómo se aplicó cada instrumento; repetir el mismo dato en tabla y figura.
 
@@ -160,6 +168,8 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 **Qué decir:** solo las teorías que sustentan el modelo, con la toma de posición.
 
 > [El marco se apoya en cuatro decisiones. La anomalía es contextual, no de punto: un consumo solo lo es respecto de su estación y su cuenta. Bajo desequilibrio de clases, la métrica correcta es precisión-exhaustividad, no exactitud. La capacidad de verificación no es una comodidad, es el criterio de viabilidad. Y una alerta que no se explica no se adopta. De ahí salen los componentes del modelo.]
+
+**Toma de posición (una frase):** la revisión se declaró como **búsqueda preliminar con protocolo, no revisión sistemática** —el protocolo, la cuenta de registros de las tres corridas (448 = 389 + 59 → 54 trabajos) y el registro de verificación están en el IFI y en el anexo D—, y esa condición se asume como limitación, no se esconde.
 
 **Qué mostrar:** mapa mínimo "teoría → componente del modelo".
 
@@ -173,17 +183,17 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué decir:** la fundamentación breve, luego los componentes, luego las relaciones.
 
-> [El modelo tiene cinco componentes: depuración, segmentación, detección, verificación y resolución y registro. La relación esencial es un ciclo: la depuración precede a la segmentación y a la detección; la detección produce alertas con su explicación; la verificación las confirma o descarta; y el registro alimenta el ciclo siguiente. El techo de capacidad limita el volumen de la detección, y la agrupación por ruta organiza la salida.]
+> [El modelo se sustenta en la ciencia del diseño y en sus tres ciclos —relevancia, rigor y diseño—, y asume que una señal solo tiene valor si se convierte en una decisión operativa dentro del ciclo regulado. Tiene cinco componentes: depuración, segmentación, detección, verificación y resolución y registro. La relación esencial es un ciclo: la depuración precede a la segmentación y a la detección; la detección produce alertas con su explicación; la verificación las confirma o descarta; y el registro alimenta el ciclo siguiente. El techo de capacidad limita el volumen de la detección, y la agrupación por ruta organiza la salida.]
 
-**Qué mostrar:** **el gráfico del modelo**, grande y legible (la figura del Capítulo III).
+**Qué mostrar:** **el gráfico del modelo**, grande y legible (la figura del Capítulo III, §9.4).
 
 **Diapositiva 10b — Explicación.**
 
-> [La relación nueva que el estudio aporta es que la comparación contra el propio ciclo anual de la cuenta resuelve la estacionalidad sin fuente externa, y que la capacidad opera como techo de viabilidad y no como preferencia. El orden depuración → segmentación → detección no es arbitrario: es el único que evita clasificar celdas que después se excluyen.]
+> [La relación nueva que el estudio aporta es que la comparación contra el propio ciclo anual de la cuenta resuelve la estacionalidad sin fuente externa, y que la capacidad opera como techo de viabilidad y no como preferencia. El orden depuración → segmentación → detección no es arbitrario y está deducido, no supuesto: es el único que evita clasificar celdas que después se excluyen. Las nueve propiedades del modelo describen su comportamiento: sistémico, multifactorial, procesal, dinámico, flexible, comunicativo, interdisciplinario, complejo, y personológico en sentido parcial.]
 
 **Qué evitar:** saltarse el gráfico; describir el modelo sin mostrarlo; confundirlo con la herramienta.
 
-*[PENDIENTE — validación: los componentes y relaciones son provisionales hasta que cierre E10.]*
+*[Estado: la tesista validó los 5 componentes, las 5 relaciones y las 9 propiedades tal como están escritos el 30 de octubre (`DEC-127`). La marca `[PROVISIONAL]` del IFI queda solo por los principios de diseño de `E10`.]*
 
 ---
 
@@ -197,7 +207,7 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué evitar:** describir la propuesta sin anclarla al modelo; detalles técnicos de implementación.
 
-*[PENDIENTE — confirmar la estructura oficial con autor (§10.2 del IFI).]*
+*[PENDIENTE — confirmar la estructura oficial con autor (§10.2 del IFI): la candidata es el DSRM de Peffers et al. (2007); se pide confirmación o sustitución al tutor (`DEC-117`).]*
 
 ---
 
@@ -213,26 +223,28 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué evitar:** describir de nuevo el diseño; una sola función o un solo caso, preparado de antemano.
 
-*[PENDIENTE — E7f/E8: la exemplar y su producto de trabajo se producirán en esas etapas.]*
+*[PENDIENTE — `E7f`/`E8`: la exemplar y su producto de trabajo se producirán en esas etapas.]*
 
 ---
 
 ### Bloque 11 — Validación y resultados (1,5 min · diapositiva 15)
 
-**Qué decir:** cómo se puso a prueba la propuesta y qué datos confirman que resuelve el problema; la comparación línea base → resultado.
+**Qué decir:** cómo se puso a prueba la propuesta, qué está ya medido y qué falta medir; la comparación línea base → resultado.
 
-**Qué mostrar:** tabla de resultados con los indicadores de éxito, antes y después.
+**Qué mostrar:** tabla con el estado real de cada criterio.
 
-| Indicador | Línea base | Resultado |
+| Indicador | Línea base | Estado de la medición |
 |:--|:--|:--|
-| Cobertura retrospectiva de reclamos procedentes | 136 de 174 (78,16 %) sin código | *[pendiente E8]* |
-| Falsos positivos | sin criterio actual | *[pendiente de la calibración de θ]* |
-| Carga de verificación | 242,2 correcciones/mes | ≤ 242 alertas/mes (techo) |
-| Aplicabilidad | sin procedimiento escrito | 100 % de las alertas de la muestra (umbral fijado) |
+| Cobertura retrospectiva | 136 de 174 reclamos procedentes (78,16 %) sin código | Pendiente: falta contar los procedentes de la ventana de 9 meses (`E8`) |
+| Falsos positivos | sin criterio actual | Umbral `θ` **fijado** antes de construir: 39,67 (A2) y 495,36 (A1) (`DEC-121`); medición pendiente |
+| Carga de verificación | 242,2 correcciones/mes | Techo 242 (218+24); **medición previa del método: 1 520 alertas en 9 meses, máximo 229 en abril, 0 meses sobre el techo** (`DEC-124`) |
+| Aplicabilidad | sin procedimiento escrito | 100 % de las alertas, verificador ajeno; pendiente `E7f`/`E8` |
 
-**Qué evitar:** afirmar éxito sin dato; confundir "el método se aplica" con "resuelve el problema".
+**Qué decir sobre el diseño (una frase):** los cuatro criterios se fijaron **antes de construir**; la evaluación es primero formativa y luego sumativa, en campo, con el equipo real, y su cronograma va del 9 al 24 de noviembre con rediseño documentado obligatorio en medio.
 
-*[PENDIENTE — E8: los resultados de la validación se producirán en esa etapa.]*
+**Qué evitar:** afirmar éxito sin dato; confundir "el método se aplica" con "resuelve el problema"; presentar la medición previa de carga como resultado final.
+
+*[PENDIENTE — `E8`: los resultados definitivos de cobertura, falsos positivos y aplicabilidad se producirán en esa etapa; la medición de carga ya disponible es previa, no definitiva.]*
 
 ---
 
@@ -240,13 +252,13 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué decir:** el aporte como conocimiento nuevo y su utilidad concreta, con el vínculo entre ambos.
 
-> [El aporte no es el método, sino la formalización de la detección como un proceso con componentes y relaciones explícitas, y las regularidades que explican el comportamiento del objeto: que la comparación contra el propio ciclo anual resuelve la estacionalidad sin fuente externa; que la capacidad opera como techo de viabilidad; y que la explicabilidad de la alerta es condición de su adopción. La significación práctica es que la distribuidora puede incorporar detección sistemática sin ampliar su equipo de verificación.]
+> [El aporte no es el método, sino la formalización de la detección como un proceso con componentes y relaciones explícitas, y las regularidades que explican el comportamiento del objeto: que la comparación contra el propio ciclo anual resuelve la estacionalidad sin fuente externa; que la capacidad opera como techo de viabilidad; y que la explicabilidad de la alerta es condición de su adopción. Estas relaciones no estaban en el estado del arte, que trata el error de lectura como problema metrológico y no como problema de proceso. La significación práctica es que la distribuidora puede incorporar detección sistemática sin ampliar su equipo de verificación, sustituyendo la dependencia de una sola persona por un criterio escrito y reproducible.]
 
 **Qué mostrar:** la regularidad formulada, con su contexto y su mecanismo.
 
 **Qué evitar:** presentar el método como si fuera el aporte; inflar la generalización.
 
-*[PENDIENTE — E10: el aporte definitivo se redactará con los principios de diseño.]*
+*[Estado: la tesista validó el aporte y la significación el 30 de octubre (`DEC-127`). Queda pendiente una sola cosa: los principios de `E10`. La atribución de la plantilla objetivo→contexto→mecanismo→principio se resolvió el 2 de noviembre de 2026 (`DEC-131`), sin respuesta del tutor: se declara como formulación prescriptiva según la lógica CIMO de Denyer, Tranfield y van Aken (2008), con la anatomía del principio de Gregor, Kruse y Seidel (2020), enmarcada en el problema de diseño de Wieringa (2014).]*
 
 ---
 
@@ -256,7 +268,15 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué mostrar:** lista numerada que mapee objetivo → resultado.
 
-*[PENDIENTE — E8/E10: las conclusiones y recomendaciones se redactarán al cerrar esas etapas.]*
+1. **Diagnóstico:** de 1 053 reclamos, 174 procedentes y 136 (78,16 %) de lecturas sin código, pese a que el código cubre solo el 0,88 %; con 242,2 correcciones mensuales. **El problema no es la ausencia de detección, sino su informalidad.**
+2. **Marco teórico:** la brecha es de enfoque demostrada —la literatura sabe puntuar una lectura, pero no documenta cómo convertir esa puntuación en una decisión operativa dentro de un ciclo regulado—.
+3. **Modelo:** cinco componentes, cinco relaciones y nueve propiedades, con el orden depuración → segmentación → detección **deducido** y la capacidad como techo de viabilidad de 242 alertas/mes.
+
+**Recomendaciones (una línea):** cuatro derivadas de esas conclusiones —detección por ciclo anual como paso fijo del ciclo ordinario; cerrar cada alerta con criterio y evidencia; tratar las 242 alertas como techo y no como meta; y completar la evaluación de campo antes de extender el método—.
+
+**Si preguntan por los límites:** el IFI declara cinco —ventana de 9 meses, lecturas en cero excluidas del cálculo, 1,71 % de grupos de referencia no robustos, búsqueda preliminar y no sistemática, y acceso limitado a SciELO/IEEE/BVS— (§11).
+
+**Qué decir de la que falta:** la conclusión del Capítulo IV se escribe con los resultados de `E8`; no existe aún y esa es su causa exacta.
 
 **Qué evitar:** conclusiones en términos de sugerencias; recomendaciones inviables.
 
@@ -268,11 +288,11 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 ---
 
-## 5. Demostración breve del artefacto o propuesta
+## 5. Demostración breve de la propuesta
 
 La demostración **no reemplaza a la validación**: muestra que la propuesta es aplicable; la validación muestra que resuelve el problema. Como la propuesta es un **método**, la demostración es la **aplicación del método en el caso real** (la exemplar): mostrar los pasos ejecutados y el producto de trabajo resultante.
 
-**Reglas:** una sola función o un solo caso, preparada de antemano, con respaldo por si falla la conexión en vivo. Si la propuesta no es software, la "demostración" es la exemplar de aplicación, no una excusa para describir de nuevo el diseño.
+**Reglas:** una sola función o un solo caso, preparado de antemano, con respaldo por si falla la conexión en vivo. Si la propuesta no es software, la "demostración" es la exemplar de aplicación, no una excusa para describir de nuevo el diseño.
 
 ---
 
@@ -323,6 +343,7 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 - [ ] Las conclusiones son resultados por objetivo, no sugerencias.
 - [ ] El número de diapositivas está entre 14 y 16.
 - [ ] La portada y el cierre incluyen los datos institucionales.
+- [ ] Están resueltas las dos preguntas abiertas que afectan la defensa: estructura oficial con autor (Bloque 9) y número de verificadores (Bloques 5 y 11).
 
 ---
 
@@ -366,7 +387,7 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 | Razón de tasas con/sin código | 31,3 × |
 | Correcciones manuales mensuales | 242,2 (≈ 11 visitas/día) |
 
-> [El código es una señal de riesgo de alta potencia, pero no un ámbito de trabajo: la mayoría de los procedentes no lo lleva. La capacidad de verificación es un límite real.]
+> [El código es una señal de riesgo de alta potencia, pero no un ámbito de trabajo: la mayoría de los procedentes no lo lleva. La capacidad de verificación es un límite real. Las salvedades de estas cifras están declaradas en §7.4.6 del informe.]
 
 ### Diapositiva 10 — Modelo teórico (3,5 min, dos diapositivas)
 
@@ -381,14 +402,14 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 
 **Diapositiva 10b — Explicación**
 
-> [La comparación contra el propio ciclo anual resuelve la estacionalidad sin fuente externa. La capacidad opera como techo de viabilidad. El orden depuración → segmentación → detección es el único que evita clasificar celdas que después se excluyen.]
+> [La comparación contra el propio ciclo anual resuelve la estacionalidad sin fuente externa. La capacidad opera como techo de viabilidad. El orden depuración → segmentación → detección es el único que evita clasificar celdas que después se excluyen, y está deducido, no supuesto.]
 
 ### Diapositiva 12 — Propuesta (2 min)
 
 **Título:** Propuesta: el método como concreción del modelo
 
 - **Definición:** método (pasos, roles, entradas, salidas, precondiciones, productos).
-- **Estructura oficial:** DSRM de Peffers et al. (2007).
+- **Estructura oficial:** DSRM de Peffers et al. (2007) — *candidata, pendiente de confirmación*.
 - **Traza:** cada componente del modelo → un paso del método.
 
 ### Diapositiva 14 — Demostración breve (1,5 min)
@@ -403,14 +424,14 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 
 ### Diapositiva 15 — Validación y resultados (1,5 min)
 
-**Título:** Validación: línea base frente a resultado
+**Título:** Validación: estado de los cuatro criterios
 
-| Indicador | Línea base | Resultado |
+| Indicador | Línea base | Estado |
 |:--|:--|:--|
-| Cobertura retrospectiva | 136 de 174 sin código | *[pendiente E8]* |
-| Falsos positivos | sin criterio actual | *[pendiente de θ]* |
-| Carga de verificación | 242,2/mes | ≤ 242 alertas/mes |
-| Aplicabilidad | sin procedimiento | 100 % de las alertas de la muestra |
+| Cobertura retrospectiva | 136 de 174 sin código | Pendiente (`E8`) |
+| Falsos positivos | sin criterio actual | `θ` fijado: 39,67 / 495,36 (`DEC-121`); medición pendiente |
+| Carga de verificación | 242,2/mes | Techo 242; medición previa: 1 520 alertas, máx. 229 (abril), 0 meses sobre techo (`DEC-124`) |
+| Aplicabilidad | sin procedimiento | 100 %, verificador ajeno; pendiente (`E7f`/`E8`) |
 
 ### Diapositiva 16 — Aporte y significación práctica (1,5 min)
 
@@ -425,8 +446,11 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 
 **Título:** Conclusiones
 
-*[PENDIENTE — E8/E10: una conclusión por objetivo específico, en términos de resultados.]*
+1. **Diagnóstico:** el problema no es la ausencia de detección, sino su informalidad (99,12 % sin barre; 136 de 174 procedentes sin código).
+2. **Marco teórico:** brecha de enfoque demostrada —se puntúa, no se decide dentro de un ciclo regulado—.
+3. **Modelo:** cinco componentes, cinco relaciones, nueve propiedades; orden deducido; capacidad como techo de viabilidad.
+4. **Propuesta:** *[pendiente `E8`]* — se escribirá con los resultados de la evaluación.
 
 ---
 
-*Guion generado por el agente `traductor-alsie` el 29 de octubre de 2026 a partir de `entrega_alsie/IFI_ALSIE.md`. Los bloques 10 a 13 dependen de etapas aún abiertas y se completarán al cerrar `E7f`, `E8` y `E10`.*
+*Guion regenerado por el agente `traductor-alsie` el 2 de noviembre de 2026 desde `entrega_alsie/IFI_ALSIE.md` (al día con `DEC-130`), según `plantillas/presentacion_defensa_alsie.md`. El bloque 10, la conclusión del Capítulo IV y los resultados definitivos del bloque 11 dependen de `E7f` y `E8`; el bloque 9 depende de la confirmación de la estructura oficial (`DEC-117`); el bloque 5, del número de verificadores; y las marcas `[PROVISIONAL]` de los bloques 4, 8 y 12, de los principios de `E10`.*

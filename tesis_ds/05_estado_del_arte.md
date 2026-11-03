@@ -410,7 +410,7 @@ Registrar los vacíos es parte del protocolo. Aquí **no se afirma que algo no e
 1. Hevner (2007): sin rango de páginas confirmado en fuente abierta — ver `04_marco_teorico.md` §9. *Se cita el número de artículo; no bloquea.*
 2. ~~Discrepancia 75–105 / 75–106 en Hevner et al. (2004)~~ → **resuelta el 2 oct 2026 (DEC-5): se conserva 75–105.** La discrepancia queda registrada en `04_marco_teorico.md` §9 y no se reprodujo en el borrador.
 3. El corpus del dominio está **sesgado hacia Crossref**: los trabajos de IEEE localizados fueron los que aparecieron en las referencias cruzadas de las revisiones MDPI, no el resultado de una búsqueda en IEEE Xplore. **Se ataca con DEC-1** (IEEE Xplore sobre metadatos, 3–4 oct); **el sesgo se da por superado solo cuando esté el conteo de registros.**
-4. **Plantilla objetivo → contexto → mecanismo → principio:** `[por verificar]` el capítulo y la página de Wieringa (2014) — *fuera de este gate, se sigue en `04_marco_teorico.md` §10 como E4-4.*
+4. ~~**Plantilla objetivo → contexto → mecanismo → principio:** `[por verificar]` el capítulo y la página de Wieringa (2014)~~ → **cerrada el 2 nov 2026 (`DEC-131`), sin respuesta del tutor: la atribución a Wieringa era errónea.** La formalización cuádruple procede de van Aken (2004) y de Denyer, Tranfield y van Aken (2008); la anatomía del principio, de Gregor, Kruse y Seidel (2020); Wieringa (2014) queda como problema de diseño. **Las páginas de Wieringa se omiten.** *Ver `04_marco_teorico.md` §2.7.*
 
 ---
 

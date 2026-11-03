@@ -15,7 +15,7 @@
 
 ## 2. Cómo se redacta cada principio
 
-**Plantilla:** **objetivo → contexto → mecanismo → principio**, atribuida a Wieringa (2014). **La atribución está ` [por verificar]` desde el 2 de octubre (`DEC-4`)** —la fuente primaria no se localizó—, y **ya va al tutor en el paquete del viernes 30** (`DEC-12`, `DEC-91`). **Mientras no se verifique, la plantilla se usa y la atribución se marca**: no se cite lo que no se pudo abrir.
+**Plantilla:** **objetivo → contexto → mecanismo → principio**, **atribuida a van Aken (2004) y Denyer, Tranfield y van Aken (2008), con la anatomía de Gregor, Kruse y Seidel (2020), enmarcada en el problema de diseño de Wieringa (2014)** (`DEC-131`). **La atribución a Wieringa (2014) que se sostenía desde el 2 de octubre se retiró el 2 nov 2026:** no se pudo verificar en el libro. **Las páginas de Wieringa se omiten** por no haberse podido abrir; no se cita lo que no se pudo leer. La plantilla se usa con esa atribución declarada.
 
 **Cada principio debe poder leerse sin saber qué es ENDE** —`05_estado_del_arte.md` L396—, **con sus condiciones de contorno explícitas**: bajo qué tipo de regulación, con qué escasez de etiquetas, con qué costo de alerta y con qué alternativa vigente ya eficaz.
 
@@ -42,7 +42,7 @@ Las preguntas están fijadas en `DEC-75` (`P1`–`P4`). **Cada conclusión se ap
 
 1. **Prerequisito: `E8` cerró su fase sumativa.**
 2. **Se documentaron al menos dos ciclos** —evaluación, rediseño, re-evaluación—, porque de uno solo no se desprenden principios (`04_marco_teorico.md` §109).
-3. **Los principios se redactaron con la plantilla verificada** —`DEC-12` resuelta—.
+3. **Los principios se redactaron con la plantilla y con su atribución verificadas** —`DEC-12` resuelta por `DEC-131`—.
 4. **Cada principio trae sus condiciones de contorno** y es legible por una distribuidora que no es ENDE.
 5. **Las conclusiones responden a las cuatro preguntas**, sin afirmar más de lo medido.
 6. **Las limitaciones quedaron completas y actualizadas.**

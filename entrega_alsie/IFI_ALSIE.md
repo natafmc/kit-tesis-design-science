@@ -3,7 +3,7 @@
 > **Modelo institucional de ALSIE — nivel de maestría.**
 > **Fuente de la forma:** `instituciones/alsie/guia_ifi_contenido.md` (14 apartados) e `instituciones/alsie/indicadores_revision_ifi.md` (indicadores de maestría).
 > **Fuente del contenido:** carpeta `tesis_ds/`. Trazabilidad completa en el **Anexo C**.
-> **Estado de la traducción, 30 de octubre de 2026:** los apartados 1 a 8 y 13 están **completos**; el apartado 9 quedó **validado por la tesista el 30 de octubre** y conserva la marca `[PROVISIONAL]` solo por los principios de diseño de `E10`; el apartado 10 está **parcial** porque la validación del método depende de `E7d`, `E7e` y `E8`; el apartado 11 tiene **tres de cuatro conclusiones** —la del Capítulo IV espera a `E8`— y el apartado 12 tiene las recomendaciones derivadas de ellas; el apartado 14 está **parcial** porque el Anexo B espera a `E7f`. **Lo único que seguía dependiendo de una decisión de la tesista quedó resuelto el 30 de octubre (`DEC-127`).** Lo que falta se marca con la causa que lo desbloquea, y **no se rellena con supuestos**.
+> **Estado de la traducción, 2 de noviembre de 2026:** los apartados 1 a 8 y 13 están **completos** —los capítulos I y II se ampliaron el 2 de noviembre (`DEC-130`) con las salvedades de las cifras del diagnóstico y con la etapa de revisión bibliográfica del marco teórico: método, cuenta de registros de las tres corridas, vacíos de búsqueda y registro de verificación, con el detalle en el **Anexo D**—; el apartado 9 quedó **validado por la tesista el 30 de octubre** y conserva la marca `[PROVISIONAL]` solo por los principios de diseño de `E10`; el apartado 10 quedó **ampliado el 2 de noviembre (`DEC-129`)** con el plan de construcción (`07d`), el diseño de la validación (`08`) y la matriz de trazabilidad (`09`), y sigue **parcial** porque la construcción (`E7e`), los resultados de la evaluación (`E8`), el cierre de la matriz (`E9`), la ficha (`E7f`) y los principios (`E10`) aún no existen; el apartado 11 tiene **tres de cuatro conclusiones** —la del Capítulo IV espera a `E8`— y ahora incluye además las **cinco limitaciones** ya escritas; el apartado 12 tiene las recomendaciones derivadas de las conclusiones existentes; el apartado 14 está **parcial** porque el Anexo B espera a `E7f`. **Lo único que seguía dependiendo de una decisión de la tesista quedó resuelto el 30 de octubre (`DEC-127`).** Lo que falta se marca con la causa que lo desbloquea, y **no se rellena con supuestos**.
 > **Regla de este documento:** ningún dato entra sin su fuente. Las cifras provienen de `DATOS desde 2022.xlsx`, `DATOS.xlsx`, `CODIGOS_IRREGULARES.xlsx` y de las declaraciones registradas de la tesista.
 
 ---
@@ -93,8 +93,10 @@
   - 10.4 Requisitos de la propuesta
   - 10.5 Diseño del método
   - 10.6 Metodología para su aplicación
-  - 10.7 Validación
-  - 10.8 Relación con los capítulos anteriores
+  - 10.7 Plan de construcción de la propuesta
+  - 10.8 Validación
+  - 10.9 Matriz de trazabilidad propuesta ↔ solución
+  - 10.10 Relación con los capítulos anteriores
 - **11. Conclusiones**
 - **12. Recomendaciones**
 - **13. Referencias bibliográficas**
@@ -102,6 +104,7 @@
   - Anexo A. Instrumentos aplicados
   - Anexo B. Ficha del artefacto
   - Anexo C. Mapa de equivalencias Design Science → ALSIE
+  - Anexo D. Protocolo y cuenta de registros de la revisión bibliográfica
 
 ---
 
@@ -162,7 +165,7 @@ Diseñar, construir y evaluar un método de detección y verificación previa a 
 
 El aporte teórico consiste en la **formalización de la detección de lecturas anómalas no declaradas como un proceso con componentes y relaciones explícitas** —depuración, segmentación, detección con referencia anual, verificación y registro—, y en las **regularidades** que explican el comportamiento del objeto: que la comparación contra el propio ciclo anual de la cuenta resuelve la estacionalidad sin fuente externa; que la capacidad de verificación opera como techo de viabilidad y no como preferencia; y que la explicabilidad de la alerta es condición de su adopción por el verificador. Estas relaciones no estaban disponibles en el estado del arte, que trata el error de lectura como problema metrológico y no como problema de proceso.
 
-*Validado el 30 de octubre de 2026 (`DEC-127`): la tesista confirmó el aporte **tal como está escrito**. La redacción definitiva en la forma objetivo → contexto → mecanismo → principio queda pendiente de dos cosas y solo de dos: los principios de `E10`, y la atribución de esa plantilla, que está con el tutor desde el paquete del 30 de oct (`DEC-12`, `DEC-117`).*
+*Validado el 30 de octubre de 2026 (`DEC-127`): la tesista confirmó el aporte **tal como está escrito**. La redacción definitiva en la forma objetivo → contexto → mecanismo → principio queda pendiente de una sola cosa: los principios de `E10`. **La atribución de esa plantilla se resolvió el 2 de noviembre de 2026 (`DEC-131`):** formulación prescriptiva estructurada según la lógica CIMO de Denyer, Tranfield y van Aken (2008) —contexto, intervención, mecanismo y resultado—, con la anatomía del principio de Gregor, Kruse y Seidel (2020), enmarcada en el problema de diseño de Wieringa (2014).*
 
 ### 6.8 Significación práctica
 
@@ -202,6 +205,8 @@ La significación práctica consiste en que la distribuidora puede **incorporar 
 **Unidades de análisis:** la celda cuenta-mes del panel de consumo (1 485 556 celdas verificadas), las lecturas facturables (1 389 941 en 57 meses) y los reclamos tramitados (1 053 en 57 meses).
 
 **Muestra:** la selección es **analítica, no estadística**. La regional se elige por ser representativa de la clase de contextos —distribuidoras con sistema transaccional propio, histórico tabular de lecturas y catálogo del regulador—, por cuanto comparte las tres condiciones que definen esa clase. Para la validación se prevé una muestra de las alertas que el método produzca, resuelta por un verificador que no participó del estudio. *[PENDIENTE: confirmar el número exacto de participantes y su disponibilidad.]*
+
+Para la trazabilidad completa entre los apartados de este informe y los productos de la investigación, **ver anexo C**.
 
 ---
 
@@ -302,7 +307,7 @@ El análisis de los reclamos muestra que la mayoría de los reclamos procedentes
 
 *Tabla 1. Reclamos tramitados ante la oficina de atención al consumidor, por gestión y procedencia (enero 2022 – septiembre 2026). Fuente: `DATOS desde 2022.xlsx`, hoja `reclamos`.*
 
-**Análisis.** De los 174 reclamos procedentes, **136 (78,16 %)** provinieron de lecturas sin código: auditar solo las lecturas con código habría alcanzado como máximo 38 procedentes y habría dejado sin detectar 136. Sin embargo, las lecturas con código son solo el 0,88 % del facturable y originan el 21,84 % de los procedentes, de modo que presentan una tasa de procedencia por lectura mucho mayor.
+**Análisis.** De los 174 reclamos procedentes, **136 (78,16 %)** provinieron de lecturas sin código: auditar solo las lecturas con código habría alcanzado como máximo 38 procedentes y habría dejado sin detectar 136. Sin embargo, las lecturas con código son solo el 0,88 % del facturable y originan el 21,84 % de los procedentes, de modo que presentan una tasa de procedencia por lectura mucho mayor. La señal es **específica de los procedentes**: en la ventana anterior de 21 meses, la razón de tasas de los improcedentes fue de apenas 1,15 × (47,27 frente a 54,27 por 100 000), de modo que el código predice reclamo procedente, no reclamo en general.
 
 | Tasa (procedentes ÷ facturable del tipo, × 100 000) | Tipo 1 · LN | Tipo 2–3 · LE+NE | Razón |
 |:--|--:|--:|--:|
@@ -357,6 +362,15 @@ El indicador más fuerte del diagnóstico no mide un síntoma, sino el trabajo q
 | 6 | Visitas que no terminan en corrección | No se conoce | Dato no disponible |
 | 7 | Regla de detección actual | Desviación frente a 6 meses, ambas direcciones; sin umbral ni registro | Descrita |
 
+#### 7.4.6 Salvedades de las cifras
+
+**Salvedades que viajan con estas cifras.** Cuatro salvedades declaradas acompañan todos los resultados de este capítulo:
+
+1. **Defecto de dos unidades** en la hoja `historico`, fila de abril de 2025: 28 556 ≠ 27 474 + 1 080. Es la única fila rota de las 57 y afecta el total en 0,00013 %. **Declarado, no corregido.**
+2. **Agosto de 2026, cotejado el 6 de octubre de 2026, sin desfase.** Los dos archivos dan las mismas dos filas: cinco reclamos totales (uno procedente y cuatro improcedentes), de los cuales cuatro son de tipo 1. La cifra «8» que circulaba venía de agosto de 2025 y era un error de registro, retirado por `DEC-25`. La convención de publicación se resolvió el mismo día (`DEC-26`): se publica el total (5), con las otras dos cifras al lado y etiquetadas.
+3. **Denominadores por gestión, no población fija:** 2026 tiene nueve meses y el universo de cuentas crece; no se puede promediar 2026 contra años completos sin declararlo.
+4. **El código de irregularidad sigue sin aparecer** en ninguna de las hojas del archivo consolidado: la segmentación por familia que exige la priorización **sigue sin base de datos**.
+
 ### 7.5 Regularidades del estado actual
 
 Del análisis de los resultados se desprenden las siguientes regularidades que definen el estado actual del objeto:
@@ -374,9 +388,26 @@ Del análisis de los resultados se desprenden las siguientes regularidades que d
 
 *[Tiempo verbal: presente. No es una suma de epígrafes, sino una construcción sistémica que penetra en la esencia del objeto desde la teoría existente.]*
 
-Este capítulo sistematiza los fundamentos teóricos de la detección de anomalías en consumo eléctrico y de la conversión de una señal en una decisión dentro de un ciclo regulado. Se organiza en antecedentes, definiciones y concepciones, categorías conceptuales, análisis histórico-lógico, soluciones dadas por otras investigaciones, valoración crítica y estado del arte.
+Este capítulo sistematiza los fundamentos teóricos de la detección de anomalías en consumo eléctrico y de la conversión de una señal en una decisión dentro de un ciclo regulado. Conforme a la guía, consta de dos etapas: la **revisión bibliográfica** —método declarado, cuenta de registros y verificación de fuentes, con el detalle completo en el anexo D (ver anexo D)— y la **sistematización teórica**. Se organiza en antecedentes, definiciones y concepciones, categorías conceptuales, análisis histórico-lógico, soluciones dadas por otras investigaciones, valoración crítica y estado del arte.
 
 ### 8.1 Antecedentes
+
+**Revisión bibliográfica: método y cuenta de registros.** La revisión se ejecutó con protocolo declarado antes de buscar: consulta a Crossref por cadena de términos y por resolución directa de DOI (2 de octubre de 2026) y, tras declararse la ampliación, repetición con cuenta de registros en OpenAlex y DOAJ —bases que devuelven recuento real— el 5 de octubre de 2026, con las mismas cinco cadenas y los mismos criterios del protocolo original. Las cadenas se escriben **antes** de buscar y la cuenta se llena **en el momento de buscar**. La regla de recuento (`DEC-21`) manda que *identificados* sean los veinte primeros registros por relevancia de cada cadena en cada índice, que la suma cuadre —identificados = eliminados + incluidos— y que el recuento del índice vaya en columna aparte, como diagnóstico, sin entrar en la suma. La criba se declaró a priori: se excluyen publicaciones sin revisión por pares, capítulos de libro, duplicados y registros que no traten detección de anomalías ni pérdidas no técnicas en distribución eléctrica; la calidad de la revista no se pudo verificar sin Scopus ni Web of Science y se anota como salvedad, no como exclusión, porque excluir por un criterio que no se puede comprobar sería peor que no excluir. El detalle de cadenas, tablas por índice, DOIs incluidos y las dudas de verificación está en el **anexo D**.
+
+Las tres corridas del protocolo cuadran por separado y en su total:
+
+| Corrida | Identificados | Eliminados | Incluidos | Trabajos distintos tras deduplicar |
+|:--|--:|--:|--:|--:|
+| Cinco cadenas del protocolo principal | 58 | 26 | **32** | **28** |
+| «Lectura mal tomada», español e inglés | 330 | 308 | **22** | **21** |
+| Control interno y auditoría | 60 | 55 | **5** | **5** |
+| **Total** | **448** | **389** | **59** | **54** |
+
+*Las tres sumas cuadran por separado —58 = 26 + 32 · 330 = 308 + 22 · 60 = 55 + 5— y el total también: 448 = 389 + 59. Los trabajos distintos se obtienen quitando los repetidos entre cadenas y verificando que las tres corridas no se solapan entre sí, que no se solapan.*
+
+**Fuentes institucionales.** El sondeo de seis fuentes —AETN, SENARECOM, OLADE, CEPAL, ALER y la Agencia Internacional de la Energía— no arrojó ningún registro extraíble, por razones distintas que se declaran una por una: en las cuatro primeras los buscadores se ejecutan en el cliente y devolvieron resultados idénticos con cadena real y cadena nula; de **ALER** —la asociación de entes reguladores— no se localizó la dirección correspondiente, pues las tres direcciones probadas pertenecen a organizaciones distintas; y el buscador de la Agencia Internacional de la Energía devuelve una página genérica cuyos resultados no son extraíbles. Se registra como **0 extraídos, no como 0 existentes**. En la vía académica, el control en Crossref sobre control interno y auditoría produjo 60 identificados = 55 eliminados + 5 incluidos, ninguno sobre auditoría de pérdidas no técnicas.
+
+**Registro de verificación de fuentes.** Las quince referencias del corpus del dominio se verificaron en Crossref el 2 de octubre de 2026 —autoría, título, publicación, volumen, número y páginas—: **15 de 15**. Ninguna se cita sin comprobar. Quedan declaradas cuatro dudas abiertas de verificación en el anexo D, entre ellas el sesgo del corpus hacia Crossref y la atribución de la plantilla objetivo → contexto → mecanismo → principio, que está con el tutor desde el paquete del 30 de octubre de 2026.
 
 **En el mundo.** La detección de anomalías en consumo eléctrico y las pérdidas no técnicas son campos maduros. Tres revisiones sistemáticas o comprehensivas en seis años lo confirman: Saeed et al. (2020) clasifican los métodos de detección de pérdidas no técnicas por algoritmos, características extraídas y métricas de evaluación, y comparan las categorías basada en datos, basada en red e híbrida; Yadav y Kumar (2022) revisan la detección de pérdidas no técnicas y robo de energía a partir de datos de medidor inteligente e inteligencia artificial; y Zhang et al. (2026) revisan la detección de anomalías y reparación de datos en medidores inteligentes. Un campo con tres revisiones en seis años es un campo maduro en su problema y en sus soluciones.
 
@@ -422,6 +453,20 @@ En el plano teórico, la evolución del campo muestra que la detección de anoma
 
 El campo **ya sabe** que detectar no basta y que hay que decidir a quién inspeccionar bajo restricción. Lo que este estudio hace es llevar ese problema a su forma **procesal**: qué pasos, qué roles, qué criterio escrito, qué registro de resolución, dentro de una cadena que ya existe con cinco roles.
 
+**Comparación por dimensión con las exigencias de este problema.** La diferencia entre lo que hacen las soluciones existentes y lo que exige este caso, con la fuente que sostiene cada exigencia:
+
+| Dimensión | Lo que hacen las soluciones existentes | Lo que exige este problema | Fuente de la exigencia |
+|:--|:--|:--|:--|
+| **Origen del dato** | Medidor inteligente de alta frecuencia | Lectura **mensual** tabular del histórico de lecturas | Saeed et al. (2020); Yadav y Kumar (2022); esquema de datos confirmado |
+| **Etiqueta** | Casos confirmados de fraude, o ausencia total de etiquetas | 174 reclamos procedentes en 57 meses, posteriores a la facturación | Hoja `reclamos` del archivo consolidado |
+| **Objetivo** | Detectar robo, fraude o pérdida no técnica | Detectar **lectura anómala no declarada**, incluida la lectura mal tomada, no solo el fraude | Carr y Thomson (2022); definición operativa del marco teórico |
+| **Universo de trabajo** | Cuenta contra red, sin marca previa | **99,12 %** sin código y **0,88 %** con código, coexistiendo en el mismo barrido | Hoja `tipo_lectura` del archivo consolidado |
+| **Salida** | Puntuación o clasificación binaria | **Lista priorizada con techo de volumen**: ≈11 visitas diarias, cada alerta acatada es un desplazamiento | Axelsson (2000); diagnóstico de la investigación |
+| **Explicación de la alerta** | Campo en expansión, no universal | **Obligatoria**: sin la comparación que originó la alerta, el verificador no puede aceptarla ni descartarla | Nwafor et al. (2023); Noorchenarboo y Grolinger (2025) |
+| **Integración en el proceso** | Generalmente no descrita: el modelo es el final del artículo | El método **es el proceso**: pasos, roles, criterios de entrada y salida, registro de resolución | March y Smith (1995) |
+| **Evaluación** | Exactitud, F1, AUC sobre conjunto de prueba | Aplicabilidad con verificadores ajenos + efectividad retrospectiva + carga dentro de capacidad | Saito y Rehmsmeier (2015); Venable et al. (2016) |
+| **Punto de comparación** | Ausente o conjunto de control artificial | La **capacitación de mayo–junio de 2025**, que ya redujo el volumen un 80 % | Declaración de la tesista, 1 de octubre de 2026 |
+
 ### 8.6 Valoración crítica y toma de posición
 
 **Sobre la métrica.** Saito y Rehmsmeier (2015) demuestran que, ante conjuntos desequilibrados, la gráfica precisión-exhaustividad es más informativa que la curva ROC. **Toma de posición:** los criterios de éxito 1 y 2 de este estudio —cobertura de reclamos procedentes y falsos positivos— son, en terminología del campo, exhaustividad y (1 − precisión); **queda descartada la exactitud (accuracy)** como criterio, porque en este conjunto sería engañosa.
@@ -443,7 +488,17 @@ La literatura sobre detección de anomalías y pérdidas no técnicas en distrib
 3. **Alternativa vigente ya eficaz:** la capacitación de mayo-junio de 2025 redujo las correcciones un 80 %, de modo que el problema real es el residual.
 4. **Universo segmentado por el regulador:** el 99,12 % del facturable circula sin código y ningún proceso lo barre.
 
-La brecha se enuncia como **diferencia de enfoque demostrada**, no como no-hallazgo: (a) el error de lectura está en la literatura como **problema metrológico** —interferencia electromagnética, armónicas, mecanismo de conteo— y no como problema de proceso; (b) **«lectura mal tomada» no es una categoría de la literatura consultada** —0 en español sobre 164 registros cribados—; (c) **tampoco es objeto de auditoría ni de control interno**. Lo que falta no es literatura sobre detección ni sobre errores de lectura, sino sobre **la conversión de una señal en una decisión dentro de un ciclo regulado**.
+La brecha se enuncia como **diferencia de enfoque demostrada**, no como no-hallazgo: (a) el error de lectura está en la literatura como **problema metrológico** —los 20 trabajos en inglés que lo tratan responden a cómo el medidor mide mal, por interferencia electromagnética, armónicas y mecanismo de conteo, y ninguno lo trata como categoría de proceso—; (b) **«lectura mal tomada» no es una categoría de la literatura consultada** —0 en español sobre 164 registros cribados, de 330 identificados que dejaron 21 trabajos distintos—; (c) **tampoco es objeto de auditoría ni de control interno** —60 identificados, 5 incluidos, ninguno sobre auditoría de pérdidas no técnicas, y 0 de 20 en la cadena específica—. Lo que falta no es literatura sobre detección ni sobre errores de lectura, sino sobre **la conversión de una señal en una decisión dentro de un ciclo regulado**.
+
+**Búsquedas sin resultado y su estado.** Registrar los vacíos es parte del protocolo; en ninguna de estas filas se afirma que algo no exista, solo que esta búsqueda no lo encontró:
+
+| Búsqueda sin resultado | Interpretación | Estado |
+|:--|:--|:--|
+| Auditoría y control interno aplicados a distribuidoras reguladas | Control académico: 60 identificados → 5 incluidos, ninguno sobre pérdidas no técnicas; la cadena específica dio 0 de 20. Las seis fuentes institucionales no se pudieron buscar | **Cerrada con la limitación escrita** (`DEC-34`): no se afirma que no exista, se afirma que lo académico no rindió fuente y que lo institucional no fue consultable. El tema pasó a condición de contorno documentada |
+| Atención de reclamos ante entes reguladores de electricidad | Mismos resultados no pertinentes; no corrió en esta corrida | Queda pendiente; no bloquea el estado del arte |
+| Trabajos de distribuidoras bolivianas o del marco del ente regulador | Repetido con cuenta de registros: 58 identificados → 32 incluidos → 28 trabajos distintos, ninguno de distribuidora boliviana | **Vacío de búsqueda confirmado** con método reproducible |
+| Artefactos comerciales y de código abierto de detección en lecturación | No se buscó; requiere método distinto | **Diferido a después de la defensa de propuesta** (decisión del asesor, 2 de octubre de 2026); declarado como alcance no cubierto en esta versión |
+| Categoría de «lectura mal tomada» como anomalía | Buscada en español e inglés, dos índices: 330 identificados → 21 trabajos distintos, 0 en español de 164 registros cribados | El vacío pasó a **constatación** y la brecha se reformuló (`DEC-35`) |
 
 **Limitación declarada:** esta búsqueda **no es una revisión sistemática** —una sola revisora, sin doble criba independiente ni conteos de flujo—, y SciELO, IEEE Xplore y BVS no fueron consultables. Se declara como limitación de acceso, no como ausencia.
 
@@ -519,7 +574,7 @@ flowchart TD
 
 ## 10. Capítulo IV. Propuesta de la investigación
 
-> **`[PARCIAL]`** Este capítulo concreta el modelo del Capítulo III y constituye la solución del problema. Se vuelca el material cerrado (`07a`, `07b`, `07c`) y se marcan como pendientes el plan de construcción (`E7d`), la construcción y verificación (`E7e`), la evaluación (`E8`) y la matriz de trazabilidad (`E9`).
+> **`[PARCIAL]`** Este capítulo concreta el modelo del Capítulo III y constituye la solución del problema. Se vuelca el material de `07a`, `07b`, `07c`, del plan de construcción (`07d`, abierto el 30 de octubre de 2026, `DEC-123`), del diseño de la validación (`08_evaluacion.md`) y de la matriz de trazabilidad (`09_enlace_solucion.md`), ambos abiertos en su diseño el mismo día (`DEC-122`). Siguen pendientes la construcción y verificación del método (`E7e`), los resultados de la evaluación (`E8`), el cierre de la matriz (`E9`), la ficha reproducible (`E7f`, Anexo B) y los principios de diseño (`E10`).
 
 ### 10.1 Fundamentos teóricos y definición asumida
 
@@ -570,11 +625,11 @@ Los requisitos se agrupan en los cuatro momentos del método y se trazan al prob
 
 **Precondiciones de entrada.** El método recibe el histórico crudo dentro de una ventana fija (enero de 2022 a septiembre de 2026) y lo depura él mismo. El panel resultante tiene **una fila por cuenta y mes**: 1 485 556 celdas, 30 411 cuentas, 57 meses.
 
-**Paso 1 — Depuración.** Toda celda del universo de detección con índice de contador en cero se excluye del cálculo de desviación y del listado de alertas; se registran cuántas y de cuántas cuentas. El historial de 2022 a 2025 no se limpia.
+**Paso 1 — Depuración.** Toda celda del universo de detección con índice de contador en cero se excluye del cálculo de desviación y del listado de alertas; se registran cuántas y de cuántas cuentas. El historial de 2022 a 2025 no se limpia. En la corrida del 30 de octubre de 2026 se excluyeron **541 celdas de 411 cuentas**, de modo que el universo calculable pasó de 183 541 a 183 000 celdas y de 22 978 a 22 966 cuentas (`DEC-100`, `DEC-101`).
 
 **Paso 2 — Segmentación.** Se calcula, antes de la detección, el perfil de consumo de cada cuenta (mediana mensual sobre 57 meses, cuatro bandas por cuartiles: 0–26 · 27–69 · 70–135 · >135) y su familia de código (no facturada · lectura normal sin código · con código). El perfil viaja con la alerta.
 
-**Paso 3 — Detección.** Para cada cuenta y cada mes de 2026, se calcula la referencia como la **mediana** de los consumos de esa misma cuenta en ese mismo mes de 2022, 2023, 2024 y 2025, y la desviación como `|consumo_observado − referencia| / referencia`. Se alerta si la desviación supera el umbral `θ`, calibrado recorriendo el orden de desviaciones hasta el cupo de alertas. Las cuentas con menos de cuatro ciclos caen en la regla de contingencia A1 (ventana de 6 meses).
+**Paso 3 — Detección.** Para cada cuenta y cada mes de 2026, se calcula la referencia como la **mediana** de los consumos de esa misma cuenta en ese mismo mes de 2022, 2023, 2024 y 2025, y la desviación como `|consumo_observado − referencia| / referencia`. Se alerta si la desviación supera el umbral `θ`, calibrado recorriendo el orden de desviaciones hasta el cupo de alertas. **El umbral quedó fijado el 30 de octubre de 2026 (`DEC-121`) en dos valores** —ambos el máximo de los nueve cortes mensuales, no el mínimo, porque el mínimo habría podido superar el techo en algún mes—: **`θ_A2` = 39,67** para las cuentas con los cuatro ciclos previos y **`θ_A1` = 495,36** para las de historial corto (valores exactos: 39,6666666666667 y 495,362260343088; `DEC-119`, `DEC-120`). Las cuentas con menos de cuatro ciclos caen en la regla de contingencia A1 (ventana de 6 meses).
 
 **Paso 4 — Verificación.** Las alertas se agrupan por ruta y se ordenan por severidad. Cada alerta lleva la comparación que la originó y el perfil de la cuenta. El verificador confirma o descarta.
 
@@ -586,11 +641,138 @@ Los requisitos se agrupan en los cuatro momentos del método y se trazan al prob
 
 La aplicación del método comprende: (1) la construcción del panel de consumo por cuenta y mes; (2) la depuración y la segmentación; (3) el cálculo de la referencia anual y de las desviaciones; (4) la calibración del umbral contra el techo de capacidad; (5) la emisión de las alertas agrupadas por ruta; (6) la verificación humana; y (7) el registro de resolución. La calibración del umbral se realiza en dos cupos —218 alertas para A2 y 24 para A1— sobre los nueve meses de 2026.
 
-### 10.7 Validación
+### 10.7 Plan de construcción de la propuesta
 
-> **`[PENDIENTE — E7d/E7e/E8/E9]`** La validación se planifica en dos ciclos: uno **formativo de campo** con rediseño documentado y uno **sumativo de campo** por prueba retrospectiva sobre los reclamos procedentes de la ventana en la que el método es aplicable (enero a septiembre de 2026). Los criterios de éxito son: (1) cobertura retrospectiva de reclamos procedentes; (2) falsos positivos; (3) carga de verificación dentro de la capacidad del equipo; (4) aplicabilidad sin asistencia de la autora. **Los valores de los criterios 1, 3 y 4 están fijados; el del criterio 2 está pendiente de la calibración de `θ`.** La matriz de trazabilidad propuesta ↔ solución se incluirá aquí (ver borrador en `matriz_coherencia.md`).
+> **Estado:** plan abierto el 30 de octubre de 2026 (`DEC-123`); gate de construcción en **0 de 6** al cierre de ese día (`DEC-125`). La construcción y verificación del método (`E7e`) sigue pendiente.
 
-### 10.8 Relación con los capítulos anteriores
+**Qué se construye.** El método, escrito y ejecutable. El requisito R10.1 —y con él el criterio 4 fijado en `DEC-112`— exige que el equipo técnico siga el método sin asistencia de la autora, y el diseño precisa que el verificador resuelve cada alerta usando solo el método escrito. Hasta esta etapa existen la fórmula, los dos umbrales, la regla de contingencia y el techo, pero **no un documento que una persona ajena pueda abrir y seguir**: eso es lo que se construye.
+
+**Lo que la construcción no hace.** No revisa el diseño —si la construcción lo exigiera, se reabre el diseño y se registra, sin improvisar sobre la marcha—; no recalibra el umbral —`θ_A2` y `θ_A1` están verificados y volcados (`DEC-119`, `DEC-120`)—; no mide cobertura, falsos positivos ni aplicabilidad —eso es la validación (§10.8): quien construye no se evalúa a sí mismo—; no cambia el panel —cerrado con cierre obligatorio el 30 de septiembre de 2026 (`DEC-69`, `R9.2`)—; y si la corrección del panel incorpora una fila, la consulta del panel se rehace antes de construir (`DEC-75`).
+
+**Insumos recibidos ya cerrados.** La construcción recibe del diseño los siguientes valores, ninguno de los cuales se recalcula ni se cuestiona en esta etapa:
+
+| Insumo | Valor recibido | Dónde quedó fijado |
+|:--|:--|:--|
+| Panel de trabajo | 1 485 556 celdas, 30 411 cuentas, 57 meses, una fila por cuenta y mes | `A2.3.b`, `DEC-80` — `R9.1`, `R9.2` |
+| Universo de detección | Los nueve meses de 2026; los otros 48 no reciben desviación | `DEC-90` — `07c` §3.1 |
+| Regla de colapso | Manda la fecha más reciente; desempata por identificador de lectura más alto | `DEC-75` |
+| Depuración | 541 celdas de 411 cuentas excluidas; universo calculable 183 541 → 183 000 celdas y 22 978 → 22 966 cuentas | `DEC-100`, `DEC-101` — `07c` §3.2, §3.6 |
+| Segmentación | Perfil: cuatro bandas 0–26 · 27–69 · 70–135 · más de 135. Familia: tres bandas —no facturada 15 075 · normal sin código 167 036 · con código 1 430— | `DEC-104`, `DEC-105` — `07c` §3.3 |
+| Rol de la segmentación | Caracterización previa que viaja con la alerta; no fija el umbral ni sustituye la referencia | `DEC-103` |
+| Referencia | Mediana de los cuatro ciclos del mismo mes (2022–2025); referencia positiva | `DEC-90` — `07c` §3.1 |
+| Contingencia A1 | Historial menor de cuatro ciclos; ventana de los meses previos que existan, hasta seis; media sin celdas con lectura en cero; media positiva | `R8.1`, `DEC-115`, `DEC-116` — `07c` §3.4 |
+| Umbrales | `θ_A2` = 39,67 · `θ_A1` = 495,36 — ambos el máximo de nueve cortes | `DEC-119`, `DEC-120` — `DEC-121` |
+| Techo | 242 = 218 (A2) + 24 (A1), reserva fija, inviolable | `R2.1`, `R2.5`, `DEC-114` |
+| Rutas | 58 rutas; ninguna cuenta sin ruta; identificador de la tabla de rutas | `CONTROL 6`, `DEC-74` — `R3.4` |
+| Registro de salida | Tres estados —confirmada · descartada · pendiente—, con criterio y evidencia | `R5.1`, `R5.2` |
+
+**Los cuatro entregables.**
+
+1. **El método escrito.** El documento que el verificador del criterio 4 va a usar sin la autora al lado. No es un resumen del diseño: es el procedimiento en el orden en que se ejecuta, con la fórmula, las reglas, los dos umbrales, el techo y las declaraciones, y con la referencia a cada requisito que obliga a cada paso. Su condición es la R1.4, que exige que la referencia sea recalculable a mano por un verificador que no participó del estudio, y el criterio 4 (`DEC-112`), que exige el 100 % de las alertas de la muestra resueltas con este documento solo: un método que solo su autora puede seguir no es un método. Los ocho pasos de la calibración del umbral son la columna del documento; la construcción los ejecuta como procedimiento del método —con los umbrales ya fijados, sobre el universo de detección, produciendo el listado de alertas— y no como calibración del estudio. El orden de ejecución, demostrado en el diseño, es depuración → segmentación → fórmula, y dentro de la fórmula el reparto por ruta y la priorización son parte del método y no un agregado posterior (`R3.2`, `R6`).
+2. **El procedimiento ejecutable.** Las consultas que ejecutan el método sobre el panel. Las dos corridas de calibración ya existen y no se rehacen; la nueva consulta produce el listado de alertas, que es una salida distinta: no devuelve umbrales, devuelve alertas con sus declaraciones, su ruta, su orden y su registro. Tres condiciones comprobables: ningún mes supera 218 alertas de A2 ni 24 de A1 (`R2.1`, `R2.5`, `DEC-114`); el listado reproduce los 1 406 de A2 y los 114 de A1 ya medidos (`DEC-119`, `DEC-120`); y ninguna alerta queda sin ruta ni sin orden (`R3.1`, `R6.1`).
+3. **El listado de alertas con sus declaraciones.** La salida del método, campo por campo: cuenta y mes; referencia usada, con qué meses la formaron y cuántos había; dirección y magnitud de la desviación; código de irregularidad si la cuenta tenía; contingencia declarada si cayó en A1; segmentación como caracterización que viaja; ruta; orden de severidad; y registro. Cuatro puntos que la construcción tiene que poder mostrar: la agrupación por ruta es parte del método (`R3.2`) y cada grupo lleva número de cuentas y estimación de tiempo (`R3.3`); la prioridad opera dentro de la ruta, no a nivel global (`R6.3`); si el mes supera el techo se descarta la cola del orden y no el orden (`R6.2`); y ninguna alerta usa un acrónimo que el verificador no pueda leer en el sistema (`R4.5`).
+4. **El registro.** El lugar donde cada alerta cierra. Su regla es la que desbloquea el criterio 2 del estudio: hoy la línea base de falsos positivos es inmedible porque la revisión en pantalla no tiene denominador registrado (`DEC-43`), y ese vacío lo llena el método, no el estudio —por eso el registro es entregable de construcción y no trámite posterior—. Regla mínima: sin registro, la alerta no cuenta como emitida (`R5.3`), y el registro de las descartadas es obligatorio (`R5.4`).
+
+**Mínimo producto viable (MPV).** En una propuesta que es un método, la pregunta no es qué versión reducida se construye, sino cuánto mínimo tiene que existir para que un ajeno produzca una alerta correcta sin la autora. El MPV son tres piezas juntas, y ninguna funciona sola: (i) el método escrito, que un verificador lee y sigue el procedimiento hasta el final; (ii) una alerta completa, que sale del procedimiento con todos los campos del listado; y (iii) el registro, donde la alerta cierra en uno de los tres estados con criterio y evidencia. Si falta alguna: sin el método escrito no hay artefacto sino un resultado; sin la alerta completa no se puede evaluar la R4 ni el criterio 4; sin el registro no se puede medir el criterio 2. El MPV no incluye las 1 520 alertas de los nueve meses: el método tiene que poder producirlas, pero el MPV se prueba con una alerta completa verificable a mano (`R1.4`) y la escalabilidad se comprueba después, con el listado completo.
+
+**Criterio de suficiencia.** Suficiencia no es completitud: completo sería tener el método calibrado, ejecutado, evaluado y rediseñado; suficiente es tener lo mínimo que hace falta para que la validación pueda ejecutarse sin que la evaluación se coma la construcción. El criterio es el que fijó el diseño y no se inventa uno nuevo: **100 % de las alertas de la muestra resueltas por un verificador ajeno usando solo el método escrito** (`DEC-112`, `R10.1`). Ese es el número contra el cual el MPV tiene que estar dimensionado, y el que decide cuándo la construcción basta. Hay una segunda condición, no escrita en el gate pero decisora: la construcción basta cuando el método escrito existe como documento que la autora no necesita para seguirlo.
+
+**Gate de cierre de la construcción.** Se cierra punto por punto y por evidencia, no por intención; ningún punto se cierra con la afirmación de que ya está pensado, sino con el documento o la salida que lo demuestra:
+
+| # | Punto | Estado |
+|--:|:--|:--|
+| 1 | El método está escrito como procedimiento que un verificador ajeno pueda seguir sin la autora (`R10.1`, `R1.4`) | PENDIENTE — desbloqueado: su evidencia es un documento (`DEC-125`) |
+| 2 | El procedimiento ejecutable produce el listado de los nueve meses con los dos umbrales, dentro de los cupos 218 y 24 (`R2.1`, `R2.5`) | PENDIENTE |
+| 3 | Cada alerta lleva sus declaraciones —referencia, ventana, dirección y magnitud, código, contingencia, segmentación— (`R4.1`–`R4.5`, `DEC-103`) | PENDIENTE |
+| 4 | Las alertas salen agrupadas por ruta, con número de cuentas y estimación de tiempo, y la prioridad opera dentro de la ruta (`R3.1`–`R3.4`, `R6.3`) | PENDIENTE |
+| 5 | El registro está construido: tres estados, criterio y evidencia; sin registro la alerta no cuenta como emitida (`R5.1`–`R5.4`) | PENDIENTE |
+| 6 | El exemplar está escrito: tres alertas trabajadas que un verificador puede recalcular a mano (`R1.4`, criterio 4) | PENDIENTE |
+
+**Estado del gate: 0 de 6 al 30 de octubre de 2026 (`DEC-125`).** El punto 1 quedó sin impedimento porque su evidencia es un documento (`07d_metodo_escrito.md`) y no una salida; los puntos 2, 3, 4 y 5 exigen el listado, que todavía no existe, y el punto 6 depende de ellos, porque una alerta de la que no existe el listado no se puede ejemplificar.
+
+**Decisiones de construcción registradas.** Tres preguntas de la etapa quedaron resueltas el 30 de octubre de 2026: (a) la estimación de tiempo de cada grupo de ruta se declara como **tope** y no como multiplicación —2 a 3 técnicos y 3 a 4 horas como tope por caso—, porque convertir el techo a horas da un resultado falso y el tope sí cumple la R3.3 y es verificable (`DEC-126`); (b) el exemplar son **tres alertas**: una de A2 normal, una de A1 que declara la contingencia y una con código de irregularidad (`DEC-125`); y (c) el método escrito vive en **archivo propio** (`DEC-125`). Quedan declaradas, no resueltas: la condición del panel —si la corrección del 7.e entra una fila, la consulta se rehace antes de construir (`DEC-75`)— y la carencia de referencias construidas sobre ciclos con lectura en cero, 6 004 grupos, el 1,71 % del total, que el diseño eligió no corregir (`DEC-101`, `DEC-111`).
+
+### 10.8 Validación
+
+> **`[PENDIENTE — E8, en su diseño desde el 30 de octubre de 2026 (DEC-122)]`** El diseño de la validación está fijado en todos sus términos; los resultados dependen de que se construya el método (`E7d`, `E7e`) y se ejecute la evaluación (`E8`). No se fija aquí ningún umbral nuevo: los cuatro criterios se fijaron antes de construir, que es la condición que impuso el documento de delimitación.
+
+**Qué se evalúa.** El método completo —rama A2, contingencia A1, segmentación como caracterización previa (`DEC-103`), depuración (`DEC-101`, `DEC-116`) y sus dos umbrales ya fijados (`DEC-121`)— ejecutado sobre el panel real de la regional y escrito como procedimiento, no como código de la autora.
+
+**Contra qué — la verdad de referencia.** Los reclamos con pronunciamiento procedente: el campo de procedencia que vive en la tabla de respuestas a reclamos y se enlaza por identificador de reclamo (`DEC-61`), con cardinalidad 1:1 confirmada —14 291 filas, máximo uno por reclamo, sin reclamos con varios pronunciamientos ni valores discrepantes (`DEC-64`)—. Las cifras centrales —174 procedentes, 136 en el tipo de lectura 1, 78,16 %, 1 053 reclamos— se reproducen desde dos orígenes independientes: la hoja de cálculo y la base de datos (`DEC-64`, `DEC-65`, 25 de octubre de 2026).
+
+**Por qué es una evaluación conservadora.** El reclamo es una queja posterior a la facturación: marca lo que ya fracasó, no lo que el método debió encontrar en su momento. Si el método alertó sobre un caso que además llegó a reclamo, encontró algo que el proceso vigente no vio; si no alertó, no hay falsa alarma que exculpar, porque el caso no generó costo.
+
+**Con qué métricas — y con cuáles no.** Precisión y exhaustividad, nunca exactitud (decisión del 2 de octubre de 2026 sobre Saito y Rehmsmeier, 2015); y la carga se mide contra el techo del criterio 3 a la luz de la falacia de la tasa base (Axelsson, 2000).
+
+**Propósito y estilo.** Formativa —detecta problemas y origina rediseño— y luego sumativa —sustenta la contribución—; ambas en estilo naturalista, en campo, con el equipo real de la distribuidora, según la estrategia FEDS (Venable et al., 2016).
+
+**Los cuatro criterios, con su valor y su fuente.** Los cuatro se fijaron antes de construir y no se vuelven a decidir en esta etapa:
+
+| # | Criterio | Valor fijado — antes de construir | Fuente |
+|:--|:--|:--|:--|
+| 1 | Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado el método; ventana: los nueve meses de 2026 | `02_delimitacion.md` §1; `DEC-61`, `DEC-64`, `DEC-65`, `DEC-90` |
+| 2 | Falsos positivos | se evalúa **sin comparación** contra el proceso manual —es inmedible—; el comparador secundario declarado es el canal de reclamos, 16,52 % | `DEC-43`; umbral = `θ`, `DEC-121` |
+| 3 | Carga de verificación | ≤ 242 alertas/mes, repartidas 218 (A2) + 24 (A1) | `DEC-45`, `DEC-114`, `DEC-121` |
+| 4 | Aplicabilidad | 100 % de las alertas que el método produce, resueltas por un verificador que no participó del estudio, usando solo el método escrito y sin asistencia de la autora | `DEC-112`; procedimiento en `07c` §3.5 |
+
+**Sobre el criterio 2 y el umbral.** El umbral numérico del criterio 2 **ya está fijado**: es `θ`, con sus dos valores (`θ_A2` = 39,67 y `θ_A1` = 495,36), calibrados y verificados el 30 de octubre de 2026 (`DEC-121`). Lo que falta para el criterio 2 es su **medición** en la evaluación, no su calibración. La precisión global del proceso manual actual es inmedible, porque la revisión en pantalla —donde nace la mayor parte de las correcciones— no tiene denominador registrado (`DEC-43`); por eso el criterio se fija sin comparación contra el proceso manual y el método se evalúa contra su propio criterio.
+
+**Medición ya disponible de la carga.** El barrido combinado de A2 y A1 sobre los nueve meses de 2026 produjo **1 520 alertas** —1 406 de A2 y 114 de A1—, con un máximo de **229 en abril** y **ningún mes por encima del techo de 242** (30 de octubre de 2026, `DEC-124`). Es la medición previa que respalda el criterio 3 y la R2.1; la verificación definitiva se hará con el listado del método construido.
+
+**La muestra, y lo que falta medir para tenerla.** La detección corre sobre los nueve meses de enero a septiembre de 2026 (`DEC-90`) y sobre el panel completo de la regional —1 485 556 celdas (`A2.3.b`, `DEC-80`)—, con los dos umbrales ya fijados. Lo que falta, y es una corrida propia, es el numerador y el denominador de la muestra de cobertura: los reclamos procedentes de esos nueve meses todavía no se contaron para esa ventana. La consulta de cinco años midió el total y el criterio 1 se acotó después a la ventana; hasta que ese recuento no corra con su consulta, la evaluación no tiene muestra.
+
+**Las dos fases, con el cronograma propio de la tesis.**
+
+| Fase | Ventana | Qué produce |
+|:--|:--|:--|
+| Formativa de campo | 9–15 de noviembre de 2026 | problemas del método en uso real |
+| Rediseño documentado | 16–18 de noviembre de 2026 — mínimo no negociable | versión corregida del método, con qué cambió y por qué |
+| Sumativa de campo | 19–24 de noviembre de 2026 | las mediciones que sostienen la contribución |
+
+**Riesgo declarado:** si la formativa se retrasa, el rediseño se recorta y la tesis pierde el ciclo que sostiene los principios de diseño; cualquier deslizamiento superior a tres días obliga a recortar alcance en la construcción, no a eliminar el rediseño (`03_perfil_ds.md` L124).
+
+**Gate de la validación.** Se cierra cuando se cumplan seis cosas:
+
+1. **Prerequisito:** el método está construido —construcción y verificación cerradas—. Sin el método construido no hay evaluación que ejecutar.
+2. **La muestra está medida:** reclamos procedentes de enero a septiembre de 2026, contados con su consulta.
+3. **La evaluación formativa se ejecutó y su resultado se volcó**, con los cuatro criterios medidos.
+4. **El rediseño quedó documentado** —qué cambió, por qué, y con qué versión—.
+5. **La evaluación sumativa se ejecutó y su resultado se volcó.**
+6. **El criterio 4 se midió** —100 % de las alertas resueltas por verificador ajeno— y su valor se escribió en el criterio 4 del documento de delimitación, que hoy dice «Medición pendiente de E7f/E8».
+
+**Lo que esta etapa no hace.** No fija umbrales —los cuatro criterios se fijaron antes de construir—; no construye —eso es la etapa de construcción y verificación—; y no redacta los principios de diseño —eso es la etapa de contribución, y se deriva del ciclo completo formativa → rediseño → sumativa, no de una sola corrida (`04_marco_teorico.md` §109)—.
+
+### 10.9 Matriz de trazabilidad propuesta ↔ solución
+
+> **`[PENDIENTE — E9, en su diseño desde el 30 de octubre de 2026 (DEC-122)]`** La matriz se llena con los resultados de la evaluación: una matriz llenada antes de medir sería una lista de intenciones. Esta etapa demuestra, sección por sección, que cada promesa de la propuesta tiene su asiento en la solución y que cada hallazgo de la solución responde a algo que la propuesta preguntó.
+
+**Qué enlaza contra qué.** Del lado de la promesa: las trece secciones de la propuesta, que es el documento entregado el 5 de octubre de 2026 y actualizado a 57 meses (`DEC-27`, `DEC-32`). Del lado de la solución: las etapas que la produjeron —alternativas, requisitos, diseño, construcción y ficha, evaluación— y sus mediciones, no solo sus documentos. Y el tercer lado, el de los requisitos: cada requisito del método con su evidencia y su estado.
+
+**Matriz de secciones — estado al 30 de octubre de 2026.**
+
+| § propuesta | Qué prometía | Dónde se respondió | Estado |
+|:--|:--|:--|:--|
+| 1. Título | título del trabajo | `DEC-77`: 15 palabras, sin siglas | cerrada |
+| 2. Planteamiento | el problema con sus cifras | `02_delimitacion.md` §1; `06_diagnostico.md` | cerrada |
+| 3. Objetivos | objetivo general y específicos | oración de contribución del gate de E3 (26 de septiembre) | cerrada |
+| 4. Pregunta | las preguntas de investigación | `DEC-75`: P1–P4 | cerrada |
+| 5. Objeto y tipología | qué es el artefacto | método con exemplar (`DEC-70`) | cerrada |
+| 6. Campo de acción | dónde se aplica | regional: 29 750 cuentas | cerrada |
+| 7. Propuesta y contribución | qué se aporta | alternativas → diseño + principios de la etapa de contribución | en curso — `E10` pendiente |
+| 8. Marco teórico | el marco | `04_marco_teorico.md` | cerrada |
+| 9. Estado del arte | la brecha | `05_estado_del_arte.md` (brecha definitiva, `DEC-35`) | cerrada |
+| 10. Diseño metodológico | cómo se evaluará | gate de requisitos 4/4 + gate de diseño 6/6 + umbrales (`DEC-121`); validación en §10.8 | en curso — `E8` pendiente |
+| 11. Cronograma | las fechas | `00_estado.md`; desvíos declarados (`DEC-88`, `DEC-91`) | con desvíos declarados |
+| 12. Referencias | las fuentes | 22 entradas rastreables, ninguna inventada | cerrada |
+| 13. Anexo: artefacto previsto | el artefacto | plan de construcción (§10.7) y ficha (Anexo B) | pendiente |
+
+**Matriz de requisitos.** Pendiente: se llena leyendo el archivo de requisitos entero y casando cada requisito con su evidencia —medida o declarada—, junto con su problema de diseño, la alternativa descartada, la decisión de diseño, el componente, el indicador, la verificación interna, la evidencia de evaluación, el cumplimiento y la limitación. No se transcribe de memoria: una matriz con un requisito mal citado es peor que una matriz vacía, y el historial del proyecto ya registró dos errores de verificación contra la propia memoria (`DEC-44`, `DEC-89`).
+
+**Gate de la matriz.** Se cierra cuando se cumplan cuatro cosas: (1) las trece secciones de la propuesta tienen su contraparte identificada, con la tabla anterior completa y sin huecos sin declarar; (2) los requisitos están casados con su evidencia, con el estado real de cada uno; (3) ninguna cifra de la propuesta quedó sin su consulta —barrido en las dos direcciones, cifra vieja arrastrada y cifra nueva sin fuente, al modo del barrido de `DEC-38`—; y (4) los huecos están declarados, no tapados: lo que siga en curso al momento de cerrar aparece escrito como tal.
+
+**Lo que esta etapa no hace.** No produce conocimiento nuevo —la contribución es de la etapa de contribución—; no corrige la propuesta entregada —lo que se envió el 5 de octubre se envió, y los cambios viven en la versión en curso (`DEC-11`, `DEC-27`)—; y no se llena con estimaciones: cada celda o tiene su fuente o queda declarada como pendiente.
+
+### 10.10 Relación con los capítulos anteriores
 
 La propuesta concreta el modelo del Capítulo III: cada componente del modelo (depuración, segmentación, detección, verificación, resolución) se materializa en un paso del método. Se sustenta en el marco teórico del Capítulo II y responde al diagnóstico del Capítulo I: el método barre el histórico completo, prioriza las lecturas sospechosas y las deriva a verificación dentro de la cadena vigente, reduciendo la dependencia de la detección reactiva. **Constituye la solución del problema planteado.**
 
@@ -608,6 +790,8 @@ La propuesta concreta el modelo del Capítulo III: cada componente del modelo (d
 
 **Conclusión del Capítulo IV (Propuesta).** *[PENDIENTE — E8]* — se formulará con los resultados de la evaluación del método: cobertura de reclamos procedentes, falsos positivos, carga de verificación dentro de la capacidad del equipo, y aplicabilidad sin asistencia de la autora. **Es la única conclusión que falta, y esta es su causa exacta.**
 
+**Limitaciones del estudio.** ALSIE no tiene apartado propio de limitaciones; se declaran aquí, al cierre de las conclusiones, porque acotan lo que los resultados establecen. Son cinco las ya escritas: (1) la detección corre sobre una **ventana de nueve meses** —enero a septiembre de 2026— y no sobre los 57 meses del histórico (`DEC-91`); (2) las celdas con **lectura en cero quedan excluidas del cálculo** de la media de la contingencia, excluidas del cálculo y no depuradas del histórico (`DEC-116`); (3) **6 004 grupos de referencia —el 1,71 % del total— se construyen sobre dos o más ciclos con lectura en cero**, de modo que su mediana no es robusta, decisión que el diseño eligió declarar y no corregir (`DEC-101`, `DEC-111`); (4) el estado del arte tiene alcance de **búsqueda preliminar y no de revisión sistemática** (`DEC-35`); y (5) las **limitaciones de acceso** a las fuentes SciELO, IEEE Xplore y BVS, no consultables en la ventana de búsqueda (`DEC-20`, `DEC-23`). Se agregarán las que la evaluación de campo produzca, en particular la propia de una evaluación conservadora por la naturaleza de la etiqueta.
+
 ---
 
 ## 12. Recomendaciones
@@ -623,7 +807,9 @@ La propuesta concreta el modelo del Capítulo III: cada componente del modelo (d
 
 ## 13. Referencias bibliográficas
 
-*[APA 7. Correspondencia bidireccional cita ↔ referencia. Las 22 entradas fueron verificadas: 21 contra Crossref por DOI y 1 (Hevner, 2007) en AISeL.]*
+*[APA 7. Correspondencia bidireccional cita ↔ referencia. Las 25 entradas fueron verificadas: 24 contra Crossref por DOI —3 de ellas el 2 de noviembre de 2026, con contenido confirmado además en OpenAlex (`DEC-131`)— y 1 (Hevner, 2007) en AISeL.]*
+
+van Aken, J. E. (2004). Management research based on the paradigm of the design sciences: The quest for field-tested and grounded technological rules. *Journal of Management Studies*, *41*(2), 219–246. https://doi.org/10.1111/j.1467-6486.2004.00430.x
 
 Axelsson, S. (2000). The base-rate fallacy and the difficulty of intrusion detection. *ACM Transactions on Information and System Security*, *3*(3), 186–205. https://doi.org/10.1145/357830.357849
 
@@ -631,7 +817,11 @@ Carr, D., & Thomson, M. (2022). Non-Technical Electricity Losses. *Energies*, *1
 
 Chandola, V., Banerjee, A., & Kumar, V. (2009). Anomaly detection: A survey. *ACM Computing Surveys*, *41*(3), 1–58. https://doi.org/10.1145/1541880.1541882
 
+Denyer, D., Tranfield, D., & van Aken, J. E. (2008). Developing design propositions through research synthesis. *Organization Studies*, *29*(3), 393–413. https://doi.org/10.1177/0170840607088020
+
 Gregor, S., & Hevner, A. R. (2013). Positioning and presenting design science research for maximum impact. *MIS Quarterly*, *37*(2), 337–355. https://doi.org/10.25300/MISQ/2013/37.2.01
+
+Gregor, S., Kruse, L. C., & Seidel, S. (2020). Research perspectives: The anatomy of a design principle. *Journal of the Association for Information Systems*, *21*(6), 1622–1652. https://doi.org/10.17705/1jais.00649
 
 Guerrero, J. I., Monedero, I., Biscarri, F., Biscarri, J., Millán, R., & León, C. (2018). Non-technical losses reduction by improving the inspections accuracy in a power utility. *IEEE Transactions on Power Systems*, *33*(2), 1209–1218. https://doi.org/10.1109/TPWRS.2017.2721435
 
@@ -732,15 +922,191 @@ Zhang, B., Lin, G., Zheng, K., & Du, J. (2026). Anomaly detection and data repai
 | 4. Resumen | `ifi_informe_final.md` §4 | Listo |
 | 5. Índice | Estructura del IFI | Generado |
 | 6. Introducción | `01`, `02`, `03`, `06` | Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por `E8` y `E10` |
-| 7. Capítulo I. Diagnóstico | `06_diagnostico.md` | Listo |
-| 8. Capítulo II. Marco teórico | `04_marco_teorico.md`, `05_estado_del_arte.md` | Listo |
+| 7. Capítulo I. Diagnóstico | `06_diagnostico.md` | Listo; salvedades de las cifras volcadas 2 nov (`DEC-130`) |
+| 8. Capítulo II. Marco teórico | `04_marco_teorico.md`, `05_estado_del_arte.md` | Listo; revisión bibliográfica —método, cuenta, vacíos y verificación— volcada 2 nov (`DEC-130`), detalle en Anexo D |
 | 9. Capítulo III. Modelo teórico | `07c`, `07b` (+ `10` `[vacío]`) | Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10` |
-| 10. Capítulo IV. Propuesta | `07a`, `07b`, `07c` (+ `07d`, `07e`, `08`, `09` `[vacío]`) | Parcial; la validación depende de `E8` |
-| 11. Conclusiones | `06`, `04`, `05`, `07c`, `07b` (+ `08` `[vacío]`) | **Tres de cuatro** (`DEC-127`); la del Cap. IV espera a `E8` |
+| 10. Capítulo IV. Propuesta | `07a`, `07b`, `07c`, `07d`, `08`, `09` (+ `07e` `[vacío]`) | **Volcado ampliado 2 nov (`DEC-129`)**: plan de construcción, diseño de la validación y matriz de trazabilidad; parcial por `E7e`, `E8`, `E9`, `E7f`, `E10` |
+| 11. Conclusiones | `06`, `04`, `05`, `07c`, `07b` (+ `08` y `10` para limitaciones) | **Tres de cuatro** (`DEC-127`); la del Cap. IV espera a `E8`; limitaciones volcadas de `10` §4 |
 | 12. Recomendaciones | `06`, `04`, `05`, `07c` (+ `08`, `10` `[vacío]`) | **Redactadas** (`DEC-127`); faltan las de `E8` y `E10` |
 | 13. Referencias | `propuesta_borrador_v1.md` §12 | Listo |
-| 14. Anexos | `06`, `07f` `[vacío]`, este mapa | Parcial (Anexo B espera a `E7f`) |
+| 14. Anexos | `06`, `07f` `[vacío]`, `05` (protocolo), este mapa | Parcial (Anexo B espera a `E7f`; Anexo D volcado 2 nov, `DEC-130`) |
+
+### Anexo D. Protocolo y cuenta de registros de la revisión bibliográfica
+
+> **Material de sustento de la revisión bibliográfica del Capítulo II.** Se reproduce aquí el protocolo de búsqueda, lo que no se buscó, las cadenas declaradas antes de cada corrida, la cuenta de registros completa —con tablas por índice y DOIs incluidos— y el registro de verificación de fuentes, tal como quedaron en `tesis_ds/05_estado_del_arte.md`.
+
+**D.1 Protocolo de búsqueda, versión 1 (2 de octubre de 2026)**
+
+| Elemento | Descripción |
+|:--|:--|
+| **Fecha** | 2 de octubre de 2026 |
+| **Base consultada** | Crossref (API pública, `api.crossref.org`) |
+| **Ampliación** | Intentada el 3–4 de octubre sin cuenta de registros (`DEC-1`/`DEC-13`): se repitió con cuenta el 5 de octubre en OpenAlex y DOAJ. Scopus y Web of Science fuera de alcance (`DEC-8`) |
+| **Limitación de acceso a IEEE Xplore** | Sin acceso institucional (`DEC-6`): se consultó sobre metadatos y resúmenes públicos. Si un registro no permite evaluar los criterios de inclusión, se excluye y se cuenta como excluido, no se da por incluido |
+| **Tipo de consulta** | (a) búsqueda bibliográfica por cadena de términos con orden por relevancia; (b) resolución directa por DOI |
+| **Filtros aplicados** | Artículos de revista; desde 2015 salvo para los trabajos canónicos de referencia; sin filtro de idioma |
+| **Cadenas usadas** | `non-technical losses detection electricity distribution review` · `electricity theft detection smart meter machine learning unsupervised` · `smart meter data anomaly detection review energy consumption` · `regulation incentives non-technical losses distribution utility tariff auditing` · `electricity distribution consumer complaints ombudsman regulation service quality` |
+| **Criterio de inclusión** | Que trate detección de anomalías o pérdidas no técnicas en distribución eléctrica, **o** los aspectos metodológicos de detección (métrica, desequilibrio, explicabilidad, priorización de inspección), con revisión por pares |
+| **Criterio de exclusión** | Publicaciones de editoriales sin revisión por pares; actas de congresos de divulgación; metadatos incompletos; resultados sin relación con el problema |
+| **Criterio de calidad** | Revisión sistemática, artículo de revista de difusión indexada, o trabajo de una comunidad técnica reconocida (IEEE/ACM) |
+| **Extracción** | Autoría, año, título, publicación, volumen, número, páginas, DOI |
+| **Total incorporado** | **15 trabajos**: 6 del eléctrico como fenómeno (antecedentes del concepto) y 9 de detección e inspección. Más los 7 de Design Science del marco teórico → **22 entradas en total**. Los materiales internos de Design Science no se citan (`DEC-4`) |
+
+**D.2 Lo que no se hizo — y lo que se hizo sin registrar**
+
+Está declarado porque condiciona la fuerza de las afirmaciones de la revisión. Dos cosas se intentaron el 3 y 4 de octubre —la ampliación `DEC-1` y la búsqueda `DEC-3`—, pero ninguna dejó registro, así que a los efectos del documento no ocurrieron (`DEC-13`):
+
+- **No se consultaron** IEEE Xplore, Scopus, Web of Science, SciELO ni LILACS en la búsqueda preliminar del 2 de octubre. La ausencia de resultados en Sudamérica y en contextos regulados andinos fue, por tanto, un vacío de búsqueda, no una constatación. La ampliación se intentó el 3–4 de octubre —IEEE Xplore sobre metadatos y resúmenes por no haber acceso institucional, más SciELO y LILACS abiertos—, pero no dejó cuenta de registros, así que se repitió el 5 de octubre. **Scopus y Web of Science quedan fuera de alcance** (`DEC-8`).
+- **No se buscó** artefactos comerciales ni de código abierto para detección de anomalías en lecturación y facturación: es una búsqueda con método distinto (directorios de producto, documentación de implantes en distribuidoras, repositorios). **Decisión del asesor, 2 de octubre de 2026:** se difiere a después de la defensa de propuesta, en la fase de construcción, y se declara como alcance no cubierto en esta versión.
+- **No se aplicó** doble criba independiente ni medida de acuerdo entre revisores: con una sola revisora no es posible. Se declara como limitación, no se corrige en este ciclo.
+- **No se calcularon** números de flujo tipo PRISMA en la primera pasada: no había conteo reproducible. La ampliación decidida los produjo —véase D.4—.
+
+**Consecuencia metodológica.** Las afirmaciones de brecha se escribieron como provisionales y así estuvieron marcadas en el borrador. La condición se cumplió el 5 de octubre de 2026 con la repetición con cuenta de registros, y la tesista resolvió el 7 de octubre ampliar la brecha (`DEC-35`): la sección de brecha dejó de llevar la nota de provisionalidad. **Lo que sigue siendo limitación declarada y no provisionalidad:** que esto no es una revisión sistemática —una sola revisora, sin doble criba independiente ni conteos de flujo—, y que SciELO, IEEE Xplore y BVS no fueron consultables (`DEC-20`).
+
+**D.3 Cadenas declaradas antes de repetir**
+
+*Regla de esta sección:* un conteo sin su cadena y su base declaradas no es reproducible. Las cadenas se escriben **antes** de buscar y la cuenta se llena **en el momento de buscar**.
+
+**Corrida principal (`DEC-14`).** Vía de conteo: OpenAlex y DOAJ (`DEC-20`, 5 de octubre de 2026), reutilizando las cinco cadenas y los tres criterios del protocolo v1 sin ningún cambio. Se declara lo que no se pudo consultar:
+
+| Base | Qué pasó el 5 de octubre de 2026 | Estado |
+|:--|:--|:--|
+| **IEEE Xplore** | HTTP 200 pero carcasa sin resultados —los resultados los pinta JavaScript— y sin acceso institucional (`DEC-6`) | No consultada directamente |
+| **SciELO** (`search.scielo.org`) | 403 en dos intentos | No consultada directamente |
+| **SciELO**, interfaz antigua | Responde, pero el control `q=energia` también devolvió «sin resultados»: no parsea la consulta, así que su «0» sería un recuento falso | Descartada por control |
+| **LILACS / BVS** | 403 en ambas direcciones probadas; además, es una base de ciencias de la salud (`DEC-19`) | Fuera del protocolo |
+| **OpenAlex** (`api.openalex.org`) | Devuelve `meta.count` real y filtra por texto de título y resumen, revista, año y tipo | Vía de conteo |
+| **DOAJ** (`doaj.org/api`) | Devuelve `total` real; indexa revistas de acceso abierto, incluidas SciELO | Vía de conteo |
+
+**Regla de recuento (`DEC-21`):** *identificados* = los 20 primeros por relevancia de cada cadena en cada índice, cribados con los criterios del protocolo. La suma debe cuadrar: identificados = eliminados + incluidos. El recuento del índice va en columna aparte, como diagnóstico, y no entra en la suma.
+
+**Corrida de la categoría (`DEC-16`).** «Lectura mal tomada» en las mismas bases, con los mismos criterios y sin filtro de idioma. Términos declarados:
+
+| Español | Inglés |
+|:--|:--|
+| `lectura mal tomada` · `lectura incorrecta` · `lectura errónea` · `error de lectura` · `medida errónea` | `meter reading error` · `incorrect meter reading` · `reading error` · `meter misreading` · `reading acquisition error` |
+
+**Corrida de control interno y auditoría (`DEC-15`).** Fuentes institucionales con la URL comprobada en el sondeo del 5 de octubre: **AETN** — `aetn.gob.bo` (la que figuraba en el protocolo, `aetn.org.bo`, no resuelve) · **SENARECOM** — `www.senarecom.gob.bo` · **OLADE** — `olade.org` / `olacde.org` · **CEPAL** — `cepal.org` · **ALER** — no localizada: `aler.org` es la de educación radiofónica, `aler-energia.org` es la de renovables lusófonas, `aler.org.uy` no resuelve · **Agencia Internacional de la Energía** — `iea.org`. Cadenas académicas: `control interno auditoría pérdidas no técnicas distribución eléctrica regulador` · `non-technical losses internal audit electricity distribution regulator` · `incentivos tarifarios auditoría distribuidora pérdidas energía regulación`. Criterio de calidad (`DEC-18`): se aceptan fuentes no académicas —informes de entes reguladores y organismos internacionales—, porque los entes reguladores no publican en revistas con revisión por pares; se escribió antes de buscar y se cuenta aparte de las académicas. Criterio de inclusión: que trate control, auditoría o fiscalización de pérdidas no técnicas, incentivos tarifarios o atención de reclamos en distribuidoras reguladas.
+
+**D.4 Cuenta de registros (5 de octubre de 2026, llenada en el momento de buscar)**
+
+**Corrida principal · OpenAlex** — `filter=title_and_abstract.search`, 05:23–05:24 UTC:
+
+| Cadena | Recuento del índice | Identificados | Eliminados | Motivo dominante de exclusión | Incluidos |
+|:--|--:|--:|--:|:--|--:|
+| 1 · `non-technical losses detection electricity distribution review` | 36 | 20 | 5 | 1 disertación · 2 Zenodo · 2 capítulos de libro | 15 |
+| 2 · `electricity theft detection smart meter machine learning unsupervised` | 14 | 14 | 4 | 2 Zenodo · 1 duplicado · 1 dataset | 10 |
+| 3 · `smart meter data anomaly detection review energy consumption` | 23 | 20 | 16 | 6 fuera de tema · 4 preprint/repositorio · 4 informes de revisión · 1 editorial · 1 sin DOI | 4 |
+| 4 · `regulation incentives non-technical losses distribution utility tariff auditing` | **0** | 0 | 0 | — | 0 |
+| 5 · `electricity distribution consumer complaints ombudsman regulation service quality` | **0** | 0 | 0 | — | 0 |
+| **Total** | **73** | **54** | **25** | | **29** |
+
+**Corrida principal · DOAJ** — `/api/search/articles`, 05:24–05:25 UTC:
+
+| Cadena | Recuento del índice | Identificados | Eliminados | Motivo dominante de exclusión | Incluidos |
+|:--|--:|--:|--:|:--|--:|
+| 1 | 3 | 3 | 0 | — | 3 |
+| 2 | **0** | 0 | 0 | — | 0 |
+| 3 | 1 | 1 | 1 | pronóstico de carga, no detección | 0 |
+| 4 | **0** | 0 | 0 | — | 0 |
+| 5 | **0** | 0 | 0 | — | 0 |
+| **Total** | **4** | **4** | **1** | | **3** |
+
+**DOIs incluidos de la corrida principal** (lista reproducible):
+
+- *Cadena 1, OpenAlex (15):* `10.12785/ijcds/120160` · `10.1016/j.rser.2017.05.193` · `10.1016/j.epsr.2018.01.005` · `10.3390/en13184727` · `10.47852/bonviewaia62026686` · `10.1109/tdc.2012.6281652` · `10.3390/app15073517` · `10.1016/j.rser.2017.10.040` · `10.1515/ijeeps-2015-0206` · `10.3390/en19163877` · `10.65525/jrtee.v2i1.18` · `10.63282/3050-9246.ijetcsit-v4i3p120` · `10.11591/ijape.v11.i2.pp109-119` · `10.1007/s11831-024-10137-z` · `10.17323/2587-814x.2025.4.68.87`
+- *Cadena 2, OpenAlex (10):* `10.1109/pesgm40551.2019.8973564` · `10.1109/sgc49328.2019.9056579` · `10.1109/aupec66173.2025.11219523` · `10.1109/tps-isa62245.2024.00018` · `10.22214/ijraset.2026.84787` · `10.1109/greentech56823.2023.10173841` · `10.3390/app14209308` · `10.1109/sasg68584.2025.11365375` · `10.1109/isitia66279.2025.11137434` · `10.32604/cmc.2019.06497`
+- *Cadena 3, OpenAlex (4):* `10.1016/j.apenergy.2021.116601` · `10.11591/eei.v10i1.2026` · `10.1109/smartgencon56628.2022.10084068` · `10.17323/2587-814x.2025.4.68.87`
+
+**Deduplicación.** `10.17323/2587-814x.2025.4.68.87` aparece en las cadenas 1 y 3 → −1. DOAJ no añade nada nuevo: sus tres incluidos ya estaban en la cadena 1 de OpenAlex. *Esto también es un resultado: la cobertura de acceso abierto de DOAJ sobre este tema está entera dentro de OpenAlex.* **Total de la corrida principal tras deduplicar: 28 trabajos distintos** (29 de OpenAlex − 1 repetido; DOAJ suma 0). Se cribaron 58 registros; entraron 32 antes de deduplicar.
+
+**Corrida de la categoría · OpenAlex** — `title_and_abstract.search`, 05:30–05:33 UTC, veinte primeros por relevancia de cada cadena:
+
+| Cadena | Recuento del índice | Identificados | Eliminados | Motivo dominante de exclusión | Incluidos |
+|:--|--:|--:|--:|:--|--:|
+| Español `lectura mal tomada` | 16 | 16 | 16 | 8 literatura/filosofía · 3 disertaciones · 2 veterinaria · 3 otros | 0 |
+| Español `lectura incorrecta` | 147 | 20 | 20 | 12 lectura/educación · 4 Zenodo · 2 medicina · 2 otros | 0 |
+| Español `lectura errónea` | 75 | 20 | 20 | 16 literatura/filosofía · 1 libro · 3 otros | 0 |
+| Español `error de lectura` | 2 227 | 20 | 20 | 13 lingüística/educación · 3 disertaciones · 1 capítulo · 3 otros | 0 |
+| Español `medida errónea` | 287 | 20 | 20 | 18 temas ajenos · 2 estimación de estado en transmisión (además, sin DOI) | 0 |
+| **Subtotal español** | **2 752** | **96** | **96** | | **0** |
+| Inglés `meter reading error` | 2 436 | 20 | 12 | 8 informes de revisión · 3 agua/gas · 1 preprint | 8 |
+| Inglés `incorrect meter reading` | 175 | 20 | 16 | 3 Zenodo · 7 agua/gas/otros · 4 sin DOI · 2 automática de lectura | 4 |
+| Inglés `reading error` | 56 504 | 20 | 20 | 16 psicolingüística/dislexia · 2 capítulos · 2 otros | 0 |
+| Inglés `meter misreading` | 79 | 20 | 12 | 4 otros medidores · 3 automatización de lectura · 5 fuera de tema | 8 |
+| Inglés `reading acquisition error` | 1 951 | 20 | 20 | 18 adquisición lectora/medicina · 2 capítulos | 0 |
+| **Subtotal inglés** | **61 145** | **100** | **80** | | **20** |
+| **Total OpenAlex** | **63 897** | **196** | **176** | | **20** |
+
+**Corrida de la categoría · DOAJ** — 05:34 UTC:
+
+| Cadena | Recuento del índice | Identificados | Eliminados | Incluidos |
+|:--|--:|--:|--:|--:|
+| `lectura mal tomada` | 0 | 0 | 0 | 0 |
+| `lectura incorrecta` | 8 | 8 | 8 | 0 |
+| `lectura errónea` | 22 | 20 | 20 | 0 |
+| `error de lectura` | 72 | 20 | 20 | 0 |
+| `medida errónea` | 31 | 20 | 20 | 0 |
+| `meter reading error` | 58 | 20 | 19 | 1 |
+| `incorrect meter reading` | 4 | 4 | 4 | 0 |
+| `reading error` | 1 282 | 20 | 20 | 0 |
+| `meter misreading` | 2 | 2 | 2 | 0 |
+| `reading acquisition error` | 39 | 20 | 19 | 1 |
+| **Total DOAJ** | **1 518** | **134** | **132** | **2** |
+
+**Total de la corrida de la categoría: 330 identificados = 308 eliminados + 22 incluidos.** Tras deduplicar `10.23960/jitet.v12i1.3776` —aparece en dos cadenas— **quedan 21 trabajos distintos.**
+
+**DOIs incluidos (21):** `10.1109/iceec.2004.1374588` · `10.1109/emceurope.2019.8872006` · `10.1109/cpem.2018.8501256` · `10.1109/cpem.2018.8501197` · `10.1007/bf00813099` · `10.35534/rwc.0201002c` · `10.52626/joge.v3i2.47` · `10.23960/jitet.v12i1.3776` · `10.1109/inmic48123.2019.9022772` · `10.1049/icp.2021.1987` · `10.1007/s41403-022-00362-y` · `10.23919/emctokyo.2019.8893903` · `10.1109/emceurope.2019.8871469` · `10.1109/apemc49932.2021.9597172` · `10.1109/tpwrd.2022.3149727` · `10.1109/emceurope.2019.8871982` · `10.1109/emceurope.2018.8485024` · `10.1109/emc/si/pi/emceurope52599.2021.9559296` · `10.1109/emc/si/pi/emceurope52599.2021.9559376` · `10.1109/ACCESS.2024.3471669` · `10.3390/s26165122`
+
+*Estos 21 son candidatos al corpus, no corpus: entran al corpus solo cuando sus metadatos se verifican uno a uno.*
+
+> **Hallazgo de la corrida de la categoría.** En español, **0 de 164 registros cribados** corresponde a la categoría. El término «lectura mal tomada» no existe como categoría en la literatura consultada: en español devuelve exclusivamente literatura, lingüística y pedagogía; en DOAJ ni siquiera devuelve un registro. En inglés hay 21 trabajos, pero tratan el error de lectura de medidor como problema metrológico —interferencia electromagnética, armónicas, mecanismo de conteo, sensibilidad bajo carga no senoidal— y no como categoría operativa: una lectura mal tomada por una persona que el proceso no advierte. **Ese es exactamente el hueco que el estudio ocupa**, constatado y no solo supuesto.
+
+**Corrida de control interno · fuentes institucionales** — sondeo del 5 de octubre de 2026. Ninguna de las seis arrojó resultado extraíble, por razones distintas:
+
+| Fuente | URL usada | Qué pasó | Identificados |
+|:--|:--|:--|--:|
+| **AETN** | `aetn.gob.bo` — la del protocolo, `aetn.org.bo`, no resuelve | HTTP 200. La página es idéntica para cualquier consulta: comparando el conjunto de enlaces con una cadena real y con una nula, solo cambia la URL del feed RSS, que devuelve 0 elementos en ambos casos | **0 extraídos** |
+| **SENARECOM** | `www.senarecom.gob.bo` — el dominio desnudo falla por certificado | Mismo comportamiento: enlaces idénticos con cadena real y nula; feed con 0 elementos | **0 extraídos** |
+| **OLADE** | `olade.org` / `olacde.org` | Misma prueba: 3 enlaces distintos y los tres son el propio feed; resultados pintados por JavaScript | **0 extraídos** |
+| **CEPAL** | `cepal.org/es/search?query=` | Buscador existe (HTTP 200), pero cero enlaces diferentes entre cadena real y nula → los resultados se pintan en el cliente | **0 extraídos** |
+| **ALER** | **No se localizó** | `aler.org` = Asociación Latinoamericana de Educación Radiofónica; `aler-energia.org` = asociación lusófona de renovables; `aler.org.uy` → DNS no resuelve. Las tres son organizaciones distintas de la de entes reguladores | **No consultada** |
+| **Agencia Internacional de la Energía** | `iea.org/search?q=` | HTTP 200, título genérico: buscador de cliente, resultados no extraíbles | **0 extraídos** |
+| **Intento alternativo: DuckDuckGo `site:`** | — | Método inválido: el control nulo devolvió exactamente lo mismo que la cadena real (ignora el resto de la consulta); y las cuatro consultas siguientes devolvieron 0 por límite de uso | **0** |
+| **Subtotal no académicas** | | | **0** |
+
+**Corrida de control interno · control académico en Crossref** (`type:journal-article`, orden por relevancia, 5 de octubre de 2026):
+
+| Cadena | Corpus (no coincidencias) | Identificados | Eliminados | Motivo dominante | Incluidos |
+|:--|--:|--:|--:|:--|--:|
+| `control interno auditoría pérdidas no técnicas distribución eléctrica regulador` | 1 679 661 | 20 | 20 | 20 contabilidad y auditoría presupuestaria, ninguno sobre pérdidas ni distribución eléctrica | 0 |
+| `non-technical losses internal audit electricity distribution regulator` | 3 056 479 | 20 | 18 | 16 algoritmos de detección · 2 mitigación técnica | 2 |
+| `incentivos tarifarios auditoría distribuidora energía regulación` | 9 688 | 20 | 17 | 12 ajenos · 3 generación renovable · 2 gestión de proyectos | 3 |
+| **Total académicas** | — | **60** | **55** | | **5** |
+
+**Total de la corrida de control: 60 identificados = 55 eliminados + 5 incluidos.**
+
+**DOIs incluidos (5):** `10.1049/icp.2023.0334` *(Electric energy distribution — control of NTL)* · `10.1016/j.jup.2012.05.004` *(prepayment billing to reduce NTL, Utilities Policy)* · `10.12660/rda.v226.2001.47249` *(distribuidora y racionamiento)* · `10.11117/22361766.40.01.06` *(tarifas en distribución de energía eléctrica)* · `10.1080/02646811.2018.1558966` *(Tratado de Regulación de la Energía)*
+
+> **Lectura de la corrida de control.** Ninguno de los cinco trató auditoría o control interno aplicado a pérdidas no técnicas: tres son de tarifas y regulación, uno de control de pérdidas, uno de facturación prepago. La cadena `control interno auditoría…` devolvió 0 incluidos en 20. Las seis fuentes institucionales, en cambio, no se pudieron buscar —no que no tengan nada, sino que sus buscadores se ejecutan en el cliente y no devolvieron lectura posible—. Por eso el tema no se cierra con «no existe», sino con esta limitación escrita.
+
+**Cuenta total de las tres corridas: 448 identificados = 389 eliminados + 59 incluidos → 54 trabajos distintos** (las tres sumas cuadran por separado y en su total; los trabajos distintos se obtienen quitando los repetidos entre cadenas —`10.17323/2587-814x.2025.4.68.87` y `10.23960/jitet.v12i1.3776`— y verificando que las tres corridas no se solapan entre sí, que no se solapan).
+
+**D.5 Registro de verificación de fuentes**
+
+**Método.** Consulta a la API de Crossref el 2 de octubre de 2026, primero por cadena de términos y luego por resolución directa de DOI, comprobando en cada caso autoría, título, publicación, volumen, número y páginas.
+
+**Resultado.** **15 de 15** entradas del corpus del dominio verificadas. Ninguna se cita sin comprobar.
+
+**Fuentes descartadas durante la búsqueda** por no superar el criterio de calidad o por no guardarse relación con el problema: revisiones de editoriales sin revisión por pares, artículos de congresos sin índice, y cinco trabajos localizados pero cuyo contenido no correspondía a la cadena usada.
+
+**Dudas abiertas de verificación.**
+
+1. Hevner (2007): sin rango de páginas confirmado en fuente abierta — se cita el número de artículo; no bloquea.
+2. Discrepancia 75–105 / 75–106 en Hevner et al. (2004) → resuelta el 2 de octubre de 2026 (`DEC-5`): se conserva 75–105.
+3. El corpus del dominio está sesgado hacia Crossref: los trabajos de IEEE localizados fueron los que aparecieron en las referencias cruzadas de las revisiones MDPI, no el resultado de una búsqueda en IEEE Xplore. El sesgo se da por superado solo con el conteo de registros de la ampliación, que está volcado en D.4.
+4. ~~Plantilla objetivo → contexto → mecanismo → principio: `[por verificar]` el capítulo y la página de Wieringa (2014). **Con el tutor desde el paquete del 30 de octubre de 2026** (`DEC-117`).~~ **Resuelta el 2 de noviembre de 2026 (`DEC-131`), sin respuesta del tutor: la atribución a Wieringa era errónea.** Se declara como formulación prescriptiva según la lógica CIMO de Denyer, Tranfield y van Aken (2008), con la anatomía de Gregor, Kruse y Seidel (2020), enmarcada en el problema de diseño de Wieringa (2014). **Las páginas de Wieringa se omiten** por no haberse podido verificar.
 
 ---
 
-*Documento generado por el agente `traductor-alsie` el 29 de octubre de 2026. Trazabilidad completa en `entrega_alsie/mapeo_ds_alsie.md`; verificación en `entrega_alsie/autoevaluacion_indicadores.md`.*
+*Documento generado por el agente `traductor-alsie` el 29 de octubre de 2026; actualizado el 2 de noviembre de 2026 (`DEC-130`). Trazabilidad completa en `entrega_alsie/mapeo_ds_alsie.md`; verificación en `entrega_alsie/autoevaluacion_indicadores.md`.*
