@@ -144,7 +144,7 @@
 
 | **#** | **Punto** | **Estado** |
 |--:|:--|:--|
-| **1** | **El método está escrito** como procedimiento que un verificador ajeno pueda seguir sin la autora (`R10.1`, `R1.4`) | **PENDIENTE** |
+| **1** | **El método está escrito** como procedimiento que un verificador ajeno pueda seguir sin la autora (`R10.1`, `R1.4`) | **CUMPLIDO** el 3 nov 2026 - evidencia: `07d_metodo_escrito.md` (370 líneas, 9 secciones, 6 chequeos en verde) (`DEC-137`) |
 | **2** | **El procedimiento ejecutable produce el listado** de los nueve meses con los dos umbrales, **dentro de los cupos 218 y 24** (`R2.1`, `R2.5`) | **PENDIENTE** |
 | **3** | **Cada alerta lleva sus declaraciones** —referencia, ventana, dirección y magnitud, código, contingencia, segmentación— (`R4.1`–`R4.5`, `DEC-103`) | **PENDIENTE** |
 | **4** | **Las alertas salen agrupadas por ruta**, con número de cuentas y estimación de tiempo, y la prioridad opera dentro de la ruta (`R3.1`–`R3.4`, `R6.3`) | **PENDIENTE** |
@@ -153,9 +153,11 @@
 
 **Regla del gate:** se cierra **punto por punto** y **por evidencia**, no por intención. **Ningún punto se cierra con «ya está pensado»**: se cierra con el documento o la salida que lo demuestra.
 
-**Estado actual de la etapa: 0 de 6.**
+**Estado actual de la etapa: 1 de 6.**
 
 **Actualización del 30 oct 2026 (`DEC-125`): el punto 1 quedó SIN IMPEDIMENTO.** Se decidió que el método escrito vive en **`07d_metodo_escrito.md`**, archivo propio, y que el exemplar son **tres alertas**. **El punto 1 es el único de los seis que se puede cerrar sin correr ninguna consulta**, porque su evidencia es un documento y no una salida. **Los puntos 2, 3, 4 y 5 exigen el listado, que todavía no existe** —`A2.1.d` está escrita pero mide la muestra de `E8` y no produce alertas—, **y el punto 6 depende de ellos**, porque una alerta de la que no existe el listado no se puede ejemplificar. **El gate sigue en 0 de 6: desbloquear no es cerrar.**
+
+**Actualización del 3 nov 2026 (`DEC-137`): EL PUNTO 1 QUEDA CUMPLIDO Y EL GATE PASA DE 0 A 1 DE 6.** La evidencia es **`07d_metodo_escrito.md`**, el archivo que `DEC-125` designó como casa del método: 370 líneas, 9 secciones —qué hace, precondiciones, 12 pasos, fórmulas, alerta, registro, autocalculeos, límites y trazabilidad—, escrito el 3 de noviembre, con los seis chequeos del validador en verde y agregado a la lista de archivos que se revisan en cada corrida. **Se cierra por la regla de este gate, que es cerrar por evidencia y no por intención, y por la vía que `DEC-125` abrió para este punto y solo para él:** su evidencia es un documento, no una salida de consulta. **Los puntos 2, 3, 4 y 5 siguen PENDIENTES porque exigen el listado de alertas, que todavía no existe** —`A2.1.d` está escrita pero mide la muestra de `E8` y no produce alertas—, **y el punto 6 depende de ellos**, porque una alerta que no está en el listado no se puede ejemplificar. **La condición de entrada a `E8` sigue sin cumplirse:** esa etapa exige artefacto construido, que son las seis cosas de este gate cerradas y no antes.
 
 ---
 
@@ -171,4 +173,4 @@
 
 ---
 
-*Etapa abierta: 30 de octubre de 2026, por la noche. Gate: 0 de 6.*
+*Etapa abierta: 30 de octubre de 2026, por la noche. Gate: 1 de 6.*
