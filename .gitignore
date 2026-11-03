@@ -21,3 +21,6 @@ node_modules/
 
 # Notas de trabajo y credenciales (no se versionan)
 formatear.txt
+
+# Histórico de sesión (contexto de continuidad entre agentes, no se versiona)
+_historico/
