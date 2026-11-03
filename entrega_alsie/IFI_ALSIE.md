@@ -58,9 +58,9 @@
 - **6. Introducción**
   - 6.1 Problema científico
   - 6.2 Objeto de estudio
-  - 6.3 Campo de acción
-  - 6.4 Objetivo general
-  - 6.5 Objetivos específicos
+  - 6.5 Campo de acción
+  - 6.3 Objetivo general
+  - 6.4 Objetivos específicos
   - 6.6 Hipótesis
   - 6.7 Aporte teórico
   - 6.8 Significación práctica
@@ -128,15 +128,11 @@ El objeto de estudio es **la detección y verificación de lecturas anómalas en
 
 *Resignificación respecto del paradigma de origen:* en Design Science el objeto era el artefacto construido —el método—; en el modelo institucional el objeto es el **área del conocimiento** donde se manifiesta la situación, y el método pasa a ser el instrumento de estudio y el núcleo de la propuesta (Capítulo IV).
 
-### 6.3 Campo de acción
-
-El campo de acción comprende **las propiedades, dimensiones y relaciones esenciales de la detección y verificación de lecturas anómalas no declaradas**, a saber: la segmentación del histórico por perfil de consumo y familia de código; el criterio de detección escrito y reproducible, evaluado en ambas direcciones y contra el propio ciclo anual de cada cuenta; la priorización de las alertas dentro de un techo de capacidad; la agrupación de las alertas por ruta de lecturación; la explicación obligatoria que acompaña a cada alerta; y el registro de resolución que alimenta el ciclo siguiente. Quedan fuera del campo la técnica concreta de aprendizaje automático, el fenómeno del fraude como tal y el proceso de lecturación en sí, que son contexto.
-
-### 6.4 Objetivo general
+### 6.3 Objetivo general
 
 Diseñar, construir y evaluar un método de detección y verificación previa a la facturación de lecturas anómalas no declaradas en el ciclo de lecturación y facturación de energía eléctrica, y articular los principios de diseño que de su aplicación se desprenden, contribuyendo a la formalización de la detección sistemática en distribuidoras reguladas.
 
-### 6.5 Objetivos específicos
+### 6.4 Objetivos específicos
 
 | Capítulo | Objetivo específico |
 |:--|:--|
@@ -144,6 +140,10 @@ Diseñar, construir y evaluar un método de detección y verificación previa a 
 | **II. Marco teórico** | Sistematizar los fundamentos teóricos de la detección de anomalías en consumo eléctrico y de la conversión de una señal en una decisión dentro de un ciclo regulado. |
 | **III. Modelo teórico** | Modelar la detección y verificación de lecturas anómalas no declaradas, precisando sus componentes y relaciones esenciales. |
 | **IV. Propuesta** | Elaborar y validar la propuesta que concreta el modelo y resuelve el problema de la detección reactiva. |
+
+### 6.5 Campo de acción
+
+El campo de acción comprende **las propiedades, dimensiones y relaciones esenciales de la detección y verificación de lecturas anómalas no declaradas**, a saber: la segmentación del histórico por perfil de consumo y familia de código; el criterio de detección escrito y reproducible, evaluado en ambas direcciones y contra el propio ciclo anual de cada cuenta; la priorización de las alertas dentro de un techo de capacidad; la agrupación de las alertas por ruta de lecturación; la explicación obligatoria que acompaña a cada alerta; y el registro de resolución que alimenta el ciclo siguiente. Quedan fuera del campo la técnica concreta de aprendizaje automático, el fenómeno del fraude como tal y el proceso de lecturación en sí, que son contexto.
 
 ### 6.6 Hipótesis
 
@@ -306,6 +306,8 @@ El análisis de los reclamos muestra que la mayoría de los reclamos procedentes
 | **Total** | **57** | **1 053** | **174 (16,52 %)** | **136** | **78,16 %** |
 
 *Tabla 1. Reclamos tramitados ante la oficina de atención al consumidor, por gestión y procedencia (enero 2022 – septiembre 2026). Fuente: `DATOS desde 2022.xlsx`, hoja `reclamos`.*
+
+> **Nota de deriva, medida el 3 de noviembre de 2026 (`DEC-134`).** Las cifras de esta sección —1 053 reclamos con lectura, 174 procedentes, 136 de tipo 1 y 78,16 %— se midieron el 25 de octubre de 2026 y se conservan con ese sello. Al volver a medir el 3 de noviembre la base devolvió **177 procedentes con lectura** y **1 061 reclamos con lectura**: **+3 procedentes y +8 con lectura**, sin que la ventana de 57 meses cambiara, que sigue teniendo 13 897 reclamos. Se movieron solo dos cosas: ocho reclamos de la ventana ganaron `id_lectura` —tres procedentes y cinco improcedentes—, y los ocho que tenían lectura sin tipo ya tienen `tipo_lectura`, de modo que el desfase Δ8 registrado en `DEC-65(6)` dejó de existir. **Las tablas `tfv_reclamo` y `tfv_reclamo_lectura` son vivas: la cifra depende del día de la corrida.** La fuente principal de las cifras publicadas es la hoja `DATOS desde 2022.xlsx`, un archivo estático que sigue dando 174; la base de datos era la segunda fuente y coincidió con la hoja el 25 de octubre. Por eso las cifras no se reescriben: se declara la deriva.
 
 **Análisis.** De los 174 reclamos procedentes, **136 (78,16 %)** provinieron de lecturas sin código: auditar solo las lecturas con código habría alcanzado como máximo 38 procedentes y habría dejado sin detectar 136. Sin embargo, las lecturas con código son solo el 0,88 % del facturable y originan el 21,84 % de los procedentes, de modo que presentan una tasa de procedencia por lectura mucho mayor. La señal es **específica de los procedentes**: en la ventana anterior de 21 meses, la razón de tasas de los improcedentes fue de apenas 1,15 × (47,27 frente a 54,27 por 100 000), de modo que el código predice reclamo procedente, no reclamo en general.
 

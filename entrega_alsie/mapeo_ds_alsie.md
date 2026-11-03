@@ -41,8 +41,8 @@
 | 6. Introducción | `01_areas_y_temas.md`, `02_delimitacion.md`, `03_perfil_ds.md`, `06_diagnostico.md` | Perfil de investigación completo con las fórmulas 6.1–6.9 | **Listo — hipótesis, aporte y significación validados el 30 oct (`DEC-127`); `[PROVISIONAL]` por `E8` y `E10`** |
 | 6.1 Problema científico | `02_delimitacion.md` §1–§2, `06_diagnostico.md` | Fórmula 6.1 | **Listo** |
 | 6.2 Objeto de estudio | `02_delimitacion.md` §3, `03_perfil_ds.md` §4 | Fórmula 6.2 (resignificación inversa) | **Listo** |
-| 6.3 Campo de acción | `02_delimitacion.md` §4, `03_perfil_ds.md` §4 | Fórmula 6.3 | **Listo** |
-| 6.4–6.5 Objetivo general y objetivos específicos | `03_perfil_ds.md` §5, `propuesta_borrador_v1.md` §3 | Fórmula 6.4 | **Listo** |
+| 6.5 Campo de acción | `02_delimitacion.md` §4, `03_perfil_ds.md` §4 | Fórmula 6.3 | **Listo** |
+| 6.3–6.4 Objetivo general y objetivos específicos | `03_perfil_ds.md` §5, `propuesta_borrador_v1.md` §3 | Fórmula 6.4 | **Listo** |
 | 6.6 Hipótesis | `10_contribucion_conclusiones.md` (diseño; principios pendientes) + `07a`/`07b`/`07c` | Fórmula 6.5 (provisional desde el diseño) | **Validada por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10`** |
 | 6.7 Aporte teórico | `10_contribucion_conclusiones.md` (diseño; principios pendientes) + `03_perfil_ds.md` §10 | Fórmula 6.6 (provisional) | **Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10`** |
 | 6.8 Significación práctica | `09_enlace_solucion.md` (diseño) + `08_evaluacion.md` (diseño) + `02_delimitacion.md` | Fórmula 6.7 (provisional) | **Validada por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por los resultados de `E8`** |
@@ -58,6 +58,8 @@
 | 14. Anexos | `06_diagnostico.md`, `07f_ficha_artefacto.md` `[vacío]`, `05_estado_del_arte.md` + este mapa | Instrumentos, ficha, mapa DS → ALSIE y protocolo de la revisión | **Parcial — ficha pendiente (E7f); Anexo D volcado 2 nov (`DEC-130`)** |
 
 > **Nota sobre la numeración de la columna «Fórmula 6.x», escrita el 1 de noviembre de 2026.** Esa columna sigue el esquema definido en la definición del agente `traductor-alsie` (`.opencode/agent/traductor-alsie.md` L95–L107), que **fusiona *objetivo general* y *objetivos específicos* en una sola fórmula —la 6.4— y coloca el *campo de acción* antes de los objetivos.** Por eso, **a partir de la hipótesis el número de apartado y el número de fórmula difieren en uno:** el apartado **6.6** corresponde a la fórmula **6.5**. **Los números de la primera columna coinciden con el índice del IFI (§5), que es la fuente autoritativa de la numeración.** La columna de fórmulas se deja como está, porque renumerarla obliga a decidir si el esquema del agente se corrige también, y esa decisión no se toma aquí.
+
+> **Nota de actualización, 3 nov 2026.** El apartado del campo de acción se movió de la posición 6.3 a la 6.5 del índice del IFI, y los objetivos general y específico pasaron a 6.3 y 6.4, para cumplir el orden que fija la guía oficial (`instituciones/alsie/guia_ifi_contenido.md` L208-L226): problema, objeto, objetivo general, objetivos específicos, campo de acción, hipótesis. La primera columna de esta tabla se renumeró ese día. La columna Fórmula 6.x no se toca: es un esquema propio de nueve fórmulas que fusiona los dos objetivos en una sola, la 6.4, y sitúa el campo de acción antes de ellos, tal como está definido en la definición del agente `traductor-alsie` (`.opencode/agent/traductor-alsie.md` L95-L107). Por eso las dos numeraciones ya no se alinean posición por posición a partir del 6.3, y desde la hipótesis el desfase sigue siendo de uno: el apartado 6.6 corresponde a la fórmula 6.5.
 
 ---
 

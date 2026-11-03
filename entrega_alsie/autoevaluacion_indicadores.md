@@ -42,10 +42,10 @@
 | Contexto histórico social del objeto | Cumple | §6 |
 | Problema científico precisa situación, población y lugar | Cumple | §6.1 |
 | Objeto de estudio como área del conocimiento | Cumple | §6.2 (resignificación inversa) |
-| Objetivo general precisa lo que se propone | Cumple | §6.4 |
+| Objetivo general precisa lo que se propone | Cumple | §6.3 |
 | Objetivo general precisa el para qué | Cumple | «contribuyendo a la formalización…» |
-| Objetivos específicos por capítulo | Cumple | §6.5 |
-| Campo de acción como parte esencial del objeto | Cumple | §6.3 |
+| Objetivos específicos por capítulo | Cumple | §6.4 |
+| Campo de acción como parte esencial del objeto | Cumple | §6.5 |
 | Hipótesis vincula propuesta y características con lo que debe solucionarse | **Parcial** | §6.6 — formulación provisional; requiere validación y E10 |
 | Hipótesis como suposición fundamentada | **Parcial** | §6.6 — provisional |
 | Hipótesis revela relación propuesta ↔ solución | **Parcial** | §6.6 — provisional |
@@ -174,11 +174,11 @@
 
 | Relación | Veredicto | Evidencia |
 |:--|:--|:--|
-| Problema – Objetivo general | Cumple | §6.1 ↔ §6.4 |
-| Problema – Objetivo – Objeto – Campo | Cumple | §6.1–§6.4 |
-| Problema – Objetivo – Población | Cumple | §6.1, §6.4, §6.10 |
+| Problema – Objetivo general | Cumple | §6.1 ↔ §6.3 |
+| Problema – Objetivo – Objeto – Campo | Cumple | §6.1–§6.5 |
+| Problema – Objetivo – Población | Cumple | §6.1, §6.3, §6.10 |
 | Población – Muestra | Cumple | §6.10 |
-| Objetivo general – Objetivos específicos – Métodos | Cumple | §6.4, §6.5, §6.9 |
+| Objetivo general – Objetivos específicos – Métodos | Cumple | §6.3, §6.4, §6.9 |
 | Objetivos específicos – Métodos | Cumple | §6.9 |
 | Perfil de investigación – Estructura de la tesis | Cumple | §6 ↔ §7–§10 |
 | Objetivos específicos – Resultados por capítulos | **Parcial** | §7–§10 responden a los objetivos; los resultados de E8/E10 faltan |

@@ -60,8 +60,8 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 | Bloque | Apartado del IFI | Fuente en `tesis_ds/` |
 |:--|:--|:--|
 | Apertura | Introducción (contexto) | `01_areas_y_temas.md`, `06_diagnostico.md` |
-| Problema, objeto y campo | Introducción (§6.1–§6.3) | `02_delimitacion.md`, `03_perfil_ds.md` |
-| Objetivos e hipótesis | Introducción (§6.4–§6.6) | `03_perfil_ds.md`, `10_contribucion_conclusiones.md` |
+| Problema, objeto y campo | Introducción (§6.1, §6.2 y §6.5) | `02_delimitacion.md`, `03_perfil_ds.md` |
+| Objetivos e hipótesis | Introducción (§6.3, §6.4 y §6.6) | `03_perfil_ds.md`, `10_contribucion_conclusiones.md` |
 | Diseño metodológico | Introducción (§6.9–§6.10) | `06_diagnostico.md`, `08_evaluacion.md` |
 | Diagnóstico | Capítulo I (§7) | `06_diagnostico.md` |
 | Marco teórico esencial | Capítulo II (§8) | `04_marco_teorico.md`, `05_estado_del_arte.md` |
@@ -344,6 +344,8 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 - [ ] El número de diapositivas está entre 14 y 16.
 - [ ] La portada y el cierre incluyen los datos institucionales.
 - [ ] Están resueltas las dos preguntas abiertas que afectan la defensa: estructura oficial con autor (Bloque 9) y número de verificadores (Bloques 5 y 11).
+
+> **Nota de deriva, medida el 3 de noviembre de 2026 (`DEC-134`).** Las cifras de esta sección —1 053 reclamos con lectura, 174 procedentes, 136 de tipo 1 y 78,16 %— se midieron el 25 de octubre de 2026 y se conservan con ese sello. Al volver a medir el 3 de noviembre la base devolvió **177 procedentes con lectura** y **1 061 reclamos con lectura**: **+3 procedentes y +8 con lectura**, sin que la ventana de 57 meses cambiara, que sigue teniendo 13 897 reclamos. Se movieron solo dos cosas: ocho reclamos de la ventana ganaron `id_lectura` —tres procedentes y cinco improcedentes—, y los ocho que tenían lectura sin tipo ya tienen `tipo_lectura`, de modo que el desfase Δ8 registrado en `DEC-65(6)` dejó de existir. **Las tablas `tfv_reclamo` y `tfv_reclamo_lectura` son vivas: la cifra depende del día de la corrida.** La fuente principal de las cifras publicadas es la hoja `DATOS desde 2022.xlsx`, un archivo estático que sigue dando 174; la base de datos era la segunda fuente y coincidió con la hoja el 25 de octubre. Por eso las cifras no se reescriben: se declara la deriva.
 
 ---
 
