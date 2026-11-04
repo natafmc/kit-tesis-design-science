@@ -4841,3 +4841,311 @@ SELECT 'tipo_reclamo',
    AND r.fecha_hora_reg <  DATE '2026-10-01'
  GROUP BY r.tipo_reclamo
  ORDER BY 1, 2;
+
+
+-- =====================================================================
+-- NUEVA CONSULTA - LISTADO DE ALERTAS DEL MÉTODO (4 nov 2026)
+-- Genera el listado de alertas para los nueve meses de 2026 (enero a
+-- septiembre), aplicando el método escrito en 07d_metodo_escrito.md.
+--
+-- Umbrales ya medidos y fijados (DEC-119, DEC-120, DEC-114):
+--   theta_A2 = 39.6666666666667   (máximo de nueve cortes)
+--   theta_A1 = 495.362260343088   (máximo de nueve cortes)
+-- Cupos por mes (R2.1, R2.5, DEC-114):
+--   A2 <= 218   A1 <= 24   A2 + A1 <= 242
+--
+-- Pasos del método implementados (de 07d_metodo_escrito.md §3):
+--   1. Ventana y recorte del historico (enero 2022 - septiembre 2026)
+--   2. Panel colapsado: una fila por cuenta y mes (regla de colapso DEC-75)
+--   3. Depuración: NO implementada aquí (ver nota al final)
+--   5. Referencia: mediana de los cuatro ciclos 2022-2025, referencia > 0
+--   6. Desviación: |consumo_observado - referencia| / referencia
+--   7. Contingencia A1: ciclos < 4, media de hasta 6 meses previos con
+--      lec_actual <> 0, media positiva
+--   8. Umbrales dentro de cupos: A2 si desviación >= θ_A2 y ciclos = 4;
+--      A1 si desviación_A1 >= θ_A1 y ciclos < 4
+--   9. Ruta: tfv_historico_lecturador.nro_cuenta -> tfv_cliente -> tfv_ruta
+--  10. Priorización dentro de la ruta por desviación DESC
+--  11. Alerta con declaraciones (R4): cuenta, mes, referencia, desviación,
+--      código de irregularidad, contingencia, segmentación, ruta, orden,
+--      registro
+--  12. Registro: estado inicial 'pendiente' (R5.1, R5.3)
+--
+-- SUPOSICIONES SOBRE EL ESQUEMA (verificar antes de ejecutar):
+--   - tfv_cliente tiene columnas: id_cliente, id_ruta, nro_cuenta
+--     (declarado en CONTROL 6, DEC-74). Si no existen, R3.4 no se cumple.
+--   - tfv_lec_irregular: el encabezado de este archivo declara solo
+--     tfv_lec_irregular(id_cod_irre) (7 oct, DEC-36). No se conoce una
+--     columna id_lectura para enlazar con el panel, por lo que la unión
+--     con el código de irregularidad está COMENTADA. Si la tabla tiene
+--     más columnas, descomentar y ajustar.
+--   - tfv_codigo_irregular tiene columnas: id_cod_irre, codigo,
+--     desc_cod_irre (encabezado, 6 oct, DEC-29/31).
+--
+-- ADVERTENCIA: consulta escrita sin ejecutar. Ejecutar primero el BLOQUE 0
+-- de este archivo y leer sus resultados antes de continuar.
+-- =====================================================================
+
+-- NUEVA CONSULTA - LISTADO DE ALERTAS DEL MÉTODO
+WITH w AS (
+    SELECT nro_cuenta,
+           DATE_TRUNC('month', fecha_lec)::date AS mes,
+           fecha_lec,
+           lec_actual,
+           consumo,
+           id_lectura
+      FROM tfv_historico_lecturador
+     WHERE fecha_lec >= DATE '2022-01-01'
+       AND fecha_lec <  DATE '2026-10-01'
+),
+-- Paso 2: panel colapsado, una fila por cuenta y mes (regla de colapso DEC-75)
+p AS (
+    SELECT DISTINCT ON (nro_cuenta, mes)
+           nro_cuenta, mes, fecha_lec, lec_actual, consumo, id_lectura
+      FROM w
+     ORDER BY nro_cuenta, mes, fecha_lec DESC, id_lectura DESC
+),
+-- Paso 5: referencia por cuenta y mes_del_anio (mediana de 2022-2025)
+hist AS (
+    SELECT nro_cuenta,
+           EXTRACT(MONTH FROM mes)::int AS mes_del_anio,
+           consumo
+      FROM p
+     WHERE mes >= DATE '2022-01-01'
+       AND mes <  DATE '2026-01-01'
+),
+ref AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           COUNT(*) AS ciclos_disponibles,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY consumo) AS referencia
+      FROM hist
+     GROUP BY nro_cuenta, mes_del_anio
+),
+-- Paso 6: desviación para enero-septiembre 2026
+det2026 AS (
+    SELECT p.nro_cuenta,
+           p.mes,
+           p.lec_actual,
+           p.consumo AS consumo_observado,
+           p.id_lectura,
+           r.ciclos_disponibles,
+           r.referencia,
+           CASE
+             WHEN r.nro_cuenta IS NULL OR r.ciclos_disponibles < 4
+               THEN NULL
+             WHEN r.referencia <= 0
+               THEN NULL
+             ELSE ABS(p.consumo - r.referencia) / r.referencia
+           END AS desviacion_a2
+      FROM p
+      LEFT JOIN ref r
+        ON r.nro_cuenta   = p.nro_cuenta
+       AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
+     WHERE p.mes >= DATE '2026-01-01'
+       AND p.mes <  DATE '2026-10-01'
+),
+-- Paso 7: contingencia A1 - media de hasta 6 meses previos con lec_actual <> 0
+cic AS (
+    SELECT nro_cuenta,
+           mes_del_anio,
+           ciclos_disponibles
+      FROM ref
+),
+a1_celdas AS (
+    SELECT d.nro_cuenta,
+           d.mes,
+           d.lec_actual,
+           d.consumo_observado
+      FROM det2026 d
+      LEFT JOIN cic c
+        ON c.nro_cuenta   = d.nro_cuenta
+       AND c.mes_del_anio = EXTRACT(MONTH FROM d.mes)::int
+     WHERE (c.nro_cuenta IS NULL OR c.ciclos_disponibles < 4)
+),
+ventana_6meses AS (
+    SELECT a.nro_cuenta,
+           a.mes,
+           a.lec_actual,
+           a.consumo_observado,
+           COUNT(h2.consumo) AS meses_previos_disponibles,
+           AVG(h2.consumo)   AS media_6meses
+      FROM a1_celdas a
+      LEFT JOIN p h2
+        ON h2.nro_cuenta = a.nro_cuenta
+       AND h2.mes >= (a.mes - INTERVAL '6 months')::date
+       AND h2.mes <  a.mes
+       AND h2.lec_actual <> 0
+     GROUP BY a.nro_cuenta, a.mes, a.lec_actual, a.consumo_observado
+),
+dev_a1 AS (
+    SELECT nro_cuenta,
+           mes,
+           lec_actual,
+           consumo_observado,
+           meses_previos_disponibles,
+           media_6meses,
+           ABS(consumo_observado - media_6meses) / media_6meses AS desviacion_a1
+      FROM ventana_6meses
+     WHERE meses_previos_disponibles >= 1
+       AND media_6meses > 0
+       AND lec_actual <> 0
+),
+-- Paso 8: umbrales dentro de cupos
+-- Valores ya medidos: theta_A2 = 39.6666666666667, theta_A1 = 495.362260343088
+theta AS (
+    SELECT 39.6666666666667::numeric AS theta_A2,
+           495.362260343088::numeric AS theta_A1
+),
+alertas_a2 AS (
+    SELECT d.nro_cuenta,
+           d.mes,
+           d.id_lectura,
+           d.consumo_observado,
+           d.ciclos_disponibles,
+           d.referencia,
+           d.desviacion_a2 AS desviacion,
+           'A2' AS canal
+      FROM det2026 d
+     CROSS JOIN theta t
+     WHERE d.ciclos_disponibles >= 4
+       AND d.referencia > 0
+       AND d.desviacion_a2 >= t.theta_A2
+),
+alertas_a1 AS (
+    SELECT d.nro_cuenta,
+           d.mes,
+           d.id_lectura,
+           d.consumo_observado,
+           d.ciclos_disponibles,
+           d.referencia,
+           da.desviacion_a1 AS desviacion,
+           'A1' AS canal
+      FROM det2026 d
+      JOIN dev_a1 da
+        ON da.nro_cuenta = d.nro_cuenta
+       AND da.mes = d.mes
+     CROSS JOIN theta t
+     WHERE (d.ciclos_disponibles IS NULL OR d.ciclos_disponibles < 4)
+       AND da.desviacion_a1 >= t.theta_A1
+),
+-- Aplicar cupos por mes: quedarse con las top 218 de A2 y top 24 de A1
+-- (R6.2: si el mes supera el techo, se descarta la cola del orden)
+cupo_a2 AS (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY mes ORDER BY desviacion DESC, nro_cuenta) AS posicion_en_mes
+      FROM alertas_a2
+),
+seleccion_a2 AS (
+    SELECT * FROM cupo_a2 WHERE posicion_en_mes <= 218
+),
+cupo_a1 AS (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY mes ORDER BY desviacion DESC, nro_cuenta) AS posicion_en_mes
+      FROM alertas_a1
+),
+seleccion_a1 AS (
+    SELECT * FROM cupo_a1 WHERE posicion_en_mes <= 24
+),
+-- Unión de A2 y A1
+alertas_crudas AS (
+    SELECT nro_cuenta, mes, id_lectura, consumo_observado,
+           ciclos_disponibles, referencia, desviacion, canal
+      FROM seleccion_a2
+    UNION ALL
+    SELECT nro_cuenta, mes, id_lectura, consumo_observado,
+           ciclos_disponibles, referencia, desviacion, canal
+      FROM seleccion_a1
+),
+-- Paso 9: ruta - tfv_cliente por nro_cuenta (DEC-71: ruta vigente, proxy MIN(id_ruta))
+cli AS (
+    SELECT nro_cuenta, MIN(id_ruta) AS id_ruta
+      FROM tfv_cliente
+     WHERE nro_cuenta IS NOT NULL
+       AND id_ruta IS NOT NULL
+     GROUP BY nro_cuenta
+),
+con_ruta AS (
+    SELECT a.*,
+           c.id_ruta
+      FROM alertas_crudas a
+      LEFT JOIN cli c ON c.nro_cuenta = a.nro_cuenta
+),
+-- Código de irregularidad (UNIÓN PENDIENTE - ver suposiciones arriba)
+-- Descomentar y ajustar si tfv_lec_irregular tiene columna id_lectura:
+-- cod_irreg AS (
+--     SELECT rl.id_lectura, ci.codigo AS cod_irre, ci.desc_cod_irre
+--       FROM tfv_lec_irregular rl
+--       JOIN tfv_codigo_irregular ci ON ci.id_cod_irre = rl.id_cod_irre
+-- ),
+-- con_codigo AS (
+--     SELECT r.*, ci.cod_irre, ci.desc_cod_irre
+--       FROM con_ruta r
+--       LEFT JOIN cod_irreg ci ON ci.id_lectura = r.id_lectura
+-- ),
+con_codigo AS (
+    SELECT r.*, NULL::text AS cod_irre, NULL::text AS desc_cod_irre
+      FROM con_ruta r
+),
+-- Paso 4/8: segmentación - banda de perfil por consumo observado
+-- Cuatro bandas: 0-26, 27-69, 70-135, >135 (DEC-104)
+con_segmento AS (
+    SELECT c.*,
+           CASE
+             WHEN c.consumo_observado <= 26 THEN '0-26'
+             WHEN c.consumo_observado <= 69 THEN '27-69'
+             WHEN c.consumo_observado <= 135 THEN '70-135'
+             ELSE '>135'
+           END AS banda_perfil,
+           CASE
+             WHEN c.cod_irre IS NOT NULL THEN 'con_codigo'
+             ELSE 'sin_codigo'
+           END AS familia_codigo
+      FROM con_codigo c
+),
+-- Paso 10: priorización dentro de la ruta por desviación DESC
+-- (R6.3: prioridad opera dentro de la ruta, no a nivel global)
+con_orden AS (
+    SELECT s.*,
+           ROW_NUMBER() OVER (PARTITION BY s.id_ruta ORDER BY s.desviacion DESC, s.nro_cuenta, s.mes) AS orden_en_ruta,
+           ROW_NUMBER() OVER (ORDER BY s.desviacion DESC, s.nro_cuenta, s.mes) AS orden_global
+      FROM con_segmento s
+)
+-- Paso 11: emitir alerta con declaraciones (R4)
+-- Paso 12: registro inicial 'pendiente' (R5.1, R5.3)
+SELECT nro_cuenta                            AS cuenta,
+       mes                                   AS mes,
+       TO_CHAR(mes, 'YYYY-MM')               AS cuenta_mes,
+       referencia                            AS referencia_usada,
+       ciclos_disponibles                    AS ciclos_que_formaron_referencia,
+       CASE
+         WHEN consumo_observado > referencia THEN 'al alza'
+         WHEN consumo_observado < referencia THEN 'a la baja'
+         ELSE 'sin variación'
+       END                                   AS direccion_desviacion,
+       ROUND(desviacion::numeric, 6)         AS magnitud_desviacion,
+       canal                                 AS canal_alerta,
+       CASE
+         WHEN canal = 'A1' THEN 'si'
+         ELSE 'no'
+       END                                   AS contingencia_a1,
+       cod_irre                              AS codigo_irregularidad,
+       desc_cod_irre                         AS desc_codigo_irregularidad,
+       banda_perfil                          AS segmento_perfil,
+       familia_codigo                        AS segmento_familia_codigo,
+       id_ruta                               AS id_ruta,
+       orden_en_ruta                         AS orden_dentro_de_ruta,
+       orden_global                          AS orden_global,
+       'pendiente'                           AS estado_registro,
+       'metodo escrito 07d_metodo_escrito.md' AS criterio_registro,
+       'calculado por consulta SQL, sin resolución humana' AS evidencia_registro
+  FROM con_orden
+ ORDER BY id_ruta NULLS LAST, desviacion DESC, nro_cuenta, mes;
+
+-- Autocalculeos pendientes del punto 2 del gate de E7d (07d_metodo_escrito.md §7):
+-- A: Ningún mes supera 218 alertas de A2 ni 24 de A1 (R2.1, R2.5, DEC-114)
+-- B: Ninguna alerta queda sin ruta ni sin orden (R3.1, R6.1)
+-- Nota: la depuración (paso 3) no está implementada en esta consulta.
+--   Ver 07d_construccion.md §3.2: las condiciones A-D deben cumplirse.
+--   La depuración excluye 541 celdas de 411 cuentas (A2.3.g, DEC-101).
+
