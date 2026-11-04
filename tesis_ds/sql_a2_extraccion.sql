@@ -4393,17 +4393,38 @@ SELECT (SELECT COUNT(*) FROM comb)                               AS meses_medido
 
 -- =====================================================================
 -- A2.1.d - LA MUESTRA DE E8: RECLAMOS Y PROCEDENTES DE LA VENTANA DE
---           NUEVE MESES (30 oct 2026 - decisión P3 = (a) de las
---           preguntas del 30 oct; universo corregido el 2 nov 2026 con
---           DEC-133, escrito ANTES de correr)
+--           NUEVE MESES (30 oct 2026; REESCRITA EL 4 NOV 2026 CON
+--           DEC-134 Y LA SALIDA DE LA CONSULTA D: DEC-139 y DEC-140)
 --
 --     QUÉ MIDE Y POR QUÉ EXISTE. El criterio 1 mide la cobertura del
 --     método sobre los reclamos PROCEDENTES de la ventana de aplicación
 --     —enero a septiembre de 2026, fijada por `DEC-90`, P1 = (a)—. Ese
---     recuento NOEXISTE todavía para la ventana: el CONTROL 5.j midió
---     174 procedentes en los 57 MESES, y `DEC-91`, P4 = (b), acotó la
---     aplicación del método a los nueve. Sin este conteo, `E8` no tiene
---     muestra y su punto 2 del gate no se puede cumplir.
+--     recuento no existía cuando esta consulta se escribió, el 30 de
+--     octubre: el CONTROL 5.j había medido 174 procedentes en los 57
+--     MESES, y `DEC-91`, P4 = (b), acotó la aplicación del método a los
+--     nueve. HOY EXISTE: la CONSULTA D lo midió el 4 de noviembre de
+--     2026 (DEC-139) y dio 1 843 procedentes en la ventana, de los
+--     cuales 19 tienen lectura. Esa es la muestra de `E8`.
+--
+--     QUÉ CAMBIÓ EN LA REESCRITURA DEL 4 DE NOV (DEC-140). Tres cosas, y
+--     ninguna es cosmética:
+--       1. EL IDENTIFICADOR DEL PROCEDENTE YA NO SE BUSCA POR HUELLA:
+--          ES EL DOMINIO DICTADO POR LA TESISTA, `1 = Procedente`
+--          (`DEC-64`, punto 8; fijado en `DEC-134`, P1 = (a)).
+--       2. LA HUELLA SE RETIRA COMO FILTRO. Pedía que el recuento con
+--          lectura en los 57 meses diera exactamente 174. Desde el 3 de
+--          noviembre ese recuento da 177, porque ocho reclamos ganaron
+--          `id_lectura` (`DEC-134(3)`), de modo que la versión anterior
+--          de esta consulta ya NO identifica al procedente: devuelve el
+--          conjunto vacío y, con él, una SALIDA 1 sin filas y una
+--          SALIDA 2 en ceros por vacuidad. El 174 se conserva como
+--          REFERENCIA FECHADA del 25 de octubre de 2026, no como filtro.
+--       3. LOS AUTOCALCULEOS SE ANCLAN EN LO MEDIDO. Los de la ventana
+--          ya no son estimaciones de tasa uniforme: salen de la CONSULTA
+--          D del 4 de noviembre (DEC-139). El piso de 101 reclamos con
+--          lectura se mantiene como cota inferior, y el 19 procedentes
+--          con lectura entra como cifra medida que esta consulta debe
+--          reproducir.
 --
 --     EL UNIVERSO, FIJADO ANTES DE CORRER —DEC-133, P1 = (a)—: LOS DOS,
 --     JERARQUIZADOS. La ventana se cuenta DOS VECES y ninguna de las dos
@@ -4418,34 +4439,25 @@ SELECT (SELECT COUNT(*) FROM comb)                               AS meses_medido
 --     Y se declara además el TOTAL de reclamos de la ventana, que es lo
 --     que permite ver cuánto hay declarado.
 --
---     EL FILTRO DEL PROCEDENTE SE IDENTIFICA, NO SE ADIVINA. El campo
---     es `sw_procendente` —con doble n, el nombre que corre en el
---     CONTROL 5.j y que se conserva tal cual—, vive en
---     `tfv_respuesta_reclamo`. Su dominio es de CUATRO valores, dictado
---     por la tesista el 25 de oct (`DEC-64`, punto 8): 1 = Procedente,
---     2 = Improcedente, 3 = Parcialmente Procedente, 4 = Improcedente
---     Administrativo. La hoja solo usaba 1, 2 y 4 (`DEC-24`), y `DEC-65`
---     confirmó que el 3 existe: 4 reclamos en los 57 meses, todos sin
---     lectura. CUALQUIER VALOR ESCRITO AQUÍ SERÍA UNA ADIVINANZA, y el
---     proyecto ya registró dos errores por nombres recordados, por eso
---     esta consulta BUSCA el valor por su HUELLA MEDIDA.
+--     EL CAMPO DEL PROCEDENTE, SIN ADIVINAR EL NOMBRE. Es
+--     `sw_procendente` —con doble n, el nombre que corre en el
+--     CONTROL 5.j y que se conserva tal cual— y vive en
+--     `tfv_respuesta_reclamo`: `tfv_reclamo` no lo tiene (`DEC-138(3a)`,
+--     confirmado por lista de columnas del `CONTROL 5.d`). Su dominio es
+--     de CUATRO valores, dictado por la tesista el 25 de octubre
+--     (`DEC-64`, punto 8): 1 = Procedente, 2 = Improcedente,
+--     3 = Parcialmente Procedente, 4 = Improcedente Administrativo. La
+--     hoja solo usaba 1, 2 y 4 (`DEC-24`), y `DEC-65` confirmó que el 3
+--     existe: 4 reclamos en los 57 meses, todos sin lectura.
 --
---     LA HUELLA, Y POR QUÉ CORRE SOBRE LOS QUE TIENEN LECTURA. Busca el
---     valor de `sw_procendente` cuyo recuento de reclamos CON LECTURA en
---     los 57 meses da EXACTAMENTE 174 —la cifra que el CONTROL 5.j
---     reprodujo desde la base el 24 de octubre de 2026— y ese es el
---     procedente. El autocalculeo 1 comprueba que sea UNO SOLO; si diera
---     cero o dos, la identificación falla y no se publica nada.
---     POR QUÉ CON LECTURA Y NO CON TODOS: los 174 de `DEC-64(2)` son la
---     suma 136 + 4 + 34, o sea las filas del cruce
---     `sw_procendente × tipo_lectura` CON tipo. `DEC-65(1)` dio el
---     reparto completo: sobre los 57 meses el valor 1 da 174 con tipo y
---     9 411 sin tipo —9 585 en total—, y la suma de los cuatro valores
---     da 13 897, que es el total exacto de la ventana. Contando TODOS
---     los reclamos, NINGÚN valor daría 174. Esto se escribió ANTES de
---     correr, el 2 nov 2026: con la versión anterior, que contaba todos,
---     `valores_que_dan_174` habría dado 0 y la consulta habría
---     devuelto 0 filas.
+--     POR QUÉ SE COMPARA CONTRA `dominio` Y NO CONTRA UN LITERAL SUELTO.
+--     El valor dictado no se escribe como constante en el filtro: la CTE
+--     `procedente` sale de `dominio` filtrando por `sw_procendente` en
+--     texto igual a `1`. Así el tipo real de la columna no importa, y si
+--     el valor no existiera la CTE quedaría vacía —hecho que el
+--     autocalculeo 1 convierte en fallo visible, en lugar de un cero
+--     silencioso—. El literal `1` se escribe UNA SOLA VEZ, aquí y en la
+--     CTE `procedente`, para que no haya dos fuentes de verdad.
 --
 --     EL VALOR 3 SE DECLARA Y NO ENTRA AL NUMERADOR —DEC-133,
 --     P3 = (a)—. «Parcialmente Procedente» es categoría propia: no es
@@ -4453,94 +4465,117 @@ SELECT (SELECT COUNT(*) FROM comb)                               AS meses_medido
 --     ventana sale declarada en la SALIDA 2.
 --
 --     LA VENTANA Y SU FECHA. Se filtra por `r.fecha_hora_reg`, la misma
---     fecha que usan A2.1.a y el CONTROL 5.j, con la misma convención:
---     inclusive desde el primero del mes, exclusivo hasta el primero del
---     mes siguiente.
+--     fecha que usan A2.1.a, el CONTROL 5.j y la CONSULTA D, con la
+--     misma convención: inclusive desde el primero del mes, exclusivo
+--     hasta el primero del mes siguiente. `tfv_reclamo` tiene además
+--     `fecha_hora_reclamo`, y la diferencia entre las dos NO está medida
+--     (`DEC-138(8)`): si algún día se mide, cambiar el filtro dejaría a
+--     esta consulta sin contraste con todo lo anterior.
+--
+--     LO QUE LA CONSULTA D MIDIÓ EL 4 DE NOV Y QUE AQUÍ SE REPRODUCE.
+--     D1, valor 1: 1 843 reclamos, 19 con lectura, 1 824 sin lectura,
+--     0 con `fecha_odeco`. D1, valor 2: 870, 90, 780 y 89. D2, total de
+--     la ventana: 2 713 reclamos, 109 con lectura, 2 604 sin lectura y
+--     89 con `fecha_odeco`. Las sumas cuadran: 1 843 + 870 = 2 713 y
+--     19 + 90 = 109. No hubo filas sin valor de `sw_procendente`, ni
+--     valores 3 ni 4 en la ventana.
+--
+--     LA PREDICCIÓN QUE FALLÓ, Y QUÉ OBLIGA. `DEC-134(8)` estimó
+--     alrededor de 2 190 reclamos en la ventana por tasa uniforme
+--     —243,8 por mes— y la medición dio 2 713: 301,4 por mes, un 23,6 %
+--     por encima de la tasa de los 57 meses. La estimación era una
+--     estimación y así quedó escrita; la cifra que vale es la medida.
+--     No se corrige el pasado: se deja constancia de que el supuesto de
+--     tasa uniforme no se sostiene y de que 2026 reclama más por mes que
+--     el promedio del periodo.
 --
 --     QUEDA DECLARADO EL ÚNICO MODO EN QUE ESTAS CIFRAS PODRÍAN MOVERSE.
 --     `tfv_reclamo` es tabla viva (DEC-55), de modo que un reclamo se
 --     puede INSERTAR HOY con un `fecha_hora_reg` de marzo. Eso
 --     aumentaría `reclamos_ventana_con_lectura` sin que nadie lo
---     advierta. La protección NO es suponer que no ocurre: es el
---     autocalculeo 4, que exige 101 —cifra medida en DEC-65 desde dos
---     fuentes, la hoja y el CONTROL 5.f— y obliga a investigar antes de
---     publicar cualquier cosa si el número difiere.
+--     advierta. La protección NO es suponer que no ocurre: son los
+--     autocalculeos 5 a 10, anclados en lo medido el 4 de noviembre, que
+--     obligan a investigar antes de publicar cualquier cosa si un número
+--     difiere.
 --
 --     EL ORDEN EN QUE SE LEE LA SALIDA 2. SI EL AUTOCALCULEO 1 NO DA 1,
 --     EL RESTO DE LA FILA NO SE LEE: con `procedente` vacío, `marcados`
 --     queda vacío y casi todos los conteos dan 0 por VACUIDAD, no por
---     medición. El 0 de un conteo vacío no es un resultado.
+--     medición. El 0 de un conteo vacío no es un resultado. Y si el
+--     autocalculeo 2 no da `1`, la dictación y la medición se
+--     contradicen y SE DETIENE todo.
 --
---     AUTOCALCULEOS — escritos ANTES de correrla:
---       1. valores_que_dan_174 DEBE dar **1**: hay UN SOLO valor de
---          `sw_procendente` con 174 procedentes-con-lectura en 57 meses,
---          y ese es el filtro de todo lo demás. Si diera 0, el campo, la
---          ventana o la restricción de lectura cambiaron; si diera 2,
---          hay dos valores con la misma huella y el filtro no es unívoco.
---       2. valor_procedente DEBE dar **1**: el valor que la huella
---          identificó tiene que coincidir con el dominio dictado por la
---          tesista —`DEC-64` punto 8, confirmado en `DEC-133`—. Si no
---          coincide, la dictación y la medición se contradicen y SE
---          DETIENE. Nota: si la huella hubiera caído sobre el grupo
---          `NULL`, esto daría NULL y también se detiene.
---       3. procedentes_57_meses DEBE dar **174** —se vuelve a medir en
---          esta corrida, CONTROL 5.j, `DEC-64` y `DEC-65`—.
---       4. reclamos_ventana_con_lectura DEBE dar **101**: la hoja dio 101
---          reclamos de 2026 con corte en septiembre, y la base 117 sin
---          filtro menos 16 de octubre (`DEC-65`). Si difiere, un reclamo
---          de la ventana con lectura aparece de más o falta, y se
---          investiga ANTES de publicar cualquier cosa.
---       5. reclamos_ventana_sin_lectura DEBE dar
---          **reclamos_ventana − reclamos_ventana_con_lectura**, y DEBE
---          ser MAYOR QUE 0. Si diera 0, la ventana tendría 101 reclamos
---          de 101 y el universo que se declaró en `DEC-133` no se
---          aplicó. Su tamaño no se conoce todavía: 13 897 reclamos en 57
---          meses dan 243,8 por mes y, a esa tasa, unos 2 190 reclamos en
---          los nueve meses —ESTIMACIÓN POR TASA UNIFORME, no medición, y
---          lo que mide es esta consulta—.
---       6. reclamos_ventana DEBE ser MAYOR QUE
---          reclamos_ventana_con_lectura: es la comprobación de que las
---          dos cuentas están separadas y no son la misma.
---       7. procedentes_ventana DEBE dar **procedentes_ventana_con_lectura
---          + procedentes_ventana_sin_lectura**. Los sin_lectura se
---          DECLARAN: son reclamos que la cobertura no puede evaluar,
---          porque no tienen lectura que el método pudiera haber alertado.
---       8. procedentes_ventana_con_lectura DEBE ser **174 o menos**: no
---          puede haber más procedentes con lectura en nueve meses que en
---          cincuenta y siete.
---       9. meses_medidos DEBE dar **9**.
---      10. meses_medidos_con_lectura DEBE dar **9**. Si diera 8 o menos,
---          un mes entero no tiene lectura que vincular, y eso se declara
---          con su mes antes de publicar.
---      11. parcialmente_procedentes_ventana NO TIENE VALOR ESPERADO: es
---          una cuenta DECLARADA (`DEC-133`, P3 = (a)). Los 4 que arrojan
---          los 57 meses son todos sin lectura, así que se espera que
---          tampoco entren al numerador.
---      12. reclamos_ventana_sin_respuesta DEBE dar **0**: son reclamos
---          de la ventana que ningún valor de `sw_procendente` clasifica.
---          Si diera más de 0, hay reclamos que no se pueden rotular como
---          procedentes ni como improcedentes, y SE INVESTIGA.
---      13. TRES cardinalidades, y no una sola, porque contar sobre
---          `marcados` no distingue de qué tabla vino la fila extra:
---          ese CTE junta `tfv_reclamo_lectura` Y `tfv_respuesta_reclamo`.
---          - reclamos_de_mas_en_marcados DEBE dar **0**: si no lo
---            da, alguna de las dos uniones multiplicó filas y los
---            COUNT(DISTINCT) de arriba ya lo protegieron, pero la
---            cifra se publica con esa salvedad escrita.
+--     AUTOCALCULEOS — escritos ANTES de correr esta versión:
+--       1. filas_en_procedente DEBE dar **1**: el dominio dictado `1`
+--          tiene que existir en los 57 meses. Si diera 0, el valor
+--          dictado no está en la base o la ventana de 57 meses cambió, y
+--          nada de lo que sigue se lee.
+--       2. valor_procedente DEBE dar **1**: lo que la CTE devuelve tiene
+--          que coincidir con el dominio dictado (`DEC-64`, punto 8;
+--          `DEC-134`, P1). Si no coincide, se detiene.
+--       3. procedentes_57_meses DEBE dar **177** —medido el 3 de
+--          noviembre (`DEC-134(3)`); el 174 del 25 de octubre es
+--          referencia fechada y su diferencia son los 8 reclamos que
+--          ganaron `id_lectura`—.
+--       4. grupos_en_el_dominio DEBE dar **4**. `DEC-65` repartió los 57
+--          meses en 9 585 + 4 307 + 4 + 1 = 13 897, sin grupo nulo.
+--       5. reclamos_ventana DEBE dar **2 713** (CONSULTA D, salida D2).
+--       6. reclamos_ventana_con_lectura DEBE dar **109** (D2) y NUNCA
+--          menos de 101, que es el piso medido el 25 de octubre
+--          (`DEC-65`) y la cota que fijó `DEC-134(2)`.
+--       7. reclamos_ventana_sin_lectura DEBE dar **2 604** (D2) y DEBE
+--          ser igual a reclamos_ventana menos reclamos_ventana_con_lectura.
+--       8. procedentes_ventana DEBE dar **1 843** (D1, valor 1).
+--       9. procedentes_ventana_con_lectura DEBE dar **19** (D1, valor
+--          1): LA MUESTRA DE `E8`, y la cifra que esta consulta existe
+--          para reproducir.
+--      10. procedentes_ventana_sin_lectura DEBE dar **1 824** (D1, valor
+--          1). Se DECLARAN: son reclamos procedentes que la cobertura no
+--          puede evaluar porque no tienen lectura que el método pudiera
+--          haber alertado.
+--      11. procedentes_ventana DEBE ser igual a
+--          procedentes_ventana_con_lectura más
+--          procedentes_ventana_sin_lectura.
+--      12. parcialmente_procedentes_ventana DEBE dar **0**: la CONSULTA
+--          D no vio el valor 3 en la ventana. Si apareciera, se declara
+--          con su fecha; no entra al numerador (`DEC-133`, P3).
+--      13. reclamos_ventana_sin_respuesta DEBE dar **0**: la CONSULTA D
+--          no vio ninguna fila de la ventana sin valor de
+--          `sw_procendente`.
+--      14. meses_medidos DEBE dar **9**, y meses_medidos_con_lectura
+--          DEBE dar **9** en la misma fila. Si diera 8 o menos, un mes
+--          entero no tiene lectura que vincular y se declara con su mes
+--          antes de publicar.
+--      15. TRES cardinalidades, y no una sola, porque contar sobre
+--          `marcados` no distingue de qué tabla vino la fila extra: ese
+--          CTE junta `tfv_reclamo_lectura` Y `tfv_respuesta_reclamo`.
+--          - reclamos_de_mas_en_marcados DEBE dar **0**: si no lo da,
+--            alguna de las dos uniones multiplicó filas y los
+--            COUNT(DISTINCT) de arriba ya lo protegieron, pero la cifra
+--            se publica con esa salvedad escrita.
 --          - reclamos_con_varias_respuestas DEBE dar **0**: re-verifica
 --            sobre la ventana la cardinalidad 1:1 que confirmó el
 --            CONTROL 5.i el 24 de octubre.
---          - reclamos_con_varias_lecturas DEBE dar **0**: mide
---            aparte la cardinalidad de `tfv_reclamo_lectura`, que es
---            OTRA tabla y la que en A2.1.c perdió 71 reclamos
---            (`DEC-58`, punto 4).
+--          - reclamos_con_varias_lecturas DEBE dar **0**: mide aparte la
+--            cardinalidad de `tfv_reclamo_lectura`, que es OTRA tabla y
+--            la que en A2.1.c perdió 71 reclamos (`DEC-58`, punto 4).
+--      16. reclamos_ventana_con_lectura menos
+--          procedentes_ventana_con_lectura DEBE dar **90**: es el valor
+--          2 con lectura de la CONSULTA D, y comprueba que el resto de
+--          los que tienen lectura no son procedentes. Si diera otra
+--          cosa, hay un valor distinto de 1 y de 2 con lectura en la
+--          ventana, y se declara.
 --
 --     LO QUE NO HACE. NO mide la cobertura: eso es de `E8`, cruzar
 --     estas lecturas contra las alertas que emite el método. No cambia
 --     las cifras de los 57 meses —1 053 · 174 · 136 · 78,16 %—; solo
 --     acota a la ventana el recuento de procedentes. No vuelve a medir
 --     `sw_proceso`, que es OTRO campo binario y cuyas cifras NO son
---     procedentes (`DEC-59`).
+--     procedentes (`DEC-59`). NO interpreta `fecha_odeco`: la CONSULTA D
+--     midió 89 en la ventana, TODOS en el valor 2 y NINGUNO en el valor
+--     1 (`DEC-139`), y su significado sigue `[por verificar]`. NO cierra
+--     `DEC-56(5)`: si los reclamos sin lectura son población ODECO lo
+--     resuelve ENDE, no esta consulta. NO cierra `E8`, `E9` ni `E10`.
 -- =====================================================================
 
 -- A2.1.d SALIDA 1 - la ventana mes a mes: reclamos con y sin lectura, procedentes con y sin lectura
@@ -4559,7 +4594,7 @@ WITH dominio AS (
 procedente AS (
     SELECT sw_procendente
       FROM dominio
-     WHERE en_57_meses = 174
+     WHERE sw_procendente::text = '1'
 ),
 reclamos_ventana AS (
     SELECT r.id_reclamo,
@@ -4593,7 +4628,7 @@ SELECT m.mes,
  ORDER BY m.mes;
 
 
--- A2.1.d SALIDA 2 - las dieciséis columnas de la muestra, en una fila
+-- A2.1.d SALIDA 2 - las diecisiete columnas de la muestra, en una fila
 WITH dominio AS (
     SELECT rr.sw_procendente,
            COUNT(DISTINCT r.id_reclamo) FILTER (WHERE r.fecha_hora_reg >= DATE '2022-01-01'
@@ -4609,7 +4644,7 @@ WITH dominio AS (
 procedente AS (
     SELECT sw_procendente
       FROM dominio
-     WHERE en_57_meses = 174
+     WHERE sw_procendente::text = '1'
 ),
 reclamos_ventana AS (
     SELECT r.id_reclamo,
@@ -4629,34 +4664,34 @@ marcados AS (
       LEFT JOIN tfv_reclamo_lectura rl   ON rl.id_reclamo = rv.id_reclamo
       LEFT JOIN tfv_respuesta_reclamo rr ON rr.id_reclamo = rv.id_reclamo
 )
-SELECT (SELECT COUNT(*) FROM dominio
-         WHERE en_57_meses = 174)                                   AS valores_que_dan_174,
-       (SELECT MAX(sw_procendente::text) FROM procedente)           AS valor_procedente,
+SELECT (SELECT COUNT(*) FROM procedente)                             AS filas_en_procedente,
+       (SELECT MAX(sw_procendente::text) FROM procedente)            AS valor_procedente,
        (SELECT COALESCE(MAX(d.en_57_meses), 0)
           FROM dominio d
           JOIN procedente p
             ON d.sw_procendente IS NOT DISTINCT FROM p.sw_procendente) AS procedentes_57_meses,
-       (SELECT COUNT(DISTINCT id_reclamo) FROM marcados)            AS reclamos_ventana,
+       (SELECT COUNT(*) FROM dominio)                                AS grupos_en_el_dominio,
+       (SELECT COUNT(DISTINCT id_reclamo) FROM marcados)             AS reclamos_ventana,
        (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
-         WHERE id_lectura IS NOT NULL)                              AS reclamos_ventana_con_lectura,
+         WHERE id_lectura IS NOT NULL)                               AS reclamos_ventana_con_lectura,
        (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
-         WHERE id_lectura IS NULL)                                  AS reclamos_ventana_sin_lectura,
+         WHERE id_lectura IS NULL)                                   AS reclamos_ventana_sin_lectura,
        (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
-         WHERE es_procedente AND id_lectura IS NOT NULL)            AS procedentes_ventana_con_lectura,
+         WHERE es_procedente AND id_lectura IS NOT NULL)             AS procedentes_ventana_con_lectura,
        (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
-         WHERE es_procedente AND id_lectura IS NULL)                AS procedentes_ventana_sin_lectura,
+         WHERE es_procedente AND id_lectura IS NULL)                 AS procedentes_ventana_sin_lectura,
        (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
-         WHERE es_procedente)                                       AS procedentes_ventana,
+         WHERE es_procedente)                                        AS procedentes_ventana,
        (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
-         WHERE valor = '3')                                         AS parcialmente_procedentes_ventana,
+         WHERE valor = '3')                                          AS parcialmente_procedentes_ventana,
        (SELECT COUNT(DISTINCT id_reclamo) FROM marcados
-         WHERE valor IS NULL)                                       AS reclamos_ventana_sin_respuesta,
-       (SELECT COUNT(DISTINCT mes) FROM marcados)                   AS meses_medidos,
+         WHERE valor IS NULL)                                        AS reclamos_ventana_sin_respuesta,
+       (SELECT COUNT(DISTINCT mes) FROM marcados)                    AS meses_medidos,
        (SELECT COUNT(DISTINCT mes) FROM marcados
-         WHERE id_lectura IS NOT NULL)                              AS meses_medidos_con_lectura,
+         WHERE id_lectura IS NOT NULL)                               AS meses_medidos_con_lectura,
        (SELECT COUNT(*) FROM (SELECT id_reclamo FROM marcados
                                GROUP BY id_reclamo
-                              HAVING COUNT(*) > 1) x)               AS reclamos_de_mas_en_marcados,
+                              HAVING COUNT(*) > 1) x)                AS reclamos_de_mas_en_marcados,
        (SELECT COUNT(*) FROM (SELECT rr.id_reclamo
                                  FROM tfv_reclamo r
                                  JOIN tfv_respuesta_reclamo rr
@@ -4664,7 +4699,7 @@ SELECT (SELECT COUNT(*) FROM dominio
                                 WHERE r.fecha_hora_reg >= DATE '2026-01-01'
                                   AND r.fecha_hora_reg <  DATE '2026-10-01'
                                 GROUP BY rr.id_reclamo
-                              HAVING COUNT(*) > 1) y)               AS reclamos_con_varias_respuestas,
+                              HAVING COUNT(*) > 1) y)                AS reclamos_con_varias_respuestas,
        (SELECT COUNT(*) FROM (SELECT rl.id_reclamo
                                  FROM tfv_reclamo r
                                  JOIN tfv_reclamo_lectura rl
@@ -4672,7 +4707,7 @@ SELECT (SELECT COUNT(*) FROM dominio
                                 WHERE r.fecha_hora_reg >= DATE '2026-01-01'
                                   AND r.fecha_hora_reg <  DATE '2026-10-01'
                                 GROUP BY rl.id_reclamo
-                              HAVING COUNT(*) > 1) z)               AS reclamos_con_varias_lecturas;
+                              HAVING COUNT(*) > 1) z)                AS reclamos_con_varias_lecturas;
 
 -- =====================================================================
 -- CONSULTA D - LA VENTANA DE NUEVE MESES POR VALOR (4 nov 2026)
@@ -4737,3 +4772,72 @@ SELECT COUNT(DISTINCT r.id_reclamo)                                 AS total_ven
   LEFT JOIN tfv_reclamo_lectura rl ON rl.id_reclamo = r.id_reclamo
  WHERE r.fecha_hora_reg >= DATE '2026-01-01'
    AND r.fecha_hora_reg <  DATE '2026-10-01';
+
+-- =====================================================================
+-- CONSULTA F' - DOMINIO DE forma_presentacion Y tipo_reclamo CON LECTURA
+--               EN LOS 57 MESES (4 nov 2026 - DEC-138, punto 6; corrida
+--               bajo DEC-139)
+--
+--     POR QUÉ EXISTE Y EN QUÉ SE DIFERENCIA DE LA CONSULTA F. La F que
+--     se ofreció el 4 de noviembre NO se corre: su contenido ya estaba
+--     escrito desde el 22 de octubre como CONTROL 5.h (L800 a L811) y
+--     sus dominios ya estaban medidos y dictados en DEC-64(9). Lo que el
+--     5.h NO mide es lo único que puede acercarse a los 1 061: la
+--     cuenta CON LECTURA dentro de la ventana de 57 meses.
+--
+--     QUÉ RESPONDE. Si algún valor de estos dos campos marca un origen
+--     —y por tanto si la hipótesis de población de DEC-56(5), que
+--     tfv_reclamo sea todos los reclamos y la hoja solo los de ODECO,
+--     se puede comprobar dentro de la base o hay que preguntárselo a
+--     ENDE—.
+--
+--     PREDICCIONES ESCRITAS ANTES DE CORRERLA:
+--       1. La suma de total_57 de CADA campo DEBE dar 13 897: agrupar
+--          por una columna de tfv_reclamo no pierde ni duplica reclamos
+--          (DEC-65). Es autocalculo y su fallo detiene la lectura.
+--       2. La suma de con_lectura_57 de CADA campo DEBE dar 1 061, el
+--          número medido hoy (DEC-134(3): 1 053 de la hoja + 8 que
+--          ganaron id_lectura).
+--       3. NINGÚN valor tendrá total_57 cerca de 1 061: los tres
+--          valores de cada campo reparten 13 897 en bloques de miles
+--          (DEC-64(9): 5 745 / 8 386 / 170 y 12 931 / 229 / 1 141), de
+--          modo que se espera que la hipótesis NO se sostenga y la
+--          pregunta viaje a ENDE. Si algún valor diera cerca de 1 061,
+--          eso sería un hallazgo y se investiga antes de publicar nada.
+--       4. con_lectura_57 se repartirá en proporción parecida al total
+--          de cada valor —el 7,6 % global— si la lectura no depende
+--          del canal. Si un valor concentrara casi toda la lectura y
+--          los otros casi nada, eso SÍ sería señal de origen, y se
+--          declara.
+--       5. En NINGÚN valor podrá con_lectura_57 exceder total_57: es el
+--          mismo universo contado dos veces y la lectura es un
+--          subconjunto. Si lo excediera, el LEFT JOIN habría duplicado
+--          filas y se detiene.
+--
+--     LO QUE NO HACE. No mide la ventana de nueve meses (eso es D). No
+--     reemplaza al CONTROL 5.h: lo complementa. No cierra DEC-56(5) por
+--     sí sola: si ningún valor se acerca a 1 061, la pregunta viaja a
+--     ENDE con la salida en la mano.
+-- =====================================================================
+
+-- CONSULTA F' SALIDA - los dos campos, por valor, con y sin lectura
+SELECT 'forma_presentacion'::text                                   AS campo,
+       r.forma_presentacion::text                                   AS valor,
+       COUNT(DISTINCT r.id_reclamo)                                 AS total_57,
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.id_lectura IS NOT NULL) AS con_lectura_57
+  FROM tfv_reclamo r
+  LEFT JOIN tfv_reclamo_lectura rl ON rl.id_reclamo = r.id_reclamo
+ WHERE r.fecha_hora_reg >= DATE '2022-01-01'
+   AND r.fecha_hora_reg <  DATE '2026-10-01'
+ GROUP BY r.forma_presentacion
+UNION ALL
+SELECT 'tipo_reclamo',
+       r.tipo_reclamo::text,
+       COUNT(DISTINCT r.id_reclamo),
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.id_lectura IS NOT NULL)
+  FROM tfv_reclamo r
+  LEFT JOIN tfv_reclamo_lectura rl ON rl.id_reclamo = r.id_reclamo
+ WHERE r.fecha_hora_reg >= DATE '2022-01-01'
+   AND r.fecha_hora_reg <  DATE '2026-10-01'
+ GROUP BY r.tipo_reclamo
+ ORDER BY 1, 2;
