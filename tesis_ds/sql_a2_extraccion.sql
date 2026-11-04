@@ -4673,3 +4673,67 @@ SELECT (SELECT COUNT(*) FROM dominio
                                   AND r.fecha_hora_reg <  DATE '2026-10-01'
                                 GROUP BY rl.id_reclamo
                               HAVING COUNT(*) > 1) z)               AS reclamos_con_varias_lecturas;
+
+-- =====================================================================
+-- CONSULTA D - LA VENTANA DE NUEVE MESES POR VALOR (4 nov 2026)
+--     DEC-134(8), P4 = (a): se corre ANTES de reescribir A2.1.d.
+--     Redactada el 4 nov 2026, tras recibir el CONTROL 5.d (DEC-138).
+--
+--     QUÉ MIDE. Los reclamos de la ventana de aplicacion --2026-01-01
+--     a 2026-10-01, filtrando por `fecha_hora_reg`, la MISMA fecha de
+--     A2.1.a y del CONTROL 5.j (DEC-138, P4 = si)-- agrupados por el
+--     valor de `sw_procendente`, con TOTAL, CON LECTURA y CON
+--     `fecha_odeco`.
+--
+--     NO identifica al procedente: eso ya lo fijo DEC-134, P1, con el
+--     dominio dictado por la tesista (1 = Procedente, DEC-64(8)). Aqui
+--     solo se mide la ventana. Y NO reproduce el 174: el 174 es de los
+--     57 meses y hoy es REFERENCIA FECHA, no filtro (DEC-134, P1).
+--
+--     PREDICCIONES ESCRITAS ANTES DE CORRERLA (DEC-134(8)):
+--       1. `total_ventana` ESTIMADO alrededor de 2 190 --243,8 reclamos
+--          por mes x 9: estimacion por tasa uniforme, NO medicion.
+--       2. `con_lectura_ventana` DEBE DAR 101 O MAS: 101 se midio el
+--          25 de octubre sobre una ventana ya cerrada (DEC-65).
+--       3. El valor 1 con lectura NO PUEDE EXCEDER LOS 177 de los 57
+--          meses: la ventana de nueve esta contenida en la de 57.
+--       4. `con_fecha_odeco_ventana` NO PUEDE EXCEDER A
+--          `con_lectura_ventana`: `fecha_odeco` vive en
+--          `tfv_reclamo_lectura` y `id_lectura` de esa tabla es NOT
+--          NULL (CONTROL 5.d, 4 nov 2026), de modo que quien tiene
+--          fecha_odeco tiene, necesariamente, fila con lectura.
+--       5. LA SUMA de `total` sobre los grupos DEBE DAR el
+--          `total_ventana` de la SALIDA D2: agrupar por valor no pierde
+--          ni duplica reclamos. Si diera mas, algun reclamo tiene dos
+--          respuestas con valores distintos --lo que el CONTROL 5.i dio
+--          como 0 el 24 de octubre-- y se investiga antes de publicar.
+--
+--     LO QUE NO HACE. No mide la cobertura: eso es de E8. No cambia
+--     ninguna cifra publicada. No cierra DEC-56(5): si los reclamos sin
+--     lectura son poblacion ODECO lo resuelve ENDE, no esta consulta
+--     (DEC-134(8)). No corre A2.1.d.
+-- =====================================================================
+
+-- CONSULTA D SALIDA 1 - la ventana agrupada por valor de sw_procendente
+SELECT rr.sw_procendente                                            AS valor,
+       COUNT(DISTINCT r.id_reclamo)                                 AS total,
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.id_lectura IS NOT NULL)  AS con_lectura,
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.id_lectura IS NULL)      AS sin_lectura,
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.fecha_odeco IS NOT NULL) AS con_fecha_odeco
+  FROM tfv_reclamo r
+  LEFT JOIN tfv_reclamo_lectura   rl ON rl.id_reclamo = r.id_reclamo
+  LEFT JOIN tfv_respuesta_reclamo rr ON rr.id_reclamo = r.id_reclamo
+ WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+   AND r.fecha_hora_reg <  DATE '2026-10-01'
+ GROUP BY rr.sw_procendente
+ ORDER BY rr.sw_procendente NULLS LAST;
+
+-- CONSULTA D SALIDA 2 - el total de la ventana, medido y no sumado
+SELECT COUNT(DISTINCT r.id_reclamo)                                 AS total_ventana,
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.id_lectura IS NOT NULL)  AS con_lectura_ventana,
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.id_lectura IS NULL)      AS sin_lectura_ventana,
+       COUNT(DISTINCT r.id_reclamo) FILTER (WHERE rl.fecha_odeco IS NOT NULL) AS con_fecha_odeco_ventana
+  FROM tfv_reclamo r
+  LEFT JOIN tfv_reclamo_lectura rl ON rl.id_reclamo = r.id_reclamo
+ WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+   AND r.fecha_hora_reg <  DATE '2026-10-01';
