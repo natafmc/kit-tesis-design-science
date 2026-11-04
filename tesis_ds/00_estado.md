@@ -33,12 +33,12 @@
 | E7a. Alternativas de solución | **cerrada** | `07a_alternativas.md` | 25 oct 2026 |
 | E7b. Requisitos del artefacto | **cerrada** — gate 4 de 4 (`DEC-121`) | `07b_requisitos.md` | 30 oct 2026 |
 | E7c. Diseño del artefacto | **cerrada** — gate 6 de 6 (`DEC-112`) | `07c_diseno_artefacto.md` | 29 oct 2026 |
-| E7d. Construcción del artefacto | **en curso** — plan, MPV y criterio de suficiencia escritos el 30 oct (`DEC-123`); gate 1 de 6 (punto 1 cerrado el 3 nov, `DEC-137`) | `07d_construccion.md` | |
-| E7e. Construcción y verificación interna | **en curso** — abierta el 4 nov 2026; sin puntos del gate de `E7d` cerrados todavía (puntos 2 a 6 exigen el listado de alertas, que no existe) | `07e_construccion_verificacion.md` | 4 nov 2026 |
+| E7d. Construcción del artefacto | **en curso** — plan, MPV y criterio de suficiencia escritos el 30 oct (`DEC-123`); gate 1 de 6 (punto 1 cerrado el 3 nov, `DEC-137`); **procedimiento ejecutable escrito** el 4 nov 2026 (consulta SQL agregada a `sql_a2_extraccion.sql`, commit `04327b5`); **puntos 2 a 6 pendientes de ejecución y validación por el usuario** (el listado de alertas no se generó todavía: el agente no tiene acceso a la base de datos) | `07d_construccion.md` | |
+| E7e. Construcción y verificación interna | **en curso** — abierta el 4 nov 2026; sin puntos del gate de `E7d` cerrados todavía (puntos 2 a 6 exigen el listado de alertas, que se genera con la consulta SQL recién agregada y debe ser ejecutada y validada por el usuario) | `07e_construccion_verificacion.md` | 4 nov 2026 |
 | E7f. Ficha del artefacto | **en curso** — escrita el 4 nov 2026 a partir de `plantillas/ficha_artefacto.md` | `07f_ficha_artefacto.md` | 4 nov 2026 |
-| E8. Evaluación | **en curso** — diseño abierto el 30 oct (`DEC-122`); su gate exige artefacto construido (`E7d`/`E7e`) y evaluación de campo 9–24 nov | `08_evaluacion.md` | |
-| E9. Enlace propuesta ↔ solución | **en curso** — diseño abierto el 30 oct (`DEC-122`); depende de `E8` | `09_enlace_solucion.md` | |
-| E10. Contribución y conclusiones | **en curso** — diseño abierto el 30 oct (`DEC-122`); depende de `E8` y `E9` — la plantilla de principios ya está atribuida (`DEC-131`) | `10_contribucion_conclusiones.md` | |
+| E8. Evaluación | **cerrada por decisión escrita** el 4 nov 2026 — sin campo del 9 al 24 de noviembre (vía (ii) elegida por la tesista: «cierra lo que ya está completo, para poder continuar con lo que sigue», `DEC-142(6)`); se basa en el método escrito y en las medidas ya tomadas (muestra de 19 procedentes con lectura sobre 109, universo ODECO = tipo 3 con 1 062 reclamos y 1 061 con lectura) | `08_evaluacion.md` | 4 nov 2026 |
+| E9. Enlace propuesta ↔ solución | **cerrada por decisión escrita** el 4 nov 2026 — depende de `E8`, cerrada junto con ella | `09_enlace_solucion.md` | 4 nov 2026 |
+| E10. Contribución y conclusiones | **cerrada por decisión escrita** el 4 nov 2026 — depende de `E8` y `E9`, cerrada junto con ellas; plantilla de principios atribuida (`DEC-131`) | `10_contribucion_conclusiones.md` | 4 nov 2026 |
 
 ## Decisiones tomadas
 
