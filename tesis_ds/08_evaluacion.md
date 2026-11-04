@@ -27,7 +27,7 @@
 | 3 | Carga de verificación | **≤ 242 alertas/mes**, repartidas **218 (`A2`) + 24 (`A1`)** | `DEC-45`; `DEC-114`; `DEC-121` |
 | 4 | Aplicabilidad | **100 %** de las alertas que el método produce, resueltas por un verificador **que no participó del estudio**, usando solo el método escrito y **sin asistencia de la autora** | `DEC-112`; procedimiento en `07c` §3.5 |
 
-## 3. La muestra, y lo que falta medir para tenerla
+## 3. La muestra, medida el 4 de noviembre de 2026
 
 La detección corre sobre **los nueve meses de enero a septiembre de 2026** (`DEC-90`, `P1` = (a)) y sobre el panel completo de la regional —**1 485 556 celdas** (`A2.3.b`, `DEC-80`)—, con los dos umbrales ya fijados.
 
