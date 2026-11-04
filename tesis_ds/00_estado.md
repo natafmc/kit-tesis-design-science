@@ -34,8 +34,8 @@
 | E7b. Requisitos del artefacto | **cerrada** — gate 4 de 4 (`DEC-121`) | `07b_requisitos.md` | 30 oct 2026 |
 | E7c. Diseño del artefacto | **cerrada** — gate 6 de 6 (`DEC-112`) | `07c_diseno_artefacto.md` | 29 oct 2026 |
 | E7d. Construcción del artefacto | **en curso** — plan, MPV y criterio de suficiencia escritos el 30 oct (`DEC-123`); gate 1 de 6 (punto 1 cerrado el 3 nov, `DEC-137`) | `07d_construccion.md` | |
-| E7e. Construcción y verificación interna | pendiente | `07e_construccion_verificacion.md` | |
-| E7f. Ficha del artefacto | pendiente | `07f_ficha_artefacto.md` | |
+| E7e. Construcción y verificación interna | **en curso** — abierta el 4 nov 2026; sin puntos del gate de `E7d` cerrados todavía (puntos 2 a 6 exigen el listado de alertas, que no existe) | `07e_construccion_verificacion.md` | 4 nov 2026 |
+| E7f. Ficha del artefacto | **en curso** — escrita el 4 nov 2026 a partir de `plantillas/ficha_artefacto.md` | `07f_ficha_artefacto.md` | 4 nov 2026 |
 | E8. Evaluación | **en curso** — diseño abierto el 30 oct (`DEC-122`); su gate exige artefacto construido (`E7d`/`E7e`) y evaluación de campo 9–24 nov | `08_evaluacion.md` | |
 | E9. Enlace propuesta ↔ solución | **en curso** — diseño abierto el 30 oct (`DEC-122`); depende de `E8` | `09_enlace_solucion.md` | |
 | E10. Contribución y conclusiones | **en curso** — diseño abierto el 30 oct (`DEC-122`); depende de `E8` y `E9` — la plantilla de principios ya está atribuida (`DEC-131`) | `10_contribucion_conclusiones.md` | |
