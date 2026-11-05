@@ -5156,3 +5156,100 @@ SELECT nro_cuenta                            AS cuenta,
 --   versión sin depurar: 1 619 A2 / 113 A1 / 1 732 combinado → pendiente).
 --   La depuración excluye 541 celdas de 411 cuentas (A2.3.g, DEC-101).
 
+
+
+-- =====================================================================
+-- CONSULTA DE RESUMEN DE FALSOS POSITIVOS — E8 Formativa por simulación
+-- (5 nov 2026 — decisión de la tesista: sin ir a terreno)
+--
+-- Propósito: resumir cuántas de las 1 515 alertas depuradas son
+-- verdaderos positivos (coinciden con un reclamo procedente con lectura)
+-- y cuántos son falsos positivos (no tienen reclamo procedente asociado).
+--
+-- Requisito previo: haber cargado el archivo
+-- C:\Users\Toshiba\Downloads\Listado_Alertas_Depuradas.xls
+-- en una tabla temporal llamada `alertas_depuradas` con las 23 columnas
+-- generadas por la consulta de alertas (commit 1acbba0).
+--
+-- Columnas esperadas en `alertas_depuradas`:
+--   cuenta, mes, cuenta_mes, referencia_usada, ciclos_que_formaron_referencia,
+--   direccion_desviacion, magnitud_desviacion, canal_alerta, contingencia_a1,
+--   codigo_irregularidad, desc_codigo_irregularidad, segmento_perfil,
+--   segmento_familia_codigo, id_ruta, orden_dentro_de_ruta, orden_global,
+--   estado_registro, criterio_registro, evidencia_registro
+-- =====================================================================
+
+-- Paso 1: Identificar los 19 reclamos procedentes con lectura en la ventana
+-- (enero a septiembre de 2026, tipo_reclamo = 3 = ODECO, sw_procedente = 1)
+WITH reclamos_procedentes_con_lectura AS (
+    SELECT r.id_reclamo,
+           r.nro_cuenta,
+           DATE_TRUNC('month', r.fecha_hora_reg)::date AS mes,
+           r.fecha_hora_reg
+      FROM tfv_reclamo r
+      JOIN tfv_respuesta_reclamo rr ON rr.id_reclamo = r.id_reclamo
+      JOIN tfv_reclamo_lectura rl ON rl.id_reclamo = r.id_reclamo
+     WHERE r.fecha_hora_reg >= DATE '2026-01-01'
+       AND r.fecha_hora_reg <  DATE '2026-10-01'
+       AND r.tipo_reclamo = 3
+       AND rr.sw_procedente::text = '1'
+       AND rl.id_lectura IS NOT NULL
+),
+-- Paso 2: Contar cuántos son (debe dar 19)
+conteo_reclamos AS (
+    SELECT COUNT(*) AS total_reclamos_procedentes_con_lectura
+      FROM reclamos_procedentes_con_lectura
+),
+-- Paso 3: Cruzar alertas contra reclamos procedentes con lectura
+-- Una alerta es "verdadero positivo" si su cuenta y mes coinciden con
+-- un reclamo procedente con lectura.
+-- Una alerta es "falso positivo" si no tiene ningún reclamo asociado.
+alerta_cruzada AS (
+    SELECT a.cuenta,
+           a.mes,
+           a.canal_alerta,
+           a.magnitud_desviacion,
+           r.id_reclamo AS reclamo_asociado,
+           CASE WHEN r.id_reclamo IS NOT NULL THEN 'verdadero_positivo'
+                ELSE 'falso_positivo' END AS tipo_alerta
+      FROM alertas_depuradas a
+      LEFT JOIN reclamos_procedentes_con_lectura r
+        ON a.cuenta = r.nro_cuenta
+       AND a.mes = r.mes
+)
+-- Paso 4: Resumen final
+SELECT cr.total_reclamos_procedentes_con_lectura AS reclamos_procedentes_con_lectura_en_ventana,
+       COUNT(ac.cuenta)                                        AS total_alertas,
+       COUNT(*) FILTER (WHERE ac.tipo_alerta = 'verdadero_positivo') AS alertas_verdaderos_positivos,
+       COUNT(*) FILTER (WHERE ac.tipo_alerta = 'falso_positivo')     AS alertas_falsos_positivos,
+       ROUND(100.0 * COUNT(*) FILTER (WHERE ac.tipo_alerta = 'falso_positivo')
+             / NULLIF(COUNT(ac.cuenta), 0), 2)                       AS porcentaje_falsos_positivos,
+       ROUND(100.0 * COUNT(*) FILTER (WHERE ac.tipo_alerta = 'verdadero_positivo')
+             / NULLIF(COUNT(ac.cuenta), 0), 2)                       AS porcentaje_verdaderos_positivos
+  FROM conteo_reclamos cr
+  CROSS JOIN alerta_cruzada ac;
+
+-- Paso 5: Listado de las 1 515 alertas con su clasificación
+-- (útil para revisar individualmente cada alerta)
+SELECT ac.cuenta,
+       ac.mes,
+       TO_CHAR(ac.mes, 'YYYY-MM') AS cuenta_mes,
+       ac.canal_alerta,
+       ac.magnitud_desviacion,
+       ac.tipo_alerta,
+       ac.reclamo_asociado
+  FROM alerta_cruzada ac
+ ORDER BY ac.tipo_alerta, ac.canal_alerta DESC, ac.magnitud_desviacion DESC;
+
+-- Autocalculeos esperados (escritos antes de correr):
+--   reclamos_procedentes_con_lectura_en_ventana DEBE dar 19 (CONSULTA D, valor 1 con lectura)
+--   total_alertas DEBE dar 1 515 (listado depurado ejecutado el 5 nov)
+--   alertas_verdaderos_positivos DEBE dar 0 (ninguno de los 19 apareció en el listado)
+--   alertas_falsos_positivos DEBE dar 1 515 (todas las alertas sin reclamo asociado)
+--   porcentaje_falsos_positivos DEBE dar 100.00
+--   porcentaje_verdaderos_positivos DEBE dar 0.00
+--
+-- Nota: si alertas_verdaderos_positivos da un número distinto de 0,
+-- revisar que el cruce por cuenta y mes esté correcto y que no haya
+-- duplicados en el listado de alertas.
+
