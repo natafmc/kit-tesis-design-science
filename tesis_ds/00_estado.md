@@ -33,12 +33,12 @@
 | E7a. Alternativas de solución | **cerrada** | `07a_alternativas.md` | 25 oct 2026 |
 | E7b. Requisitos del artefacto | **cerrada** — gate 4 de 4 (`DEC-121`) | `07b_requisitos.md` | 30 oct 2026 |
 | E7c. Diseño del artefacto | **cerrada** — gate 6 de 6 (`DEC-112`) | `07c_diseno_artefacto.md` | 29 oct 2026 |
-| E7d. Construcción del artefacto | **en curso** — plan, MPV y criterio de suficiencia escritos el 30 oct (`DEC-123`); gate 1 de 6 (punto 1 cerrado el 3 nov, `DEC-137`); **puntos 2, 3 y 4 válidos el 5 nov** (consulta SQL depurada ejecutada contra la base, commit `1acbba0`: 1 515 alertas —1 402 A2 + 113 A1—, ningún mes supera 218 A2 ni 24 A1, 0 sin ruta, 0 sin orden, 9 meses medidos); puntos 5 (registro) y 6 (exemplar) pendientes | `07d_construccion.md` | |
-| E7e. Construcción y verificación interna | **en curso** — abierta el 4 nov 2026; puntos 2, 3 y 4 del gate de `E7d` válidos el 5 nov; pendiente de cierre total de `E7d` (puntos 5 y 6) para considerar la verificación interna completa | `07e_construccion_verificacion.md` | 4 nov 2026 |
-| E7f. Ficha del artefacto | **en curso** — escrita el 4 nov 2026 a partir de `plantillas/ficha_artefacto.md`; pendiente de cierre de `E7d` para completar | `07f_ficha_artefacto.md` | 4 nov 2026 |
-| E8. Evaluación | **reabierta** el 5 nov 2026 por decisión de la tesista ("inicia E8"); su gate exige artefacto construido (`E7d`/`E7e`) y evaluación de campo 9–24 nov | `08_evaluacion.md` | 5 nov 2026 |
-| E9. Enlace propuesta ↔ solución | **reabierta** el 5 nov 2026 — depende de `E8` | `09_enlace_solucion.md` | 5 nov 2026 |
-| E10. Contribución y conclusiones | **reabierta** el 5 nov 2026 — depende de `E8` y `E9` | `10_contribucion_conclusiones.md` | 5 nov 2026 |
+| E7d. Construcción del artefacto | **cerrada** — plan, MPV y criterio de suficiencia escritos el 30 oct (`DEC-123`); gate 6 de 6 cerrado el 5 nov (puntos 1, 2, 3 y 4 válidos con consulta depurada ejecutada: 1 515 alertas —1 402 A2 + 113 A1—, máximo A2=217 en abril, máximo A1=23 en marzo, 0 sin ruta, 0 sin orden, 9 meses medidos; puntos 5 y 6 cerrados con estado `pendiente` por alerta y exemplar de tres alertas del listado) | `07d_construccion.md` | 5 nov 2026 |
+| E7e. Construcción y verificación interna | **cerrada** el 5 nov — puntos 2, 3 y 4 del gate de `E7d` válidos con consulta depurada ejecutada y validada; verificación interna completa | `07e_construccion_verificacion.md` | 5 nov 2026 |
+| E7f. Ficha del artefacto | **cerrada** el 5 nov — escrita el 4 nov a partir de `plantillas/ficha_artefacto.md`, completa con requisitos `R1` a `R10`, decisiones de diseño y limitaciones conocidas | `07f_ficha_artefacto.md` | 5 nov 2026 |
+| E8. Evaluación | **en curso** — iniciada el 5 nov por decisión de la tesista; fase formativa de campo 9–15 nov (próxima); gate exige artefacto construido (`E7d`/`E7e`/`E7f` cerrados) y campo 9–24 nov | `08_evaluacion.md` | 5 nov 2026 |
+| E9. Enlace propuesta ↔ solución | **en curso** — iniciada el 5 nov; depende de `E8` | `09_enlace_solucion.md` | 5 nov 2026 |
+| E10. Contribución y conclusiones | **en curso** — iniciada el 5 nov; depende de `E8` y `E9` | `10_contribucion_conclusiones.md` | 5 nov 2026 |
 
 ## Decisiones tomadas
 
