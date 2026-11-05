@@ -100,5 +100,23 @@ Cada cambio se documentará con su justificación y versión, y se volverá a co
 | A (más bajos) | 30,00 | 400,00 | ~1 650 | ~180 | ~1 830 | ~260 (abr) ⚠️ | 0 % | ~100 % |
 | B (más altos) | 45,00 | 550,00 | ~1 200 | ~80 | ~1 280 | ~195 (abr) ✅ | 0 % | ~100 % |
 
-**Conclusión del simulado:** cambiar solo los umbrales no resuelve el problema de cobertura 0 %. Los reclamos procedentes con lectura no aparecen en el listado de alertas independientemente del umbral, lo que sugiere que el problema está en la regla de depuración (`lec_actual <> 0` excluye 541 celdas) o en que las lecturas de esos reclamos no son anómalas según el método actual. Cada cambio de umbral se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
+**Resultados simulados del rediseño (hipotéticos, para discusión):**
+
+| Escenario | θ_A2 | θ_A1 | Alertas A2 | Alertas A1 | Total | Máx mensual | Cobertura | Falsos positivos |
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+| Actual | 39,67 | 495,36 | 1 402 | 113 | 1 515 | 228 (abr) | 0 % | 100 % |
+| A (más bajos) | 30,00 | 400,00 | ~1 650 | ~180 | ~1 830 | ~260 (abr) ⚠️ | 0 % | ~100 % |
+| B (más altos) | 45,00 | 550,00 | ~1 200 | ~80 | ~1 280 | ~195 (abr) ✅ | 0 % | ~100 % |
+
+**Resultados simulados de la regla de contingencia A1 (hipotéticos, para discusión):**
+
+| Escenario | meses_previos | tratamiento_ceros | Alertas A1 | Máx mensual A1 | Cobertura | Falsos positivos | Cupo ≤24 |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| Actual | 6 | excluir | 113 | 23 (mar) | 0 % | 100 % | ✅ |
+| Var 1 | 1 | excluir | ~95 | ~18 (abr) | 0 % | ~100 % | ✅ |
+| Var 2 | 3 | excluir | ~102 | ~20 (mar) | 0 % | ~100 % | ✅ |
+| Var 3 | 6 | incluir | ~128 | ~27 (mar) ⚠️ | 0 % | ~100 % | ⚠️ supera 24 |
+| Var 4 | 2 | incluir | ~110 | ~21 (mar) | 0 % | ~100 % | ✅ |
+
+**Conclusión del simulado:** cambiar solo los umbrales o la regla de contingencia A1 no resuelve el problema de cobertura 0 %. Los reclamos procedentes con lectura no aparecen en el listado de alertas independientemente de los parámetros, lo que sugiere que el problema está en la regla de depuración (`lec_actual <> 0` excluye 541 celdas) o en que las lecturas de esos reclamos no son anómalas según el método actual. Cada cambio se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
 
