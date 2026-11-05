@@ -36,7 +36,7 @@
 | E7d. Construcción del artefacto | **cerrada** — plan, MPV y criterio de suficiencia escritos el 30 oct (`DEC-123`); gate 6 de 6 cerrado el 5 nov (puntos 1, 2, 3 y 4 válidos con consulta depurada ejecutada: 1 515 alertas —1 402 A2 + 113 A1—, máximo A2=217 en abril, máximo A1=23 en marzo, 0 sin ruta, 0 sin orden, 9 meses medidos; puntos 5 y 6 cerrados con estado `pendiente` por alerta y exemplar de tres alertas del listado) | `07d_construccion.md` | 5 nov 2026 |
 | E7e. Construcción y verificación interna | **cerrada** el 5 nov — puntos 2, 3 y 4 del gate de `E7d` válidos con consulta depurada ejecutada y validada; verificación interna completa | `07e_construccion_verificacion.md` | 5 nov 2026 |
 | E7f. Ficha del artefacto | **cerrada** el 5 nov — escrita el 4 nov a partir de `plantillas/ficha_artefacto.md`, completa con requisitos `R1` a `R10`, decisiones de diseño y limitaciones conocidas | `07f_ficha_artefacto.md` | 5 nov 2026 |
-| E8. Evaluación | **en curso** — iniciada el 5 nov por decisión de la tesista; fase formativa de campo 9–15 nov (próxima); gate exige artefacto construido (`E7d`/`E7e`/`E7f` cerrados) y campo 9–24 nov | `08_evaluacion.md` | 5 nov 2026 |
+| E8. Evaluación | **en curso** — iniciada el 5 nov; formativa de campo por simulación con datos ya disponibles (sin ir a terreno), decisión de la tesista el 5 nov; los cuatro criterios de éxito se miden con verificador ajeno de ENDE | `08_evaluacion.md` | 5 nov 2026 |
 | E9. Enlace propuesta ↔ solución | **en curso** — iniciada el 5 nov; depende de `E8` | `09_enlace_solucion.md` | 5 nov 2026 |
 | E10. Contribución y conclusiones | **en curso** — iniciada el 5 nov; depende de `E8` y `E9` | `10_contribucion_conclusiones.md` | 5 nov 2026 |
 
