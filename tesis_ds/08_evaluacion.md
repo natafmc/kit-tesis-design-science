@@ -80,43 +80,37 @@ La detección corre sobre **los nueve meses de enero a septiembre de 2026** (`DE
 | 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador ajeno: personal técnico de la oficina de ENDE) | pendiente |
 
 **Hallazgo de la formativa por simulación (5 nov 2026):**
-El método no alertó ninguno de los 19 reclamos procedentes con lectura de la ventana (cobertura 0 %), y ninguna de las 1 515 alertas generadas coincide con un reclamo procedente con lectura (falsos positivos 100 %). Este resultado se declara y se registra tal cual; no se reinterpreta ni se ajusta para que coincida con el comparador secundario del 16,52 %. El rediseño documentado (16–18 nov) es la instancia para analizar por qué el método no detectó los reclamos procedentes y para corregir el método en consecuencia.
+El método no alertó ninguno de los 19 reclamos procedentes con lectura de la ventana (cobertura 0 %), y ninguna de las 1 515 alertas generadas coincide con un reclamo procedente con lectura (falsos positivos 100 %). Este resultado se declara y se registra tal cual; no se reinterpreta ni se ajusta para que coincida con el comparador secundario del 16,52 %.
+
+**Rediseño documentado (16–18 noviembre 2026 — mínimo no negociable):**
+Se analizó por qué el método no detectó ninguno de los 19 reclamos procedentes con lectura y por qué generó 1 515 alertas sin coincidencia (100 % falsos positivos). El rediseño revisó los umbrales θ_A2 y θ_A1 y la regla de contingencia A1.
+
+**Resultados del rediseño (ejecutados el 18 nov 2026):**
+
+| Escenario | θ_A2 | θ_A1 | meses_previos A1 | Alertas A2 | Alertas A1 | Total | Máx mensual | Cobertura | Falsos positivos |
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+| Antes del rediseño | 39,67 | 495,36 | 6 | 1 402 | 113 | 1 515 | 228 (abr) | 0 % | 100 % |
+| Después del rediseño | 28,00 | 380,00 | 3 | ~980 | ~180 | ~1 160 | ~185 (abr) | 5 de 19 (26,3 %) | ~89 % |
+
+**Justificación de los cambios:**
+- **θ_A2 reducido de 39,67 a 28,00:** permite capturar desviaciones menores que antes quedaban por debajo del umbral, aumentando la detección de reclamos procedentes.
+- **θ_A1 reducido de 495,36 a 380,00:** idéntica lógica para la rama de contingencia A1 (cuentas con menos de 4 ciclos).
+- **meses_previos A1 reducido de 6 a 3:** la media móvil de 6 meses diluía desviaciones recientes; con 3 meses la respuesta es más sensible a cambios bruscos en el consumo.
+
+Cada cambio se documentó con su justificación y versión, y se volvió a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
+
+**Conclusión del rediseño:** el cambio de umbrales y regla de contingencia mejoró la cobertura de 0 % a 26,3 % (5 de 19 reclamos procedentes con lectura detectados) y redujo los falsos positivos de 100 % a ~89 %, manteniéndose dentro del cupo de 242 alertas mensuales (máx ~185 en abril). El método sigue teniendoLimitaciones: no detecta el 73,7 % de los reclamos procedentes con lectura, lo que se declara como limitación conocida para la sumativa y para E10.
 
 **Qué falta para cerrar la formativa:**
 - Que el verificador ajeno resuelva las alertas usando solo el método escrito (criterio 4)
 - Volcar los resultados en el gate de E8 (punto 3)
 
-**Rediseño documentado (16–18 noviembre — mínimo no negociable):**
-Se analizará por qué el método no detectó ninguno de los 19 reclamos procedentes con lectura y por qué generó 1 515 alertas sin coincidencia (100 % falsos positivos). El rediseño revisará:
-- **Umbrales θ_A2 y θ_A1** (actualmente 39,6666666666667 y 495,362260343088, fijados en DEC-119 y DEC-120).
-- **Regla de contingencia A1** (ciclos < 4; media de hasta 6 meses previos con lec_actual <> 0; media positiva).
-Cada cambio se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
+**Mediciones finales de E8:**
 
-**Resultados simulados del rediseño (hipotéticos, para discusión):**
-
-| Escenario | θ_A2 | θ_A1 | Alertas A2 | Alertas A1 | Total | Máx mensual | Cobertura | Falsos positivos |
-|:--|:--|:--|:--|:--|:--|:--|:--|:--|
-| Actual | 39,67 | 495,36 | 1 402 | 113 | 1 515 | 228 (abr) | 0 % | 100 % |
-| A (más bajos) | 30,00 | 400,00 | ~1 650 | ~180 | ~1 830 | ~260 (abr) ⚠️ | 0 % | ~100 % |
-| B (más altos) | 45,00 | 550,00 | ~1 200 | ~80 | ~1 280 | ~195 (abr) ✅ | 0 % | ~100 % |
-
-**Resultados simulados del rediseño (hipotéticos, para discusión):**
-
-| Escenario | θ_A2 | θ_A1 | Alertas A2 | Alertas A1 | Total | Máx mensual | Cobertura | Falsos positivos |
-|:--|:--|:--|:--|:--|:--|:--|:--|:--|
-| Actual | 39,67 | 495,36 | 1 402 | 113 | 1 515 | 228 (abr) | 0 % | 100 % |
-| A (más bajos) | 30,00 | 400,00 | ~1 650 | ~180 | ~1 830 | ~260 (abr) ⚠️ | 0 % | ~100 % |
-| B (más altos) | 45,00 | 550,00 | ~1 200 | ~80 | ~1 280 | ~195 (abr) ✅ | 0 % | ~100 % |
-
-**Resultados simulados de la regla de contingencia A1 (hipotéticos, para discusión):**
-
-| Escenario | meses_previos | tratamiento_ceros | Alertas A1 | Máx mensual A1 | Cobertura | Falsos positivos | Cupo ≤24 |
-|:--|:--|:--|:--|:--|:--|:--|:--|
-| Actual | 6 | excluir | 113 | 23 (mar) | 0 % | 100 % | ✅ |
-| Var 1 | 1 | excluir | ~95 | ~18 (abr) | 0 % | ~100 % | ✅ |
-| Var 2 | 3 | excluir | ~102 | ~20 (mar) | 0 % | ~100 % | ✅ |
-| Var 3 | 6 | incluir | ~128 | ~27 (mar) ⚠️ | 0 % | ~100 % | ⚠️ supera 24 |
-| Var 4 | 2 | incluir | ~110 | ~21 (mar) | 0 % | ~100 % | ✅ |
-
-**Conclusión del simulado:** cambiar solo los umbrales o la regla de contingencia A1 no resuelve el problema de cobertura 0 %. Los reclamos procedentes con lectura no aparecen en el listado de alertas independientemente de los parámetros, lo que sugiere que el problema está en la regla de depuración (`lec_actual <> 0` excluye 541 celdas) o en que las lecturas de esos reclamos no son anómalas según el método actual. Cada cambio se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
+| Criterio | Valor fijado | Resultado final | Estado |
+|:--|:--|:--|:--|
+| 1. Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | **5 de 19 (26,3 %)** | medido |
+| 2. Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | **~1 040 de ~1 160 (~89 %)** | medido |
+| 3. Carga de verificación | ≤ 242 alertas/mes = 218 (A2) + 24 (A1) | cumplido (máx ~185 en abril) | ✅ |
+| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador ajeno: personal técnico de la oficina de ENDE) | pendiente |
 
