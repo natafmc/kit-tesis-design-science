@@ -92,3 +92,13 @@ Se analizará por qué el método no detectó ninguno de los 19 reclamos procede
 - **Regla de contingencia A1** (ciclos < 4; media de hasta 6 meses previos con lec_actual <> 0; media positiva).
 Cada cambio se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
 
+**Resultados simulados del rediseño (hipotéticos, para discusión):**
+
+| Escenario | θ_A2 | θ_A1 | Alertas A2 | Alertas A1 | Total | Máx mensual | Cobertura | Falsos positivos |
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+| Actual | 39,67 | 495,36 | 1 402 | 113 | 1 515 | 228 (abr) | 0 % | 100 % |
+| A (más bajos) | 30,00 | 400,00 | ~1 650 | ~180 | ~1 830 | ~260 (abr) ⚠️ | 0 % | ~100 % |
+| B (más altos) | 45,00 | 550,00 | ~1 200 | ~80 | ~1 280 | ~195 (abr) ✅ | 0 % | ~100 % |
+
+**Conclusión del simulado:** cambiar solo los umbrales no resuelve el problema de cobertura 0 %. Los reclamos procedentes con lectura no aparecen en el listado de alertas independientemente del umbral, lo que sugiere que el problema está en la regla de depuración (`lec_actual <> 0` excluye 541 celdas) o en que las lecturas de esos reclamos no son anómalas según el método actual. Cada cambio de umbral se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
+
