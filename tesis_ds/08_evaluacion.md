@@ -75,12 +75,14 @@ La detección corre sobre **los nueve meses de enero a septiembre de 2026** (`DE
 | Criterio | Valor fijado | Resultado de la simulación | Estado |
 |:--|:--|:--|:--|
 | 1. Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | **0 de 19 (0 %)** —los 19 reclamos procedentes con lectura de la ventana no aparecen en el listado de 1 515 alertas depuradas— | medido |
-| 2. Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | pendiente | pendiente |
+| 2. Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | **1 515 de 1 515 (100 %)** —ninguna de las 1 515 alertas depuradas coincide con un reclamo procedente con lectura de la ventana— | medido |
 | 3. Carga de verificación | ≤ 242 alertas/mes = 218 (A2) + 24 (A1) | cumplido (máx 228 en abril) | ✅ |
 | 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador ajeno: personal técnico de la oficina de ENDE) | pendiente |
 
+**Hallazgo de la formativa por simulación (5 nov 2026):**
+El método no alertó ninguno de los 19 reclamos procedentes con lectura de la ventana (cobertura 0 %), y ninguna de las 1 515 alertas generadas coincide con un reclamo procedente con lectura (falsos positivos 100 %). Este resultado se declara y se registra tal cual; no se reinterpreta ni se ajusta para que coincida con el comparador secundario del 16,52 %. El rediseño documentado (16–18 nov) es la instancia para analizar por qué el método no detectó los reclamos procedentes y para corregir el método en consecuencia.
+
 **Qué falta para cerrar la formativa:**
-- Registrar el resultado del criterio 2 (cuántas de las 1 515 alertas son verdaderos positivos y cuántos falsos positivos)
 - Que el verificador ajeno resuelva las alertas usando solo el método escrito (criterio 4)
 - Volcar los resultados en el gate de E8 (punto 3)
 
