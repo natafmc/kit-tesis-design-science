@@ -754,6 +754,14 @@ La aplicación del método comprende: (1) la construcción del panel de consumo 
 
 **Verificadores ajenos:** **dos, ambos técnicos de la oficina de ENDE que no participaron del estudio** (`08_evaluacion.md` §6, respuesta 3a de la tesista, complementada con la confirmación de los dos verificadores). **Qué falta para cerrar la formativa:** que los verificadores ajenos resuelvan las alertas usando solo el método escrito (criterio 4), y volcar los resultados en el punto 3 del gate de esta etapa.
 
+**Resultados simulados del rediseño (formativa → rediseño, 5 de noviembre de 2026, `08_evaluacion.md` §6, commits `4c744d9` y `8161790`).** La formativa detectó el problema (cobertura 0 %, FP 100 %); el rediseño explora correcciones mediante simulación antes de la sumativa. Se probaron dos ejes:
+
+* **Cambio de umbrales** (θ_A2, θ_A1): tres escenarios —Actual (39,67 / 495,36), A más bajos (30,00 / 400,00), B más altos (45,00 / 550,00)—. En todos la cobertura permanece en **0 %** y los falsos positivos en **~100 %**; el escenario A supera el techo de capacidad (260 en abril ⚠️), el B lo respeta (195 ✅). **Conclusión:** cambiar solo los umbrales no resuelve la cobertura 0 %.
+
+* **Cambio de la regla de contingencia A1** (meses previos y tratamiento de ceros): cinco variantes. Ninguna logra cobertura > 0 %; la variante 3 (incluir ceros, 6 meses) supera el cupo A1 (27 ⚠️). **Conclusión:** cambiar solo la regla A1 no resuelve la cobertura 0 %.
+
+**Hallazgo transversal del rediseño simulado:** los reclamos procedentes con lectura no aparecen en el listado de alertas independientemente de los parámetros, lo que sugiere que el problema está en la **regla de depuración** (`lec_actual <> 0` excluye 541 celdas) o en que esas lecturas no son anómalas según el método actual. Cada cambio se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
+
 **Riesgo declarado:** si la formativa se retrasa, el rediseño se recorta y la tesis pierde el ciclo que sostiene los principios de diseño; cualquier deslizamiento superior a tres días obliga a recortar alcance en la construcción, no a eliminar el rediseño (`03_perfil_ds.md` L124).
 
 **Gate de la validación.** Se cierra cuando se cumplan seis cosas:
