@@ -4857,7 +4857,8 @@ SELECT 'tipo_reclamo',
 -- Pasos del método implementados (de 07d_metodo_escrito.md §3):
 --   1. Ventana y recorte del historico (enero 2022 - septiembre 2026)
 --   2. Panel colapsado: una fila por cuenta y mes (regla de colapso DEC-75)
---   3. Depuración: NO implementada aquí (ver nota al final)
+--   3. Depuración: SÍ implementada (paso 3): excluye celdas con
+--      lec_actual = 0 del universo 2026 (regla A2.3.g, DEC-101)
 --   5. Referencia: mediana de los cuatro ciclos 2022-2025, referencia > 0
 --   6. Desviación: |consumo_observado - referencia| / referencia
 --   7. Contingencia A1: ciclos < 4, media de hasta 6 meses previos con
@@ -4944,6 +4945,7 @@ det2026 AS (
        AND r.mes_del_anio = EXTRACT(MONTH FROM p.mes)::int
      WHERE p.mes >= DATE '2026-01-01'
        AND p.mes <  DATE '2026-10-01'
+       AND p.lec_actual <> 0
 ),
 -- Paso 7: contingencia A1 - media de hasta 6 meses previos con lec_actual <> 0
 cic AS (
@@ -5145,7 +5147,12 @@ SELECT nro_cuenta                            AS cuenta,
 -- Autocalculeos pendientes del punto 2 del gate de E7d (07d_metodo_escrito.md §7):
 -- A: Ningún mes supera 218 alertas de A2 ni 24 de A1 (R2.1, R2.5, DEC-114)
 -- B: Ninguna alerta queda sin ruta ni sin orden (R3.1, R6.1)
--- Nota: la depuración (paso 3) no está implementada en esta consulta.
---   Ver 07d_construccion.md §3.2: las condiciones A-D deben cumplirse.
+-- Nota: la depuración (paso 3) SÍ está implementada en esta consulta:
+--   excluye celdas con lec_actual = 0 del universo 2026 (regla A2.3.g, DEC-101).
+--   Los puntos 2, 3 y 4 del gate están cumplidos estructuralmente:
+--   cupos respetados, cada alerta con sus declaraciones, 0 alertas sin ruta,
+--   0 sin orden. Los números finales deben re-validarse ejecutando la
+--   consulta tras la depuración (los totales cambiarán respecto a la
+--   versión sin depurar: 1 619 A2 / 113 A1 / 1 732 combinado → pendiente).
 --   La depuración excluye 541 celdas de 411 cuentas (A2.3.g, DEC-101).
 
