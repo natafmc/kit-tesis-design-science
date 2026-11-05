@@ -70,19 +70,17 @@ La detección corre sobre **los nueve meses de enero a septiembre de 2026** (`DE
 - 0 alertas sin ruta, 0 sin orden
 - 9 meses medidos (ene–sep 2026)
 
-**Mediciones pendientes de registrar** (llenar con los resultados de la simulación):
+**Mediciones registradas de la simulación:**
 
 | Criterio | Valor fijado | Resultado de la simulación | Estado |
 |:--|:--|:--|:--|
-| 1. Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | pendiente | pendiente |
+| 1. Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | **0 de 19 (0 %)** —los 19 reclamos procedentes con lectura de la ventana no aparecen en el listado de 1 515 alertas depuradas— | medido |
 | 2. Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | pendiente | pendiente |
 | 3. Carga de verificación | ≤ 242 alertas/mes = 218 (A2) + 24 (A1) | cumplido (máx 228 en abril) | ✅ |
-| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador de ENDE) | pendiente |
-
-**Verificador ajeno:** técnico de ENDE que no participó del estudio (respuesta 3a).
+| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador ajeno: personal técnico de la oficina de ENDE) | pendiente |
 
 **Qué falta para cerrar la formativa:**
-- Ejecutar la simulación y registrar los resultados de los criterios 1, 2 y 4
+- Registrar el resultado del criterio 2 (cuántas de las 1 515 alertas son verdaderos positivos y cuántos falsos positivos)
 - Que el verificador ajeno resuelva las alertas usando solo el método escrito (criterio 4)
-- Volcar los resultados en esta tabla y en el gate de E8 (punto 3)
+- Volcar los resultados en el gate de E8 (punto 3)
 
