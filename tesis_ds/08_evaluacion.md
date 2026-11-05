@@ -1,6 +1,6 @@
 # E8 — Evaluación
 
-> **Estado:** abierta el 30 de octubre de 2026 (`DEC-122`), **en su diseño.** **No puede cerrarse hoy:** esta etapa evalúa al artefacto **construido**, y el artefacto está **diseñado** —`07c` cerró su gate 6 de 6 el 29 oct (`DEC-112`)— pero **no construido**: `E7d` y `E7e` siguen sin abrir.
+> **Estado:** abierta el 30 de octubre de 2026 (`DEC-122`), **en curso.** **Formativa de campo por simulación** (decisión de la tesista el 5 nov: sin ir a terreno, con datos ya disponibles). Artefacto construido: `E7d`, `E7e` y `E7f` cerrados el 5 nov (gate 6 de 6).
 > **Qué es esta etapa:** evaluar el método contra su entorno real, con el **propósito** y el **estilo** que fija FEDS (`04_marco_teorico.md` §7; Venable et al., 2016).
 > **Lo que ya está decidido para esta etapa y NO se vuelve a decidir aquí:** los **cuatro criterios de éxito, con sus valores**, en `02_delimitacion.md` §1 —los cuatro fijados **antes de construir**, que es la condición que impuso ese documento—.
 
@@ -57,3 +57,32 @@ La detección corre sobre **los nueve meses de enero a septiembre de 2026** (`DE
 ## Lo que esta etapa NO hace
 
 **No fija umbrales** —los cuatro criterios se fijaron antes de construir—; **no construye** —eso es `E7d`/`E7e`—; **no redacta los principios de diseño** —eso es `E10`, y se deriva del ciclo completo formativa → rediseño → sumativa, no de una sola corrida (`04_marco_teorico.md` §109)—.
+
+---
+
+## 6. Resultados de la formativa por simulación (5 nov 2026)
+
+**Cómo se ejecuta:** la formativa se corre por simulación con los datos ya disponibles (decisión de la tesista el 5 nov), sin ir a terreno. El método escrito en `07d_metodo_escrito.md` se aplica sobre el panel de los nueve meses de 2026 usando la consulta SQL depurada en `sql_a2_extraccion.sql` (commit `1acbba0`).
+
+**Datos de entrada validados:**
+- Listado de alertas depuradas: **1 515 alertas** (1 402 A2 + 113 A1)
+- Ningún mes supera 218 A2 ni 24 A1 (máx A2=217 en abril, máx A1=23 en marzo)
+- 0 alertas sin ruta, 0 sin orden
+- 9 meses medidos (ene–sep 2026)
+
+**Mediciones pendientes de registrar** (llenar con los resultados de la simulación):
+
+| Criterio | Valor fijado | Resultado de la simulación | Estado |
+|:--|:--|:--|:--|
+| 1. Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | pendiente | pendiente |
+| 2. Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | pendiente | pendiente |
+| 3. Carga de verificación | ≤ 242 alertas/mes = 218 (A2) + 24 (A1) | cumplido (máx 228 en abril) | ✅ |
+| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador de ENDE) | pendiente |
+
+**Verificador ajeno:** técnico de ENDE que no participó del estudio (respuesta 3a).
+
+**Qué falta para cerrar la formativa:**
+- Ejecutar la simulación y registrar los resultados de los criterios 1, 2 y 4
+- Que el verificador ajeno resuelva las alertas usando solo el método escrito (criterio 4)
+- Volcar los resultados en esta tabla y en el gate de E8 (punto 3)
+
