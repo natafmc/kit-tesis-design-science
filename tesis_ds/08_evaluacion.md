@@ -86,3 +86,9 @@ El método no alertó ninguno de los 19 reclamos procedentes con lectura de la v
 - Que el verificador ajeno resuelva las alertas usando solo el método escrito (criterio 4)
 - Volcar los resultados en el gate de E8 (punto 3)
 
+**Rediseño documentado (16–18 noviembre — mínimo no negociable):**
+Se analizará por qué el método no detectó ninguno de los 19 reclamos procedentes con lectura y por qué generó 1 515 alertas sin coincidencia (100 % falsos positivos). El rediseño revisará:
+- **Umbrales θ_A2 y θ_A1** (actualmente 39,6666666666667 y 495,362260343088, fijados en DEC-119 y DEC-120).
+- **Regla de contingencia A1** (ciclos < 4; media de hasta 6 meses previos con lec_actual <> 0; media positiva).
+Cada cambio se documentará con su justificación y versión, y se volverá a correr la consulta SQL de alertas depuradas para validar los nuevos resultados antes de la sumativa (19–24 nov).
+
