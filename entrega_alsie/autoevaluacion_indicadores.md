@@ -2,7 +2,7 @@
 
 > **Fuente de los criterios:** `instituciones/alsie/indicadores_revision_ifi.md` (solo indicadores del nivel de maestría).
 > **Documento evaluado:** `entrega_alsie/IFI_ALSIE.md`.
-> **Fecha:** 29 de octubre de 2026. **Actualizado el 1 de noviembre de 2026** después de aplicar `DEC-127` —tres de cuatro conclusiones y sus recomendaciones—.
+> **Fecha:** 29 de octubre de 2026. **Actualizado el 1 de noviembre de 2026** después de aplicar `DEC-127` —tres de cuatro conclusiones y sus recomendaciones—. **Actualizado el 5 de noviembre de 2026** después de las respuestas de la tesista y de la sincronización con `00_estado.md` (commit `a384ba4`): estructura oficial DSRM confirmada (§10.2), dos verificadores ajenos de ENDE (§6.10), carátula noviembre 2026, `E8`/`E9`/`E10` **en curso** con la formativa de `E8` por simulación con datos disponibles (resultados preliminares: cobertura 0 de 19, carga cumplida), ficha volcada al Anexo B, y **gate de construcción cerrado en 6 de 6** con `E7e` y `E7f` cerradas.
 > **Veredicto:** Cumple / Parcial / No cumple. Un "Parcial" o "No cumple" **no se oculta**: se registra y se propone cómo subsanarlo.
 
 ---
@@ -106,7 +106,7 @@
 | Indicador | Veredicto | Evidencia |
 |:--|:--|:--|
 | Fundamentos metodológicos o epistemológicos | Cumple | §9.1 |
-| Representación gráfica del modelo | Cumple | §9.4 (Mermaid → figura APA) |
+| Representación gráfica del modelo | Cumple | §9.4 — convertida a **figura APA 7** el 5 nov 2026 (número, título en cursiva arriba, nota abajo), por decisión de la tesista; el diagrama Mermaid se conserva como gráfico renderizable |
 | Componentes y relaciones esenciales | Cumple | §9.2, §9.3 |
 | Pocos elementos arbitrarios | Cumple | Cinco componentes |
 | Modelo elegante | Cumple | — |
@@ -119,14 +119,14 @@
 |:--|:--|:--|
 | Sistematiza los fundamentos teóricos | Cumple | §10.1 |
 | Asume una definición de lo que se propone | Cumple | §10.1 |
-| Presenta la estructura oficial, con autor | **No cumple** | §10.2 — se propuso el DSRM de Peffers et al. (2007); **está con el tutor desde el paquete del 30 oct (`DEC-117`)** |
-| Se desarrolla sobre la definición y estructura asumida | **Parcial** | §10.5 — depende de §10.2 |
+| Presenta la estructura oficial, con autor | **Cumple** | §10.2 — **DSRM de Peffers et al. (2007), confirmado por la tesista el 5 nov 2026** |
+| Se desarrolla sobre la definición y estructura asumida | **Cumple** | §10.5 se organiza sobre las fases del DSRM confirmadas en §10.2 |
 | Concreción de lo modelado en el Capítulo III | Cumple | §10.10 |
 | Relación con los capítulos anteriores | Cumple | §10.10 |
 | Nivel de detalle que facilite su aplicación | Cumple | §10.5, §10.6, §10.7 |
 | Metodología para su aplicación | Cumple | §10.6 |
-| Plan de construcción con entregables, mínimo producto viable y criterio de suficiencia | Cumple | §10.7 — volcado de `07d` el 2 nov (`DEC-129`); gate 0 de 6 declarado |
-| Diseño de la validación con criterios, valores y fuentes | **Cumple (diseño)** | §10.8 — volcado de `08` el 2 nov (`DEC-129`); los resultados dependen de `E8` |
+| Plan de construcción con entregables, mínimo producto viable y criterio de suficiencia | Cumple | §10.7 — volcado de `07d` el 2 nov (`DEC-129`) y actualizado el 5 nov: **gate 6 de 6 cerrado** (`00_estado.md`, commit `a384ba4`) — método escrito (`DEC-137`), ejecución depurada con 1 515 alertas (commit `1acbba0`) para los puntos 2 a 4, registro por alerta y exemplar de tres alertas para los puntos 5 y 6; `E7e` y `E7f` cerradas |
+| Diseño de la validación con criterios, valores y fuentes | **Cumple (diseño)** | §10.8 — volcado de `08` el 2 nov (`DEC-129`); muestra medida el 4 nov; `E8` **en curso** desde el 5 nov, con **dos verificadores ajenos, ambos técnicos de la oficina de ENDE** y formativa por simulación con datos ya disponibles (sin ir a terreno); **resultados preliminares volcados** (§6 de `08`, commits `2ca6233` y `45184f5`): criterio 1 medido en **0 de 19 (0 %)**, criterio 3 cumplido (máx 228 ≤ 242), criterios 2 y 4 pendientes |
 | Matriz de trazabilidad propuesta ↔ solución | **Parcial** | §10.9 — volcado de `09` el 2 nov (`DEC-129`): 13 secciones con estado al 30 oct; el cierre depende de `E9` |
 | Constituye la solución del problema | Cumple | §10.10 |
 
@@ -162,7 +162,7 @@
 | Indicador | Veredicto | Evidencia |
 |:--|:--|:--|
 | Aparecen los instrumentos aplicados | Cumple | Anexo A |
-| Documentos de sustento indispensable | **Parcial** | Anexo B pendiente (E7f) |
+| Documentos de sustento indispensable | **Cumple** | Anexo B volcado el 5 nov 2026 con la ficha escrita el 4 nov (`E7f`) |
 | Enumerados | Cumple | A, B, C |
 | Titulados | Cumple | — |
 | Orden ascendente | Cumple | — |
@@ -195,23 +195,30 @@
 | Resumen | 5 | 0 | 0 |
 | Índice | 1 | 2 | 0 |
 | Introducción | 12 | 8 | 0 |
-| Capítulo I | 16 | 2 | 0 |
+| Capítulo I | 18 | 2 | 0 |
 | Capítulo II | 15 | 0 | 0 |
 | Capítulo III | 6 | 2 | 0 |
-| Capítulo IV | 9 | 2 | 1 |
+| Capítulo IV | 11 | 1 | 0 |
 | Conclusiones | 0 | 6 | 0 |
 | Recomendaciones | 4 | 1 | 0 |
 | Referencias | 5 | 0 | 0 |
-| Anexos | 5 | 1 | 0 |
+| Anexos | 6 | 0 | 0 |
 | Relaciones esenciales | 7 | 3 | 0 |
+| **Total** | **96** | **25** | **0** |
 
 > **Nota de reconciliación, 1 de noviembre de 2026.** Al verificar esta síntesis contra el conteo real de las filas, se detectó que **cuatro filas no cuadraban**: `Introducción` declaraba 15/7 y sus filas dan 12/8; `Capítulo I` declaraba 18/3 y da 16/2; `Capítulo II` declaraba 14/0 y da 15/0; `Capítulo III` declaraba 5/2 y da 6/2. **La tabla reclamaba 109 filas cuando la sección 1 contiene 106.** Se verificó que el desajuste **ya existía en el commit anterior y no fue introducido por la sincronización del 30 de octubre** —los bloques afectados y sus filas no se tocaron entonces—. **Se corrigió la síntesis y no las filas**, porque las filas son las evaluaciones efectivamente hechas y cada una lleva su evidencia; la tabla es un derivado de ellas. **Total corregido: 106 filas de la sección 1 y 10 de la sección 2.** *Actualización del 2 de noviembre de 2026 (`DEC-129`): se añadieron tres filas al Capítulo IV —plan de construcción, diseño de la validación y matriz de trazabilidad—, de modo que la sección 1 pasó a 109 filas y el bloque del Capítulo IV a 12 (9/2/1). Actualización posterior del mismo día (`DEC-130`): se volcó al Capítulo I las salvedades de las cifras y al Capítulo II la etapa de revisión bibliográfica —método, cuenta de registros, búsquedas sin resultado y registro de verificación, con el detalle en el Anexo D—; **no cambia el número de filas**, porque la guía de contenido exige las dos etapas del marco teórico y los indicadores de revisión ya cubrían el estado del arte: solo se enriqueció su evidencia.*
 
-**Lectura.** Los apartados que dependen de material ya cerrado (título, resumen, introducción, Capítulos I y II, referencias) **cumplen**. **El 30 de octubre de 2026 se resolvió todo lo que dependía de una decisión de la tesista (`DEC-127`)**: se validaron sin ajustes la hipótesis, el aporte y la significación, se confirmó el modelo con sus 5 componentes, 5 relaciones y 9 propiedades, se redactaron **tres de las cuatro conclusiones** y **cuatro recomendaciones**, y el tutor entró en los agradecimientos con texto dictado. **Los apartados que siguen dependiendo de etapas abiertas (Capítulo III y IV por los principios de `E10`, conclusión del Cap. IV por `E8`, anexo B por `E7f`) quedan parciales o pendientes, y ninguno se ha rellenado con supuestos.** Los "No cumple" restantes no son defectos de redacción: son **ausencias de material de origen** que se resolverán al cerrar `E7e`, `E7f`, `E8`, `E9` y `E10`.
+*Actualización del 5 de noviembre de 2026 (respuestas de la tesista y segunda sincronización con `00_estado.md`, commit `a384ba4`): el **único «No cumple»** —estructura oficial con autor— pasó a **Cumple** con la confirmación del DSRM de Peffers et al. (2007) en §10.2; el bloque del Capítulo IV pasó de 9/2/1 a **11/1/0**; los Anexos pasaron de 5/1/0 a **6/0/0** con el volcado de la ficha (Anexo B); y la evidencia de §10.7, §10.8 y §6.10 se refrescó (**gate de construcción 6 de 6**, `E7e`/`E7f` cerradas, muestra medida, dos verificadores ajenos de ENDE, `E8` por simulación). **Reconteo verificado el 5 nov:** la sección 1 contiene **111 filas** (no 109: el bloque del Capítulo I tiene **20 filas, 18 Cumple y 2 Parcial**, no 18; la cifra 109 del 2 nov quedó desactualizada) y la sección 2 tiene 10; **total 121 filas: 96 Cumple, 25 Parcial, 0 No cumple.***
 
-**Cómo subsanar los "No cumple" y los "Parcial" nuevos:**
-1. **Estructura oficial con autor (§10.2):** está con el tutor desde el paquete del 30 oct (`DEC-117`); se propuso el DSRM de Peffers et al., 2007. Se escribe la respuesta cuando Roberto la dé.
-2. **Conclusiones (§11):** tres de cuatro redactadas el 30 oct (`DEC-127`); falta la del Capítulo IV, que se redacta al cerrar `E8`.
-3. **Recomendaciones (§12):** cuatro redactadas el 30 oct desde las tres conclusiones (`DEC-127`); las que dependen de `E8` y `E10` se añaden al cerrarlas.
-4. **Relaciones Objetivos ↔ Conclusiones y Conclusiones ↔ Recomendaciones:** pasaron a *Parcial* el 30 oct; cierran cuando exista la conclusión del Capítulo IV.
-5. **Ubicación de las limitaciones del estudio (§11):** ALSIE no tiene apartado propio de limitaciones; el traductor las colocó al cierre de las conclusiones (volcadas de `10_contribucion_conclusiones.md` §4 el 2 nov, `DEC-129`). **Pendiente de confirmación de la tesista** — si ALSIE prefiere otra ubicación, se trasladan sin cambiar el texto.
+**Lectura.** Los apartados que dependen de material ya cerrado (título, resumen, introducción, Capítulos I y II, referencias, anexos) **cumplen**. El 30 de octubre de 2026 se resolvió todo lo que dependía de una decisión de la tesista (`DEC-127`), y el 5 de noviembre se resolvieron los pendientes restantes: **estructura oficial (DSRM), dos verificadores ajenos de ENDE, mes de presentación, estado de las etapas `E8`/`E9`/`E10` (en curso) y el gate de construcción (cerrado en 6 de 6, con `E7e` y `E7f` cerradas)**. **Los apartados que siguen dependiendo de etapas en curso (Capítulo III y IV por los principios de `E10`, conclusión del Cap. IV por `E8`, matriz por `E9`) quedan parciales, y ninguno se ha rellenado con supuestos.** Los 25 «Parcial» restantes no son defectos de redacción: son **ausencias de material de origen** que se resolverán al cerrar `E8`, `E9` y `E10`.
+
+**Cómo subsanar los "Parcial" restantes:**
+1. **Hipótesis, aporte teórico (§6.6, §6.7) y principios del Capítulo III:** la formulación está validada sin ajustes (`DEC-127`); la marca `[PROVISIONAL]` se retira cuando `E10` produzca los principios de diseño, que se derivan del ciclo completo formativa → rediseño → sumativa.
+2. **Significación práctica (§6.8):** la magnitud de la mejora depende de los resultados de `E8`.
+3. **Conclusiones (§11):** tres de cuatro redactadas el 30 oct (`DEC-127`); falta la del Capítulo IV, que se redacta al ejecutar las fases de `E8` (formativa por simulación con datos ya disponibles, sin ir a terreno, según `00_estado.md`).
+4. **Recomendaciones (§12):** cuatro redactadas el 30 oct desde las tres conclusiones (`DEC-127`); las que dependen de `E8` y `E10` se añaden al cerrarlas.
+5. **Relaciones Objetivos ↔ Resultados, Objetivos ↔ Conclusiones y Conclusiones ↔ Recomendaciones:** cierran cuando exista la conclusión del Capítulo IV.
+6. **Matriz de trazabilidad (§10.9):** se llena con los resultados de `E9` al cierre de la validación.
+7. **Índice de tablas y figuras y números de página:** al maquetado final (conversión desde Markdown).
+8. **Ubicación de las limitaciones del estudio (§11):** ALSIE no tiene apartado propio de limitaciones; se colocaron al cierre de las conclusiones (volcadas de `10_contribucion_conclusiones.md` §4 el 2 nov, `DEC-129`). **Pendiente de confirmación de la tesista** — si ALSIE prefiere otra ubicación, se trasladan sin cambiar el texto.
+9. ~~**Inconsistencia heredada en `00_estado.md`**~~ — **resuelta el 5 de noviembre en la fuente** (commits `1acbba0` y `4280905`): la fila que marcaba `E8`/`E9`/`E10` como «cerradas por decisión escrita» ya no existe; las tres constan como **en curso**. *Salvedad de trazabilidad: `07d_construccion.md` conserva su tabla de gate en 1 de 6 (última actualización 3 nov); el cierre 6/6 consta en la tabla de etapas de `00_estado.md`.*

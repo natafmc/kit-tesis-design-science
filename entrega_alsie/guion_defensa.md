@@ -1,11 +1,11 @@
 # Guion de defensa oral — 20 minutos (modelo ALSIE)
 
 > **Documento rector:** `plantillas/presentacion_defensa_alsie.md`.
-> **Fuente del contenido:** `entrega_alsie/IFI_ALSIE.md` (IFI al día con `DEC-130`).
+> **Fuente del contenido:** `entrega_alsie/IFI_ALSIE.md` (IFI al día con las respuestas de la tesista del 5 de noviembre de 2026).
 > **Tesis:** *Método de detección y verificación previa a la facturación de lecturas anómalas en distribución eléctrica.*
 > **Postulante:** Natalia Fabiola Medrano Cambará · **Tutor:** Luis Roberto Pérez Rios, Ph.D.
-> **Fecha:** 2 de noviembre de 2026 (regenerado; la versión previa era del 29 de octubre).
-> **Advertencia de estado:** el IFI tiene los apartados 1 a 8 y 13 completos; el 9 (modelo) y sus análogos del perfil están **validados por la tesista el 30 de octubre (`DEC-127`)** y conservan `[PROVISIONAL]` solo por los principios de diseño de `E10`. Quedan abiertas las etapas `E7e`, `E7f`, `E8`, `E9` y `E10`; por eso los bloques 10, 11 y 13 del guion y las notas de los bloques 4, 8, 9 y 12 se marcan `[PENDIENTE]` **y no se rellenan con supuestos**. Dos preguntas abiertas afectan la defensa oral: la **estructura oficial con autor** (bloque 9, `DEC-117`) y el **número de verificadores** de la muestra de validación (bloques 5 y 11).
+> **Fecha:** 5 de noviembre de 2026 (actualizado; la versión previa era del 2 de noviembre).
+> **Advertencia de estado:** el IFI tiene los apartados 1 a 8, 13 y 14 completos; el 9 (modelo) y sus análogos del perfil están **validados por la tesista el 30 de octubre (`DEC-127`)** y conservan `[PROVISIONAL]` solo por los principios de diseño de `E10`. **El gate de construcción quedó en 6 de 6 el 5 de noviembre** (`00_estado.md`) —método escrito (`DEC-137`), ejecución depurada con 1 515 alertas (commit `1acbba0`), registro por alerta y exemplar de tres alertas—, y las etapas `E7e` (construcción y verificación) y `E7f` (ficha) **cerraron el mismo día**. Quedan en curso `E8`, `E9` y `E10`; por eso la conclusión del Capítulo IV y los resultados definitivos del bloque 11 se marcan `[PENDIENTE]` **y no se rellenan con supuestos**. **Las dos preguntas que afectaban la defensa oral quedaron resueltas el 5 de noviembre:** la **estructura oficial con autor** es el DSRM de Peffers et al. (2007) (bloque 9) y la validación cuenta con **dos verificadores ajenos, ambos técnicos de ENDE** (bloques 5 y 11). La **muestra está medida** (4 de noviembre: 19 reclamos procedentes con lectura sobre 109 con lectura en la ventana de nueve meses) y la **fase formativa de `E8` se ejecuta por simulación con datos ya disponibles, sin ir a terreno**, decisión de la tesista del 5 de noviembre registrada en `00_estado.md`; sus **resultados preliminares** midieron el criterio de cobertura en **0 de 19 (0 %)** y el criterio de carga como **cumplido**.
 
 ---
 
@@ -141,9 +141,9 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Técnicas (una línea):** consultas SQL sobre el panel de consumo; análisis de tasas por 100 000 lecturas; codificación de la cadena de corrección en cinco pasos y cinco roles; calibración del umbral por recorrido del orden de desviaciones hasta el techo de capacidad.
 
-**Población y muestra:** 29 750 cuentas; unidades de análisis: 1 485 556 celdas cuenta-mes, 1 389 941 lecturas y 1 053 reclamos en 57 meses; selección **analítica, no estadística** (caso representativo de la clase de contextos); la muestra de validación será un lote de las alertas del método, resuelto por un verificador que no participó del estudio.
+**Población y muestra:** 29 750 cuentas; unidades de análisis: 1 485 556 celdas cuenta-mes, 1 389 941 lecturas y 1 053 reclamos en 57 meses; selección **analítica, no estadística** (caso representativo de la clase de contextos); la muestra de cobertura es **censal dentro de su universo** —los **19 reclamos procedentes con lectura** de la ventana de enero a septiembre de 2026, sobre 109 reclamos con lectura (medido el 4 de noviembre, `DEC-139`, `DEC-142`)—, y la aplicabilidad la resuelven **dos verificadores ajenos, ambos técnicos de ENDE que no participaron del estudio**, confirmados el 5 de noviembre de 2026.
 
-*[PENDIENTE: número exacto de verificadores y su disponibilidad —§6.10 del IFI.]*
+*La tesista, como administradora del sistema, diseña y construye pero **no evalúa su propia propuesta**.*
 
 **Qué evitar:** enumerar métodos sin propósito; detallar instrumentos (van al diagnóstico).
 
@@ -207,7 +207,7 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué evitar:** describir la propuesta sin anclarla al modelo; detalles técnicos de implementación.
 
-*[PENDIENTE — confirmar la estructura oficial con autor (§10.2 del IFI): la candidata es el DSRM de Peffers et al. (2007); se pide confirmación o sustitución al tutor (`DEC-117`).]*
+*[Estado: la estructura oficial **está confirmada** —DSRM de Peffers et al. (2007)—, confirmada por la tesista el 5 de noviembre de 2026 (respuesta 4); ya no hay pregunta abierta con el tutor (`DEC-117` resuelto).]*
 
 ---
 
@@ -217,13 +217,13 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 **Qué decir:**
 
-> [Apliqué el método sobre el panel de consumo real: 1 485 556 celdas, 30 411 cuentas, 57 meses. La depuración excluyó 541 celdas de 411 cuentas. La segmentación asignó a cada cuenta su perfil y su familia de código. La detección calculó la desviación contra el ciclo anual y produjo el listado de alertas agrupadas por ruta, con la comparación que originó cada una.]
+> [Apliqué el método sobre el panel de consumo real: 1 485 556 celdas, 30 411 cuentas, 57 meses. La depuración excluyó 541 celdas de 411 cuentas. La segmentación asignó a cada cuenta su perfil y su familia de código. La detección calculó la desviación contra el ciclo anual y produjo el listado de alertas agrupadas por ruta, con la comparación que originó cada una. La ejecución depurada del 5 de noviembre cerró con 1 515 alertas —1 402 de A2 y 113 de A1—, ninguna sin ruta ni sin orden.]
 
-**Qué mostrar:** el producto de trabajo —el listado de alertas agrupadas por ruta con su explicación— y los pasos ejecutados.
+**Qué mostrar:** el producto de trabajo —el listado de alertas agrupadas por ruta con su explicación— y los pasos ejecutados; el registro con las alertas en estado «pendiente» y el **exemplar de tres alertas del listado** (puntos 5 y 6 del gate).
 
 **Qué evitar:** describir de nuevo el diseño; una sola función o un solo caso, preparado de antemano.
 
-*[PENDIENTE — `E7f`/`E8`: la exemplar y su producto de trabajo se producirán en esas etapas.]*
+*[Estado: el **gate de construcción quedó en 6 de 6 el 5 de noviembre de 2026** (`00_estado.md`) —método escrito (`DEC-137`), ejecución depurada con 1 515 alertas para los puntos 2 a 4, registro por alerta y exemplar de tres alertas para los puntos 5 y 6—; `E7e` y `E7f` cerraron el mismo día y la **ficha de la propuesta** está volcada íntegra en el Anexo B del IFI. Siguen pendientes solo los resultados de `E8`.]*
 
 ---
 
@@ -235,16 +235,16 @@ La defensa **no es un resumen del IFI, es una argumentación priorizada**. El cr
 
 | Indicador | Línea base | Estado de la medición |
 |:--|:--|:--|
-| Cobertura retrospectiva | 136 de 174 reclamos procedentes (78,16 %) sin código | Pendiente: falta contar los procedentes de la ventana de 9 meses (`E8`) |
+| Cobertura retrospectiva | 136 de 174 reclamos procedentes (78,16 %) sin código | **Medido el 5 nov (formativa): 0 de 19 (0 %)** —ninguno de los 19 reclamos procedentes con lectura de la ventana aparece en el listado de 1 515 alertas depuradas; muestra medida el 4 nov (19/109) |
 | Falsos positivos | sin criterio actual | Umbral `θ` **fijado** antes de construir: 39,67 (A2) y 495,36 (A1) (`DEC-121`); medición pendiente |
-| Carga de verificación | 242,2 correcciones/mes | Techo 242 (218+24); **medición previa del método: 1 520 alertas en 9 meses, máximo 229 en abril, 0 meses sobre el techo** (`DEC-124`) |
-| Aplicabilidad | sin procedimiento escrito | 100 % de las alertas, verificador ajeno; pendiente `E7f`/`E8` |
+| Carga de verificación | 242,2 correcciones/mes | Techo 242 (218+24); medición previa: 1 520 alertas, máx. 229, 0 meses sobre techo (`DEC-124`); **resultado de la simulación del 5 nov: criterio 3 ✅ cumplido** — ejecución depurada 1 515 alertas, máximo mensual 228 en abril (`08_evaluacion.md` §6) |
+| Aplicabilidad | sin procedimiento escrito | Método escrito desde el 3 nov (`DEC-137`); **gate de construcción 6 de 6**; 100 % de las alertas, **dos verificadores ajenos (ambos técnicos de ENDE que no participaron del estudio)**; medición pendiente en `E8` (**en curso desde el 5 nov, formativa por simulación con datos disponibles**) |
 
-**Qué decir sobre el diseño (una frase):** los cuatro criterios se fijaron **antes de construir**; la evaluación es primero formativa y luego sumativa, en campo, con el equipo real, y su cronograma va del 9 al 24 de noviembre con rediseño documentado obligatorio en medio.
+**Qué decir sobre el diseño (una frase):** los cuatro criterios se fijaron **antes de construir**; la evaluación es primero formativa y luego sumativa, y la fase formativa se ejecuta ahora por simulación con datos ya disponibles, sin ir a terreno (decisión de la tesista del 5 de noviembre), con los cuatro criterios medidos por **dos verificadores ajenos, ambos técnicos de ENDE**; **ya está medido el criterio de carga, que se cumplió**.
 
-**Qué evitar:** afirmar éxito sin dato; confundir "el método se aplica" con "resuelve el problema"; presentar la medición previa de carga como resultado final.
+**Qué evitar:** afirmar éxito sin dato; confundir "el método se aplica" con "resuelve el problema"; presentar la medición previa de carga como resultado final; y presentar el **0 % de cobertura como veredicto definitivo** —es el resultado de la fase **formativa**, que está diseñada para originar rediseño, no el resultado sumativo de la tesis.
 
-*[PENDIENTE — `E8`: los resultados definitivos de cobertura, falsos positivos y aplicabilidad se producirán en esa etapa; la medición de carga ya disponible es previa, no definitiva.]*
+*[EN CURSO — `E8`: el criterio 1 ya tiene resultado preliminar (0 de 19) y el criterio 3 está cumplido; los resultados definitivos de falsos positivos y aplicabilidad se producirán en las fases restantes, y la cobertura definitiva dependerá del ciclo completo formativa → rediseño → sumativa.]*
 
 ---
 
@@ -343,7 +343,7 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 - [ ] Las conclusiones son resultados por objetivo, no sugerencias.
 - [ ] El número de diapositivas está entre 14 y 16.
 - [ ] La portada y el cierre incluyen los datos institucionales.
-- [ ] Están resueltas las dos preguntas abiertas que afectan la defensa: estructura oficial con autor (Bloque 9) y número de verificadores (Bloques 5 y 11).
+- [x] Están resueltas las dos preguntas abiertas que afectaban la defensa: estructura oficial con autor (Bloque 9) y número de verificadores (Bloques 5 y 11) — **resueltas el 5 de noviembre de 2026**: DSRM confirmado y dos verificadores ajenos, **ambos técnicos de ENDE**.
 
 > **Nota de deriva, medida el 3 de noviembre de 2026 (`DEC-134`).** Las cifras de esta sección —1 053 reclamos con lectura, 174 procedentes, 136 de tipo 1 y 78,16 %— se midieron el 25 de octubre de 2026 y se conservan con ese sello. Al volver a medir el 3 de noviembre la base devolvió **177 procedentes con lectura** y **1 061 reclamos con lectura**: **+3 procedentes y +8 con lectura**, sin que la ventana de 57 meses cambiara, que sigue teniendo 13 897 reclamos. Se movieron solo dos cosas: ocho reclamos de la ventana ganaron `id_lectura` —tres procedentes y cinco improcedentes—, y los ocho que tenían lectura sin tipo ya tienen `tipo_lectura`, de modo que el desfase Δ8 registrado en `DEC-65(6)` dejó de existir. **Las tablas `tfv_reclamo` y `tfv_reclamo_lectura` son vivas: la cifra depende del día de la corrida.** La fuente principal de las cifras publicadas es la hoja `DATOS desde 2022.xlsx`, un archivo estático que sigue dando 174; la base de datos era la segunda fuente y coincidió con la hoja el 25 de octubre. Por eso las cifras no se reescriben: se declara la deriva.
 
@@ -400,7 +400,7 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 - **Componentes:** depuración · segmentación · detección · verificación · resolución y registro.
 - **Relación esencial:** ciclo con retroalimentación; el techo de capacidad limita la detección.
 
-*(Gráfico del modelo en bloque, grande y legible.)*
+*(**Figura 1** del modelo, en APA 7 —número, título y nota—, grande y legible.)*
 
 **Diapositiva 10b — Explicación**
 
@@ -411,7 +411,7 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 **Título:** Propuesta: el método como concreción del modelo
 
 - **Definición:** método (pasos, roles, entradas, salidas, precondiciones, productos).
-- **Estructura oficial:** DSRM de Peffers et al. (2007) — *candidata, pendiente de confirmación*.
+- **Estructura oficial:** DSRM de Peffers et al. (2007) — *confirmada por la tesista el 5 de noviembre de 2026*.
 - **Traza:** cada componente del modelo → un paso del método.
 
 ### Diapositiva 14 — Demostración breve (1,5 min)
@@ -420,7 +420,8 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 
 - Panel: 1 485 556 celdas · 30 411 cuentas · 57 meses.
 - Depuración: 541 celdas de 411 cuentas excluidas.
-- Producto: listado de alertas agrupadas por ruta con su explicación.
+- Producto: listado de alertas agrupadas por ruta con su explicación; ejecución depurada del 5 nov: **1 515 alertas** (1 402 A2 + 113 A1), ninguna sin ruta ni sin orden.
+- Registro con estado «pendiente» por alerta y **exemplar de tres alertas** (puntos 5 y 6 del gate).
 
 > [Apliqué el método sobre el panel real y obtuve el listado de alertas agrupadas por ruta, cada una con la comparación que la originó.]
 
@@ -430,10 +431,10 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 
 | Indicador | Línea base | Estado |
 |:--|:--|:--|
-| Cobertura retrospectiva | 136 de 174 sin código | Pendiente (`E8`) |
+| Cobertura retrospectiva | 136 de 174 sin código | **0 de 19 (0 %)** — medido 5 nov (formativa); muestra: 19/109 |
 | Falsos positivos | sin criterio actual | `θ` fijado: 39,67 / 495,36 (`DEC-121`); medición pendiente |
-| Carga de verificación | 242,2/mes | Techo 242; medición previa: 1 520 alertas, máx. 229 (abril), 0 meses sobre techo (`DEC-124`) |
-| Aplicabilidad | sin procedimiento | 100 %, verificador ajeno; pendiente (`E7f`/`E8`) |
+| Carga de verificación | 242,2/mes | Techo 242; medición previa: 1 520 alertas, máx. 229 (abril) (`DEC-124`); **simulación 5 nov: ✅ cumplido, máx. 228** |
+| Aplicabilidad | sin procedimiento | Método escrito (`DEC-137`); gate 6/6; 100 %, **dos verificadores (ENDE)**; pendiente (`E8` **en curso, por simulación**) |
 
 ### Diapositiva 16 — Aporte y significación práctica (1,5 min)
 
@@ -455,4 +456,4 @@ La demostración **no reemplaza a la validación**: muestra que la propuesta es 
 
 ---
 
-*Guion regenerado por el agente `traductor-alsie` el 2 de noviembre de 2026 desde `entrega_alsie/IFI_ALSIE.md` (al día con `DEC-130`), según `plantillas/presentacion_defensa_alsie.md`. El bloque 10, la conclusión del Capítulo IV y los resultados definitivos del bloque 11 dependen de `E7f` y `E8`; el bloque 9 depende de la confirmación de la estructura oficial (`DEC-117`); el bloque 5, del número de verificadores; y las marcas `[PROVISIONAL]` de los bloques 4, 8 y 12, de los principios de `E10`.*
+*Guion regenerado por el agente `traductor-alsie` el 2 de noviembre de 2026 desde `entrega_alsie/IFI_ALSIE.md` (al día con `DEC-130`) y actualizado el 5 de noviembre de 2026 con las respuestas de la tesista y la sincronización con `00_estado.md` (commit `a384ba4`) y `08_evaluacion.md` (commit `2ca6233`) —DSRM confirmado como estructura oficial, dos verificadores ajenos **ambos de ENDE**, muestra medida, ficha volcada al Anexo B, **gate de construcción 6 de 6** con `E7e`/`E7f` cerradas, `E8` en curso por simulación con datos disponibles con **resultados preliminares: cobertura 0 de 19 y carga cumplida**—, según `plantillas/presentacion_defensa_alsie.md`. El bloque 10 (exemplar) ya puede ejercitarse con el listado depurado; la conclusión del Capítulo IV y los resultados definitivos del bloque 11 dependen de `E8`; las marcas `[PROVISIONAL]` de los bloques 4, 8 y 12, de los principios de `E10`; el cierre de la matriz, de `E9`.*

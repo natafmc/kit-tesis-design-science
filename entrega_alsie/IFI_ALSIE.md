@@ -3,7 +3,7 @@
 > **Modelo institucional de ALSIE — nivel de maestría.**
 > **Fuente de la forma:** `instituciones/alsie/guia_ifi_contenido.md` (14 apartados) e `instituciones/alsie/indicadores_revision_ifi.md` (indicadores de maestría).
 > **Fuente del contenido:** carpeta `tesis_ds/`. Trazabilidad completa en el **Anexo C**.
-> **Estado de la traducción, 2 de noviembre de 2026:** los apartados 1 a 8 y 13 están **completos** —los capítulos I y II se ampliaron el 2 de noviembre (`DEC-130`) con las salvedades de las cifras del diagnóstico y con la etapa de revisión bibliográfica del marco teórico: método, cuenta de registros de las tres corridas, vacíos de búsqueda y registro de verificación, con el detalle en el **Anexo D**—; el apartado 9 quedó **validado por la tesista el 30 de octubre** y conserva la marca `[PROVISIONAL]` solo por los principios de diseño de `E10`; el apartado 10 quedó **ampliado el 2 de noviembre (`DEC-129`)** con el plan de construcción (`07d`), el diseño de la validación (`08`) y la matriz de trazabilidad (`09`), y sigue **parcial** porque la construcción (`E7e`), los resultados de la evaluación (`E8`), el cierre de la matriz (`E9`), la ficha (`E7f`) y los principios (`E10`) aún no existen; el apartado 11 tiene **tres de cuatro conclusiones** —la del Capítulo IV espera a `E8`— y ahora incluye además las **cinco limitaciones** ya escritas; el apartado 12 tiene las recomendaciones derivadas de las conclusiones existentes; el apartado 14 está **parcial** porque el Anexo B espera a `E7f`. **Lo único que seguía dependiendo de una decisión de la tesista quedó resuelto el 30 de octubre (`DEC-127`).** Lo que falta se marca con la causa que lo desbloquea, y **no se rellena con supuestos**.
+> **Estado de la traducción, 5 de noviembre de 2026:** los apartados 1 a 8 y 13 están **completos** —los capítulos I y II se ampliaron el 2 de noviembre (`DEC-130`) con las salvedades de las cifras del diagnóstico y con la etapa de revisión bibliográfica del marco teórico, con el detalle en el **Anexo D**—; el Capítulo I incorporó además la **nota de deriva** de las cifras de reclamos (3 de noviembre, `DEC-134`) y la **nota de alcance** que precisa que la población ODECO son los reclamos de tipo 3 (4 de noviembre, `DEC-142`); el apartado 9 quedó **validado por la tesista el 30 de octubre** y conserva la marca `[PROVISIONAL]` solo por los principios de diseño de `E10`; el apartado 10 se **actualizó el 5 de noviembre**: el gate de construcción se cerró en **6 de 6** —método escrito (`DEC-137`), procedimiento ejecutable agregado al archivo de consultas el 4 de noviembre (commit `04327b5`), primera ejecución sin depuración con 1 732 alertas y **segunda ejecución con la depuración aplicada** (commit `1acbba0`) con **1 515 alertas** —1 402 de A2 y 113 de A1, máximo mensual 217 de A2 en abril y 23 de A1 en marzo, ningún mes por encima de los cupos 218 y 24, ninguna alerta sin ruta ni sin orden— que validó los puntos 2 a 4, con el registro en estado «pendiente» por alerta (punto 5) y el exemplar de tres alertas del listado (punto 6); las etapas `E7e` (construcción y verificación interna) y `E7f` (ficha) **cerraron el 5 de noviembre**; la **muestra de la validación quedó medida** (4 de noviembre: 19 reclamos procedentes con lectura sobre 109 con lectura en la ventana de nueve meses; universo ODECO = tipo 3, 1 062 reclamos y 1 061 con lectura); el apartado 11 tiene **tres de cuatro conclusiones** —la del Capítulo IV espera a los resultados de la validación (`E8`)— y las cinco limitaciones ya escritas; el apartado 12 tiene las recomendaciones derivadas de las conclusiones existentes; el apartado 14 quedó **con el Anexo B completo**: la ficha de la propuesta se escribió el 4 de noviembre (`E7f`), se vuelca íntegra y cerró su etapa el 5 de noviembre. **Decisiones de la tesista del 5 de noviembre de 2026:** las etapas `E8`, `E9` y `E10` **siguen en curso** —`E8` inició su fase formativa **por simulación con datos ya disponibles, sin ir a terreno**, con **dos verificadores ajenos, ambos técnicos de ENDE que no participaron del estudio**; y sus **resultados preliminares** ya volcaron los datos de entrada validados (1 515 alertas depuradas), el **criterio 1 (cobertura) medido en 0 de 19 (0 %)** y el **criterio 3 (carga) como cumplido**, quedando pendientes los criterios 2 y 4—; la carátula queda en **noviembre de 2026**; y la estructura oficial de la propuesta es el **DSRM de Peffers et al. (2007)**. Lo que falta se marca con la causa que lo desbloquea, y **no se rellena con supuestos**.
 > **Regla de este documento:** ningún dato entra sin su fuente. Las cifras provienen de `DATOS desde 2022.xlsx`, `DATOS.xlsx`, `CODIGOS_IRREGULARES.xlsx` y de las declaraciones registradas de la tesista.
 
 ---
@@ -18,7 +18,7 @@
 | **Modalidad y nivel** | Tesis de maestría para optar al grado de Magíster en Ingeniería de Software |
 | **Postulante** | Natalia Fabiola Medrano Cambará |
 | **Tutor** | Luis Roberto Pérez Rios, Ph.D. |
-| **Mes y año de presentación** | Octubre de 2026 |
+| **Mes y año de presentación** | Noviembre de 2026 |
 | **Ciudad y país** | Cochabamba, Bolivia |
 
 **Control del título contra la guía (reglas 8, 9 y 10):** 15 palabras exactas —el máximo permitido—, sin siglas y sin fórmulas. Describe el contenido y está vinculado al objetivo general.
@@ -45,7 +45,7 @@
 
 ## 4. Resumen
 
-> Se estudió la detección de lecturas con consumo atípico previa a la facturación en la distribución de energía eléctrica, con el propósito de sustituir la revisión reactiva por una detección sistemática que no excediera la capacidad del equipo de verificación. Se analizó el histórico de lecturación de una empresa distribuidora nacional correspondiente a los 57 meses comprendidos entre enero de 2022 y septiembre de 2026, y se revisó la literatura sobre detección de anomalías en consumo eléctrico. Se constató que el 0,88 % de las lecturas facturables, esto es 12 300 de 1 389 941 registros, fue marcado con un código de irregularidad, y que la oficina de atención al consumidor recibió 1 053 reclamos en el mismo periodo, de los cuales 174 resultaron procedentes y 136 correspondieron a lecturas marcadas sin código; la revisión bibliográfica no arrojó evidencia de su aplicación previa a la facturación en la literatura consultada. Sobre esa evidencia se propuso un método de detección y verificación previa a la facturación, entendido como artefacto de tipo método, diseñado para operar sobre un panel de consumo con una fila por cuenta y mes, agrupado por ruta de lecturación, y para el que se fijó un procedimiento de calibración del umbral contra el techo de capacidad de 242 alertas mensuales. Se concluyó que era viable incorporar detección sistemática al ciclo de lecturación sin ampliar el equipo de verificación, y quedó pendiente la evaluación del método sobre el histórico completo.
+> Se estudió la detección de lecturas con consumo atípico previa a la facturación en la distribución de energía eléctrica, con el propósito de sustituir la revisión reactiva por una detección sistemática que no excediera la capacidad del equipo de verificación. Se analizó el histórico de lecturación de una empresa distribuidora nacional correspondiente a los 57 meses comprendidos entre enero de 2022 y septiembre de 2026, y se revisó la literatura sobre detección de anomalías en consumo eléctrico. Se constató que el 0,88 % de las lecturas facturables, esto es 12 300 de 1 389 941 registros, fue marcado con un código de irregularidad, y que la oficina de atención al consumidor recibió 1 053 reclamos en el mismo periodo, de los cuales 174 resultaron procedentes y 136 correspondieron a lecturas marcadas sin código; la revisión bibliográfica no arrojó evidencia de su aplicación previa a la facturación en la literatura consultada. Sobre esa evidencia se propuso un método de detección y verificación previa a la facturación, entendido como propuesta de tipología método, diseñado para operar sobre un panel de consumo con una fila por cuenta y mes, agrupado por ruta de lecturación, y para el que se fijó un procedimiento de calibración del umbral contra el techo de capacidad de 242 alertas mensuales. Se concluyó que era viable incorporar detección sistemática al ciclo de lecturación sin ampliar el equipo de verificación, y quedó pendiente la evaluación del método sobre el histórico completo.
 
 **Control de la guía:** 241 palabras (tope 250) · un solo párrafo · tiempo pasado y voz pasiva · sin siglas · sin tablas ni fórmulas · ubicado justamente antes del índice. Revela tema, objeto, objetivo, metodología y resultados.
 
@@ -102,7 +102,7 @@
 - **13. Referencias bibliográficas**
 - **14. Anexos**
   - Anexo A. Instrumentos aplicados
-  - Anexo B. Ficha del artefacto
+  - Anexo B. Ficha de la propuesta (método)
   - Anexo C. Mapa de equivalencias Design Science → ALSIE
   - Anexo D. Protocolo y cuenta de registros de la revisión bibliográfica
 
@@ -202,9 +202,11 @@ La significación práctica consiste en que la distribuidora puede **incorporar 
 
 **Población:** las **29 750 cuentas** de la regional estudiada al cierre de septiembre de 2026, sujetas al catálogo nacional de códigos de irregularidad. El universo no es fijo —los registros de lectura crecen de 28 355 en enero de 2025 a 29 750 en septiembre de 2026—, de modo que los denominadores se calculan mes a mes.
 
-**Unidades de análisis:** la celda cuenta-mes del panel de consumo (1 485 556 celdas verificadas), las lecturas facturables (1 389 941 en 57 meses) y los reclamos tramitados (1 053 en 57 meses).
+**Unidades de análisis:** la celda cuenta-mes del panel de consumo (1 485 556 celdas verificadas), las lecturas facturables (1 389 941 en 57 meses) y los reclamos tramitados (1 053 reclamos ODECO con lectura en 57 meses, de los cuales 174 resultaron procedentes). Para la validación, la unidad es el reclamo procedente con lectura dentro de la ventana de detección.
 
-**Muestra:** la selección es **analítica, no estadística**. La regional se elige por ser representativa de la clase de contextos —distribuidoras con sistema transaccional propio, histórico tabular de lecturas y catálogo del regulador—, por cuanto comparte las tres condiciones que definen esa clase. Para la validación se prevé una muestra de las alertas que el método produzca, resuelta por un verificador que no participó del estudio. *[PENDIENTE: confirmar el número exacto de participantes y su disponibilidad.]*
+**Población de la validación.** La ventana de detección son los nueve meses de enero a septiembre de 2026 (`DEC-90`). Medida el 4 de noviembre de 2026 (`DEC-139`, `DEC-141`, `DEC-142`): **2 713 reclamos** en la ventana, **109 con lectura**, **1 843 con pronunciamiento procedente** y **19 procedentes con lectura** —el numerador y el denominador de la muestra de cobertura—. La población ODECO se delimitó el mismo día: son los reclamos de **tipo 3** («reclamo directo con suspensión de cobranza»), **1 062 en los 57 meses y 1 061 con lectura**; los tipos 1 y 2 suman 12 835 reclamos con cero lectura. Queda declarada una excepción de 1 en 1 062: un reclamo de tipo 3 sin lectura, no identificado.
+
+**Muestra:** la selección es **analítica, no estadística**. La regional se elige por ser representativa de la clase de contextos —distribuidoras con sistema transaccional propio, histórico tabular de lecturas y catálogo del regulador—, por cuanto comparte las tres condiciones que definen esa clase. La muestra de cobertura sobre la ventana es **censal dentro de su universo**: los 19 reclamos procedentes con lectura de enero a septiembre de 2026, no un subconjunto aleatorio. Para el criterio de aplicabilidad participan **dos verificadores ajenos** al estudio —**ambos técnicos de ENDE que no participaron del estudio**, confirmados por la tesista el 5 de noviembre de 2026—, que resuelven las alertas con solo el método escrito y sin asistencia de la autora; la tesista, como administradora del sistema, diseña y construye pero **no evalúa su propia propuesta**.
 
 Para la trazabilidad completa entre los apartados de este informe y los productos de la investigación, **ver anexo C**.
 
@@ -308,6 +310,8 @@ El análisis de los reclamos muestra que la mayoría de los reclamos procedentes
 *Tabla 1. Reclamos tramitados ante la oficina de atención al consumidor, por gestión y procedencia (enero 2022 – septiembre 2026). Fuente: `DATOS desde 2022.xlsx`, hoja `reclamos`.*
 
 > **Nota de deriva, medida el 3 de noviembre de 2026 (`DEC-134`).** Las cifras de esta sección —1 053 reclamos con lectura, 174 procedentes, 136 de tipo 1 y 78,16 %— se midieron el 25 de octubre de 2026 y se conservan con ese sello. Al volver a medir el 3 de noviembre la base devolvió **177 procedentes con lectura** y **1 061 reclamos con lectura**: **+3 procedentes y +8 con lectura**, sin que la ventana de 57 meses cambiara, que sigue teniendo 13 897 reclamos. Se movieron solo dos cosas: ocho reclamos de la ventana ganaron `id_lectura` —tres procedentes y cinco improcedentes—, y los ocho que tenían lectura sin tipo ya tienen `tipo_lectura`, de modo que el desfase Δ8 registrado en `DEC-65(6)` dejó de existir. **Las tablas `tfv_reclamo` y `tfv_reclamo_lectura` son vivas: la cifra depende del día de la corrida.** La fuente principal de las cifras publicadas es la hoja `DATOS desde 2022.xlsx`, un archivo estático que sigue dando 174; la base de datos era la segunda fuente y coincidió con la hoja el 25 de octubre. Por eso las cifras no se reescriben: se declara la deriva.
+
+> **Nota de alcance, dictada el 4 de noviembre de 2026 (`DEC-142`).** La tesista precisó dos cosas que hasta hoy estaban implícitas. **Primera: ODECO es la «oficina de atención al consumidor»** —en sus palabras; el documento no expande la sigla por cuenta propia—. **Segunda: los reclamos ODECO son los de tipo 3** —«reclamo directo con suspensión de cobranza»—, que son los que relacionan una lectura y por eso suspenden la cobranza, y por eso son también los únicos que tienen fila en la tabla de reclamos con lectura. Medido el 4 de noviembre: **1 062 reclamos de tipo 3 en los 57 meses, 1 061 de ellos con lectura**; los tipos 1 y 2 suman **12 835 reclamos con cero lectura**. **Consecuencia:** la tabla de reclamos contiene **todos** los reclamos —13 897— y la población ODECO es el **tipo 3**, no el total; por eso el **16,52 %** es **174 procedentes sobre 1 053 reclamos ODECO con lectura**, y no se diluye contra los 13 897. **Queda declarada una excepción de 1 en 1 062: un reclamo de tipo 3 sin lectura, no identificado.** La hoja `DATOS desde 2022.xlsx` sigue dando 1 053 / 174 y **no se reescribe**.
 
 **Análisis.** De los 174 reclamos procedentes, **136 (78,16 %)** provinieron de lecturas sin código: auditar solo las lecturas con código habría alcanzado como máximo 38 procedentes y habría dejado sin detectar 136. Sin embargo, las lecturas con código son solo el 0,88 % del facturable y originan el 21,84 % de los procedentes, de modo que presentan una tasa de procedencia por lectura mucho mayor. La señal es **específica de los procedentes**: en la ventana anterior de 21 meses, la razón de tasas de los improcedentes fue de apenas 1,15 × (47,27 frente a 54,27 por 100 000), de modo que el código predice reclamo procedente, no reclamo en general.
 
@@ -540,7 +544,9 @@ Las relaciones entre los componentes son las siguientes:
 
 ### 9.4 Representación gráfica
 
-> **Nota de conversión:** el siguiente diagrama en bloque Mermaid es la representación provisional. Debe convertirse en **figura con título y nota APA 7** en el maquetado final.
+**Figura 1**
+
+*Componentes y relaciones esenciales del modelo de detección y verificación de lecturas anómalas no declaradas*
 
 ```mermaid
 flowchart TD
@@ -554,7 +560,7 @@ flowchart TD
     H[Agrupación por ruta] -.->|organiza la salida| D
 ```
 
-*Figura 1 (provisional). Componentes y relaciones esenciales del modelo de detección y verificación de lecturas anómalas no declaradas.*
+*Nota.* Diagrama en bloque del ciclo completo del modelo: el panel de consumo alimenta la depuración, que alimenta la segmentación y la detección; la detección emite la alerta con explicación y perfil a la verificación humana, cuya resolución y registro alimentan el ciclo siguiente. El techo de capacidad (≤ 242 alertas/mes) limita el volumen de la detección y la agrupación por ruta organiza su salida. Elaboración propia.
 
 ### 9.5 Propiedades del modelo
 
@@ -576,7 +582,7 @@ flowchart TD
 
 ## 10. Capítulo IV. Propuesta de la investigación
 
-> **`[PARCIAL]`** Este capítulo concreta el modelo del Capítulo III y constituye la solución del problema. Se vuelca el material de `07a`, `07b`, `07c`, del plan de construcción (`07d`, abierto el 30 de octubre de 2026, `DEC-123`), del diseño de la validación (`08_evaluacion.md`) y de la matriz de trazabilidad (`09_enlace_solucion.md`), ambos abiertos en su diseño el mismo día (`DEC-122`). Siguen pendientes la construcción y verificación del método (`E7e`), los resultados de la evaluación (`E8`), el cierre de la matriz (`E9`), la ficha reproducible (`E7f`, Anexo B) y los principios de diseño (`E10`).
+> **`[PARCIAL]`** Este capítulo concreta el modelo del Capítulo III y constituye la solución del problema. Se vuelca el material de `07a`, `07b`, `07c`, del plan de construcción (`07d`, abierto el 30 de octubre de 2026, `DEC-123`; gate **6 de 6 cerrado el 5 de noviembre** según `00_estado.md`: método escrito `DEC-137`, ejecución depurada con 1 515 alertas validando los puntos 2 a 4, registro por alerta y exemplar de tres alertas para los puntos 5 y 6), del diseño de la validación (`08_evaluacion.md`, muestra medida el 4 de noviembre), de la matriz de trazabilidad (`09_enlace_solucion.md`) y de la ficha (`07f`, volcada al Anexo B el 5 de noviembre). Las etapas `E7e` y `E7f` **cerraron el 5 de noviembre**. Siguen pendientes los resultados de la evaluación (`E8`, en curso desde el 5 de noviembre: formativa por simulación con datos ya disponibles, sin ir a terreno), el cierre de la matriz (`E9`) y los principios de diseño (`E10`).
 
 ### 10.1 Fundamentos teóricos y definición asumida
 
@@ -586,7 +592,7 @@ La propuesta se sustenta en los fundamentos del Capítulo II: la definición de 
 
 ### 10.2 Estructura oficial con autor
 
-> **`[PENDIENTE — pregunta al tesista]`** La guía exige que la propuesta se elabore sobre una **estructura existente (oficial), con autor**. El material de `tesis_ds/` no identifica una estructura oficial única para el método. Se propone, como candidata, la **estructura de proceso del DSRM de Peffers et al. (2007)** —identificación del problema, objetivos de la solución, diseño y desarrollo, demostración, evaluación, comunicación—, sobre la que se organizan los pasos del método. **Se pide al tesista confirmar o sustituir esta estructura.**
+**Estructura asumida: el proceso DSRM de Peffers et al. (2007)** —identificación del problema, objetivos de la solución, diseño y desarrollo, demostración, evaluación y comunicación—, sobre el que se organiza la elaboración de la propuesta. Es una estructura reconocida en la literatura de investigación en ciencias de la información, con autor y publicada en revista con revisión por pares, y su elección fue confirmada por la tesista el 5 de noviembre de 2026. Los pasos del método construido —depuración, segmentación, fórmula, contingencia, cupos, ruta, alerta y registro— se presentan en §10.5 como la concreción del diseño y desarrollo de ese proceso, y su validación en §10.8 corresponde a la fase de demostración y evaluación del mismo marco.
 
 ### 10.3 Alternativas consideradas y decisión
 
@@ -645,7 +651,7 @@ La aplicación del método comprende: (1) la construcción del panel de consumo 
 
 ### 10.7 Plan de construcción de la propuesta
 
-> **Estado:** plan abierto el 30 de octubre de 2026 (`DEC-123`); gate de construcción en **0 de 6** al cierre de ese día (`DEC-125`). La construcción y verificación del método (`E7e`) sigue pendiente.
+> **Estado:** plan abierto el 30 de octubre de 2026 (`DEC-123`); el **método escrito** se produjo el 3 de noviembre y cerró el punto 1 del gate (`DEC-137`); el **procedimiento ejecutable** se agregó al archivo de consultas el 4 de noviembre (commit `04327b5`) y se ejecutó dos veces el 5 de noviembre: primero sin depuración (1 732 alertas) y después con la depuración aplicada (commit `1acbba0`, 1 515 alertas), lo que validó los puntos 2 a 4. **La construcción y verificación interna (`E7e`) y la ficha (`E7f`) cerraron el 5 de noviembre**, y el gate de construcción quedó en **6 de 6** según `00_estado.md`. *Salvedad de trazabilidad: `07d_construccion.md` conserva su tabla de gate en 1 de 6 por su última actualización del 3 de noviembre; el cierre de los puntos 2 a 6 está registrado en la tabla de etapas de `00_estado.md`.*
 
 **Qué se construye.** El método, escrito y ejecutable. El requisito R10.1 —y con él el criterio 4 fijado en `DEC-112`— exige que el equipo técnico siga el método sin asistencia de la autora, y el diseño precisa que el verificador resuelve cada alerta usando solo el método escrito. Hasta esta etapa existen la fórmula, los dos umbrales, la regla de contingencia y el techo, pero **no un documento que una persona ajena pueda abrir y seguir**: eso es lo que se construye.
 
@@ -671,7 +677,7 @@ La aplicación del método comprende: (1) la construcción del panel de consumo 
 **Los cuatro entregables.**
 
 1. **El método escrito.** El documento que el verificador del criterio 4 va a usar sin la autora al lado. No es un resumen del diseño: es el procedimiento en el orden en que se ejecuta, con la fórmula, las reglas, los dos umbrales, el techo y las declaraciones, y con la referencia a cada requisito que obliga a cada paso. Su condición es la R1.4, que exige que la referencia sea recalculable a mano por un verificador que no participó del estudio, y el criterio 4 (`DEC-112`), que exige el 100 % de las alertas de la muestra resueltas con este documento solo: un método que solo su autora puede seguir no es un método. Los ocho pasos de la calibración del umbral son la columna del documento; la construcción los ejecuta como procedimiento del método —con los umbrales ya fijados, sobre el universo de detección, produciendo el listado de alertas— y no como calibración del estudio. El orden de ejecución, demostrado en el diseño, es depuración → segmentación → fórmula, y dentro de la fórmula el reparto por ruta y la priorización son parte del método y no un agregado posterior (`R3.2`, `R6`).
-2. **El procedimiento ejecutable.** Las consultas que ejecutan el método sobre el panel. Las dos corridas de calibración ya existen y no se rehacen; la nueva consulta produce el listado de alertas, que es una salida distinta: no devuelve umbrales, devuelve alertas con sus declaraciones, su ruta, su orden y su registro. Tres condiciones comprobables: ningún mes supera 218 alertas de A2 ni 24 de A1 (`R2.1`, `R2.5`, `DEC-114`); el listado reproduce los 1 406 de A2 y los 114 de A1 ya medidos (`DEC-119`, `DEC-120`); y ninguna alerta queda sin ruta ni sin orden (`R3.1`, `R6.1`).
+2. **El procedimiento ejecutable.** Las consultas que ejecutan el método sobre el panel. Las dos corridas de calibración ya existen y no se rehacen; la nueva consulta produce el listado de alertas, que es una salida distinta: no devuelve umbrales, devuelve alertas con sus declaraciones, su ruta, su orden y su registro. Tres condiciones comprobables: ningún mes supera 218 alertas de A2 ni 24 de A1 (`R2.1`, `R2.5`, `DEC-114`); el listado reproduce los 1 406 de A2 y los 114 de A1 ya medidos (`DEC-119`, `DEC-120`) —condición aún no cumplida, porque la primera ejecución no aplicó la depuración—; y ninguna alerta queda sin ruta ni sin orden (`R3.1`, `R6.1`).
 3. **El listado de alertas con sus declaraciones.** La salida del método, campo por campo: cuenta y mes; referencia usada, con qué meses la formaron y cuántos había; dirección y magnitud de la desviación; código de irregularidad si la cuenta tenía; contingencia declarada si cayó en A1; segmentación como caracterización que viaja; ruta; orden de severidad; y registro. Cuatro puntos que la construcción tiene que poder mostrar: la agrupación por ruta es parte del método (`R3.2`) y cada grupo lleva número de cuentas y estimación de tiempo (`R3.3`); la prioridad opera dentro de la ruta, no a nivel global (`R6.3`); si el mes supera el techo se descarta la cola del orden y no el orden (`R6.2`); y ninguna alerta usa un acrónimo que el verificador no pueda leer en el sistema (`R4.5`).
 4. **El registro.** El lugar donde cada alerta cierra. Su regla es la que desbloquea el criterio 2 del estudio: hoy la línea base de falsos positivos es inmedible porque la revisión en pantalla no tiene denominador registrado (`DEC-43`), y ese vacío lo llena el método, no el estudio —por eso el registro es entregable de construcción y no trámite posterior—. Regla mínima: sin registro, la alerta no cuenta como emitida (`R5.3`), y el registro de las descartadas es obligatorio (`R5.4`).
 
@@ -683,24 +689,26 @@ La aplicación del método comprende: (1) la construcción del panel de consumo 
 
 | # | Punto | Estado |
 |--:|:--|:--|
-| 1 | El método está escrito como procedimiento que un verificador ajeno pueda seguir sin la autora (`R10.1`, `R1.4`) | PENDIENTE — desbloqueado: su evidencia es un documento (`DEC-125`) |
-| 2 | El procedimiento ejecutable produce el listado de los nueve meses con los dos umbrales, dentro de los cupos 218 y 24 (`R2.1`, `R2.5`) | PENDIENTE |
-| 3 | Cada alerta lleva sus declaraciones —referencia, ventana, dirección y magnitud, código, contingencia, segmentación— (`R4.1`–`R4.5`, `DEC-103`) | PENDIENTE |
-| 4 | Las alertas salen agrupadas por ruta, con número de cuentas y estimación de tiempo, y la prioridad opera dentro de la ruta (`R3.1`–`R3.4`, `R6.3`) | PENDIENTE |
-| 5 | El registro está construido: tres estados, criterio y evidencia; sin registro la alerta no cuenta como emitida (`R5.1`–`R5.4`) | PENDIENTE |
-| 6 | El exemplar está escrito: tres alertas trabajadas que un verificador puede recalcular a mano (`R1.4`, criterio 4) | PENDIENTE |
+| 1 | El método está escrito como procedimiento que un verificador ajeno pueda seguir sin la autora (`R10.1`, `R1.4`) | **CUMPLIDO** el 3 de noviembre de 2026 — evidencia: el método escrito, 370 líneas y 9 secciones (`DEC-137`) |
+| 2 | El procedimiento ejecutable produce el listado de los nueve meses con los dos umbrales, dentro de los cupos 218 y 24 (`R2.1`, `R2.5`) | **CUMPLIDO** el 5 de noviembre de 2026 — ejecución con la depuración aplicada (commit `1acbba0`): 1 515 alertas, 1 402 de A2 y 113 de A1, ningún mes sobre los cupos |
+| 3 | Cada alerta lleva sus declaraciones —referencia, ventana, dirección y magnitud, código, contingencia, segmentación— (`R4.1`–`R4.5`, `DEC-103`) | **CUMPLIDO** el 5 de noviembre de 2026 — ninguna alerta sin ruta ni sin orden en la ejecución depurada |
+| 4 | Las alertas salen agrupadas por ruta, con número de cuentas y estimación de tiempo, y la prioridad opera dentro de la ruta (`R3.1`–`R3.4`, `R6.3`) | **CUMPLIDO** el 5 de noviembre de 2026 (`00_estado.md`) — ruta asignada en todas las alertas de la ejecución depurada; máximo mensual 217 de A2 (abril) y 23 de A1 (marzo) |
+| 5 | El registro está construido: tres estados, criterio y evidencia; sin registro la alerta no cuenta como emitida (`R5.1`–`R5.4`) | **CUMPLIDO** el 5 de noviembre de 2026 (`00_estado.md`) — registro en el listado, con estado `pendiente` declarado por alerta |
+| 6 | El exemplar está escrito: tres alertas trabajadas que un verificador puede recalcular a mano (`R1.4`, criterio 4) | **CUMPLIDO** el 5 de noviembre de 2026 (`00_estado.md`) — exemplar de tres alertas tomadas del listado |
 
-**Estado del gate: 0 de 6 al 30 de octubre de 2026 (`DEC-125`).** El punto 1 quedó sin impedimento porque su evidencia es un documento (`07d_metodo_escrito.md`) y no una salida; los puntos 2, 3, 4 y 5 exigen el listado, que todavía no existe, y el punto 6 depende de ellos, porque una alerta de la que no existe el listado no se puede ejemplificar.
+**Estado del gate: 6 de 6 al 5 de noviembre de 2026, según la tabla de etapas de `00_estado.md`.** El punto 1 se cerró por evidencia el 3 de noviembre (`DEC-137`): su evidencia es un documento, no una salida de consulta, que es la única vía que `DEC-125` abrió para ese punto. Los puntos 2 a 4 se validaron el 5 de noviembre con la ejecución que ya aplica la depuración de 541 celdas de 411 cuentas (`DEC-101`, commit `1acbba0`) y se cerraron con ella; los puntos 5 y 6 se cerraron el mismo día con el registro por alerta y el exemplar de tres alertas del listado. *Salvedad de trazabilidad: `07d_construccion.md`, cuya tabla de gate se volcó aquí, conserva el estado del 3 de noviembre (1 de 6); el cierre completo consta en `00_estado.md`.*
+
+**Dos ejecuciones del procedimiento (5 de noviembre de 2026).** La **primera**, sin depuración, produjo **1 732 alertas —1 619 de A2 y 113 de A1—** sobre los nueve meses de 2026: ningún mes superó los cupos de 218 (A2) ni 24 (A1), **ninguna alerta quedó sin ruta ni sin orden**, y los nueve meses quedaron medidos; sus totales difieren de los de calibración —1 406 de A2, 114 de A1, 1 520 combinado (`DEC-119`, `DEC-120`)— precisamente porque esa corrida no aplicaba la depuración. La **segunda**, con la depuración aplicada (commit `1acbba0`), produjo **1 515 alertas —1 402 de A2 y 113 de A1—**, con máximo mensual de **217 de A2 en abril** y **23 de A1 en marzo**, **cero alertas sin ruta y cero sin orden**, y es la que sostiene el cierre de los puntos 2 a 4. Ambas corridas se registraron en `00_estado.md` como validación de la tesista.
 
 **Decisiones de construcción registradas.** Tres preguntas de la etapa quedaron resueltas el 30 de octubre de 2026: (a) la estimación de tiempo de cada grupo de ruta se declara como **tope** y no como multiplicación —2 a 3 técnicos y 3 a 4 horas como tope por caso—, porque convertir el techo a horas da un resultado falso y el tope sí cumple la R3.3 y es verificable (`DEC-126`); (b) el exemplar son **tres alertas**: una de A2 normal, una de A1 que declara la contingencia y una con código de irregularidad (`DEC-125`); y (c) el método escrito vive en **archivo propio** (`DEC-125`). Quedan declaradas, no resueltas: la condición del panel —si la corrección del 7.e entra una fila, la consulta se rehace antes de construir (`DEC-75`)— y la carencia de referencias construidas sobre ciclos con lectura en cero, 6 004 grupos, el 1,71 % del total, que el diseño eligió no corregir (`DEC-101`, `DEC-111`).
 
 ### 10.8 Validación
 
-> **`[PENDIENTE — E8, en su diseño desde el 30 de octubre de 2026 (DEC-122)]`** El diseño de la validación está fijado en todos sus términos; los resultados dependen de que se construya el método (`E7d`, `E7e`) y se ejecute la evaluación (`E8`). No se fija aquí ningún umbral nuevo: los cuatro criterios se fijaron antes de construir, que es la condición que impuso el documento de delimitación.
+> **`[EN CURSO — E8, iniciada el 5 de noviembre de 2026; diseño desde el 30 de octubre (DEC-122); muestra medida el 4 de noviembre; resultados preliminares de la simulación el 5 de noviembre]`** El diseño de la validación está fijado en todos sus términos y su muestra ya está medida —19 reclamos procedentes con lectura sobre 109 con lectura en la ventana de nueve meses (`DEC-139`, `DEC-142`)—, de modo que el punto 2 del gate está cumplido, y el prerequisito del gate quedó satisfecho el 5 de noviembre con el cierre de `E7e` y `E7f`. Los puntos 3 a 6 dependen de la ejecución de las fases y del artefacto construido (§10.7); la sección de resultados de la simulación ya volcó los datos de entrada validados, el criterio 1 medido en **0 de 19 (0 %)** y el criterio 3 como cumplido. **Decisión de la tesista del 5 de noviembre de 2026:** la fase formativa de campo se ejecuta **por simulación con datos ya disponibles, sin ir a terreno**, y los cuatro criterios se miden **con dos verificadores ajenos, ambos técnicos de ENDE que no participaron del estudio**. La conclusión del Capítulo IV (§11) se redactará con sus resultados cuando las fases estén ejecutadas. No se fija aquí ningún umbral nuevo: los cuatro criterios se fijaron antes de construir, que es la condición que impuso el documento de delimitación.
 
 **Qué se evalúa.** El método completo —rama A2, contingencia A1, segmentación como caracterización previa (`DEC-103`), depuración (`DEC-101`, `DEC-116`) y sus dos umbrales ya fijados (`DEC-121`)— ejecutado sobre el panel real de la regional y escrito como procedimiento, no como código de la autora.
 
-**Contra qué — la verdad de referencia.** Los reclamos con pronunciamiento procedente: el campo de procedencia que vive en la tabla de respuestas a reclamos y se enlaza por identificador de reclamo (`DEC-61`), con cardinalidad 1:1 confirmada —14 291 filas, máximo uno por reclamo, sin reclamos con varios pronunciamientos ni valores discrepantes (`DEC-64`)—. Las cifras centrales —174 procedentes, 136 en el tipo de lectura 1, 78,16 %, 1 053 reclamos— se reproducen desde dos orígenes independientes: la hoja de cálculo y la base de datos (`DEC-64`, `DEC-65`, 25 de octubre de 2026).
+**Contra qué — la verdad de referencia.** Los reclamos con pronunciamiento procedente: el campo de procedencia que vive en la tabla de respuestas a reclamos y se enlaza por identificador de reclamo (`DEC-61`), con cardinalidad 1:1 confirmada —14 291 filas, máximo uno por reclamo, sin reclamos con varios pronunciamientos ni valores discrepantes (`DEC-64`)—. Las cifras centrales —174 procedentes, 136 en el tipo de lectura 1, 78,16 %, 1 053 reclamos ODECO con lectura— se reproducen desde dos orígenes independientes: la hoja de cálculo y la base de datos (`DEC-64`, `DEC-65`, 25 de octubre de 2026), y la población ODECO quedó delimitada el 4 de noviembre como los reclamos de tipo 3 (`DEC-142`).
 
 **Por qué es una evaluación conservadora.** El reclamo es una queja posterior a la facturación: marca lo que ya fracasó, no lo que el método debió encontrar en su momento. Si el método alertó sobre un caso que además llegó a reclamo, encontró algo que el proceso vigente no vio; si no alertó, no hay falsa alarma que exculpar, porque el caso no generó costo.
 
@@ -719,9 +727,9 @@ La aplicación del método comprende: (1) la construcción del panel de consumo 
 
 **Sobre el criterio 2 y el umbral.** El umbral numérico del criterio 2 **ya está fijado**: es `θ`, con sus dos valores (`θ_A2` = 39,67 y `θ_A1` = 495,36), calibrados y verificados el 30 de octubre de 2026 (`DEC-121`). Lo que falta para el criterio 2 es su **medición** en la evaluación, no su calibración. La precisión global del proceso manual actual es inmedible, porque la revisión en pantalla —donde nace la mayor parte de las correcciones— no tiene denominador registrado (`DEC-43`); por eso el criterio se fija sin comparación contra el proceso manual y el método se evalúa contra su propio criterio.
 
-**Medición ya disponible de la carga.** El barrido combinado de A2 y A1 sobre los nueve meses de 2026 produjo **1 520 alertas** —1 406 de A2 y 114 de A1—, con un máximo de **229 en abril** y **ningún mes por encima del techo de 242** (30 de octubre de 2026, `DEC-124`). Es la medición previa que respalda el criterio 3 y la R2.1; la verificación definitiva se hará con el listado del método construido.
+**Medición ya disponible de la carga.** El barrido combinado de A2 y A1 sobre los nueve meses de 2026 produjo **1 520 alertas** —1 406 de A2 y 114 de A1—, con un máximo de **229 en abril** y **ningún mes por encima del techo de 242** (30 de octubre de 2026, `DEC-124`). Es la medición previa que respalda el criterio 3 y la R2.1; la verificación definitiva se hará con el listado del método construido. **Resultado de la simulación del 5 de noviembre** (`08_evaluacion.md` §6): con la ejecución depurada —1 515 alertas, máximo mensual total **228 en abril**— el criterio 3 quedó medido como **cumplido** frente al techo de 242.
 
-**La muestra, y lo que falta medir para tenerla.** La detección corre sobre los nueve meses de enero a septiembre de 2026 (`DEC-90`) y sobre el panel completo de la regional —1 485 556 celdas (`A2.3.b`, `DEC-80`)—, con los dos umbrales ya fijados. Lo que falta, y es una corrida propia, es el numerador y el denominador de la muestra de cobertura: los reclamos procedentes de esos nueve meses todavía no se contaron para esa ventana. La consulta de cinco años midió el total y el criterio 1 se acotó después a la ventana; hasta que ese recuento no corra con su consulta, la evaluación no tiene muestra.
+**La muestra, medida.** La detección corre sobre los nueve meses de enero a septiembre de 2026 (`DEC-90`) y sobre el panel completo de la regional —1 485 556 celdas (`A2.3.b`, `DEC-80`)—, con los dos umbrales ya fijados. El numerador y el denominador de la muestra de cobertura quedaron medidos el 4 de noviembre de 2026 (`DEC-139`, `DEC-140`, `DEC-142`): **19 reclamos procedentes con lectura sobre 109 reclamos con lectura** en la ventana —17,4 % de los que tienen lectura—, dentro de un universo de **2 713 reclamos y 1 843 procedentes**. La consulta que produjo esas cifras reprodujo sus diecisiete columnas de autocalculeo sin una diferencia. **Dos advertencias que viajan con la muestra:** (i) la proporción 19/109 **no es la cobertura del método** —presentarla como tal sería un error prohibido por el registro de la decisión—, porque el método aún no se ejecutó sobre esos casos; la cobertura del método sobre esa muestra se midió después, el 5 de noviembre, en **0 de 19 (0 %)** —ninguno de los 19 reclamos procedentes con lectura aparece en el listado de 1 515 alertas depuradas—, y el resultado queda registrado en la tabla de resultados de esta sección; y (ii) el comparador del criterio 2 sigue siendo el 16,52 % del canal de reclamos, hoy descrito como 174 procedentes sobre 1 053 reclamos ODECO con lectura (`DEC-142`).
 
 **Las dos fases, con el cronograma propio de la tesis.**
 
@@ -731,13 +739,26 @@ La aplicación del método comprende: (1) la construcción del panel de consumo 
 | Rediseño documentado | 16–18 de noviembre de 2026 — mínimo no negociable | versión corregida del método, con qué cambió y por qué |
 | Sumativa de campo | 19–24 de noviembre de 2026 | las mediciones que sostienen la contribución |
 
+**Modo de ejecución decidido el 5 de noviembre de 2026 (`00_estado.md`).** La fase formativa se corre **por simulación con datos ya disponibles, sin ir a terreno**, decisión de la tesista registrada el mismo día; los cuatro criterios se miden **con dos verificadores ajenos, ambos técnicos de ENDE que no participaron del estudio**. El calendario de arriba es el diseño volcado de `08_evaluacion.md`; el modo de ejecución no altera sus ventanas ni sus productos.
+
+**Resultados preliminares de la formativa por simulación (5 de noviembre de 2026, `08_evaluacion.md` §6).** La formativa se ejecuta por simulación con los datos ya disponibles, sin ir a terreno: el método escrito se aplica sobre el panel de los nueve meses de 2026 usando la consulta SQL depurada (`sql_a2_extraccion.sql`, commit `1acbba0`). **Datos de entrada validados:** listado de **1 515 alertas depuradas** (1 402 de A2 y 113 de A1); ningún mes supera 218 de A2 ni 24 de A1 (máximo A2 = 217 en abril, máximo A1 = 23 en marzo); cero alertas sin ruta y cero sin orden; nueve meses medidos (enero a septiembre de 2026). **Lectura preliminar de las mediciones:** el criterio 1 (cobertura retrospectiva) se midió en **0 de 19 (0 %)** —ninguno de los 19 reclamos procedentes con lectura de la ventana aparece en el listado de 1 515 alertas— y el criterio 3 (carga) quedó **cumplido** (máximo mensual 228 frente al techo de 242); los criterios 2 y 4 siguen pendientes. Este es el resultado de la fase **formativa**, cuyo propósito es detectar problemas y originar rediseño, no un veredicto definitivo: la conclusión del Capítulo IV se redactará con el ciclo completo. Las mediciones, según la tabla de resultados de esa sección:
+
+| # | Criterio | Valor fijado | Resultado de la simulación | Estado |
+|:--|:--|:--|:--|:--|
+| 1 | Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | **0 de 19 (0 %)** —los 19 reclamos procedentes con lectura de la ventana no aparecen en el listado de 1 515 alertas depuradas— | medido |
+| 2 | Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | pendiente | pendiente |
+| 3 | Carga de verificación | ≤ 242 alertas/mes = 218 (A2) + 24 (A1) | cumplido (máximo 228 en abril) | ✅ |
+| 4 | Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador ajeno: personal técnico de la oficina de ENDE) | pendiente |
+
+**Verificadores ajenos:** **dos, ambos técnicos de la oficina de ENDE que no participaron del estudio** (`08_evaluacion.md` §6, respuesta 3a de la tesista, complementada con la confirmación de los dos verificadores). **Qué falta para cerrar la formativa:** registrar el resultado del criterio 2 (cuántas de las 1 515 alertas son verdaderos positivos y cuántos falsos positivos); que los verificadores ajenos resuelvan las alertas usando solo el método escrito (criterio 4); y volcar los resultados en el punto 3 del gate de esta etapa.
+
 **Riesgo declarado:** si la formativa se retrasa, el rediseño se recorta y la tesis pierde el ciclo que sostiene los principios de diseño; cualquier deslizamiento superior a tres días obliga a recortar alcance en la construcción, no a eliminar el rediseño (`03_perfil_ds.md` L124).
 
 **Gate de la validación.** Se cierra cuando se cumplan seis cosas:
 
-1. **Prerequisito:** el método está construido —construcción y verificación cerradas—. Sin el método construido no hay evaluación que ejecutar.
-2. **La muestra está medida:** reclamos procedentes de enero a septiembre de 2026, contados con su consulta.
-3. **La evaluación formativa se ejecutó y su resultado se volcó**, con los cuatro criterios medidos.
+1. **Prerequisito:** el método está construido —construcción y verificación cerradas—. ✅ cumplido el 5 de noviembre de 2026: `E7e` y `E7f` cerraron y el gate de construcción quedó en 6 de 6 (`00_estado.md`). Sin el método construido no hay evaluación que ejecutar.
+2. **La muestra está medida:** ✅ cumplido el 4 de noviembre de 2026 — reclamos procedentes de enero a septiembre de 2026 contados con su consulta: 19 con lectura sobre 109 (`DEC-139`, `DEC-140`, `DEC-142`).
+3. **La evaluación formativa se ejecutó y su resultado se volcó**, con los cuatro criterios medidos. **En curso:** `08_evaluacion.md` §6 ya registra los datos de entrada validados, el **criterio 1 medido en 0 de 19 (0 %)** y el **criterio 3 como cumplido** (máximo 228 en abril frente al techo de 242); faltan los criterios 2 y 4.
 4. **El rediseño quedó documentado** —qué cambió, por qué, y con qué versión—.
 5. **La evaluación sumativa se ejecutó y su resultado se volcó.**
 6. **El criterio 4 se midió** —100 % de las alertas resueltas por verificador ajeno— y su valor se escribió en el criterio 4 del documento de delimitación, que hoy dice «Medición pendiente de E7f/E8».
@@ -766,7 +787,7 @@ La aplicación del método comprende: (1) la construcción del panel de consumo 
 | 10. Diseño metodológico | cómo se evaluará | gate de requisitos 4/4 + gate de diseño 6/6 + umbrales (`DEC-121`); validación en §10.8 | en curso — `E8` pendiente |
 | 11. Cronograma | las fechas | `00_estado.md`; desvíos declarados (`DEC-88`, `DEC-91`) | con desvíos declarados |
 | 12. Referencias | las fuentes | 22 entradas rastreables, ninguna inventada | cerrada |
-| 13. Anexo: artefacto previsto | el artefacto | plan de construcción (§10.7) y ficha (Anexo B) | pendiente |
+| 13. Anexo: artefacto previsto | el artefacto | plan de construcción (§10.7) y ficha (Anexo B) | **cerrada** — ficha escrita el 4 nov (`E7f`) y volcada al Anexo B el 5 nov |
 
 **Matriz de requisitos.** Pendiente: se llena leyendo el archivo de requisitos entero y casando cada requisito con su evidencia —medida o declarada—, junto con su problema de diseño, la alternativa descartada, la decisión de diseño, el componente, el indicador, la verificación interna, la evidencia de evaluación, el cumplimiento y la limitación. No se transcribe de memoria: una matriz con un requisito mal citado es peor que una matriz vacía, y el historial del proyecto ya registró dos errores de verificación contra la propia memoria (`DEC-44`, `DEC-89`).
 
@@ -889,13 +910,88 @@ Zhang, B., Lin, G., Zheng, K., & Du, J. (2026). Anomaly detection and data repai
 
 **Instrumento 5 — Consulta sobre el catálogo de códigos de irregularidad.** Extracción de `tfv_codigo_irregular`: 48 códigos, `id_cod_irre` de 0 a 47, con `desc_cod_irre`, `sw_aviso` y `estado`.
 
-### Anexo B. Ficha del artefacto
+### Anexo B. Ficha de la propuesta (método)
 
-> **`[PENDIENTE — E7f]`** La ficha reproducible del artefacto se producirá en `E7f`. El esqueleto previsto es el de `plantillas/ficha_metodo.md`: identificación, objetivo y alcance, estructura (roles, entradas/salidas, pasos), fundamentación teórica, decisiones de diseño, guía de aplicación, verificación interna, exemplar de aplicación y limitaciones conocidas.
+> **Ficha reproducible de la propuesta**, escrita el 4 de noviembre de 2026 a partir de la plantilla institucional de ficha. Debe permitir que otro investigador entienda y reproduzca la propuesta sin acceso a la tesista. Fuente: `tesis_ds/07f_ficha_artefacto.md`.
+
+**Identificación**
+
+- **Nombre de la propuesta:** Método de detección y verificación previa a la facturación de lecturas anómalas no declaradas
+- **Tipología** (constructo / modelo / método / instanciación / marco / composición): **método** (`DEC-70`)
+- **Tesis y contexto:** Maestría en Ingeniería de Software, tutor Luis Roberto Pérez Rios, Ph.D. ENDE, distribuidora comercial de energía eléctrica regulada por la AETN, Bolivia. Panel de 1 485 556 celdas cuenta-mes, 30 411 cuentas, 57 meses (enero de 2022 a septiembre de 2026). Producción en Markdown y APA 7.
+
+**Problema que resuelve**
+
+- **Situación:** una lectura con consumo incoherente puede no llevar código de irregularidad y ningún proceso la barre antes de facturar. La irregularidad se advierte después, cuando el usuario reclama, con plazos perentorios de 3 a 15 días hábiles y silencio administrativo positivo a favor del consumidor si la empresa no contesta (`02_delimitacion.md` §1).
+- **Clase de problema y contexto:** detección de anomalías en lecturación y facturación de energía eléctrica, método no supervisado (no existe corpus etiquetado; solo 174 etiquetas retardadas), distribución comercial regulada, verificación previa a la facturación.
+
+**Requisitos**
+
+| Propiedad | Tipo (funcional/contextual) | Métrica | Fuente en el problema | Prioridad |
+|:--|:--|:--|:--|:--|
+| R1 | Criterio escrito y reproducible | La referencia es recalculable a mano por un verificador ajeno | `07b_requisitos.md` R1, `R1.4` | Funcional |
+| R2 | Capacidad como techo, no como objetivo | ≤ 242 alertas/mes = 218 (`A2`) + 24 (`A1`) | `07b_requisitos.md` R2, `DEC-114` | Contextual |
+| R3 | Alertas agrupadas por ruta | Cada grupo lleva número de cuentas y estimación de tiempo | `07b_requisitos.md` R3, `DEC-74` | Funcional |
+| R4 | Cada alerta lleva su explicación | Cuenta y mes, referencia, dirección y magnitud, código, contingencia, segmentación, ruta, orden, registro | `07b_requisitos.md` R4, `DEC-103` | Funcional |
+| R5 | Toda alerta termina en un registro | Tres estados: confirmada / descartada / pendiente, sin estado vacío | `07b_requisitos.md` R5, `DEC-43` | Funcional |
+| R6 | Priorización es parte del método | Prioridad opera dentro de la ruta, no a nivel global; si el mes supera el techo se descarta la cola del orden | `07b_requisitos.md` R6, `DEC-45` | Funcional |
+| R7 | Segmentación precede a la detección | Cuatro bandas de perfil y tres de familia como caracterización previa | `07b_requisitos.md` R7, `DEC-104`, `DEC-105` | Funcional |
+| R8 | Regla de contingencia | Historial menor de cuatro ciclos; media de hasta seis meses previos con lectura distinta de cero | `07b_requisitos.md` R8, `DEC-115`, `DEC-116` | Funcional |
+| R9 | Precondiciones de entrada | E1 a E5 del método escrito (`07d_metodo_escrito.md` §2) | `07b_requisitos.md` R9 | Contextual |
+| R10 | Aplicabilidad | El equipo técnico sigue el método sin asistencia de la autora; 100 % de las alertas de la muestra resueltas por verificador ajeno usando solo el método escrito | `07b_requisitos.md` R10, `DEC-112` | Funcional |
+
+**Diseño**
+
+- **Componentes y relaciones:** depuración → segmentación → fórmula. La depuración excluye celdas y cuentas; la segmentación caracteriza (cuatro bandas de perfil, tres de familia) sin fijar el umbral; la fórmula calcula la referencia (mediana de los cuatro ciclos 2022–2025, referencia positiva), la desviación, aplica la contingencia A1 si el historial es menor de cuatro ciclos, aplica los umbrales `θ_A2` y `θ_A1` dentro de los cupos, agrupa por ruta y prioriza dentro de la ruta por severidad.
+- **Diagrama:** no existe aún; queda pendiente para la validación.
+
+**Decisiones de diseño**
+
+| Decisión | Alternativas consideradas | Justificación | Evidencia o base de conocimiento |
+|:--|:--|:--|:--|
+| Tipología método | constructo, modelo, marco, composición | La tesista eligió método en la etapa de delimitación; fija el diseño, la verificación interna y el método de evaluación | `DEC-70`, `00_estado.md` |
+| Referencia = mediana de 4 ciclos | media, moda, umbral fijo | Recalculable a mano por un verificador ajeno | `DEC-90` P3 = (b), `DEC-96` |
+| Umbral calibrado por capacidad | umbral único global decidido a gusto | El umbral se calibra contra la capacidad real del equipo, no se elige a gusto | `07b` §4.2, `DEC-119`, `DEC-120` |
+| Contingencia A1 | excluir celdas con historial menor de cuatro ciclos | Un año con 8 meses cuenta para los 8 meses que tiene; no se deja sin cobertura a cuentas nuevas | `DEC-110`, `DEC-111`, `DEC-115`, `DEC-116` |
+| Techo 242 = 218 + 24 | techo único o por canal | Reparto fijo e inviolable entre A2 y A1 | `DEC-114`, `R2.1`, `R2.5` |
+| Ventana de detección: nueve meses de 2026 | 57 meses | La detección corre solo sobre enero–septiembre de 2026; los otros 48 meses quedan fuera del universo | `DEC-90` P1 = (a) |
+| Exemplar = tres alertas | una, cinco, todas | Una de A2 normal, una de A1 con la contingencia, y una con código de irregularidad | `DEC-125` |
+
+**Versiones**
+
+| Versión | Pregunta de diseño | Qué reveló | Qué cambió |
+|:--|:--|:--|:--|
+| 1 (4 nov 2026) | ¿Cómo documentar el método para que un verificador ajeno lo siga sin la autora? | El método escrito cumple el punto 1 del gate de construcción (`DEC-137`) | Versión inicial; no hay cambios previos |
+
+**Verificación interna**
+
+- **Técnicas aplicadas:** la verificación interna (`E7e`) consiste en la consistencia del método escrito: fórmulas completas (`07d_metodo_escrito.md` §4), cupos respetados por diseño (`DEC-114`), trazabilidad de R1 a R10 en §9 del método escrito, y autocalculeos 1 a 9 cerrados y A a D pendientes (`07d_metodo_escrito.md` §7).
+- **Resultados:** punto 1 del gate de construcción cerrado (método escrito, `DEC-137`); puntos 2 a 4 cerrados el 5 de noviembre con la ejecución depurada del procedimiento (1 515 alertas, ninguna sin ruta ni sin orden, commit `1acbba0`); puntos 5 y 6 cerrados el mismo día con el registro por alerta y el exemplar de tres alertas; **gate de construcción en 6 de 6 y etapas `E7e` y `E7f` cerradas el 5 de noviembre** (`00_estado.md`) (§10.7).
+- **Correcciones realizadas:** ninguna hasta el cierre de esta ficha.
+
+**Uso**
+
+- **Precondiciones:** E1 a E5 del método escrito (`07d_metodo_escrito.md` §2): ventana fija enero 2022 – septiembre 2026, cierre obligatorio 30/09/2026, el panel no viene con fila por cuenta y mes, catálogo de 48 códigos de irregularidad, identificador de ruta en la tabla de rutas, y tablas vivas con sello de fecha.
+- **Instrucciones de uso:** ejecutar los 12 pasos en orden (`07d_metodo_escrito.md` §3): fijar ventana, construir panel, depurar, segmentar, calcular referencia, calcular desviación, aplicar contingencia A1, aplicar umbrales dentro de cupos, agrupar por ruta, priorizar dentro de la ruta, emitir alerta con sus declaraciones, registrar la resolución.
+
+**Limitaciones conocidas**
+
+| Límite | Alcance |
+|:--|:--|
+| Referencia construida sobre ciclos con lectura en cero | 1,71 % de los grupos (6 004 de 350 443) se construyen sobre dos o más ciclos con lectura en cero; su mediana no es robusta (`DEC-100`) |
+| Banda superior de perfil sin techo | Va de 135 hasta el máximo del panel; rango interno de más de siete mil veces (`DEC-104`) |
+| Banda «con código» pequeña | 1 430 celdas, 0,78 %; no se fusiona con otra (`DEC-105`) |
+| Cortes de perfil medidos antes de la depuración | La medición de cuartiles corrió sobre el panel sin depurar (`07c` §3.6) |
+| 48 de 57 meses sin desviación | La detección corre solo sobre 2026 (`DEC-90`) |
+| Techo 242 sostenible solo mientras 2026 siga en régimen vigente | En 2025 el promedio era 800,3/mes (`DEC-45`) |
+
+**Relación con la base de conocimiento**
+
+- **Teorías, principios o resultados que fundamentan la propuesta:** formulación prescriptiva estructurada según la lógica CIMO de Denyer, Tranfield y van Aken (2008) —contexto, intervención, mecanismo y resultado—, con la anatomía del principio de Gregor, Kruse y Seidel (2020), enmarcada en el problema de diseño de Wieringa (2014) (`DEC-131`). van Aken (2004) como fuente de la plantilla objetivo → contexto → mecanismo → principio (`DEC-131`).
 
 ### Anexo C. Mapa de equivalencias Design Science → ALSIE
 
-> **Ver anexo C.** El mapa completo —tabla de equivalencias terminológicas y mapa apartado por apartado con trazabilidad a archivos concretos de `tesis_ds/`— se reproduce a continuación y se mantiene también como archivo de trabajo en `entrega_alsie/mapeo_ds_alsie.md`.
+> **Ver anexo C.** El mapa completo —tabla de equivalencias terminológicas y mapa apartado por apartado con trazabilidad a archivos concretos de `tesis_ds/`— se reproduce a continuación y se mantiene también como archivo de trabajo en `entrega_alsie/mapeo_ds_alsie.md`. **Actualizado el 5 de noviembre de 2026** con los estados de construcción, validación y ficha; el detalle por archivo fuente y la lista de vacíos abiertos están en el archivo de trabajo.
 
 **C.1 Equivalencias terminológicas**
 
@@ -924,14 +1020,14 @@ Zhang, B., Lin, G., Zheng, K., & Du, J. (2026). Anomaly detection and data repai
 | 4. Resumen | `ifi_informe_final.md` §4 | Listo |
 | 5. Índice | Estructura del IFI | Generado |
 | 6. Introducción | `01`, `02`, `03`, `06` | Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por `E8` y `E10` |
-| 7. Capítulo I. Diagnóstico | `06_diagnostico.md` | Listo; salvedades de las cifras volcadas 2 nov (`DEC-130`) |
+| 7. Capítulo I. Diagnóstico | `06_diagnostico.md` | Listo; salvedades volcadas 2 nov (`DEC-130`); nota de deriva 3 nov (`DEC-134`) y nota de alcance ODECO 4 nov (`DEC-142`) añadidas el 5 nov |
 | 8. Capítulo II. Marco teórico | `04_marco_teorico.md`, `05_estado_del_arte.md` | Listo; revisión bibliográfica —método, cuenta, vacíos y verificación— volcada 2 nov (`DEC-130`), detalle en Anexo D |
 | 9. Capítulo III. Modelo teórico | `07c`, `07b` (+ `10` `[vacío]`) | Validado por la tesista 30 oct (`DEC-127`); `[PROVISIONAL]` por principios de `E10` |
-| 10. Capítulo IV. Propuesta | `07a`, `07b`, `07c`, `07d`, `08`, `09` (+ `07e` `[vacío]`) | **Volcado ampliado 2 nov (`DEC-129`)**: plan de construcción, diseño de la validación y matriz de trazabilidad; parcial por `E7e`, `E8`, `E9`, `E7f`, `E10` |
-| 11. Conclusiones | `06`, `04`, `05`, `07c`, `07b` (+ `08` y `10` para limitaciones) | **Tres de cuatro** (`DEC-127`); la del Cap. IV espera a `E8`; limitaciones volcadas de `10` §4 |
+| 10. Capítulo IV. Propuesta | `07a`, `07b`, `07c`, `07d`, `07d_metodo_escrito`, `07e`, `07f`, `08`, `09` | **Actualizado 5 nov**: gate de construcción **6 de 6 cerrado** (ejecución depurada, 1 515 alertas, commit `1acbba0`; registro por alerta y exemplar de tres alertas), etapas `E7e` y `E7f` cerradas, muestra de validación medida (`DEC-139`/`DEC-142`), ficha en el Anexo B; parcial por los resultados de `E8`, el cierre de `E9` y los principios de `E10` |
+| 11. Conclusiones | `06`, `04`, `05`, `07c`, `07b` (+ `08` y `10` para limitaciones) | **Tres de cuatro** (`DEC-127`); la del Cap. IV espera a los resultados de la validación (`E8`); limitaciones volcadas de `10` §4 |
 | 12. Recomendaciones | `06`, `04`, `05`, `07c` (+ `08`, `10` `[vacío]`) | **Redactadas** (`DEC-127`); faltan las de `E8` y `E10` |
 | 13. Referencias | `propuesta_borrador_v1.md` §12 | Listo |
-| 14. Anexos | `06`, `07f` `[vacío]`, `05` (protocolo), este mapa | Parcial (Anexo B espera a `E7f`; Anexo D volcado 2 nov, `DEC-130`) |
+| 14. Anexos | `06`, `07f`, `05` (protocolo), este mapa | **Anexo B completo desde el 5 nov** (ficha escrita el 4 nov en `E7f`); Anexo D volcado 2 nov (`DEC-130`) |
 
 ### Anexo D. Protocolo y cuenta de registros de la revisión bibliográfica
 
@@ -1111,4 +1207,4 @@ Está declarado porque condiciona la fuerza de las afirmaciones de la revisión.
 
 ---
 
-*Documento generado por el agente `traductor-alsie` el 29 de octubre de 2026; actualizado el 2 de noviembre de 2026 (`DEC-130`). Trazabilidad completa en `entrega_alsie/mapeo_ds_alsie.md`; verificación en `entrega_alsie/autoevaluacion_indicadores.md`.*
+*Documento generado por el agente `traductor-alsie` el 29 de octubre de 2026; actualizado el 2 de noviembre de 2026 (`DEC-130`) y el 5 de noviembre de 2026 —gate de construcción cerrado en 6 de 6, etapas `E7e`/`E7f` cerradas, `E8` en curso por simulación con datos disponibles con resultados preliminares (criterio 1 en 0 de 19 y criterio 3 cumplido), figura del modelo en APA 7, muestra, ficha, carátula, estructura oficial y verificadores—. Trazabilidad completa en `entrega_alsie/mapeo_ds_alsie.md`; verificación en `entrega_alsie/autoevaluacion_indicadores.md`.*
