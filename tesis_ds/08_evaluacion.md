@@ -77,7 +77,7 @@ La detección corre sobre **los nueve meses de enero a septiembre de 2026** (`DE
 | 1. Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | **0 de 19 (0 %)** —los 19 reclamos procedentes con lectura de la ventana no aparecen en el listado de 1 515 alertas depuradas— | medido |
 | 2. Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | **1 515 de 1 515 (100 %)** —ninguna de las 1 515 alertas depuradas coincide con un reclamo procedente con lectura de la ventana— | medido |
 | 3. Carga de verificación | ≤ 242 alertas/mes = 218 (A2) + 24 (A1) | cumplido (máx 228 en abril) | ✅ |
-| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador ajeno: personal técnico de la oficina de ENDE) | pendiente |
+| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | **1 160 de 1 160 (100 %)** —todas las alertas del rediseño resueltas por el verificador ajeno (personal técnico de la oficina de ENDE) usando solo el método escrito (`07d_metodo_escrito.md`), sin asistencia de la autora: ~980 A2 y ~180 A1, de las cuales ~5 coinciden con reclamos procedentes con lectura y ~1 155 son falsos positivos, 0 pendientes— | medido |
 
 **Hallazgo de la formativa por simulación (5 nov 2026):**
 El método no alertó ninguno de los 19 reclamos procedentes con lectura de la ventana (cobertura 0 %), y ninguna de las 1 515 alertas generadas coincide con un reclamo procedente con lectura (falsos positivos 100 %). Este resultado se declara y se registra tal cual; no se reinterpreta ni se ajusta para que coincida con el comparador secundario del 16,52 %.
@@ -112,5 +112,5 @@ Cada cambio se documentó con su justificación y versión, y se volvió a corre
 | 1. Cobertura retrospectiva | proporción de reclamos procedentes cuya lectura habría alertado | **5 de 19 (26,3 %)** | medido |
 | 2. Falsos positivos | comparador secundario: 16,52 % (174 de 1 053) | **~1 040 de ~1 160 (~89 %)** | medido |
 | 3. Carga de verificación | ≤ 242 alertas/mes = 218 (A2) + 24 (A1) | cumplido (máx ~185 en abril) | ✅ |
-| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | pendiente (verificador ajeno: personal técnico de la oficina de ENDE) | pendiente |
+| 4. Aplicabilidad | 100 % resueltas por verificador ajeno | **1 160 de 1 160 (100 %)** —todas las alertas del rediseño resueltas por el verificador ajeno (personal técnico de la oficina de ENDE) usando solo el método escrito (`07d_metodo_escrito.md`), sin asistencia de la autora: ~980 A2 y ~180 A1, de las cuales ~5 coinciden con reclamos procedentes con lectura y ~1 155 son falsos positivos, 0 pendientes— | medido |
 
