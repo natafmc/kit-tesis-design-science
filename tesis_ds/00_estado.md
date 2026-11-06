@@ -29,7 +29,7 @@
 | E3. Perfil de investigación DS | **cerrada** | `03_perfil_ds.md` | 26 sep 2026 |
 | E4. Marco teórico | **cerrada** | `04_marco_teorico.md` | 2 oct 2026 |
 | E5. Estado del arte | **cerrada** | `05_estado_del_arte.md` | 2 oct 2026 |
-| E6. Diagnóstico con indicadores | en curso (línea base medida) | `06_diagnostico.md` | |
+| E6. Diagnóstico con indicadores | **cerrada** — línea base medida: 57 meses, 13 897 reclamos, 1 053 totales, 174 procedentes, 16,52 %, 0,88 % lecturas con código, 242,2 correcciones mensuales; preguntas pendientes declaradas como dato no disponible | `06_diagnostico.md` | 6 nov 2026 |
 | E7a. Alternativas de solución | **cerrada** | `07a_alternativas.md` | 25 oct 2026 |
 | E7b. Requisitos del artefacto | **cerrada** — gate 4 de 4 (`DEC-121`) | `07b_requisitos.md` | 30 oct 2026 |
 | E7c. Diseño del artefacto | **cerrada** — gate 6 de 6 (`DEC-112`) | `07c_diseno_artefacto.md` | 29 oct 2026 |
